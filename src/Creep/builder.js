@@ -1,23 +1,45 @@
 Creep.prototype.builder = function () {
+	let findDestination = function(){
+		let destination = this.pos.findClosestByPath(FIND_MY_CONSTRUCTION_SITES);
+
+		return destination.id;
+	};
+	
 	if (this.memory.mode == "to_container") {
-		//if at assigned container
-			//change mode to withdrawing
-		//go to assigned container
-	} else if (this.memory.mode == "withdrawing") {
-		//if full
-			//change mode to to_destination
-			//set assigned destination to nearest unfinished construction site
-		//withdraw from assigned container
-	} else if (this.memory.mode == "to_destination") {
-		//if at assigned destination
-			//change mode to building
-		//go to assigned destination
-	} else if (this.memory.mode == "building") {
-		//if assigned destination is done and creep is not empty
-			//change mode to to_destination
-			//set assigned destination to nearest unfinished construction site
-		//if creep is empty
-			//change mode to to_container
-		//build assigned destination
+		let container = Game.getObjectById(this.memory.container);
+		if (this.pos.isNearTo(container)) {
+			this.memory.mode = "withdrawing";
+		}else{
+			this.moveTo(container);
+			return;
+		}
+	}
+	if (this.memory.mode == "withdrawing") {
+		if (this.store.getFreeCapacity(RESOURCE_ENERGY) == 0) {
+			this.memory.destination = this.pos.findClosestByPath(FIND_MY_CONSTRUCTION_SITES).id;
+			this.memory.mode = "to_destination";
+		}else{
+			this.withdraw(Game.getObjectById(this.memory.container), RESOURCE_ENERGY);
+			return;
+		}
+	}
+	if (this.memory.mode == "to_destination") {
+		let destination = Game.getObjectById(this.memory.destination);
+		if (this.pos.isNearTo(destination)){
+			this.memory.mode = "building";
+		}else{
+			this.moveTo(destination);
+		}
+	}
+	if (this.memory.mode == "building") {
+		let destination = Game.getObjectById(this.memory.destination);
+		if (!destination && this.store.getUsedCapacity() > 0){
+			this.memory.destination = this.pos.findClosestByPath(FIND_MY_CONSTRUCTION_SITES).id;
+		} else if (this.store.getUsedCapacity() == 0) {
+			this.memory.mode = "to_container";
+		} else {
+			this.build(destination);
+			return;
+		}
 	}
 };

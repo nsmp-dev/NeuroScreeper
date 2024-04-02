@@ -1,19 +1,34 @@
 Creep.prototype.upgrader = function () {
 	if (this.memory.mode == "to_container") {
-		//if at assigned container
-			//change mode to withdrawing
-		//go to assigned container
-	} else if (this.memory.mode == "withdrawing") {
-		//if full
-			//change mode to to_destination
-		//withdraw from assigned container
-	} else if (this.memory.mode == "to_controller") {
-		//if at controller
-			//change mode to upgrading
-		//go to assigned destination
-	} else if (this.memory.mode == "upgrading") {
-		//if creep is empty
-			//change mode to to_container
-		//build assigned destination
+		let container = Game.getObjectById(this.memory.container);
+		if (this.pos.isNearTo(container)) {
+			this.memory.mode = "withdrawing";
+		}else{
+			this.moveTo(container);
+			return;
+		}
+	}
+	if (this.memory.mode == "withdrawing") {
+		if (this.store.getFreeCapacity(RESOURCE_ENERGY) == 0) {
+			this.memory.mode = "to_controller";
+		}else{
+			this.withdraw(Game.getObjectById(this.memory.container), RESOURCE_ENERGY);
+			return;
+		}
+	}
+	if (this.memory.mode == "to_controller") {
+		if (this.pos.isNearTo(this.room.controller)){
+			this.memory.mode = "upgrading";
+		}else{
+			this.moveTo(this.room.controller);
+		}
+	}
+	if (this.memory.mode == "upgrading") {
+		if (this.store.getUsedCapacity() == 0) {
+			this.memory.mode = "to_container";
+		} else {
+			this.upgradeController(this.room.controller);
+			return;
+		}
 	}
 };
