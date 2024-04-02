@@ -1,0 +1,3 @@
+StructureTower.prototype.run = function () {
+	
+};
