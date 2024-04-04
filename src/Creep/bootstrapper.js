@@ -1,3 +1,8 @@
+//TODO: overhaul
+//1st priority: upgrade controller, if ticks > 1000
+//2nd priority: build containers
+//3rd priority: upgrade controller
+
 Creep.prototype.bootstrapper = function () {
 	let findDestination = function(){
 		let destination = this.pos.findClosestByPath(FIND_MY_STRUCTURES, { filter: structure =>
@@ -5,6 +10,7 @@ Creep.prototype.bootstrapper = function () {
 			structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0 });
 
 		if (!destination) {
+			//build instead
 			destination = this.pos.findClosestByPath(FIND_MY_SPAWNS, { filter: spawn =>
 				spawn.store.getFreeCapacity(RESOURCE_ENERGY) > 0 });
 
@@ -49,6 +55,7 @@ Creep.prototype.bootstrapper = function () {
 			this.moveTo(destination);
 		}
 	}
+	//account for building instead
 	if (this.memory.mode == "dumping") {
 		let destination = Game.getObjectById(this.memory.destination);
 		if (destination.store.getFreeCapacity() == 0 && this.store.getUsedCapacity() > 0){

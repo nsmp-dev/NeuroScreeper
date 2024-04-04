@@ -1,0 +1,3 @@
+Creep.prototype.attacker = function () {
+	
+};

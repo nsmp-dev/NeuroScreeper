@@ -1,28 +1,21 @@
-creep memory:
-home_room:
-	room this creep spawned in
-assigned_room:
-	room this creep is assigned to
+TODO:
 
-role:
-	bootstrapper
-		only made when creep count is 0
-		drills for energy, delivers it to the spawner/extentions
-	queen
-		takes energy from storage and puts it into extensions>spawners>towers
-	upgrader
-		takes energy from room controller container and upgrades controller
-	transporter
-		takes energy from source containers and delivers to extensions>spawns>towers>storage>terminal
-	driller
-		works source and drops it into container, no carry weight
-	builder
-		takes energy from storage or source containers and builds any construction sites, repairs if none
+
+
+memory manager
+	initialization for first colony room
+	room type calculation
+	room info refresh
+	towers list
+	terminals list
+	spawns list
+
+Creeps
 	scout
-		runs to unseen rooms, deciding if it's good enough for expansion. if a room is unseen for X ticks, count as unseen
 	claimer
-		only made if expansion room is set in memory
-		runs to expansion room and claims the controller
-	repair
-		only made if tower count is 0 in owned room
-		takes energy from storage or source containers and repairs things in the room
+
+Room
+	constructColony
+	constructOutpost
+	populateColony
+	populateOutpost
