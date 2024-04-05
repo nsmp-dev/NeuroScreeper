@@ -1,55 +1,67 @@
 module.exports = {
 	refresh: function(){
 		if (!Memory.initialized) {
-			Memory.rooms = {};
-			Memory.towers = [];
-			Memory.terminals = [];
-			Memory.refresh_counter = 100000;
+			Memory.finished_last_tick = false;
+			Memory.finished_tick_count = 0;
+
 			Memory.population_counter = 100000;
 			Memory.construction_counter = 100000;
 			Memory.terminal_counter = 100000;
+			Memory.room_manager_counter = 100000;
+
+			Memory.rooms = {};
 		}
 
-
-		if (Memory.refresh_counter > 2) {
-			Memory.refresh_counter = 0;
-
-			for (let [name, room] of Object.entries(Memory.rooms)) {
-				room.ticks_since_seen++;
-			}
-
-			for (let [name, room] of Object.entries(Game.rooms)) {
-				if (!Memory.rooms[room]) {
-					Memory.rooms[room] = {};
-					Memory.rooms[name].ticks_since_seen = 0;
-					/*
-						init room entry
-						count sources
-						decide type
-
-						colony: room that is currently owned and got spawners
-						outpost: expansion room to collect energy from
-						hostile: had enemies last time we looked
-						new_colony: room marked to be turned into a colony, needs claimers and builders
-						potential_colony: room that meets the requirements for a colony, but we are not ready to expand
-						none: room with no use or ememies
-					*/
-				}else{
-					Memory.rooms[name].ticks_since_seen = 0;
-					//refresh room info
-					//refresh towers
-					//refresh terminal
-					//refresh enemies
-				}
-			}
-
-			for (let [name, room] of Object.entries(Memory.rooms)) {
-				if (room.ticks_since_seen > 1000) {
-					delete Memory.rooms[name];
-				}
-			}
+		if (Memory.finished_last_tick) {
+			Memory.finished_tick_count++;
 		}else{
-			Memory.refresh_counter++;
+			Memory.finished_last_tick = 0;
+		}
+
+		if (Memory.finished_tick_count > 100) {
+			Memory.is_stable = true;
+		}else{
+			Memory.is_stable = false;
+		}
+
+		Memory.finished_last_tick = false;
+		Memory.population_counter++;
+		Memory.construction_counter++;
+		Memory.terminal_counter++;
+		Memory.room_manager_counter++;
+
+		for (let [name, room] of Object.entries(Game.rooms)) {
+			if (!room.memory.initialized) {
+				room.memory.initialized = true;
+
+				room.memory.sources = [];
+				let sources = room.find(FIND_SOURCES);
+				for (let i = 0; i < sources.length; i++) {
+					room.memory.sources.push(sources[i].id);
+				}
+
+				for (let x = 5; x < 45; x++) {
+					for (let y = 5; y < 45; y++) {
+						let look_result = room.lookAtArea(x-1,y-1,x+1,y+1,true);
+						let clear = true;
+						look_result.forEach(function(item){
+							if (OBSTACLE_OBJECT_TYPES.indexOf(item.type) > -1 || (item.type == "terrain" && item.terrain = "wall")) {
+								clear = false;
+							}
+						});
+						if (clear) {
+							room.idle_x = x;
+							room.idle_y = y;
+						}
+					}
+				}
+
+				if (!room.memory.idle_x) {
+					room.memory.idle_x = 5;
+					room.memory.idle_y = 5;
+				}
+			}
+			room.memory.hostile_count = room.find(FIND_HOSTILE_CREEPS).length + room.find(FIND_HOSTILE_POWER_CREEPS).length;
 		}
 	},
 };

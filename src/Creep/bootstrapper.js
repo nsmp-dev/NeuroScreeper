@@ -5,40 +5,42 @@
 
 Creep.prototype.bootstrapper = function () {
 	let findDestination = function(){
-		let destination = this.pos.findClosestByPath(FIND_MY_STRUCTURES, { filter: structure =>
-			structure.structureType == STRUCTURE_EXTENSION &&
-			structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0 });
-
-		if (!destination) {
-			//build instead
-			destination = this.pos.findClosestByPath(FIND_MY_SPAWNS, { filter: spawn =>
-				spawn.store.getFreeCapacity(RESOURCE_ENERGY) > 0 });
-
-			if (!destination) {
-				destination = this.pos.findClosestByPath(FIND_MY_STRUCTURES, { filter: tower =>
-					tower.structureType == STRUCTURE_TOWER &&
-					tower.store.getFreeCapacity(RESOURCE_ENERGY) > 0 });
-				
-				if (!destination) {
-					destination = this.pos.findClosestByRange(FIND_MY_STRUCTURES, { filter: storage =>
-						storage.structureType == STRUCTURE_STORAGE });
-				}
+		if (this.controller.ticksToDowngrade < 1000) {
+			return {
+				id: this.controller.id,
+				type: "controller",
+			};
+		}else{
+			let container = this.pos.findClosestByPath(FIND_MY_CONSTRUCTION_SITES, {structureType == "container"});
+			if (container) {
+				return {
+					id: container.id,
+					type: "container",
+				};
+			}else{
+				return {
+					id: this.controller.id,
+					type: "controller",
+				};
 			}
 		}
-
-		return destination.id;
 	};
 	
 	if (this.memory.mode == "to_source") {
+		if (!this.memory.source) {
+			this.memory.source = this.pos.findClosestByPath(FIND_SOURCES_ACTIVE).id;
+		}
 		let source = Game.getObjectById(this.memory.source);
 		if (this.pos.isNearTo(source)) {
-			this.memory.mode = "extracting";
+			this.memory.mode = "harvesting";
+			this.memory.source = null;
 		}else{
 			this.moveTo(source);
 			return;
 		}
 	}
-	if (this.memory.mode == "extracting") {
+
+	if (this.memory.mode == "harvesting") {
 		if (this.store.getFreeCapacity(RESOURCE_ENERGY) == 0) {
 			this.memory.destination = findDestination();
 			this.memory.mode = "to_destination";
@@ -47,24 +49,26 @@ Creep.prototype.bootstrapper = function () {
 			return;
 		}
 	}
+
 	if (this.memory.mode == "to_destination") {
-		let destination = Game.getObjectById(this.memory.destination);
+		let destination = Game.getObjectById(this.memory.destination.id);
 		if (this.pos.isNearTo(destination)){
 			this.memory.mode = "dumping";
 		}else{
 			this.moveTo(destination);
 		}
 	}
-	//account for building instead
+
 	if (this.memory.mode == "dumping") {
-		let destination = Game.getObjectById(this.memory.destination);
-		if (destination.store.getFreeCapacity() == 0 && this.store.getUsedCapacity() > 0){
-			this.memory.destination = findDestination();;
-		} else if (this.store.getUsedCapacity() == 0) {
+		if (this.store.getUsedCapacity() == 0) {
 			this.memory.mode = "to_source";
-		} else {
-			this.transfer(destination, RESOURCE_ENERGY);
-			return;
+			this.memory.destination = null;
+		}else{
+			if (this.memory.destination.type == "controller") {
+				this.upgradeController(this.room.controller);
+			}else{
+				this.build(Game.getObjectById(this.memory.destination.id));
+			}
 		}
 	}
 };
