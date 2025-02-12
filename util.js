@@ -19,8 +19,8 @@ module.exports = {
 		FILLING: 1,
 		init: function(room_name){
 			return {
-				role: Builder.name,
-				state: Builder.FILLING,
+				role: this.NAME,
+				state: this.FILLING,
 				filling_target: null,
 				building_target: null,
 				room_name: room_name,
@@ -33,7 +33,7 @@ module.exports = {
 		ENERGY_COST: 650,
 		init: function(room_name){
 			return {
-				role: Claimer.name,
+				role: this.NAME,
 				room_name: room_name,
 			};
 		},
@@ -44,7 +44,7 @@ module.exports = {
 		ENERGY_COST: 150,
 		init: function(room_name, source_id, container_id){
 			return {
-				role: Driller.name,
+				role: this.NAME,
 				room_name: room_name,
 				source: source_id,
 				container: container_id, 
@@ -59,8 +59,8 @@ module.exports = {
 		HARVESTING: 1,
 		init: function(room_name){
 			return {
-				role: Harvester.name,
-				state: Harvester.HARVESTING,
+				role: this.NAME,
+				state: this.HARVESTING,
 				room_name: room_name,
 				source_target: null,
 				dumping_target: null,
@@ -73,7 +73,7 @@ module.exports = {
 		ENERGY_COST: 360,
 		init: function(room_name){
 			return {
-				role: Healer.name,
+				role: this.NAME,
 				room_name: room_name,
 			};
 		},
@@ -86,9 +86,9 @@ module.exports = {
 		FILLING: 1,
 		init: function(room_name){
 			return {
-				role: Queen.name,
+				role: this.NAME,
 				room_name: room_name,
-				state: Queen.FILLING,
+				state: this.FILLING,
 				dumping_target: null,
 			};
 		},
@@ -101,8 +101,8 @@ module.exports = {
 		FILLING: 1,
 		init: function(room_name){
 			return {
-				role: Repairer.name,
-				state: Repairer.FILLING,
+				role: this.NAME,
+				state: this.FILLING,
 				filling_target: null,
 				repairing_target: null,
 				room_name: room_name,
@@ -115,7 +115,7 @@ module.exports = {
 		ENERGY_COST: 50,
 		init: function(room_name){
 			return {
-				role: Scout.name,
+				role: this.NAME,
 				room_name: room_name,
 				room_queue: [],
 				room_log: [],
@@ -130,12 +130,12 @@ module.exports = {
 		FILLING: 1,
 		init: function(room_name, source_id, container_id){
 			return {
-				role: Transporter.name,
+				role: this.NAME,
 				room_name: room_name,
 				source: source_id,
 				container: container_id,
 				dumping_target: null,
-				state: Transporter.FILLING,
+				state: this.FILLING,
 			};
 		},
 	},
@@ -147,9 +147,9 @@ module.exports = {
 		FILLING: 1,
 		init: function(room_name){
 			return {
-				role: Upgrader.name,
+				role: this.NAME,
 				room_name: room_name,
-				state: Upgrader.FILLING,
+				state: this.FILLING,
 			};
 		},
 	},
