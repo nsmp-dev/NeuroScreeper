@@ -1,3 +1,0 @@
-StructureTower.prototype.run = function () {
-	
-};
