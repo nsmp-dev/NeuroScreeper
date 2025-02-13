@@ -269,4 +269,8 @@ module.exports = {
 		Memory.id_counter++;
 		return id;
 	},
+
+	timeUsed: function(){
+		return (Game.cpu.tickLimit - Game.cpu.getUsed())/Game.cpu.tickLimit;
+	},
 };
