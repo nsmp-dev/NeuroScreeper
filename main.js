@@ -39,9 +39,12 @@ module.exports.loop = function () {
 	for (let [name, structure] of Object.entries(Game.structures)) {
 		
 		if (structure.structureType == STRUCTURE_TOWER ||
-			structure.structureType == STRUCTURE_TERMINAL ||
 			structure.structureType == STRUCTURE_OBSERVER) {
 			structure.run();
+		}
+		if (structure.structureType == STRUCTURE_TERMINAL) {
+			structure.sell();
+			structure.buy();
 		}
 	}
 
