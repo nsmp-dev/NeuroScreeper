@@ -22,7 +22,7 @@ module.exports = {
 		let offset_y = 0;
 
 		for(let [role, count] in Object.entries(pop)) {
-			room.visual.text(role + ": " + count, 10, 10+offset_y);
+			room.visual.text(role + ": " + count, 10, 10+offset_y, {font: 0.8});
 			offset_y++;
 		}
 	},

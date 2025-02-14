@@ -225,9 +225,14 @@ module.exports = {
 		if (requested_creeps.length == 0) {
 			Memory.rooms[room.name].satisfied = true;
 			Memory.rooms[room.name].satisfied_counter++;
+			Memory.rooms[room.name].unsatisfied_counter = 0;
 		}else{
-			Memory.rooms[room.name].satisfied = false;
-			Memory.rooms[room.name].satisfied_counter = 0;
+			Memory.rooms[room.name].unsatisfied_counter++;
+			if (Memory.rooms[room.name].unsatisfied_counter > 50) {
+				Memory.rooms[room.name].satisfied = false;
+				Memory.rooms[room.name].satisfied_counter = 0;
+			}
+
 			requested_creeps.forEach(function(creep){
 				this.spawnRole(room, creep);
 			});

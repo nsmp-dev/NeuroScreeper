@@ -2,6 +2,17 @@ const RoomLog = require("room_log");
 
 module.exports = {
 	run: function(){
+		if (Memory.room_manager_timer == undefined) {
+			Memory.room_manager_timer = this.TIMER_LENGTH;
+		}
+
+		if (Memory.room_manager_timer >= this.TIMER_LENGTH) {
+			Memory.room_manager_timer = 0;
+		}else{
+			Memory.room_manager_timer++;
+			return;
+		}
+
 		let is_stable = true;
 		for (let [name, room] of Object.entries(Game.rooms)) {
 			if (Memory.rooms[name].satisfied_counter < 100) {

@@ -12,3 +12,6 @@ to count lines:
 ```
 
 https://github.com/screepers/screeps-launcher
+
+
+# v0.2
