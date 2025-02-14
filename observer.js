@@ -2,7 +2,7 @@ StructureObserver.prototype.TIMER_LENGTH = 10;
 
 StructureObserver.prototype.run = function(){
 	if (this.memory.timer == undefined) {
-		this.memory.timer = this.TIMER_LENGTH;
+		this.memory.timer = 0;
 	}
 
 	if (this.memory.timer >= this.TIMER_LENGTH) {

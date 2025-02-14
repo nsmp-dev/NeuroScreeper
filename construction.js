@@ -2,14 +2,20 @@ module.exports = {
 	TIMER_LENGTH: 10,
 
 	run: function(room){
-		if (room.memory.construction_timer == undefined) {
-			room.memory.construction_timer = this.TIMER_LENGTH;
+		if (Memory.construction_timers == undefined) {
+			Memory.construction_timers = {};
 		}
 
-		if (room.memory.construction_timer >= this.TIMER_LENGTH) {
-			room.memory.construction_timer = 0;
+		if (Memory.construction_timers[room.name] == undefined) {
+			Memory.construction_timers[room.name] = this.TIMER_LENGTH;
+		}
+
+		
+
+		if (Memory.construction_timers[room.name] >= this.TIMER_LENGTH) {
+			Memory.construction_timers[room.name] = 0;
 		}else{
-			room.memory.construction_timer++;
+			Memory.construction_timers[room.name]++;
 			return;
 		}
 

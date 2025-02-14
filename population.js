@@ -68,11 +68,12 @@ module.exports = {
 			Memory.population_timers[room.name] = this.TIMER_LENGTH;
 		}
 
-		Memory.population_timers[room.name]--;
+		
 
-		if (Memory.population_timers[room.name] == 0) {
-			Memory.population_timers[room.name] = this.TIMER_LENGTH;
+		if (Memory.population_timers[room.name] >= this.TIMER_LENGTH) {
+			Memory.population_timers[room.name] = 0;
 		}else{
+			Memory.population_timers[room.name]++;
 			return;
 		}
 
