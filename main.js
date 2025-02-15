@@ -13,6 +13,13 @@ const Terminal = require('terminal');
 const Observer = require('observer');
 
 module.exports.loop = function () {
+	if (Memory.init == undefined) {
+		if (Game.cpu.bucket == 10000) {
+			Memory.init = true;
+		}else{
+			return;
+		}
+	}
 
 	le.log("starting room log...");
 	RoomLog.run();

@@ -1,3 +1,7 @@
+if (Memory.timer_log == undefined) {
+	Memory.timer_log = [];
+}
+
 module.exports = {
 	timers: {},
 	LOG_SIZE: 50,
@@ -13,10 +17,6 @@ module.exports = {
 		Timer.timers[id].end = Game.cpu.getUsed();
 
 		if (id == "main") {
-			if (Memory.timer_log == undefined) {
-				Memory.timer_log = [];
-			}
-
 			Memory.timer_log.push(Timer.timers[id].end - Timer.timers[id].start);
 			if (Memory.timer_log.length > Timer.LOG_SIZE) {
 				Memory.timer_log.pop();

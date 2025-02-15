@@ -1,18 +1,16 @@
 const Util = require('util');
 
+if (Memory.construction_timers == undefined) {
+	Memory.construction_timers = {};
+}
+
 module.exports = {
 	TIMER_LENGTH: 10,
 
 	run: function(room){
-		if (Memory.construction_timers == undefined) {
-			Memory.construction_timers = {};
-		}
-
 		if (Memory.construction_timers[room.name] == undefined) {
 			Memory.construction_timers[room.name] = this.TIMER_LENGTH;
-		}
-
-		
+		}		
 
 		if (Memory.construction_timers[room.name] >= this.TIMER_LENGTH) {
 			Memory.construction_timers[room.name] = 0;

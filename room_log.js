@@ -1,5 +1,16 @@
 const Construction = require("construction");
 
+if(!Memory.rooms){
+	Memory.rooms = {};
+	let spawn = Game.spawns["Spawn1"];
+	Memory.rooms[spawn.room.name] = this.scanRoom(spawn.room);
+	Memory.rooms[spawn.room.name].base_x = spawn.pos.x - 6;
+	Memory.rooms[spawn.room.name].base_y = spawn.pos.y - 7;
+
+	let structures = Construction.createBase(spawn.room, Memory.rooms[spawn.room.name].base_x, Memory.rooms[spawn.room.name].base_y);
+	let idle_spot = Construction.findIdle(spawn.room);
+}
+
 module.exports = {
 	TIMER_LENGTH: 10,
 	NONE: 0,
@@ -10,24 +21,13 @@ module.exports = {
 	ENEMY_COLONY: 5,
 
 	run: function(){
-		if(!Memory.rooms){
-			Memory.rooms = {};
-			let spawn = Game.spawns["Spawn1"];
-			Memory.rooms[spawn.room.name] = this.scanRoom(spawn.room);
-			Memory.rooms[spawn.room.name].base_x = spawn.pos.x - 6;
-			Memory.rooms[spawn.room.name].base_y = spawn.pos.y - 7;
-
-			let structures = Construction.createBase(spawn.room, Memory.rooms[spawn.room.name].base_x, Memory.rooms[spawn.room.name].base_y);
-			let idle_spot = Construction.findIdle(spawn.room);
-		}
-
 		for (let [name, room] of Object.entries(Game.rooms)) {
 			if(Memory.rooms[name] == undefined){
 				Memory.rooms[name] = this.scanRoom(room);
 			}else{
-				Memory.rooms[name].timer--;
-				if(Memory.rooms[name].timer == 0){
-					Memory.rooms[name].timer = this.TIMER_LENGTH;
+				Memory.rooms[name].timer++;
+				if(Memory.rooms[name].timer > this.TIMER_LENGTH){
+					Memory.rooms[name].timer = 0;
 					Memory.rooms[name] = this.rescanRoom(room);
 				}
 			}
@@ -39,7 +39,7 @@ module.exports = {
 			sources: [],
 			hostile_creeps: room.find(FIND_HOSTILE_CREEPS).length,
 			type: this.NONE,
-			timer: this.TIMER_LENGTH,
+			timer: 0,
 			satisfied: false,
 			satisfied_counter: 0,
 		};
@@ -76,8 +76,7 @@ module.exports = {
 							idle_y: idle_spot.y,
 						};
 					}
-				}
-				if (data.type == this.NONE) {
+				}else{
 					data.type = this.POTENTIAL_EXPANSION;
 					let structures = Construction.createExpansion(room);
 					let idle_spot = Construction.findIdle(room);
