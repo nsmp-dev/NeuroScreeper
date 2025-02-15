@@ -79,75 +79,81 @@ module.exports = {
 
 		if (Memory.rooms[room.name].boostrap_mode == undefined) {
 			Memory.rooms[room.name].boostrap_mode = true;
-			Memory.rooms[room.name].boostrap_timer = this.BOOTSTRAP_LENGTH;
+			Memory.rooms[room.name].boostrap_timer = 0;
 		}
 
 		let pop = this.populations[room.name];
 		if (pop.total == 0 && !Memory.rooms[room.name].boostrap_mode) {
 			Memory.rooms[room.name].boostrap_mode = true;
-			Memory.rooms[room.name].boostrap_timer = this.BOOTSTRAP_LENGTH;
+			Memory.rooms[room.name].boostrap_timer = 0;
 		}
 
-		if (Memory.rooms[room.name].boostrap_mode) {
-			if (Memory.rooms[room.name].boostrap_timer == 0) {
-				Memory.rooms[room.name].boostrap_mode = false;
-			}else{
-				Memory.rooms[room.name].boostrap_timer--;
-			}
-			this.spawnRole(room, Util.HARVESTER.init(room.name));
-			return;
-		}
+		
 
 		// make a list of needed roles
 		let requested_creeps = [];
 
-		// drillers and transporters
-		pop.sources.forEach(function(data, source_id){
-			if (data.driller == null) {
-				requested_creeps.push(Util.DRILLER.init(room.name, source_id, data.container));
+		// handle bootstrap
+		if (Memory.rooms[room.name].boostrap_mode) {
+			if (Memory.rooms[room.name].boostrap_timer > this.BOOTSTRAP_LENGTH) {
+				Memory.rooms[room.name].boostrap_mode = false;
+			}else{
+				Memory.rooms[room.name].boostrap_timer++;
+				if (!room.controller.my && pop[Util.CLAIMER.NAME] < 1) {
+					requested_creeps.push(Util.CLAIMER.init(room.name));
+				}else{
+					requested_creeps.push(room, Util.HARVESTER.init(room.name));
+				}				
 			}
-			if (data.transporter == null) {
-				requested_creeps.push(Util.TRANSPORTER.init(room.name, source_id, data.container));
+		}else{
+			// drillers and transporters
+			pop.sources.forEach(function(data, source_id){
+				if (data.driller == null) {
+					requested_creeps.push(Util.DRILLER.init(room.name, source_id, data.container));
+				}
+				if (data.transporter == null) {
+					requested_creeps.push(Util.TRANSPORTER.init(room.name, source_id, data.container));
+				}
+			});
+
+			// upgraders
+			if (pop[Util.UPGRADER.NAME] < 1) {
+				requested_creeps.push(Util.UPGRADER.init(room.name));
 			}
-		});
 
-		// upgraders
-		if (pop[Util.UPGRADER.NAME] < 1) {
-			requested_creeps.push(Util.UPGRADER.init(room.name));
-		}
+			// builders
+			let site_count = room.find(FIND_MY_CONSTRUCTION_SITES).length;
+			if (site_count > 0 && pop[Util.BUILDER.NAME] < 1) {
+				requested_creeps.push(Util.BUILDER.init(room.name));
+			}
 
-		// builders
-		let site_count = room.find(FIND_MY_CONSTRUCTION_SITES).length;
-		if (site_count > 0 && pop[Util.BUILDER.NAME] < 1) {
-			requested_creeps.push(Util.BUILDER.init(room.name));
-		}
+			// repairers
+			let structure_count = room.find(FIND_MY_STRUCTURES, {
+				filter: function(structure){
+					return structure.hits < structure.hitsMax;
+				},
+			}).length;
+			if (structure_count > 0 && pop[Util.REPAIRER.NAME] < 1) {
+				requested_creeps.push(Util.REPAIRER.init(room.name));
+			}
 
-		// repairers
-		let structure_count = room.find(FIND_MY_STRUCTURES, {
-			filter: function(structure){
-				return structure.hits < structure.hitsMax;
-			},
-		}).length;
-		if (structure_count > 0 && pop[Util.REPAIRER.NAME] < 1) {
-			requested_creeps.push(Util.REPAIRER.init(room.name));
-		}
+			// queen
+			if (room.controller != undefined && pop[Util.QUEEN.NAME] < 1) {
+				requested_creeps.push(Util.QUEEN.init(room.name));
+			}
 
-		// queen
-		if (room.controller != undefined && pop[Util.QUEEN.NAME] < 1) {
-			requested_creeps.push(Util.QUEEN.init(room.name));
-		}
-
-		// scout
-		if (pop[Util.SCOUT.NAME] < 1) {
-			requested_creeps.push(Util.SCOUT.init(room.name));
-		}
-		// attackers
-		if (pop[Util.ATTACKER.NAME] < 1) {
-			requested_creeps.push(Util.ATTACKER.init(room.name));
-		}
-		// healers
-		if (pop[Util.HEALER.NAME] < 1) {
-			requested_creeps.push(Util.HEALER.init(room.name));
+			// scout
+			if (pop[Util.SCOUT.NAME] < 1) {
+				requested_creeps.push(Util.SCOUT.init(room.name));
+			}
+			// attackers
+			if (pop[Util.ATTACKER.NAME] < 1) {
+				requested_creeps.push(Util.ATTACKER.init(room.name));
+			}
+			// healers
+			if (pop[Util.HEALER.NAME] < 1) {
+				requested_creeps.push(Util.HEALER.init(room.name));
+			}
 		}
 
 		this.spawnRequests(room, requested_creeps);
