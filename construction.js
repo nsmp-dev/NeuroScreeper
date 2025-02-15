@@ -1,3 +1,5 @@
+const Util = require('util');
+
 module.exports = {
 	TIMER_LENGTH: 10,
 
@@ -465,9 +467,20 @@ module.exports = {
 			{x: x + 12, y: y + 12, type: STRUCTURE_RAMPART},
 		];
 
-		// containers
+		// containers and roads
 		let sources = room.find(FIND_SOURCES);
 		let terrain = new Room.Terrain(room.name);
+		let paths = [];
+		let base_points = [
+			{x: x, y: y},
+			{x: x + 6, y: y},
+			{x: x + 12, y: y},
+			{x: x, y: y + 6},
+			{x: x + 12, y: y + 6},
+			{x: x, y: y + 12},
+			{x: x + 6, y: y + 12},
+			{x: x + 12, y: y + 12},
+		];
 
 		sources.forEach(function(source){
 			let clear_spots = [];
@@ -500,6 +513,43 @@ module.exports = {
 			}
 
 			structures.push({x: clear_spots[0].x, y: clear_spots[0].y, type: STRUCTURE_CONTAINER});
+
+			let source_pos = {x: clear_spots[0].x, y: clear_spots[0].y};
+
+			let closest_pos = base_points[0];
+			let dist = Util.distance(source_pos.x, source_pos.y, closest_pos.x, closest_pos.y);
+
+			base_points.forEach(function(point){
+				if (Util.distance(source_pos.x, source_pos.y, point.x, point.y) < dist) {
+					closest_pos = point;
+					dist = Util.distance(source_pos.x, source_pos.y, point.x, point.y);
+				}
+			});
+
+			let pos1 = room.getPositionAt(source_pos.x, source_pos.y);
+			let pos2 = room.getPositionAt(closest_pos.x, closest_pos.y);
+
+			paths.push(room.findPath(pos1, pos2));
+		});
+
+		let unique_positions = [];
+
+		paths.forEach(function(path){
+			path.forEach(function(position){
+				let found = false;
+				unique_positions.forEach(function(t_position){
+					if (position.x == t_position.x && position.y == t_position.y) {
+						found = true;
+					}
+				});
+				if (!found) {
+					unique_positions.push({x: position.x, y: position.y});
+				}
+			});
+		});
+
+		unique_positions.forEach(function(position){
+			structures.push({x: position.x, y: position.y, type: STRUCTURE_ROAD})
 		});
 
 		return structures;
