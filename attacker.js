@@ -1,5 +1,3 @@
-const Util = require("util");
-
 Creep.prototype.runAttacker = function(){
 	let target = Game.getObjectById(this.memory.target);
 	if (target == null) {

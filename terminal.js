@@ -39,7 +39,7 @@ StructureTerminal.prototype.sell = function(){
 	this.send(RESOURCE_ENERGY, optimal_amount-1, highest.roomName, 'Thanks!');
 };
 
-Terminal.prototype.buy = function(){
+StructureTerminal.prototype.buy = function(){
 	if (this.memory.buy_timer == undefined) {
 		this.memory.buy_timer = this.TIMER_LENGTH;
 	}

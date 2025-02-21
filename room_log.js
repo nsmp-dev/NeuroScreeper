@@ -11,8 +11,8 @@ if(!Memory.rooms){
 	let idle_spot = Construction.findIdle(spawn.room, structures);
 
 	Memory.rooms[spawn.room.name].structures = structures;
-	Memory.rooms[spawn.room.name]idle_x = idle_spot.x;
-	Memory.rooms[spawn.room.name]idle_y = idle_spot.y;
+	Memory.rooms[spawn.room.name].idle_x = idle_spot.x;
+	Memory.rooms[spawn.room.name].idle_y = idle_spot.y;
 }
 
 module.exports = {

@@ -1,16 +1,15 @@
 const Timer = require('timer');
 Timer.start();
 
-const Logger = require('logger');
-const Util = require('util');
+const le = require('logger');
 const Construction = require('construction');
 const Population = require('population');
 const RoomLog = require('room_log');
 const RoomManager = require('room_manager');
 const Visualizer = require('visualizer');
-const Tower = require('tower');
-const Terminal = require('terminal');
-const Observer = require('observer');
+require('tower');
+require('terminal');
+require('observer');
 
 module.exports.loop = function () {
 	if (Memory.init == undefined) {
