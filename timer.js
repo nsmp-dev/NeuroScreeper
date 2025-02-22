@@ -1,4 +1,4 @@
-if (Memory.timer_log == undefined) {
+if (Memory.timer_log === undefined) {
 	Memory.timer_log = [];
 }
 
@@ -16,7 +16,7 @@ module.exports = {
 	stop: function(id = "main"){
 		this.timers[id].end = Game.cpu.getUsed();
 
-		if (id == "main") {
+		if (id === "main") {
 			Memory.timer_log.push(this.timers[id].end - this.timers[id].start);
 			if (Memory.timer_log.length > this.LOG_SIZE) {
 				Memory.timer_log.pop();

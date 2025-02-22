@@ -1,18 +1,18 @@
 const Construction = require("construction");
 
-if(!Memory.rooms){
-	Memory.rooms = {};
+if(!Memory.room_log){
+	Memory.room_log = {};
 	let spawn = Game.spawns["Spawn1"];
-	Memory.rooms[spawn.room.name] = this.scanRoom(spawn.room);
-	Memory.rooms[spawn.room.name].base_x = spawn.pos.x - 6;
-	Memory.rooms[spawn.room.name].base_y = spawn.pos.y - 7;
+	Memory.room_log[spawn.room.name] = this.scanRoom(spawn.room);
+	Memory.room_log[spawn.room.name].base_x = spawn.pos.x - 6;
+	Memory.room_log[spawn.room.name].base_y = spawn.pos.y - 7;
 
-	let structures = Construction.createBase(spawn.room, Memory.rooms[spawn.room.name].base_x, Memory.rooms[spawn.room.name].base_y);
+	let structures = Construction.createBase(spawn.room, Memory.room_log[spawn.room.name].base_x, Memory.room_log[spawn.room.name].base_y);
 	let idle_spot = Construction.findIdle(spawn.room, structures);
 
-	Memory.rooms[spawn.room.name].structures = structures;
-	Memory.rooms[spawn.room.name].idle_x = idle_spot.x;
-	Memory.rooms[spawn.room.name].idle_y = idle_spot.y;
+	Memory.room_log[spawn.room.name].structures = structures;
+	Memory.room_log[spawn.room.name].idle_x = idle_spot.x;
+	Memory.room_log[spawn.room.name].idle_y = idle_spot.y;
 }
 
 module.exports = {
@@ -26,13 +26,13 @@ module.exports = {
 
 	run: function(){
 		for (let [name, room] of Object.entries(Game.rooms)) {
-			if(Memory.rooms[name] == undefined){
-				Memory.rooms[name] = this.scanRoom(room);
+			if(Memory.room_log[name] === undefined){
+				Memory.room_log[name] = this.scanRoom(room);
 			}else{
-				Memory.rooms[name].timer++;
-				if(Memory.rooms[name].timer > this.TIMER_LENGTH){
-					Memory.rooms[name].timer = 0;
-					Memory.rooms[name] = this.rescanRoom(room);
+				Memory.room_log[name].timer++;
+				if(Memory.room_log[name].timer > this.TIMER_LENGTH){
+					Memory.room_log[name].timer = 0;
+					Memory.room_log[name] = this.rescanRoom(room);
 				}
 			}
 		}
@@ -48,60 +48,44 @@ module.exports = {
 			satisfied_counter: 0,
 		};
 
-		let spawns = room.find(FIND_MY_STRUCTURES, { filter: { structureType: STRUCTURE_SPAWN } });
 		let sources = room.find(FIND_SOURCES);
 
-		if (spawns.length > 0) {
-			data.type = this.COLONY;
+		if (sources.length > 0) {
+			data.sources = Construction.createSources(room);
+		}
+
+		if (sources.length > 0) {
 			let base = Construction.findBase(room);
-			let structures = Construction.createBase(room, base.x, base.y);
-			let idle_spot = Construction.findIdle(room);
-			data.plans = {
-				base_x: base.x,
-				base_y: base.y,
-				structures: structures,
-				idle_x: idle_spot.x,
-				idle_y: idle_spot.y,
-			};
-		}else{
-			if (sources.length > 0) {
-				let base = Construction.findBase(room);
-				if (sources.length > 2 && base != null) {
-					data.type = this.POTENTIAL_COLONY;
-					let idle_spot = Construction.findIdle(room);
-					if (base != null) {
-						let structures = Construction.createBase(room, base.x, base.y);
-						let idle_spot = Construction.findIdle(room);
-						data.plans = {
-							base_x: base.x,
-							base_y: base.y,
-							structures: structures,
-							idle_x: idle_spot.x,
-							idle_y: idle_spot.y,
-						};
-					}
-				}else{
-					data.type = this.POTENTIAL_EXPANSION;
-					let structures = Construction.createExpansion(room);
+			if (sources.length > 2 && base != null) {
+				data.type = this.POTENTIAL_COLONY;
+				// noinspection PointlessBooleanExpressionJS
+				if (base != null) {
+					let structures = Construction.createBase(room, base.x, base.y);
 					let idle_spot = Construction.findIdle(room);
 					data.plans = {
+						base_x: base.x,
+						base_y: base.y,
 						structures: structures,
 						idle_x: idle_spot.x,
 						idle_y: idle_spot.y,
 					};
 				}
+			}else{
+				data.type = this.POTENTIAL_EXPANSION;
+				let idle_spot = Construction.findIdle(room);
+				data.plans = {
+					structures: [],
+					idle_x: idle_spot.x,
+					idle_y: idle_spot.y,
+				};
 			}
 		}
-
-		sources.forEach(function(source){
-			data.sources.push(source.id);
-		});
 
 		return data;
 	},
 
 	rescanRoom: function(room){
-		let data = Memory.rooms[room.name];
+		let data = Memory.room_log[room.name];
 		
 		data.hostile_creeps = room.find(FIND_HOSTILE_CREEPS).length;
 

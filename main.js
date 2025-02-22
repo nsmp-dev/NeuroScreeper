@@ -1,19 +1,21 @@
 const Timer = require('timer');
 Timer.start();
 
+require('prototype.creep');
+require('prototype.tower');
+require('prototype.terminal');
+require('prototype.observer');
+
 const le = require('logger');
 const Construction = require('construction');
 const Population = require('population');
 const RoomLog = require('room_log');
 const RoomManager = require('room_manager');
-const Visualizer = require('visualizer');
-require('tower');
-require('terminal');
-require('observer');
+const Visualizer = require('my_visualizer');
 
 module.exports.loop = function () {
-	if (Memory.init == undefined) {
-		if (Game.cpu.bucket == 10000) {
+	if (Memory.init === undefined) {
+		if (Game.cpu.bucket === 10000) {
 			Memory.init = true;
 		}else{
 			return;
@@ -27,42 +29,42 @@ module.exports.loop = function () {
 	RoomManager.run();
 
 	le.log("starting creeps...");
-	for(let [name, creep] in Object.entries(Game.creeps)) {
-		creep.run();
+	for(let name in Game.creeps) {
+		Game.creeps[name].run();
 	}
 
 	le.log("starting population controllers...");
-	for (let [room_name, room_data] of Object.entries(Memory.rooms)) {
-		if (room_data.type == RoomLog.COLONY) {
-			Population.runColony(Game.rooms[room_name]);
+	for (let name in Memory.room_log) {
+		if (Memory.room_log[name].type === RoomLog.COLONY) {
+			Population.runColony(Game.rooms[name]);
 		}
-		if (room_data.type == RoomLog.EXPANSION) {
-			Population.runExpansion(Game.rooms[room_name]);
+		if (Memory.room_log[name].type === RoomLog.EXPANSION) {
+			Population.runExpansion(Game.rooms[name]);
 		}
 	}
 	
 	le.log("starting structures...");
-	for (let [name, structure] of Object.entries(Game.structures)) {
+	for (let id of Game.structures) {
 		
-		if (structure.structureType == STRUCTURE_TOWER ||
-			structure.structureType == STRUCTURE_OBSERVER) {
-			structure.run();
+		if (Game.structures[id].structureType === STRUCTURE_TOWER ||
+			Game.structures[id].structureType === STRUCTURE_OBSERVER) {
+			Game.structures[id].run();
 		}
-		if (structure.structureType == STRUCTURE_TERMINAL) {
-			structure.sell();
-			structure.buy();
+		if (Game.structures[id].structureType === STRUCTURE_TERMINAL) {
+			Game.structures[id].sell();
+			Game.structures[id].buy();
 		}
 	}
 
 	le.log("starting construction controllers...");
-	for (let [room_name, room_data] of Object.entries(Memory.rooms)) {
-		if (room_data.type == RoomLog.COLONY || room_data.type == RoomLog.EXPANSION) {
+	for (let [room_name, room_data] of Object.entries(Memory.room_log)) {
+		if (room_data.type === RoomLog.COLONY || room_data.type === RoomLog.EXPANSION) {
 			Construction.run(Game.rooms[room_name]);
 		}
 	}
 
-	le.log("starting vizualizer...");
-	if (Game.flags["viz"] != undefined) {
+	le.log("starting visualizer...");
+	if (Game.flags["viz"] !== undefined) {
 		Visualizer.render(Game.flags["viz"].room.name);
 	}
 

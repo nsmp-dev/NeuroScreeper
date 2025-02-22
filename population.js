@@ -1,7 +1,9 @@
-const Util = require("util");
+const Util = require("my_util");
+const RoomLog = require("room_log");
 
-if (Memory.population_timers == undefined) {
-	Memory.population_timers = {};
+if (Memory.population === undefined) {
+	Memory.population = {};
+	Memory.population.timers = {};
 }
 
 module.exports = {
@@ -16,55 +18,50 @@ module.exports = {
 		}
 
 		this.initialized = true;
-		let pop - this.populations;
+		let pop = this.populations;
 
-		for (let [room_name, room_data] of Object.entries(Memory.rooms)) {
-			if (room_data.type == RoomLog.COLONY || room_data.type == RoomLog.EXPANSION) {
+		for (let [room_name, room_data] of Object.entries(Memory.room_log)) {
+			if (room_data.type === RoomLog.COLONY || room_data.type === RoomLog.EXPANSION) {
 				pop[room_name].sources = {};
 				pop[room_name].total = 0;
 
-				let room = Game.rooms[room_name];
-				let sources = room.find(FIND_SOURCES);
-				let containers = room.find(FIND_MY_STRUCTURES, { filter: { structureType: STRUCTURE_CONTAINER } });
+				let sources = Memory.room_log[room_name].sources;
 
 				sources.forEach(function(source){
-					pop[room_name].sources[source.id] = {
+					pop[room_name].sources[source.source_id] = {
 						driller: null,
-						container: null,
-						driller: null,
+						transporter: null,
+						container_x: source.container_x,
+						container_y: source.container_y,
 					};
-					containers.forEach(function(container){
-						if (container.pos.isNearTo(source.pos)) {
-							pop[room_name].sources[source.id].container = container.id;
-						}
-					});
 				});
 			}
 		}
 
-		for(let [name, creep] in Object.entries(Game.creeps)) {
-			if (data[creep.memory.room_name] == undefined) {
-				data[creep.memory.room_name] = {};
+		for(let name in Game.creeps) {
+			let creep = Game.creeps[name];
+			if (pop[creep.memory.room_name] === undefined) {
+				pop[creep.memory.room_name] = {};
 			}
 
-			if (data[creep.memory.room_name][creep.memory.role] == undefined) {
-				data[creep.memory.room_name][creep.memory.role] = 0;
+			if (pop[creep.memory.room_name][creep.memory.role] === undefined) {
+				pop[creep.memory.room_name][creep.memory.role] = 0;
 			}
 
-			data[creep.memory.room_name][creep.memory.role]++;
-			data[creep.memory.room_name].total++;
+			pop[creep.memory.room_name][creep.memory.role]++;
+			pop[creep.memory.room_name].total++;
 
-			if (creep.memory.role == Util.DRILLER.NAME) {
-				data[creep.memory.room_name].sources[creep.memory.source].driller = creep.id;
+			if (creep.memory.role === Util.DRILLER.NAME) {
+				pop[creep.memory.room_name].sources[creep.memory.source].driller = creep.id;
 			}
-			if (creep.memory.role == Util.TRANSPORTER.NAME) {
-				data[creep.memory.room_name].containers[creep.memory.source].transporter = creep.id;
+			if (creep.memory.role === Util.TRANSPORTER.NAME) {
+				pop[creep.memory.room_name].sources[creep.memory.source].transporter = creep.id;
 			}
 		}
 	},
 
 	runColony: function(room){
-		if (Memory.population_timers[room.name] == undefined) {
+		if (Memory.population_timers[room.name] === undefined) {
 			Memory.population_timers[room.name] = this.TIMER_LENGTH;
 		}
 
@@ -77,28 +74,26 @@ module.exports = {
 
 		this.count_population();
 
-		if (Memory.rooms[room.name].boostrap_mode == undefined) {
-			Memory.rooms[room.name].boostrap_mode = true;
-			Memory.rooms[room.name].boostrap_timer = 0;
+		if (Memory.room_log[room.name].boostrap_mode === undefined) {
+			Memory.room_log[room.name].boostrap_mode = true;
+			Memory.room_log[room.name].boostrap_timer = 0;
 		}
 
 		let pop = this.populations[room.name];
-		if (pop.total == 0 && !Memory.rooms[room.name].boostrap_mode) {
-			Memory.rooms[room.name].boostrap_mode = true;
-			Memory.rooms[room.name].boostrap_timer = 0;
+		if (pop.total === 0 && !Memory.room_log[room.name].boostrap_mode) {
+			Memory.room_log[room.name].boostrap_mode = true;
+			Memory.room_log[room.name].boostrap_timer = 0;
 		}
-
-		
 
 		// make a list of needed roles
 		let requested_creeps = [];
 
 		// handle bootstrap
-		if (Memory.rooms[room.name].boostrap_mode) {
-			if (Memory.rooms[room.name].boostrap_timer > this.BOOTSTRAP_LENGTH) {
-				Memory.rooms[room.name].boostrap_mode = false;
+		if (Memory.room_log[room.name].boostrap_mode) {
+			if (Memory.room_log[room.name].boostrap_timer > this.BOOTSTRAP_LENGTH) {
+				Memory.room_log[room.name].boostrap_mode = false;
 			}else{
-				Memory.rooms[room.name].boostrap_timer++;
+				Memory.room_log[room.name].boostrap_timer++;
 				if (!room.controller.my && pop[Util.CLAIMER.NAME] < 1) {
 					requested_creeps.push(Util.CLAIMER.init(room.name));
 				}else{
@@ -107,12 +102,13 @@ module.exports = {
 			}
 		}else{
 			// drillers and transporters
+			// noinspection DuplicatedCode
 			pop.sources.forEach(function(data, source_id){
 				if (data.driller == null) {
-					requested_creeps.push(Util.DRILLER.init(room.name, source_id, data.container));
+					requested_creeps.push(Util.DRILLER.init(room.name, source_id, data.container_x, data.container_y));
 				}
 				if (data.transporter == null) {
-					requested_creeps.push(Util.TRANSPORTER.init(room.name, source_id, data.container));
+					requested_creeps.push(Util.TRANSPORTER.init(room.name, source_id, data.container_x, data.container_y));
 				}
 			});
 
@@ -122,6 +118,7 @@ module.exports = {
 			}
 
 			// builders
+			// noinspection DuplicatedCode
 			let site_count = room.find(FIND_MY_CONSTRUCTION_SITES).length;
 			if (site_count > 0 && pop[Util.BUILDER.NAME] < 1) {
 				requested_creeps.push(Util.BUILDER.init(room.name));
@@ -138,7 +135,7 @@ module.exports = {
 			}
 
 			// queen
-			if (room.controller != undefined && pop[Util.QUEEN.NAME] < 1) {
+			if (room.controller !== undefined && pop[Util.QUEEN.NAME] < 1) {
 				requested_creeps.push(Util.QUEEN.init(room.name));
 			}
 
@@ -160,17 +157,17 @@ module.exports = {
 	},
 
 	runExpansion: function(room){
-		if (Memory.population_timers == undefined) {
+		if (Memory.population_timers === undefined) {
 			Memory.population_timers = {};
 		}
 
-		if (Memory.population_timers[room.name] == undefined) {
+		if (Memory.population_timers[room.name] === undefined) {
 			Memory.population_timers[room.name] = this.TIMER_LENGTH;
 		}
 
 		Memory.population_timers[room.name]--;
 
-		if (Memory.population_timers[room.name] == 0) {
+		if (Memory.population_timers[room.name] === 0) {
 			Memory.population_timers[room.name] = this.TIMER_LENGTH;
 		}else{
 			return;
@@ -188,16 +185,18 @@ module.exports = {
 
 
 		// drillers and transporters
+		// noinspection DuplicatedCode
 		pop.sources.forEach(function(data, source_id){
 			if (data.driller == null) {
-				requested_creeps.push(Util.DRILLER.init(room.name, source_id, data.container));
+				requested_creeps.push(Util.DRILLER.init(room.name, source_id, data.container_x, data.container_y));
 			}
-			if (data.transporter == null && data.container != null) {
-				requested_creeps.push(Util.TRANSPORTER.init(room.name, source_id, data.container));
+			if (data.transporter == null) {
+				requested_creeps.push(Util.TRANSPORTER.init(room.name, source_id, data.container_x, data.container_y));
 			}
 		});
 
 		// builders
+		// noinspection DuplicatedCode
 		let site_count = room.find(FIND_MY_CONSTRUCTION_SITES).length;
 		if (site_count > 0 && pop[Util.BUILDER.NAME] < 1) {
 			requested_creeps.push(Util.BUILDER.init(room.name));
@@ -226,15 +225,15 @@ module.exports = {
 	},
 
 	spawnRequests: function(room, requested_creeps){
-		if (requested_creeps.length == 0) {
-			Memory.rooms[room.name].satisfied = true;
-			Memory.rooms[room.name].satisfied_counter++;
-			Memory.rooms[room.name].unsatisfied_counter = 0;
+		if (requested_creeps.length === 0) {
+			Memory.room_log[room.name].satisfied = true;
+			Memory.room_log[room.name].satisfied_counter++;
+			Memory.room_log[room.name].unsatisfied_counter = 0;
 		}else{
-			Memory.rooms[room.name].unsatisfied_counter++;
-			if (Memory.rooms[room.name].unsatisfied_counter > 50) {
-				Memory.rooms[room.name].satisfied = false;
-				Memory.rooms[room.name].satisfied_counter = 0;
+			Memory.room_log[room.name].unsatisfied_counter++;
+			if (Memory.room_log[room.name].unsatisfied_counter > 50) {
+				Memory.room_log[room.name].satisfied = false;
+				Memory.room_log[room.name].satisfied_counter = 0;
 			}
 
 			requested_creeps.forEach(function(creep){
@@ -249,9 +248,9 @@ module.exports = {
 		let spawns = [];
 		let role = Util.getRole(creep_data.role);
 
-		for(let [name, spawn] in Object.entries(Game.spawns)) {
-			if (spawn.spawning == null && room.energyAvailable > role.energy_cost) {
-				spawns.push(spawn);
+		for(let name in Game.spawns) {
+			if (Game.spawns[name].spawning == null && room.energyAvailable > role.ENERGY_COST) {
+				spawns.push(Game.spawns[name]);
 			}
 		}
 
@@ -265,7 +264,7 @@ module.exports = {
 				memory: creep_data,
 			});
 
-			if (result == OK) {
+			if (result === OK) {
 				success = true;
 			}
 		}

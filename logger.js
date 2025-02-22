@@ -1,4 +1,4 @@
-if (Memory.DEBUG_MODE == undefined) {
+if (Memory.DEBUG_MODE === undefined) {
 	Memory.DEBUG_MODE = true;
 }
 

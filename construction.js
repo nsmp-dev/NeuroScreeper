@@ -1,21 +1,22 @@
-const Util = require('util');
+const Util = require('my_util');
 
-if (Memory.construction_timers == undefined) {
-	Memory.construction_timers = {};
+if (Memory.construction === undefined) {
+	Memory.construction = {};
+	Memory.construction.timers = {};
 }
 
 module.exports = {
 	TIMER_LENGTH: 10,
 
 	run: function(room){
-		if (Memory.construction_timers[room.name] == undefined) {
-			Memory.construction_timers[room.name] = this.TIMER_LENGTH;
-		}		
+		if (Memory.construction.timers[room.name] === undefined) {
+			Memory.construction.timers[room.name] = this.TIMER_LENGTH;
+		}
 
-		if (Memory.construction_timers[room.name] >= this.TIMER_LENGTH) {
-			Memory.construction_timers[room.name] = 0;
+		if (Memory.construction.timers[room.name] >= this.TIMER_LENGTH) {
+			Memory.construction.timers[room.name] = 0;
 		}else{
-			Memory.construction_timers[room.name]++;
+			Memory.construction.timers[room.name]++;
 			return;
 		}
 
@@ -24,7 +25,17 @@ module.exports = {
 			return;
 		}
 
-		let structures = Memory.rooms[room.name].plans.structures;
+		let sources = Memory.room_log[room.name].sources;
+		let structures = Memory.room_log[room.name].structures;
+
+		sources.forEach(function(source_data){
+			if (!Util.checkFor(room, source_data.container_x, source_data.container_y, STRUCTURE_CONTAINER)) {
+				let result = room.createConstructionSite(source_data.container_x, source_data.container_y, STRUCTURE_CONTAINER);
+				if (result === OK) {
+					site_count++;
+				}
+			}
+		});
 
 		structures.forEach(function(structure){
 			if (site_count >= 5) {
@@ -32,7 +43,7 @@ module.exports = {
 			}
 			if (!Util.checkFor(room, structure.x, structure.y, structure.type)) {
 				let result = room.createConstructionSite(structure.x, structure.y, structure.type);
-				if (result == OK) {
+				if (result === OK) {
 					site_count++;
 				}
 			}
@@ -40,12 +51,8 @@ module.exports = {
 	},
 
 	findBase: function(room){
-		let result = {
-			x: null,
-			y: null,
-		}
-
-		let terrain = new Room.Terrain(room.name);
+		let terrain = room.getTerrain();
+		// noinspection DuplicatedCode
 		let clear_spots = [];
 		// calculates if a base can be made in this room
 		// returns it's top left corner coordinates
@@ -58,7 +65,7 @@ module.exports = {
 				for (let i = 0; i < 14; i++) {
 					for (let j = 0; j < 14; j++) {
 
-						if (terrain.get(x+i,y+j) == TERRAIN_MASK_WALL) {
+						if (terrain.get(x+i,y+j) === TERRAIN_MASK_WALL) {
 							clear = false;
 						}
 					}
@@ -66,7 +73,7 @@ module.exports = {
 				if (clear) {
 					let tx = (x + 7) - 25;
 					let ty = (y + 7) - 25;
-					clear_spots.append({
+					clear_spots.push({
 						x:x,
 						y:y,
 						dist: Math.sqrt((tx*tx) + (ty*ty)),
@@ -75,7 +82,7 @@ module.exports = {
 			}
 		}
 
-		if (clear_spots.length == 0) {
+		if (clear_spots.length === 0) {
 			return null;
 		}
 
@@ -89,56 +96,56 @@ module.exports = {
 		return min;
 	},
 
-	createExpansion: function(room){
-		let structures = [];
-
+	createSources: function(room){
+		let source_plans = [];
 		let sources = room.find(FIND_SOURCES);
 		let terrain = new Room.Terrain(room.name);
 
 		sources.forEach(function(source){
+			// noinspection DuplicatedCode
 			let clear_spots = [];
 			let x = source.pos.x;
 			let y = source.pos.y;
 
-			if (terrain.get(x-1, y-1) != TERRAIN_MASK_WALL){
+			if (terrain.get(x-1, y-1) !== TERRAIN_MASK_WALL){
 				clear_spots.push({x: x-1, y: y-1});
 			}
-			if (terrain.get(x, y-1) != TERRAIN_MASK_WALL){
+			if (terrain.get(x, y-1) !== TERRAIN_MASK_WALL){
 				clear_spots.push({x: x, y: y-1});
 			}
-			if (terrain.get(x+1, y-1) != TERRAIN_MASK_WALL){
+			if (terrain.get(x+1, y-1) !== TERRAIN_MASK_WALL){
 				clear_spots.push({x: x+1, y: y-1});
 			}
-			if (terrain.get(x-1, y) != TERRAIN_MASK_WALL){
+			if (terrain.get(x-1, y) !== TERRAIN_MASK_WALL){
 				clear_spots.push({x: x-1, y: y});
 			}
-			if (terrain.get(x+1, y) != TERRAIN_MASK_WALL){
+			if (terrain.get(x+1, y) !== TERRAIN_MASK_WALL){
 				clear_spots.push({x: x+1, y: y});
 			}
-			if (terrain.get(x-1, y+1) != TERRAIN_MASK_WALL){
+			if (terrain.get(x-1, y+1) !== TERRAIN_MASK_WALL){
 				clear_spots.push({x: x-1, y: y+1});
 			}
-			if (terrain.get(x, y+1) != TERRAIN_MASK_WALL){
+			if (terrain.get(x, y+1) !== TERRAIN_MASK_WALL){
 				clear_spots.push({x: x, y: y+1});
 			}
-			if (terrain.get(x+1, y+1) != TERRAIN_MASK_WALL){
+			if (terrain.get(x+1, y+1) !== TERRAIN_MASK_WALL){
 				clear_spots.push({x: x+1, y: y+1});
 			}
 
-			structures.push({x: clear_spots[0].x, y: clear_spots[0].y, type: STRUCTURE_CONTAINER});
+			source_plans.push({
+				source_id: source.id,
+				container_x: clear_spots[0].x,
+				container_y: clear_spots[0].y,
+			});
 		});
 
-		return structures;
+		return source_plans;
 	},
 
-	findIdle: function(room, structures){
-		let result = {
-			x: null,
-			y: null,
-		};
-
+	findIdle: function(room){
 		//find idle spot...
 		let terrain = new Room.Terrain(room.name);
+		// noinspection DuplicatedCode
 		let clear_spots = [];
 		// calculates if a base can be made in this room
 		// returns it's top left corner coordinates
@@ -151,7 +158,7 @@ module.exports = {
 				for (let i = 0; i < 14; i++) {
 					for (let j = 0; j < 14; j++) {
 
-						if (terrain.get(x+i,y+j) == TERRAIN_MASK_WALL) {
+						if (terrain.get(x+i,y+j) === TERRAIN_MASK_WALL) {
 							clear = false;
 						}
 					}
@@ -159,7 +166,7 @@ module.exports = {
 				if (clear) {
 					let tx = (x + 7) - 25;
 					let ty = (y + 7) - 25;
-					clear_spots.append({
+					clear_spots.push({
 						x:x,
 						y:y,
 						dist: Math.sqrt((tx*tx) + (ty*ty)),
@@ -168,7 +175,7 @@ module.exports = {
 			}
 		}
 
-		if (clear_spots.length == 0) {
+		if (clear_spots.length === 0) {
 			return null;
 		}
 
@@ -180,10 +187,6 @@ module.exports = {
 		});
 
 		return min;
-		// idle spot needs to be a 5x5 area that is clear of all walla and base
-
-
-		return result;
 	},
 
 	createBase: function(room, x, y){
@@ -481,36 +484,35 @@ module.exports = {
 		];
 
 		sources.forEach(function(source){
+			// noinspection DuplicatedCode
 			let clear_spots = [];
 			let x = source.pos.x;
 			let y = source.pos.y;
 
-			if (terrain.get(x-1, y-1) != TERRAIN_MASK_WALL){
+			if (terrain.get(x-1, y-1) !== TERRAIN_MASK_WALL){
 				clear_spots.push({x: x-1, y: y-1});
 			}
-			if (terrain.get(x, y-1) != TERRAIN_MASK_WALL){
+			if (terrain.get(x, y-1) !== TERRAIN_MASK_WALL){
 				clear_spots.push({x: x, y: y-1});
 			}
-			if (terrain.get(x+1, y-1) != TERRAIN_MASK_WALL){
+			if (terrain.get(x+1, y-1) !== TERRAIN_MASK_WALL){
 				clear_spots.push({x: x+1, y: y-1});
 			}
-			if (terrain.get(x-1, y) != TERRAIN_MASK_WALL){
+			if (terrain.get(x-1, y) !== TERRAIN_MASK_WALL){
 				clear_spots.push({x: x-1, y: y});
 			}
-			if (terrain.get(x+1, y) != TERRAIN_MASK_WALL){
+			if (terrain.get(x+1, y) !== TERRAIN_MASK_WALL){
 				clear_spots.push({x: x+1, y: y});
 			}
-			if (terrain.get(x-1, y+1) != TERRAIN_MASK_WALL){
+			if (terrain.get(x-1, y+1) !== TERRAIN_MASK_WALL){
 				clear_spots.push({x: x-1, y: y+1});
 			}
-			if (terrain.get(x, y+1) != TERRAIN_MASK_WALL){
+			if (terrain.get(x, y+1) !== TERRAIN_MASK_WALL){
 				clear_spots.push({x: x, y: y+1});
 			}
-			if (terrain.get(x+1, y+1) != TERRAIN_MASK_WALL){
+			if (terrain.get(x+1, y+1) !== TERRAIN_MASK_WALL){
 				clear_spots.push({x: x+1, y: y+1});
 			}
-
-			structures.push({x: clear_spots[0].x, y: clear_spots[0].y, type: STRUCTURE_CONTAINER});
 
 			let source_pos = {x: clear_spots[0].x, y: clear_spots[0].y};
 
@@ -536,7 +538,7 @@ module.exports = {
 			path.forEach(function(position){
 				let found = false;
 				unique_positions.forEach(function(t_position){
-					if (position.x == t_position.x && position.y == t_position.y) {
+					if (position.x === t_position.x && position.y === t_position.y) {
 						found = true;
 					}
 				});
