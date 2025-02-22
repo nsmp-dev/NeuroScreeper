@@ -6,7 +6,7 @@ require('prototype.tower');
 require('prototype.terminal');
 require('prototype.observer');
 
-const myLogger = require('my_logger');
+const MyLogger = require('my_logger');
 const Construction = require('my_construction');
 const Population = require('my_population');
 const RoomLog = require('my_room_log');
@@ -22,18 +22,18 @@ module.exports.loop = function () {
 		}
 	}
 
-	myLogger.log("starting room log...");
+	MyLogger.log("starting room log...");
 	RoomLog.run();
 
-	myLogger.log("starting room manager...");
+	MyLogger.log("starting room manager...");
 	RoomManager.run();
 
-	myLogger.log("starting creeps...");
+	MyLogger.log("starting creeps...");
 	for(let name in Game.creeps) {
 		Game.creeps[name].run();
 	}
 
-	myLogger.log("starting population controllers...");
+	MyLogger.log("starting population controllers...");
 	for (let name in Memory.room_log) {
 		if (Memory.room_log[name].type === RoomLog.COLONY) {
 			Population.runColony(Game.rooms[name]);
@@ -43,7 +43,7 @@ module.exports.loop = function () {
 		}
 	}
 	
-	myLogger.log("starting structures...");
+	MyLogger.log("starting structures...");
 	for (let id of Game.structures) {
 		
 		if (Game.structures[id].structureType === STRUCTURE_TOWER ||
@@ -56,18 +56,18 @@ module.exports.loop = function () {
 		}
 	}
 
-	myLogger.log("starting construction controllers...");
+	MyLogger.log("starting construction controllers...");
 	for (let [room_name, room_data] of Object.entries(Memory.room_log)) {
 		if (room_data.type === RoomLog.COLONY || room_data.type === RoomLog.EXPANSION) {
 			Construction.run(Game.rooms[room_name]);
 		}
 	}
 
-	myLogger.log("starting visualizer...");
+	MyLogger.log("starting visualizer...");
 	if (Game.flags["viz"] !== undefined) {
 		Visualizer.render(Game.flags["viz"].room.name);
 	}
 
-	myLogger.printSummary();
+	MyLogger.printSummary();
 	Timer.stop();
 }
