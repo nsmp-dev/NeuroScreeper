@@ -1,5 +1,5 @@
 const Util = require("my_util");
-const RoomLog = require("room_log");
+const RoomLog = require("my_room_log");
 
 if (Memory.population === undefined) {
 	Memory.population = {};

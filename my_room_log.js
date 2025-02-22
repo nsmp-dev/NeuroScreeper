@@ -1,4 +1,4 @@
-const Construction = require("construction");
+const Construction = require("my_construction");
 
 if(!Memory.room_log){
 	Memory.room_log = {};

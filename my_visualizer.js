@@ -1,4 +1,4 @@
-const Population = require('population');
+const Population = require('my_population');
 
 module.exports = {
 	render: function(room){

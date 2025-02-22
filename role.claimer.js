@@ -1,4 +1,4 @@
-const RoomLog = require("room_log");
+const RoomLog = require("my_room_log");
 
 Creep.prototype.runClaimer = function(){
 	let controller = Game.rooms[this.memory.room_name].controller;

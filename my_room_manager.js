@@ -1,4 +1,4 @@
-const RoomLog = require("room_log");
+const RoomLog = require("my_room_log");
 
 if (Memory.room_manager_timer === undefined) {
 	Memory.room_manager_timer = this.TIMER_LENGTH;
