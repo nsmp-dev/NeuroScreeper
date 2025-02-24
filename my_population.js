@@ -9,15 +9,15 @@ if (Memory.population === undefined) {
 module.exports = {
 	TIMER_LENGTH: 10,
 	BOOTSTRAP_LENGTH: 500,
-	initialized: false,
+	init_time: null,
 	populations: {},
 
 	count_population: function(){
-		if (this.initialized) {
+		if (Game.time === this.init_time) {
 			return;
 		}
 
-		this.initialized = true;
+		this.init_time = Game.time;
 		let pop = this.populations;
 
 		for (let name of Memory.room_log) {
@@ -58,17 +58,18 @@ module.exports = {
 				pop[creep.memory.room_name].sources[creep.memory.source].transporter = creep.id;
 			}
 		}
+		this.populations = pop;
 	},
 
 	runColony: function(room){
-		if (Memory.population_timers[room.name] === undefined) {
-			Memory.population_timers[room.name] = this.TIMER_LENGTH;
+		if (Memory.population.timers[room.name] === undefined) {
+			Memory.population.timers[room.name] = this.TIMER_LENGTH;
 		}
 
-		if (Memory.population_timers[room.name] >= this.TIMER_LENGTH) {
-			Memory.population_timers[room.name] = 0;
+		if (Memory.population.timers[room.name] >= this.TIMER_LENGTH) {
+			Memory.population.timers[room.name] = 0;
 		}else{
-			Memory.population_timers[room.name]++;
+			Memory.population.timers[room.name]++;
 			return;
 		}
 
