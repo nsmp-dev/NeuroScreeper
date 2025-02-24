@@ -1,11 +1,8 @@
-const Timer = require('my_timer');
-Timer.start();
-
 require('prototype.creep');
 require('prototype.tower');
 require('prototype.terminal');
 require('prototype.observer');
-
+const Timer = require('my_timer');
 const MyLogger = require('my_logger');
 const Construction = require('my_construction');
 const Population = require('my_population');
@@ -14,6 +11,7 @@ const RoomManager = require('my_room_manager');
 const Visualizer = require('my_visualizer');
 
 module.exports.loop = function () {
+	Timer.start();
 	if (Memory.init === undefined) {
 		if (Game.cpu.bucket === 10000) {
 			Memory.init = true;
