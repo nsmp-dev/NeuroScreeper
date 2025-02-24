@@ -57,8 +57,8 @@ module.exports.loop = function () {
 	}
 
 	MyLogger.log("starting construction controllers...");
-	for (let [room_name, room_data] of Object.entries(Memory.room_log)) {
-		if (room_data.type === RoomLog.COLONY || room_data.type === RoomLog.EXPANSION) {
+	for (let name of Memory.room_log) {
+		if (Memory.room_log[name].type === RoomLog.COLONY || Memory.room_log[name].type === RoomLog.EXPANSION) {
 			Construction.run(Game.rooms[room_name]);
 		}
 	}

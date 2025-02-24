@@ -1,16 +1,7 @@
 Creep.prototype.runDriller = function(){
-	let source = Game.getObjectById(this.memory.source);
-	let container = Game.getObjectById(this.memory.container);
-
-	if (container == null) {
-		if (this.harvest(source) === ERR_NOT_IN_RANGE) {
-			this.moveTo(source);
-		}
+	if (this.pos.isEqualTo(this.memory.container_x, this.memory.container_y)) {
+		this.harvest(Game.getObjectById(this.memory.source));
 	}else{
-		if (this.pos.isEqualTo(container)) {
-			this.harvest(source);
-		}else{
-			this.moveTo(container);
-		}
+		this.moveTo(this.memory.container_x, this.memory.container_y);
 	}
 };

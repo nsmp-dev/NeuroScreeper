@@ -22,8 +22,8 @@ module.exports = {
 		let pop = Memory.pop_viz_cache[room.name];
 		let offset_y = 0;
 
-		for(let [role, count] in Object.entries(pop)) {
-			room.visual.text(role + ": " + count, 10, 10+offset_y, {font: 0.8});
+		for(let role in pop) {
+			room.visual.text(role + ": " + pop[role], 10, 10+offset_y, {font: 0.8});
 			offset_y++;
 		}
 	},

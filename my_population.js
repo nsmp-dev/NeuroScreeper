@@ -20,15 +20,15 @@ module.exports = {
 		this.initialized = true;
 		let pop = this.populations;
 
-		for (let [room_name, room_data] of Object.entries(Memory.room_log)) {
-			if (room_data.type === RoomLog.COLONY || room_data.type === RoomLog.EXPANSION) {
-				pop[room_name].sources = {};
-				pop[room_name].total = 0;
+		for (let name of Memory.room_log) {
+			if (Memory.room_log[name].type === RoomLog.COLONY || Memory.room_log[name].type === RoomLog.EXPANSION) {
+				pop[name].sources = {};
+				pop[name].total = 0;
 
-				let sources = Memory.room_log[room_name].sources;
+				let sources = Memory.room_log[name].sources;
 
 				sources.forEach(function(source){
-					pop[room_name].sources[source.source_id] = {
+					pop[name].sources[source.source_id] = {
 						driller: null,
 						transporter: null,
 						container_x: source.container_x,

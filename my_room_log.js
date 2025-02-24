@@ -25,14 +25,14 @@ module.exports = {
 	ENEMY_COLONY: 5,
 
 	run: function(){
-		for (let [name, room] of Object.entries(Game.rooms)) {
+		for (let name of Game.rooms) {
 			if(Memory.room_log[name] === undefined){
-				Memory.room_log[name] = this.scanRoom(room);
+				Memory.room_log[name] = this.scanRoom(Game.rooms[name]);
 			}else{
 				Memory.room_log[name].timer++;
 				if(Memory.room_log[name].timer > this.TIMER_LENGTH){
 					Memory.room_log[name].timer = 0;
-					Memory.room_log[name] = this.rescanRoom(room);
+					Memory.room_log[name] = this.rescanRoom(Game.rooms[name]);
 				}
 			}
 		}

@@ -137,6 +137,7 @@ module.exports = {
 				source: source_id,
 				container_x: container_x,
 				container_y: container_y,
+				container_id: null,
 				dumping_target: null,
 				state: this.FILLING,
 			};

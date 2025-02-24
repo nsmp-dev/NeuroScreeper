@@ -6,13 +6,29 @@ Creep.prototype.runTransporter = function(){
 	    	this.memory.state = Util.TRANSPORTER.DUMPING;
 	    	this.memory.dumping_target = this.getDumpTarget();
 	    }else{
-	    	let container = Game.getObjectById(this.memory.container);
+			let container = Game.getObjectById(this.memory.container);
 
-	    	if (container != null) {
+			if (container === null) {
+				let structures = this.room.lookForAt(LOOK_STRUCTURES, this.memory.container_x, this.memory.container_y);
+				if (structures.length > 0 && structures[0].structureType == STRUCTURE_CONTAINER) {
+					container = structures[0];
+					this.memory.container = container.id;
+				}
+			}
+	    	
+	    	if (container !== null) {
 				if (this.withdraw(container, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
 		        	this.moveTo(container);
 		        }
-	    	}	
+	    	}else{
+				this.memory.container = null;
+				if (this.pos.isNearTo(this.memory.container_x, this.memory.container_y)) {
+					let resources = this.room.lookForAt(LOOK_ENERGY, this.memory.container_x, this.memory.container_y);
+					if (resources.length > 0) {
+						this.pickup(resources[0]);
+					}
+				}
+			}
 	    }
 	}
 	if(this.memory.state ===  Util.TRANSPORTER.DUMPING){
