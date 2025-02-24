@@ -29,13 +29,27 @@ transports reagents to labs and results back to storage
 transports commodities into/from factory
 ### commodity collector
 goes out to find commodities and returns them to the capitol
-
 ## Capital Room
 new type of room that is unique
 has powerspawn/lab/factory area
 all collected power/minerals/commodities go to this room's storage
 spawns power creeplab tech to setup reactions and store result
 lab tech also feeds factories and sends output to be sold
+
+## 3 types of systems
+### entity contextualized
+code run off the entity themselves like creep.run()
+### room contextualized
+code run once for each colony like construction and population
+### global contextualized
+code run once for the whole system like deciding to expand to new rooms
+
+## request/fill systems
+population
+construction
+lab jobs
+factory jobs
+
 
 # general approach
 focus on role-base creep and structure behaviour
