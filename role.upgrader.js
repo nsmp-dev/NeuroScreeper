@@ -18,6 +18,7 @@ Creep.prototype.runUpgrader = function(){
     if(this.memory.state ===  Util.UPGRADER.UPGRADING){
     	if(this.store[RESOURCE_ENERGY] === 0){
         	this.memory.state = Util.UPGRADER.FILLING;
+        	this.memory.filling_target = this.getFillingTarget().id;
         }else{
         	let controller = this.room.controller;
 

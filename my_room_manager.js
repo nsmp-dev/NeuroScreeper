@@ -1,7 +1,5 @@
 const RoomLog = require("my_room_log");
 
-
-
 module.exports = {
 	run: function(){
 	    if (Memory.room_manager_timer === undefined) {

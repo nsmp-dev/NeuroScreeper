@@ -4,7 +4,7 @@ Creep.prototype.runQueen = function(){
 	if(this.memory.state ===  Util.QUEEN.FILLING){
         if(this.store.getFreeCapacity() === 0){
         	this.memory.state = Util.QUEEN.DUMPING;
-        	this.memory.dumping_target = this.getQueenDumpTarget();
+        	this.memory.dumping_target = this.getQueenDumpTarget().id;
         }else{
         	let target = this.room.storage;
         	if (target !== null && target !== undefined && target.store[RESOURCE_ENERGY] > 0) {
@@ -20,8 +20,8 @@ Creep.prototype.runQueen = function(){
         }else{
         	let target = Game.getObjectById(this.memory.dumping_target);
         	if (target == null) {
-        		this.memory.dumping_target = this.getQueenDumpTarget();
-        		target = Game.getObjectById(this.memory.dumping_target);
+        		target = this.getQueenDumpTarget();
+        		this.memory.dumping_target = target.id;
         	}
 
         	if (this.build(target) === ERR_NOT_IN_RANGE) {
