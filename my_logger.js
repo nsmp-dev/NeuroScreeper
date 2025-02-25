@@ -1,11 +1,13 @@
-if (Memory.DEBUG_MODE === undefined) {
-	Memory.DEBUG_MODE = true;
-}
-
 module.exports = {
+	DEBUG_MODE: true,
 	log: function(str){
-		if (Memory.DEBUG_MODE) {
+		if (this.DEBUG_MODE) {
 			console.log(str);
+		}
+	},
+	print: function(obj){
+		if (this.DEBUG_MODE) {
+			console.log(JSON.stringify(obj));
 		}
 	},
 
