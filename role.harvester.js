@@ -31,16 +31,22 @@ Creep.prototype.runHarvester = function(){
 	    }else{
 	    	let target = Game.getObjectById(this.memory.dumping_target);
 	    	if (target == null) {
-	    		target = this.getDumpTarget();
+	    		target = this.getHarvesterDumpTarget();
 	    		if (target !== null) {
 	    		    this.memory.dumping_target = target.id;
 	    		}
 	    	}
 
             if (target !== null) {
-    	    	if (this.transfer(target, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
-    	    		this.moveTo(target);
-    	    	}
+				if (target instanceof ConstructionSite) {
+					if (this.build(target) === ERR_NOT_IN_RANGE) {
+						this.moveTo(target);
+					}
+				}else{
+					if (this.transfer(target, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
+						this.moveTo(target);
+					}
+				}
             }
 	    }
 	}

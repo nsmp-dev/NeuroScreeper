@@ -45,6 +45,36 @@ Creep.prototype.getQueenDumpTarget = function(){
 	return this.pos.findClosestByPath(targets);
 };
 
+
+
+Creep.prototype.getHarvesterDumpTarget = function(){
+	let sites = this.room.find(FIND_MY_CONSTRUCTION_SITES);
+
+	if (sites.length > 0) {
+		return this.pos.findClosestByPath(targets);
+	}
+
+	let targets = this.room.find(FIND_MY_STRUCTURES, {
+		filter: function(structure){
+			return (structure.structureType === STRUCTURE_EXTENSION && structure.store.getFreeCapacity() > 0);
+		},
+	});
+
+	if(targets.length === 0){
+		targets = this.room.find(FIND_MY_STRUCTURES, {
+			filter: function(structure){ 
+				return (structure.structureType === STRUCTURE_SPAWN && structure.store.getFreeCapacity() > 0);
+			},
+		});
+	}
+
+	if(targets.length === 0 && this.room.storage){
+		targets = [this.room.storage];
+	}
+
+	return this.pos.findClosestByPath(targets);
+};
+
 Creep.prototype.getDumpTarget = function(){
 	let targets = this.room.find(FIND_MY_STRUCTURES, {
 		filter: function(structure){ 
