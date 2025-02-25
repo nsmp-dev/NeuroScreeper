@@ -1,16 +1,24 @@
 require('prototype.creep');
+require('prototype.room');
 require('prototype.tower');
 require('prototype.terminal');
 require('prototype.observer');
-const Timer = require('my_timer');
-const MyLogger = require('my_logger');
-const RoomManager = require('my_room_manager');
-const Visualizer = require('my_visualizer');
+const Timer = require('global.timer');
+const MyLogger = require('global.logger');
+const RoomManager = require('global.room_manager');
+const Visualizer = require('global.visualizer');
 const Capitol = require("controller.capitol");
 const Colony = require("controller.colony");
 const Expansion = require("controller.expansion");
 
+const BUILD = 1;
+
 module.exports.loop = function () {
+	if (Memory.build === undefined || Memory.build !== BUILD) {
+		Memory = {
+			build: BUILD,
+		};
+	}
 	Timer.start();
 	if (Memory.init !== true) {
 		RoomManager.initialize();

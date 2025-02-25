@@ -60,6 +60,7 @@ expansion rooms that harvest extra energy
 robust self-timing and visualization
 high stability - very little errors
 tight timing - never times out
+do it raw - no TS, no compilation, no syntactic sugar, just normal modules using state machine patterns
 
 # Roles
 ## attacker
