@@ -1,13 +1,10 @@
 const Util = require("my_util");
 const RoomLog = require("my_room_log");
 
-if (Memory.population === undefined) {
-	Memory.population = {};
-	Memory.population.timers = {};
-}
+
 
 module.exports = {
-	TIMER_LENGTH: 10,
+	TIMER_LENGTH: 2,
 	BOOTSTRAP_LENGTH: 500,
 	init_time: null,
 	populations: {},
@@ -16,12 +13,13 @@ module.exports = {
 		if (Game.time === this.init_time) {
 			return;
 		}
-
+		
 		this.init_time = Game.time;
 		let pop = this.populations;
 
-		for (let name of Memory.room_log) {
+		for (let name in Memory.room_log) {
 			if (Memory.room_log[name].type === RoomLog.COLONY || Memory.room_log[name].type === RoomLog.EXPANSION) {
+			    pop[name] = {};
 				pop[name].sources = {};
 				pop[name].total = 0;
 
@@ -62,6 +60,10 @@ module.exports = {
 	},
 
 	runColony: function(room){
+	    if (Memory.population === undefined) {
+        	Memory.population = {};
+        	Memory.population.timers = {};
+        }
 		if (Memory.population.timers[room.name] === undefined) {
 			Memory.population.timers[room.name] = this.TIMER_LENGTH;
 		}
@@ -98,8 +100,15 @@ module.exports = {
 				if (!room.controller.my && pop[Util.CLAIMER.NAME] < 1) {
 					requested_creeps.push(Util.CLAIMER.init(room.name));
 				}else{
-					requested_creeps.push(room, Util.HARVESTER.init(room.name));
-				}				
+					requested_creeps.push(Util.HARVESTER.init(room.name));
+					if (pop[Util.HARVESTER.NAME] < 2) {
+        				requested_creeps.push(Util.HARVESTER.init(room.name));
+        			}
+        			let site_count = room.find(FIND_MY_CONSTRUCTION_SITES).length;
+        			if (site_count > 0 && pop[Util.BUILDER.NAME] < 1) {
+        				requested_creeps.push(Util.BUILDER.init(room.name));
+        			}
+				}
 			}
 		}else{
 			// drillers and transporters
@@ -158,19 +167,18 @@ module.exports = {
 	},
 
 	runExpansion: function(room){
-		if (Memory.population_timers === undefined) {
-			Memory.population_timers = {};
+	    if (Memory.population === undefined) {
+        	Memory.population = {};
+        	Memory.population.timers = {};
+        }
+		if (Memory.population.timers[room.name] === undefined) {
+			Memory.population.timers[room.name] = this.TIMER_LENGTH;
 		}
 
-		if (Memory.population_timers[room.name] === undefined) {
-			Memory.population_timers[room.name] = this.TIMER_LENGTH;
-		}
-
-		Memory.population_timers[room.name]--;
-
-		if (Memory.population_timers[room.name] === 0) {
-			Memory.population_timers[room.name] = this.TIMER_LENGTH;
+		if (Memory.population.timers[room.name] >= this.TIMER_LENGTH) {
+			Memory.population.timers[room.name] = 0;
 		}else{
+			Memory.population.timers[room.name]++;
 			return;
 		}
 
@@ -237,9 +245,12 @@ module.exports = {
 				Memory.room_log[room.name].satisfied_counter = 0;
 			}
 
-			requested_creeps.forEach(function(creep){
-				this.spawnRole(room, creep);
-			});
+			for (let requested_creep of requested_creeps) {
+			    if (!this.spawnRole(room, requested_creep)) {
+			        return;
+			    }else{
+			    }
+			}
 		}
 	},
 
@@ -248,9 +259,10 @@ module.exports = {
 
 		let spawns = [];
 		let role = Util.getRole(creep_data.role);
+		
 
 		for(let name in Game.spawns) {
-			if (Game.spawns[name].spawning == null && room.energyAvailable > role.ENERGY_COST) {
+			if (Game.spawns[name].spawning == null && Game.spawns[name].room.energyAvailable > role.ENERGY_COST) {
 				spawns.push(Game.spawns[name]);
 			}
 		}
@@ -259,16 +271,20 @@ module.exports = {
 		spawns.sort(function(a, b){
 			return (Game.map.getRoomLinearDistance(room, a.room)) - (Game.map.getRoomLinearDistance(room, b.room));
 		});
-
-		for (let i = 10; i > 0; i--) {
-			let result = spawns[0].spawnCreep(Util.multiArray(role.body, i), role.name + Util.generateId(), {
-				memory: creep_data,
-			});
-
-			if (result === OK) {
-				success = true;
-			}
+		
+		if (spawns.length > 0) {
+		    for (let i = 10; i > 0; i--) {
+    			let result = spawns[0].spawnCreep(Util.multiArray(role.BODY, i), role.NAME + Util.generateId(), {
+    				memory: creep_data,
+    			});
+    
+    			if (result === OK) {
+    				success = true;
+    				break;
+    			}
+    		}
 		}
+		
 		return success;
 	},
 };

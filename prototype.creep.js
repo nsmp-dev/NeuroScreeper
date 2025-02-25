@@ -112,37 +112,37 @@ Creep.prototype.idle = function(){
 
 Creep.prototype.run = function(){
 	switch (this.memory.role) {
-		case Util.ATTACKER:
+		case Util.ATTACKER.NAME:
 			this.runAttacker();
 			break;
-		case Util.BUILDER:
+		case Util.BUILDER.NAME:
 			this.runBuilder();
 			break;
-		case Util.CLAIMER:
+		case Util.CLAIMER.NAME:
 			this.runClaimer();
 			break;
-		case Util.DRILLER:
+		case Util.DRILLER.NAME:
 			this.runDriller();
 			break;
-		case Util.HARVESTER:
+		case Util.HARVESTER.NAME:
 			this.runHarvester();
 			break;
-		case Util.HEALER:
+		case Util.HEALER.NAME:
 			this.runHealer();
 			break;
-		case Util.QUEEN:
+		case Util.QUEEN.NAME:
 			this.runQueen();
 			break;
 		case Util.REPAIRER:
 			this.runRepairer();
 			break;
-		case Util.SCOUT:
+		case Util.SCOUT.NAME:
 			this.runScout();
 			break;
-		case Util.TRANSPORTER:
+		case Util.TRANSPORTER.NAME:
 			this.runTransporter();
 			break;
-		case Util.UPGRADER:
+		case Util.UPGRADER.NAME:
 			this.runUpgrader();
 			break;
 	}

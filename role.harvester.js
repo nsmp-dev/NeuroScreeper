@@ -8,14 +8,19 @@ Creep.prototype.runHarvester = function(){
 	    	this.memory.dumping_target = this.getDumpTarget();
 	    }else{
 	    	let target = Game.getObjectById(this.memory.source_target);
-	    	if (target == null || target.energy === 0) {
-	    		this.memory.source_target = this.getSourceTarget();
-	    		target = Game.getObjectById(this.memory.source_target);
+	    	if (target === null || target.energy === 0) {
+	    		target = this.getSourceTarget();
+	    		
+	    		if (target !== null) {
+	    		    this.memory.source_target = target.id;
+	    		}
 	    	}
-
-	    	if (this.harvest(target) === ERR_NOT_IN_RANGE) {
-	    		this.moveTo(target);
-	    	}
+            
+            if (target !== null) {
+    	    	if (this.harvest(target) === ERR_NOT_IN_RANGE) {
+    	    		this.moveTo(target);
+    	    	}
+            }
 	    }
 	}
 	if(this.memory.state ===  Util.HARVESTER.DUMPING){
@@ -26,13 +31,17 @@ Creep.prototype.runHarvester = function(){
 	    }else{
 	    	let target = Game.getObjectById(this.memory.dumping_target);
 	    	if (target == null) {
-	    		this.memory.dumping_target = this.getDumpTarget();
-	    		target = Game.getObjectById(this.memory.dumping_target);
+	    		target = this.getDumpTarget();
+	    		if (target !== null) {
+	    		    this.memory.dumping_target = target.id;
+	    		}
 	    	}
 
-	    	if (this.transfer(target, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
-	    		this.moveTo(target);
-	    	}
+            if (target !== null) {
+    	    	if (this.transfer(target, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
+    	    		this.moveTo(target);
+    	    	}
+            }
 	    }
 	}
 };

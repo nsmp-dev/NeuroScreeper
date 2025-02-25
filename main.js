@@ -11,6 +11,10 @@ const RoomManager = require('my_room_manager');
 const Visualizer = require('my_visualizer');
 
 module.exports.loop = function () {
+    if (Memory.clear == true) {
+        Memory = {};
+    }
+    
 	Timer.start();
 	if (Memory.init === undefined) {
 		if (Game.cpu.bucket === 10000) {
@@ -42,7 +46,7 @@ module.exports.loop = function () {
 	}
 	
 	MyLogger.log("starting structures...");
-	for (let id of Game.structures) {
+	for (let id in Game.structures) {
 		
 		if (Game.structures[id].structureType === STRUCTURE_TOWER ||
 			Game.structures[id].structureType === STRUCTURE_OBSERVER) {
@@ -55,7 +59,7 @@ module.exports.loop = function () {
 	}
 
 	MyLogger.log("starting construction controllers...");
-	for (let name of Memory.room_log) {
+	for (let name in Memory.room_log) {
 		if (Memory.room_log[name].type === RoomLog.COLONY || Memory.room_log[name].type === RoomLog.EXPANSION) {
 			Construction.run(Game.rooms[name]);
 		}
@@ -63,7 +67,7 @@ module.exports.loop = function () {
 
 	MyLogger.log("starting visualizer...");
 	if (Game.flags["viz"] !== undefined) {
-		Visualizer.render(Game.flags["viz"].room.name);
+		Visualizer.render(Game.flags["viz"].room);
 	}
 
 	MyLogger.printSummary();
