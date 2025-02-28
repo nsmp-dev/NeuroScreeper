@@ -1,4 +1,4 @@
-const Util = require("my_util");
+const Util = require("global.util");
 require('role.attacker');
 require('role.builder');
 require('role.claimer');

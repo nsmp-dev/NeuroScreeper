@@ -1,6 +1,4 @@
-const Util = require('my_util');
-
-StructureObserver.prototype.TIMER_LENGTH = 10;
+const Util = require('global.util');
 
 StructureObserver.prototype.run = function(){
 	if (Memory.observer_log === undefined) {

@@ -27,7 +27,7 @@ module.exports = {
 	},
 	//returns if the room is suitable for a capitol
 	testRoom: function(room) {
-		let base_location = true;
+		let suitable = true;
 		return suitable;
 	},
 	plan: function(room, room_data) {
