@@ -8,7 +8,19 @@ module.exports = {
 		Memory.population_timer = this.POPULATION_TIMER_LENGTH;
 		Memory.population = {};
 
-		// setup the starting room as a capitol/colony
+		let room = null;
+		for (let spawn_name in Game.spawns) {
+			room = Game.spawns[spawn_name];
+			break;
+		}
+
+		Memory.room_data[room.name] = {
+			type: Colony.NAME,
+			possible_colony: Colony.testRoom(room),
+			possible_expansion: Expansion.testRoom(room),
+		};
+
+		Memory.room_data[room.name] = Colony.initialize(room, Memory.room_data[room.name]);
 	},
 	countPopulation: function() {
 		let pop = {};
@@ -65,10 +77,15 @@ module.exports = {
 			Memory.population_timer = 0;
 		}
 
-		// check for new rooms
-			// set their type possibilities
-		
-		// decide if any rooms have changed status
+		for (let name in Game.rooms) {
+			if (Memory.room_data[name] == undefined) {
+				Memory.room_data[name] = {
+					type: null,
+					possible_colony: Colony.testRoom(Game.rooms[name]),
+					possible_expansion: Expansion.testRoom(Game.rooms[name]),
+				};
+			}
+		}
 
 		// decide if we are stable
 			// if stable, add a room
