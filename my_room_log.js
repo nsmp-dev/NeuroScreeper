@@ -73,8 +73,13 @@ module.exports = {
 				data.type = this.POTENTIAL_EXPANSION;
 				let idle_spot = Construction.findIdle(room);
 				data.structures = [];
-				data.idle_x = idle_spot.x;
-				data.idle_y = idle_spot.y;
+				if (idle_spot == null) {
+				    data.idle_x = 5;
+				    data.idle_y = 5;
+				}else{
+				    data.idle_x = idle_spot.x;
+				    data.idle_y = idle_spot.y;
+				}
 			}
 		}
 

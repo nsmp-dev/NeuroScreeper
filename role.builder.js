@@ -9,11 +9,22 @@ Creep.prototype.runBuilder = function(){
         }else{
         	// noinspection DuplicatedCode
 			let target = Game.getObjectById(this.memory.filling_target);
-        	if (target == null || target.store[RESOURCE_ENERGY] === 0) {
+        	if (target == null || (target.store != undefined && target.store[RESOURCE_ENERGY] === 0)) {
         		target = this.getFillTarget();
         		this.memory.filling_target = target.id;
         	}
-
+            
+            if (target != null) {
+                if (target instanceof Resource) {
+                    if (this.pickup(target) === ERR_NOT_IN_RANGE) {
+                		this.moveTo(target);
+                	}
+                }else{
+                    if (this.withdraw(target, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
+                		this.moveTo(target);
+                	}
+                }
+            }
         	if (this.withdraw(target, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
         		this.moveTo(target);
         	}

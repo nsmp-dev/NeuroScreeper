@@ -10,9 +10,14 @@ const RoomLog = require('my_room_log');
 const RoomManager = require('my_room_manager');
 const Visualizer = require('my_visualizer');
 
+const BUILD = 7;
+
 module.exports.loop = function () {
-    if (Memory.clear == true) {
-        Memory = {};
+    if (Memory.build !== BUILD) {
+        for (let name in Memory) {
+            delete Memory[name];
+        }
+        Memory.build = BUILD;
     }
     
 	Timer.start();

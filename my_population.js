@@ -4,18 +4,16 @@ const RoomLog = require("my_room_log");
 
 
 module.exports = {
-	TIMER_LENGTH: 2,
+	TIMER_LENGTH: 10,
 	BOOTSTRAP_LENGTH: 500,
-	init_time: null,
-	populations: {},
 
 	count_population: function(){
-		if (Game.time === this.init_time) {
+		if (Game.time === Memory.population.last_counted) {
 			return;
 		}
 		
-		this.init_time = Game.time;
-		let pop = this.populations;
+		Memory.population.last_counted = Game.time;
+		let pop = {};
 
 		for (let name in Memory.room_log) {
 			if (Memory.room_log[name].type === RoomLog.COLONY || Memory.room_log[name].type === RoomLog.EXPANSION) {
@@ -56,13 +54,14 @@ module.exports = {
 				pop[creep.memory.room_name].sources[creep.memory.source].transporter = creep.id;
 			}
 		}
-		this.populations = pop;
+		Memory.population.populations = pop;
 	},
 
 	runColony: function(room){
 	    if (Memory.population === undefined) {
         	Memory.population = {};
         	Memory.population.timers = {};
+        	Memory.population.populations = {};
         }
 		if (Memory.population.timers[room.name] === undefined) {
 			Memory.population.timers[room.name] = this.TIMER_LENGTH;
@@ -72,6 +71,9 @@ module.exports = {
 			Memory.population.timers[room.name] = 0;
 		}else{
 			Memory.population.timers[room.name]++;
+			if (Memory.room_log[room.name].boostrap_mode) {
+			    Memory.room_log[room.name].boostrap_timer++;
+			}
 			return;
 		}
 
@@ -82,7 +84,7 @@ module.exports = {
 			Memory.room_log[room.name].boostrap_timer = 0;
 		}
 
-		let pop = this.populations[room.name];
+		let pop = Memory.population.populations[room.name];
 		if (pop.total === 0 && !Memory.room_log[room.name].boostrap_mode) {
 			Memory.room_log[room.name].boostrap_mode = true;
 			Memory.room_log[room.name].boostrap_timer = 0;
@@ -96,7 +98,6 @@ module.exports = {
 			if (Memory.room_log[room.name].boostrap_timer > this.BOOTSTRAP_LENGTH) {
 				Memory.room_log[room.name].boostrap_mode = false;
 			}else{
-				Memory.room_log[room.name].boostrap_timer++;
 				if (!room.controller.my && pop[Util.CLAIMER.NAME] < 1) {
 					requested_creeps.push(Util.CLAIMER.init(room.name));
 				}else{
@@ -111,54 +112,56 @@ module.exports = {
 				}
 			}
 		}else{
+		    console.log("gathering requests");
 			// drillers and transporters
 			// noinspection DuplicatedCode
-			pop.sources.forEach(function(data, source_id){
+			for (let source_id in pop.sources) {
+			    let data = pop.sources[source_id];
 				if (data.driller == null) {
 					requested_creeps.push(Util.DRILLER.init(room.name, source_id, data.container_x, data.container_y));
 				}
 				if (data.transporter == null) {
 					requested_creeps.push(Util.TRANSPORTER.init(room.name, source_id, data.container_x, data.container_y));
 				}
-			});
+			}
 
 			// upgraders
-			if (pop[Util.UPGRADER.NAME] < 1) {
+			if (pop[Util.UPGRADER.NAME] === undefined || pop[Util.UPGRADER.NAME] < 1) {
 				requested_creeps.push(Util.UPGRADER.init(room.name));
 			}
 
 			// builders
 			// noinspection DuplicatedCode
 			let site_count = room.find(FIND_MY_CONSTRUCTION_SITES).length;
-			if (site_count > 0 && pop[Util.BUILDER.NAME] < 1) {
+			if (site_count > 0 && (pop[Util.BUILDER.NAME] === undefined || pop[Util.BUILDER.NAME] < 2)) {
 				requested_creeps.push(Util.BUILDER.init(room.name));
 			}
 
 			// repairers
-			let structure_count = room.find(FIND_MY_STRUCTURES, {
+			let structure_count = room.find(FIND_STRUCTURES, {
 				filter: function(structure){
-					return structure.hits < structure.hitsMax;
+					return (structure.hits < structure.hitsMax);
 				},
 			}).length;
-			if (structure_count > 0 && pop[Util.REPAIRER.NAME] < 1) {
+			if (structure_count > 0 && (pop[Util.REPAIRER.NAME] === undefined || pop[Util.REPAIRER.NAME] < 1)) {
 				requested_creeps.push(Util.REPAIRER.init(room.name));
 			}
 
 			// queen
-			if (room.controller !== undefined && pop[Util.QUEEN.NAME] < 1) {
+			if (room.storage !== undefined && (pop[Util.QUEEN.NAME] === undefined || pop[Util.QUEEN.NAME] < 1)) {
 				requested_creeps.push(Util.QUEEN.init(room.name));
 			}
 
 			// scout
-			if (pop[Util.SCOUT.NAME] < 1) {
+			if (pop[Util.SCOUT.NAME] === undefined || pop[Util.SCOUT.NAME] < 1) {
 				requested_creeps.push(Util.SCOUT.init(room.name));
 			}
 			// attackers
-			if (pop[Util.ATTACKER.NAME] < 1) {
+			if (pop[Util.ATTACKER.NAME] === undefined || pop[Util.ATTACKER.NAME] < 1) {
 				requested_creeps.push(Util.ATTACKER.init(room.name));
 			}
 			// healers
-			if (pop[Util.HEALER.NAME] < 1) {
+			if (pop[Util.HEALER.NAME] === undefined || pop[Util.HEALER.NAME] < 1) {
 				requested_creeps.push(Util.HEALER.init(room.name));
 			}
 		}
@@ -184,7 +187,7 @@ module.exports = {
 
 		this.count_population();
 
-		let pop = this.populations[room.name];
+		let pop = Memory.population.populations[room.name];
 		let requested_creeps = [];
 
 		// claimer
@@ -239,6 +242,7 @@ module.exports = {
 			Memory.room_log[room.name].satisfied_counter++;
 			Memory.room_log[room.name].unsatisfied_counter = 0;
 		}else{
+		    
 			Memory.room_log[room.name].unsatisfied_counter++;
 			if (Memory.room_log[room.name].unsatisfied_counter > 50) {
 				Memory.room_log[room.name].satisfied = false;
@@ -246,9 +250,11 @@ module.exports = {
 			}
 
 			for (let requested_creep of requested_creeps) {
+			    console.log("trying to spawn a " + JSON.stringify(requested_creep));
 			    if (!this.spawnRole(room, requested_creep)) {
 			        return;
 			    }else{
+			        console.log("failed to spawn");
 			    }
 			}
 		}

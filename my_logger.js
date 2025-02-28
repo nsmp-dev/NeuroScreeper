@@ -1,5 +1,5 @@
 module.exports = {
-	DEBUG_MODE: true,
+	DEBUG_MODE: false,
 	log: function(str){
 		if (this.DEBUG_MODE) {
 			console.log(str);

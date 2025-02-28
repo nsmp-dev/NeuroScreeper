@@ -1,6 +1,10 @@
 const Population = require('my_population');
 
 module.exports = {
+    TEXT_STYLE: {
+	    font: 0.8,
+	    align: "left",
+	},
 	render: function(room){
 		let times = Memory.timer_log;
 
@@ -11,20 +15,25 @@ module.exports = {
 
 
 		if (Memory.pop_viz_cache === undefined) {
-			Memory.pop_viz_cache = {};
-			Memory.pop_viz_cache[room.name] = {};
 		}
 
-		if (Population.initialized) {
-			Memory.pop_viz_cache = Population.populations;
-		}
-
-		let pop = Memory.pop_viz_cache[room.name];
+		let pop = Memory.population.populations[room.name];
 		let offset_y = 0;
 
 		for(let role in pop) {
-			room.visual.text(role + ": " + pop[role], 10, 10+offset_y, {font: 0.8});
-			offset_y++;
+		    if (role == "sources") {
+		        for(let source_id in pop.sources) {
+    		        room.visual.text("source:" + source_id, 1, 1 + offset_y, this.TEXT_STYLE);
+        			offset_y++;
+        			room.visual.text("driller: " + pop.sources[source_id].driller, 2, 1 + offset_y, this.TEXT_STYLE);
+        			offset_y++;
+        			room.visual.text("transporter: " + pop.sources[source_id].transporter, 2, 1 + offset_y, this.TEXT_STYLE);
+        			offset_y++;
+		        }
+		    }else{
+		        room.visual.text(role + ": " + pop[role], 1, 1 + offset_y, this.TEXT_STYLE);
+		        offset_y++;
+		    }
 		}
 	},
 };

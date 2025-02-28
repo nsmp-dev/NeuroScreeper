@@ -4,7 +4,10 @@ Creep.prototype.runTransporter = function(){
 	if(this.memory.state ===  Util.TRANSPORTER.FILLING){
 	    if(this.store.getFreeCapacity() === 0){
 	    	this.memory.state = Util.TRANSPORTER.DUMPING;
-	    	this.memory.dumping_target = this.getDumpTarget().id;
+	    	let new_target = this.getDumpTarget();
+	    	if (new_target != null) {
+    		    this.memory.dumping_target = new_target.id;
+    		}
 	    }else{
 			let container = Game.getObjectById(this.memory.container);
 
@@ -27,6 +30,8 @@ Creep.prototype.runTransporter = function(){
 					if (resources.length > 0) {
 						this.pickup(resources[0]);
 					}
+				}else{
+				    this.moveTo(this.memory.container_x, this.memory.container_y);
 				}
 			}
 	    }
@@ -39,10 +44,12 @@ Creep.prototype.runTransporter = function(){
 	    	let target = Game.getObjectById(this.memory.dumping_target);
 	    	if (target == null) {
 	    		target = this.getDumpTarget();
-	    		this.memory.dumping_target = target.id;
+	    		if (target != null) {
+	    		    this.memory.dumping_target = target.id;
+	    		}
 	    	}
 
-	    	if (this.build(target) === ERR_NOT_IN_RANGE) {
+	    	if (this.transfer(target, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
 	    		this.moveTo(target);
 	    	}
 	    }

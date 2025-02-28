@@ -14,14 +14,14 @@ require('role.upgrader');
 Creep.prototype.getQueenDumpTarget = function(){
 	let targets = this.room.find(FIND_MY_STRUCTURES, {
 		filter: function(structure){ 
-			return (structure.structureType === STRUCTURE_TOWER && structure.store.getFreeCapacity() > 0);
+			return (structure.structureType === STRUCTURE_TOWER && structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0);
 		},
 	});
 
 	if(targets.length === 0){
 		targets = this.room.find(FIND_MY_STRUCTURES, {
 			filter: function(structure){ 
-				return (structure.structureType === STRUCTURE_EXTENSION && structure.store.getFreeCapacity() > 0);
+				return (structure.structureType === STRUCTURE_EXTENSION && structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0);
 			},
 		});
 	}
@@ -29,7 +29,7 @@ Creep.prototype.getQueenDumpTarget = function(){
 	if(targets.length === 0){
 		targets = this.room.find(FIND_MY_STRUCTURES, {
 			filter: function(structure){ 
-				return (structure.structureType === STRUCTURE_SPAWN && structure.store.getFreeCapacity() > 0);
+				return (structure.structureType === STRUCTURE_SPAWN && structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0);
 			},
 		});
 	}
@@ -37,7 +37,7 @@ Creep.prototype.getQueenDumpTarget = function(){
 	if(targets.length === 0){
 		targets = this.room.find(FIND_MY_STRUCTURES, {
 			filter: function(structure){ 
-				return (structure.structureType === STRUCTURE_TERMINAL && structure.store.getFreeCapacity() > 0);
+				return (structure.structureType === STRUCTURE_TERMINAL && structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0);
 			},
 		});
 	}
@@ -45,25 +45,23 @@ Creep.prototype.getQueenDumpTarget = function(){
 	return this.pos.findClosestByPath(targets);
 };
 
-
-
 Creep.prototype.getHarvesterDumpTarget = function(){
 	let sites = this.room.find(FIND_MY_CONSTRUCTION_SITES);
 
 	if (sites.length > 0) {
-		return this.pos.findClosestByPath(targets);
+		return this.pos.findClosestByPath(sites);
 	}
 
 	let targets = this.room.find(FIND_MY_STRUCTURES, {
 		filter: function(structure){
-			return (structure.structureType === STRUCTURE_EXTENSION && structure.store.getFreeCapacity() > 0);
+			return (structure.structureType === STRUCTURE_EXTENSION && structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0);
 		},
 	});
 
 	if(targets.length === 0){
 		targets = this.room.find(FIND_MY_STRUCTURES, {
 			filter: function(structure){ 
-				return (structure.structureType === STRUCTURE_SPAWN && structure.store.getFreeCapacity() > 0);
+				return (structure.structureType === STRUCTURE_SPAWN && structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0);
 			},
 		});
 	}
@@ -78,19 +76,19 @@ Creep.prototype.getHarvesterDumpTarget = function(){
 Creep.prototype.getDumpTarget = function(){
 	let targets = this.room.find(FIND_MY_STRUCTURES, {
 		filter: function(structure){ 
-			return (structure.structureType === STRUCTURE_EXTENSION && structure.store.getFreeCapacity() > 0);
+			return (structure.structureType == STRUCTURE_EXTENSION && structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0);
 		},
 	});
 
 	if(targets.length === 0){
 		targets = this.room.find(FIND_MY_STRUCTURES, {
-			filter: function(structure){ 
-				return (structure.structureType === STRUCTURE_SPAWN && structure.store.getFreeCapacity() > 0);
+			filter: function(structure){
+				return (structure.structureType == STRUCTURE_SPAWN && structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0);
 			},
 		});
 	}
 
-	if(targets.length === 0 && this.room.storage){
+	if(targets.length == 0 && this.room.storage){
 		targets = [this.room.storage];
 	}
 
@@ -121,7 +119,7 @@ Creep.prototype.getBuildTarget = function(){
 };
 
 Creep.prototype.getRepairTarget = function(){
-	return this.pos.findClosestByPath(FIND_MY_STRUCTURES, {
+	return this.pos.findClosestByPath(FIND_STRUCTURES, {
 		filter: function(structure){
 			return structure.hits < structure.hitsMax;
 		},
@@ -163,7 +161,7 @@ Creep.prototype.run = function(){
 		case Util.QUEEN.NAME:
 			this.runQueen();
 			break;
-		case Util.REPAIRER:
+		case Util.REPAIRER.NAME:
 			this.runRepairer();
 			break;
 		case Util.SCOUT.NAME:
