@@ -1,5 +1,5 @@
 Creep.prototype.runScout = function(){
-	if (this.memory.room_queue.length === 0) {
+	if (this.memory.room_queue.length == 0) {
 		this.memory.room_queue.push(this.room.name);
 	}
 	if (this.room.name !== this.memory.room_queue[0]){
@@ -24,12 +24,12 @@ Creep.prototype.runScout = function(){
 		new_rooms.forEach(function(room_name){
 			let found = false;
 			creep.memory.room_queue.forEach(function(t_room){
-				if (t_room === room_name) {
+				if (t_room == room_name) {
 					found = true;
 				}
 			});
 			creep.memory.room_log.forEach(function(t_room){
-				if (t_room === room_name) {
+				if (t_room == room_name) {
 					found = true;
 				}
 			});

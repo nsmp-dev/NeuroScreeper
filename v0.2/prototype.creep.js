@@ -14,30 +14,30 @@ require('role.upgrader');
 Creep.prototype.getQueenDumpTarget = function(){
 	let targets = this.room.find(FIND_MY_STRUCTURES, {
 		filter: function(structure){ 
-			return (structure.structureType === STRUCTURE_TOWER && structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0);
+			return (structure.structureType == STRUCTURE_TOWER && structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0);
 		},
 	});
 
-	if(targets.length === 0){
+	if(targets.length == 0){
 		targets = this.room.find(FIND_MY_STRUCTURES, {
 			filter: function(structure){ 
-				return (structure.structureType === STRUCTURE_EXTENSION && structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0);
+				return (structure.structureType == STRUCTURE_EXTENSION && structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0);
 			},
 		});
 	}
 
-	if(targets.length === 0){
+	if(targets.length == 0){
 		targets = this.room.find(FIND_MY_STRUCTURES, {
 			filter: function(structure){ 
-				return (structure.structureType === STRUCTURE_SPAWN && structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0);
+				return (structure.structureType == STRUCTURE_SPAWN && structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0);
 			},
 		});
 	}
 
-	if(targets.length === 0){
+	if(targets.length == 0){
 		targets = this.room.find(FIND_MY_STRUCTURES, {
 			filter: function(structure){ 
-				return (structure.structureType === STRUCTURE_TERMINAL && structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0);
+				return (structure.structureType == STRUCTURE_TERMINAL && structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0);
 			},
 		});
 	}
@@ -54,19 +54,19 @@ Creep.prototype.getHarvesterDumpTarget = function(){
 
 	let targets = this.room.find(FIND_MY_STRUCTURES, {
 		filter: function(structure){
-			return (structure.structureType === STRUCTURE_EXTENSION && structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0);
+			return (structure.structureType == STRUCTURE_EXTENSION && structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0);
 		},
 	});
 
-	if(targets.length === 0){
+	if(targets.length == 0){
 		targets = this.room.find(FIND_MY_STRUCTURES, {
 			filter: function(structure){ 
-				return (structure.structureType === STRUCTURE_SPAWN && structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0);
+				return (structure.structureType == STRUCTURE_SPAWN && structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0);
 			},
 		});
 	}
 
-	if(targets.length === 0 && this.room.storage){
+	if(targets.length == 0 && this.room.storage){
 		targets = [this.room.storage];
 	}
 
@@ -80,7 +80,7 @@ Creep.prototype.getDumpTarget = function(){
 		},
 	});
 
-	if(targets.length === 0){
+	if(targets.length == 0){
 		targets = this.room.find(FIND_MY_STRUCTURES, {
 			filter: function(structure){
 				return (structure.structureType == STRUCTURE_SPAWN && structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0);
@@ -98,16 +98,16 @@ Creep.prototype.getDumpTarget = function(){
 Creep.prototype.getFillTarget = function(){
 	let targets = this.room.find(FIND_DROPPED_RESOURCES, { filter: { resourceType: RESOURCE_ENERGY }});
 
-	if (targets.length === 0) {
+	if (targets.length == 0) {
 		targets = this.room.find(FIND_MY_STRUCTURES, {
 			filter: function(structure){ 
-				return (structure.structureType === STRUCTURE_CONTAINER && structure.store[RESOURCE_ENERGY] > 0);
+				return (structure.structureType == STRUCTURE_CONTAINER && structure.store[RESOURCE_ENERGY] > 0);
 			},
 		});
 	}
 	
 
-	if(targets.length === 0 && this.room.storage && this.room.storage.store[RESOURCE_ENERGY] > 0){
+	if(targets.length == 0 && this.room.storage && this.room.storage.store[RESOURCE_ENERGY] > 0){
 		targets = [this.room.storage];
 	}
 

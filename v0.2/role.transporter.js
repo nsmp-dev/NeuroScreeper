@@ -1,8 +1,8 @@
 const Util = require("my_util");
 
 Creep.prototype.runTransporter = function(){
-	if(this.memory.state ===  Util.TRANSPORTER.FILLING){
-	    if(this.store.getFreeCapacity() === 0){
+	if(this.memory.state ==  Util.TRANSPORTER.FILLING){
+	    if(this.store.getFreeCapacity() == 0){
 	    	this.memory.state = Util.TRANSPORTER.DUMPING;
 	    	let new_target = this.getDumpTarget();
 	    	if (new_target != null) {
@@ -11,7 +11,7 @@ Creep.prototype.runTransporter = function(){
 	    }else{
 			let container = Game.getObjectById(this.memory.container);
 
-			if (container === null) {
+			if (container == null) {
 				let structures = this.room.lookForAt(LOOK_STRUCTURES, this.memory.container_x, this.memory.container_y);
 				if (structures.length > 0 && structures[0].structureType == STRUCTURE_CONTAINER) {
 					container = structures[0];
@@ -20,7 +20,7 @@ Creep.prototype.runTransporter = function(){
 			}
 	    	
 	    	if (container !== null) {
-				if (this.withdraw(container, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
+				if (this.withdraw(container, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
 		        	this.moveTo(container);
 		        }
 	    	}else{
@@ -36,8 +36,8 @@ Creep.prototype.runTransporter = function(){
 			}
 	    }
 	}
-	if(this.memory.state ===  Util.TRANSPORTER.DUMPING){
-		if(this.store[RESOURCE_ENERGY] === 0){
+	if(this.memory.state ==  Util.TRANSPORTER.DUMPING){
+		if(this.store[RESOURCE_ENERGY] == 0){
 	    	this.memory.state = Util.TRANSPORTER.FILLING;
 	    	this.memory.dumping_target = null;
 	    }else{
@@ -49,7 +49,7 @@ Creep.prototype.runTransporter = function(){
 	    		}
 	    	}
 
-	    	if (this.transfer(target, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
+	    	if (this.transfer(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
 	    		this.moveTo(target);
 	    	}
 	    }

@@ -1,15 +1,15 @@
 StructureTerminal.prototype.TIMER_LENGTH = 10;
 StructureTerminal.prototype.sell = function(){
-	if (Memory.terminal === undefined) {
+	if (Memory.terminal == undefined) {
 		Memory.terminal = {};
 	}
-	if (Memory.terminal.sell_timer === undefined) {
+	if (Memory.terminal.sell_timer == undefined) {
 		Memory.terminal.sell_timer = 0;
 	}
 
 	let energy = this.store[RESOURCE_ENERGY];
 
-	if (Memory.terminal.sell_timer >= this.TIMER_LENGTH && energy > 1000 && this.cooldown === 0) {
+	if (Memory.terminal.sell_timer >= this.TIMER_LENGTH && energy > 1000 && this.cooldown == 0) {
 		Memory.terminal.sell_timer = 0;
 	}else{
 		Memory.terminal.sell_timer++;
@@ -18,7 +18,7 @@ StructureTerminal.prototype.sell = function(){
 
 	let orders = Game.market.getAllOrders({type: ORDER_BUY, resourceType: RESOURCE_ENERGY});
 
-	if (orders.length === 0) {
+	if (orders.length == 0) {
 		return;
 	}
 
@@ -43,16 +43,16 @@ StructureTerminal.prototype.sell = function(){
 };
 
 StructureTerminal.prototype.buy = function(){
-	if (Memory.terminal === undefined) {
+	if (Memory.terminal == undefined) {
 		Memory.terminal = {};
 	}
-	if (Memory.terminal.buy_timer === undefined) {
+	if (Memory.terminal.buy_timer == undefined) {
 		Memory.terminal.buy_timer = 0;
 	}
 
 	let energy = this.store[RESOURCE_ENERGY];
 
-	if (Memory.terminal.buy_timer >= this.TIMER_LENGTH && energy > 1000 && this.cooldown === 0) {
+	if (Memory.terminal.buy_timer >= this.TIMER_LENGTH && energy > 1000 && this.cooldown == 0) {
 		Memory.terminal.buy_timer = 0;
 	}else{
 		Memory.terminal.buy_timer++;
@@ -61,7 +61,7 @@ StructureTerminal.prototype.buy = function(){
 
 	let orders = Game.market.getAllOrders({type: ORDER_SELL, resourceType: SUBSCRIPTION_TOKEN});
 
-	if (orders.length === 0) {
+	if (orders.length == 0) {
 		return;
 	}
 

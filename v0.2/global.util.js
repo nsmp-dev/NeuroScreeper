@@ -212,7 +212,7 @@ module.exports = {
 		let found = false;
 		let structures = room.lookForAt(LOOK_STRUCTURES, x, y);
 		structures.forEach(function(structure){
-			if (structure.structureType === structure_type) {
+			if (structure.structureType == structure_type) {
 				found = true;
 			}
 		});
@@ -228,43 +228,43 @@ module.exports = {
 	},
 
 	getRole: function(role) {
-		if (this.ATTACKER.NAME === role) {
+		if (this.ATTACKER.NAME == role) {
 			return this.ATTACKER;
 		}
-		if (this.BUILDER.NAME === role) {
+		if (this.BUILDER.NAME == role) {
 			return this.BUILDER;
 		}
-		if (this.CLAIMER.NAME === role) {
+		if (this.CLAIMER.NAME == role) {
 			return this.CLAIMER;
 		}
-		if (this.DRILLER.NAME === role) {
+		if (this.DRILLER.NAME == role) {
 			return this.DRILLER;
 		}
-		if (this.HARVESTER.NAME === role) {
+		if (this.HARVESTER.NAME == role) {
 			return this.HARVESTER;
 		}
-		if (this.HEALER.NAME === role) {
+		if (this.HEALER.NAME == role) {
 			return this.HEALER;
 		}
-		if (this.QUEEN.NAME === role) {
+		if (this.QUEEN.NAME == role) {
 			return this.QUEEN;
 		}
-		if (this.REPAIRER.NAME === role) {
+		if (this.REPAIRER.NAME == role) {
 			return this.REPAIRER;
 		}
-		if (this.SCOUT.NAME === role) {
+		if (this.SCOUT.NAME == role) {
 			return this.SCOUT;
 		}
-		if (this.TRANSPORTER.NAME === role) {
+		if (this.TRANSPORTER.NAME == role) {
 			return this.TRANSPORTER;
 		}
-		if (this.UPGRADER.NAME === role) {
+		if (this.UPGRADER.NAME == role) {
 			return this.UPGRADER;
 		}
 	},
 
 	generateId: function(){
-		if (Memory.id_counter === undefined) {
+		if (Memory.id_counter == undefined) {
 			Memory.id_counter = 0;
 		}
 		let id = "";
@@ -287,5 +287,14 @@ module.exports = {
 				delete Memory.creeps[name];
 			}
 		}
+	},
+
+	getSatifiedRatio: function(room_data){
+		let total = 0;
+		room_data.satisfaction_log.forEach(function(amount){
+			total += amount;
+		});
+
+		return (total / room_data.satisfaction_log.length);
 	},
 };

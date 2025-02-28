@@ -16,7 +16,7 @@ Creep.prototype.runHealer = function(){
 	}
 	if (this.memory.target != null) {
 		let target = Game.getObjectById(this.memory.target);
-		if (this.heal(target) === ERR_NOT_IN_RANGE) {
+		if (this.heal(target) == ERR_NOT_IN_RANGE) {
 			this.moveTo(target);
 		}
 	}else{

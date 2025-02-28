@@ -23,10 +23,10 @@ Room.prototype.findBaseLocation = function(structures){
 	return this.getClearArea(14, 14, structures);
 };
 
-Room.prototype.getBasePlans = function(base_location){
+Room.prototype.getBasePlans = function(base_location, structures){
 	let x = base_location.x;
 	let y = base_location.y;
-	let structures = [
+	let new_structures = [
 		{x: x + 1, y: y, type: STRUCTURE_EXTENSION},
 		{x: x + 5, y: y, type: STRUCTURE_EXTENSION},
 		{x: x + 7, y: y, type: STRUCTURE_EXTENSION},
@@ -302,7 +302,8 @@ Room.prototype.getBasePlans = function(base_location){
 		{x: x + 6, y: y + 12, type: STRUCTURE_RAMPART},
 		{x: x + 12, y: y + 12, type: STRUCTURE_RAMPART},
 	];
-	return structures;
+
+	return structures.concat(new_structures);
 };
 
 Room.prototype.getClearArea = function(width, height, structures){
@@ -319,7 +320,7 @@ Room.prototype.getClearArea = function(width, height, structures){
 	for (let x = 0; x < 50; x++) {
 		structure_grid.push([]);
 		for (let y = 0; y < 50; y++) {
-			structure_grid[x].push(true);
+			structure_grid[x].push(false);
 		}
 	}
 
@@ -351,7 +352,7 @@ Room.prototype.getClearArea = function(width, height, structures){
 		}
 	}
 
-	if (clear_spots.length === 0) {
+	if (clear_spots.length == 0) {
 		return null;
 	}
 
@@ -379,7 +380,7 @@ Room.prototype.getClearAdjacentLocation = function(x, y, structures){
 	for (let x = 0; x < 50; x++) {
 		structure_grid.push([]);
 		for (let y = 0; y < 50; y++) {
-			structure_grid[x].push(true);
+			structure_grid[x].push(false);
 		}
 	}
 
@@ -412,7 +413,7 @@ Room.prototype.getClearAdjacentLocation = function(x, y, structures){
 		clear_spots.push({x: x+1, y: y+1});
 	}
 
-	if (clear_spots.length === 0) {
+	if (clear_spots.length == 0) {
 		return null;
 	}
 
@@ -438,7 +439,7 @@ Room.prototype.spawnRole = function(memory){
 				dryRun: true,
 			});
 
-			if (result === OK) {
+			if (result == OK) {
 				spawns[0].spawnCreep(Util.multiArray(role.BODY, i), role.NAME + Util.generateId(), {
 					memory: memory,
 				});

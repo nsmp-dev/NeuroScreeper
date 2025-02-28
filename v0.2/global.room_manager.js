@@ -14,9 +14,9 @@ module.exports = {
 		let pop = {};
 		
 		for (let name in Memory.room_data) {
-			if (Memory.room_data[name].type === Capitol.NAME ||
-				Memory.room_data[name].type === Colony.NAME ||
-				Memory.room_data[name].type === Expansion.NAME) {
+			if (Memory.room_data[name].type == Capitol.NAME ||
+				Memory.room_data[name].type == Colony.NAME ||
+				Memory.room_data[name].type == Expansion.NAME) {
 
 				pop[name] = {};
 				pop[name].sources = {};
@@ -37,21 +37,21 @@ module.exports = {
 
 		for(let name in Game.creeps) {
 			let creep = Game.creeps[name];
-			if (pop[creep.memory.room_name] === undefined) {
+			if (pop[creep.memory.room_name] == undefined) {
 				pop[creep.memory.room_name] = {};
 			}
 
-			if (pop[creep.memory.room_name][creep.memory.role] === undefined) {
+			if (pop[creep.memory.room_name][creep.memory.role] == undefined) {
 				pop[creep.memory.room_name][creep.memory.role] = 0;
 			}
 
 			pop[creep.memory.room_name][creep.memory.role]++;
 			pop[creep.memory.room_name].total++;
 
-			if (creep.memory.role === Util.DRILLER.NAME) {
+			if (creep.memory.role == Util.DRILLER.NAME) {
 				pop[creep.memory.room_name].sources[creep.memory.source].driller = creep.id;
 			}
-			if (creep.memory.role === Util.TRANSPORTER.NAME) {
+			if (creep.memory.role == Util.TRANSPORTER.NAME) {
 				pop[creep.memory.room_name].sources[creep.memory.source].transporter = creep.id;
 			}
 		}

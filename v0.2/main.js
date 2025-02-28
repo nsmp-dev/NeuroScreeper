@@ -34,11 +34,11 @@ module.exports.loop = function () {
 	}
 
 	for (let id in Game.structures) {
-		if (Game.structures[id].structureType === STRUCTURE_TOWER ||
-			Game.structures[id].structureType === STRUCTURE_OBSERVER) {
+		if (Game.structures[id].structureType == STRUCTURE_TOWER ||
+			Game.structures[id].structureType == STRUCTURE_OBSERVER) {
 			Game.structures[id].run();
 		}
-		if (Game.structures[id].structureType === STRUCTURE_TERMINAL) {
+		if (Game.structures[id].structureType == STRUCTURE_TERMINAL) {
 			Game.structures[id].sell();
 			Game.structures[id].buy();
 		}

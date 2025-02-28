@@ -1,11 +1,11 @@
 const Util = require('global.util');
 
 StructureObserver.prototype.run = function(){
-	if (Memory.observer_log === undefined) {
+	if (Memory.observer_log == undefined) {
 		Memory.observer_log = {};
 	}
 
-	if (Memory.observer_log[this.room.name] === undefined) {
+	if (Memory.observer_log[this.room.name] == undefined) {
 		let room_coords = Util.roomNameToWorldXY(this.room.name)
 		Memory.observer_log[this.room.name] = {
 			min_x: room_coords.x - 10,

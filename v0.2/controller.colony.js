@@ -1,11 +1,16 @@
+const Util = require('global.util');
+
 module.exports = {
 	NAME: "colony",
 	CONTRUCTION_TIMER_LENGTH: 10,
 	POPULATION_TIMER_LENGTH: 10,
+	SATISFACTION_THRESHOLD: 0.9,
+	SATISFACTION_LOG_SIZE: 100,
 	initialize: function(room, room_data) {
-		let source_plans = this.room.getSourcePlans(structures);
+		let structures = [];
+		let source_plans = room.getSourcePlans(structures);
 		let base_location = room.findBaseLocation(structures);
-		let structures = room.getBasePlans(base_location);
+		structures = room.getBasePlans(base_location, structures);
 		let idle_location = room.getIdleLocation(structures);
 
 		room_data.idle_x = idle_location.x;
@@ -15,9 +20,8 @@ module.exports = {
 		room_data.bootstrap = true;
 		room_data.population_timer = 0;
 		room_data.construction_timer = 0;
-		room_data.sastisfied = false;
-		room_data.sastisfied_counter = 0;
-		room_data.unsastisfied_counter = 0;
+		room_data.satisfaction_log = [];
+		room_data.satisfied = false;
 		room_data.dead = false;
 		room_data.requested_creeps = [];
 
@@ -42,10 +46,19 @@ module.exports = {
 		}else{
 			room_data.population_timer++;
 		}
+
 		
-		if (!room.controller.my) {
-			room_data.dead = true;
+		if (room_data.requested_creeps.length == 0) {
+			room_data.satisfaction_log.push(0);
+		}else{
+			room_data.satisfaction_log.push(1);
 		}
+
+		if (room_data.satisfaction_log.length > this.SATISFACTION_LOG_SIZE) {
+			room_data.satisfaction_log.shift();
+		}
+
+		room_data.satisfied = Util.getSatifiedRatio(room_data) > this.SATISFACTION_THRESHOLD;
 
 		return room_data;
 	},
@@ -65,14 +78,14 @@ module.exports = {
 		}
 
 		// upgraders
-		if (pop[Util.UPGRADER.NAME] === undefined || pop[Util.UPGRADER.NAME] < 1) {
+		if (pop[Util.UPGRADER.NAME] == undefined || pop[Util.UPGRADER.NAME] < 1) {
 			requested_creeps.push(Util.UPGRADER.init(room.name));
 		}
 
 		// builders
 		// noinspection DuplicatedCode
 		let site_count = room.find(FIND_MY_CONSTRUCTION_SITES).length;
-		if (site_count > 0 && (pop[Util.BUILDER.NAME] === undefined || pop[Util.BUILDER.NAME] < 2)) {
+		if (site_count > 0 && (pop[Util.BUILDER.NAME] == undefined || pop[Util.BUILDER.NAME] < 2)) {
 			requested_creeps.push(Util.BUILDER.init(room.name));
 		}
 
@@ -82,25 +95,25 @@ module.exports = {
 				return (structure.hits < structure.hitsMax);
 			},
 		}).length;
-		if (structure_count > 0 && (pop[Util.REPAIRER.NAME] === undefined || pop[Util.REPAIRER.NAME] < 1)) {
+		if (structure_count > 0 && (pop[Util.REPAIRER.NAME] == undefined || pop[Util.REPAIRER.NAME] < 1)) {
 			requested_creeps.push(Util.REPAIRER.init(room.name));
 		}
 
 		// queen
-		if (room.storage !== undefined && (pop[Util.QUEEN.NAME] === undefined || pop[Util.QUEEN.NAME] < 1)) {
+		if (room.storage !== undefined && (pop[Util.QUEEN.NAME] == undefined || pop[Util.QUEEN.NAME] < 1)) {
 			requested_creeps.push(Util.QUEEN.init(room.name));
 		}
 
 		// scout
-		if (pop[Util.SCOUT.NAME] === undefined || pop[Util.SCOUT.NAME] < 1) {
+		if (pop[Util.SCOUT.NAME] == undefined || pop[Util.SCOUT.NAME] < 1) {
 			requested_creeps.push(Util.SCOUT.init(room.name));
 		}
 		// attackers
-		if (pop[Util.ATTACKER.NAME] === undefined || pop[Util.ATTACKER.NAME] < 1) {
+		if (pop[Util.ATTACKER.NAME] == undefined || pop[Util.ATTACKER.NAME] < 1) {
 			requested_creeps.push(Util.ATTACKER.init(room.name));
 		}
 		// healers
-		if (pop[Util.HEALER.NAME] === undefined || pop[Util.HEALER.NAME] < 1) {
+		if (pop[Util.HEALER.NAME] == undefined || pop[Util.HEALER.NAME] < 1) {
 			requested_creeps.push(Util.HEALER.init(room.name));
 		}
 
@@ -138,7 +151,7 @@ module.exports = {
 			sources.forEach(function(source_data){
 				if (!Util.checkFor(room, source_data.container_x, source_data.container_y, STRUCTURE_CONTAINER)) {
 					let result = room.createConstructionSite(source_data.container_x, source_data.container_y, STRUCTURE_CONTAINER);
-					if (result === OK) {
+					if (result == OK) {
 						site_count++;
 					}
 				}
@@ -150,7 +163,7 @@ module.exports = {
 				}
 				if (!Util.checkFor(room, structure.x, structure.y, structure.type)) {
 					let result = room.createConstructionSite(structure.x, structure.y, structure.type);
-					if (result === OK) {
+					if (result == OK) {
 						site_count++;
 					}
 				}

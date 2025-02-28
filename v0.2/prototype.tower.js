@@ -61,7 +61,7 @@ StructureTower.prototype.run = function(){
 
 	// repair roads
 	for (let i = 0; i < structures.length; i++) {
-		if (structures[i].structureType === STRUCTURE_ROAD &&
+		if (structures[i].structureType == STRUCTURE_ROAD &&
 			structures[i].hits < structures[i].hitsMax) {
 			targets.push(structures[i]);
 		}
@@ -77,7 +77,7 @@ StructureTower.prototype.run = function(){
 
 	// repair ramparts
 	for (let i = 0; i < structures.length; i++) {
-		if (structures[i].structureType === STRUCTURE_RAMPART &&
+		if (structures[i].structureType == STRUCTURE_RAMPART &&
 			structures[i].hits < structures[i].hitsMax) {
 			targets.push(structures[i]);
 		}

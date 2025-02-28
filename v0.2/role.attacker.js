@@ -1,5 +1,5 @@
 Creep.prototype.runAttacker = function(){
-	if (this.memory.target === undefined) {
+	if (this.memory.target == undefined) {
 		this.memory.target = null;
 	}
 	let target = Game.getObjectById(this.memory.target);
@@ -15,7 +15,7 @@ Creep.prototype.runAttacker = function(){
 	}
 	if (this.memory.target != null) {
 		let target = Game.getObjectById(this.memory.target);
-		if (this.attack(target) === ERR_NOT_IN_RANGE) {
+		if (this.attack(target) == ERR_NOT_IN_RANGE) {
 			this.moveTo(target);
 		}
 	}else{

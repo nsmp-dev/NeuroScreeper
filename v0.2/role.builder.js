@@ -1,37 +1,37 @@
 const Util = require("my_util");
 
 Creep.prototype.runBuilder = function(){
-	if(this.memory.state ===  Util.BUILDER.FILLING){
-        if(this.store.getFreeCapacity() === 0){
+	if(this.memory.state ==  Util.BUILDER.FILLING){
+        if(this.store.getFreeCapacity() == 0){
         	this.memory.state = Util.BUILDER.BUILDING;
         	this.memory.filling_target = null;
         	this.memory.building_target = this.getBuildTarget().id;
         }else{
         	// noinspection DuplicatedCode
 			let target = Game.getObjectById(this.memory.filling_target);
-        	if (target == null || (target.store != undefined && target.store[RESOURCE_ENERGY] === 0)) {
+        	if (target == null || (target.store != undefined && target.store[RESOURCE_ENERGY] == 0)) {
         		target = this.getFillTarget();
         		this.memory.filling_target = target.id;
         	}
             
             if (target != null) {
                 if (target instanceof Resource) {
-                    if (this.pickup(target) === ERR_NOT_IN_RANGE) {
+                    if (this.pickup(target) == ERR_NOT_IN_RANGE) {
                 		this.moveTo(target);
                 	}
                 }else{
-                    if (this.withdraw(target, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
+                    if (this.withdraw(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
                 		this.moveTo(target);
                 	}
                 }
             }
-        	if (this.withdraw(target, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
+        	if (this.withdraw(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
         		this.moveTo(target);
         	}
         }
     }
-    if(this.memory.state ===  Util.BUILDER.BUILDING){
-    	if(this.store[RESOURCE_ENERGY] === 0){
+    if(this.memory.state ==  Util.BUILDER.BUILDING){
+    	if(this.store[RESOURCE_ENERGY] == 0){
         	this.memory.state = Util.BUILDER.FILLING;
         	this.memory.filling_target = this.getFillTarget().id;
         	this.memory.building_target = null;
@@ -42,7 +42,7 @@ Creep.prototype.runBuilder = function(){
         		target = Game.getObjectById(this.memory.building_target);
         	}
 
-        	if (this.build(target) === ERR_NOT_IN_RANGE) {
+        	if (this.build(target) == ERR_NOT_IN_RANGE) {
         		this.moveTo(target);
         	}
         }

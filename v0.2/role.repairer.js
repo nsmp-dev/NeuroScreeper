@@ -1,8 +1,8 @@
 const Util = require("my_util");
 
 Creep.prototype.runRepairer = function(){
-	if(this.memory.state ===  Util.REPAIRER.FILLING){
-        if(this.store.getFreeCapacity() === 0){
+	if(this.memory.state ==  Util.REPAIRER.FILLING){
+        if(this.store.getFreeCapacity() == 0){
         	this.memory.state = Util.REPAIRER.REPAIRING;
         	this.memory.filling_target = null;
         	let new_target = this.getRepairTarget();
@@ -20,19 +20,19 @@ Creep.prototype.runRepairer = function(){
 
         	if (target != null) {
         	    if (target instanceof Resource) {
-        	        if (this.pickup(target) === ERR_NOT_IN_RANGE) {
+        	        if (this.pickup(target) == ERR_NOT_IN_RANGE) {
     		        	this.moveTo(target);
     		        }
         	    }else{
-        	        if (this.withdraw(target, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
+        	        if (this.withdraw(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
     		        	this.moveTo(target);
     		        }
         	    }
         	}
         }
     }
-    if(this.memory.state ===  Util.REPAIRER.REPAIRING){
-    	if(this.store[RESOURCE_ENERGY] === 0){
+    if(this.memory.state ==  Util.REPAIRER.REPAIRING){
+    	if(this.store[RESOURCE_ENERGY] == 0){
         	this.memory.state = Util.REPAIRER.FILLING;
         	let new_target = this.getFillTarget();
         	if (new_target != null) {
@@ -49,7 +49,7 @@ Creep.prototype.runRepairer = function(){
         	}
 
             if (target != null) {
-            	if (this.repair(target) === ERR_NOT_IN_RANGE) {
+            	if (this.repair(target) == ERR_NOT_IN_RANGE) {
             		this.moveTo(target);
             	}
             }else{
