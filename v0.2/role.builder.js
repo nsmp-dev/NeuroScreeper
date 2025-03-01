@@ -1,5 +1,6 @@
 const Util = require("my_util");
 
+// builder that builds any construction sites that are found
 Creep.prototype.runBuilder = function(){
 	if(this.memory.state ==  Util.BUILDER.FILLING){
         if(this.store.getFreeCapacity() == 0){
@@ -42,9 +43,13 @@ Creep.prototype.runBuilder = function(){
         		target = Game.getObjectById(this.memory.building_target);
         	}
 
-        	if (this.build(target) == ERR_NOT_IN_RANGE) {
-        		this.moveTo(target);
-        	}
+			if (target != null) {
+				if (this.build(target) == ERR_NOT_IN_RANGE) {
+					this.moveTo(target);
+				}
+			}else{
+				this.idle();
+			}
         }
     }
 };

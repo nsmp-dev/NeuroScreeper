@@ -1,18 +1,32 @@
 const Util = require('global.util');
 
+// this is a colony: a type of room where we have a standard base with spawns, towers, storage, etc.
+// manages its own data by passing its memory object "room data" around, along with a reference to the room itself
 module.exports = {
+	// constant used to id a colony
 	NAME: "colony",
+	// ticks between making construction sites
 	CONSTRUCTION_TIMER_LENGTH: 10,
+	// ticks between calculating population needs
 	POPULATION_TIMER_LENGTH: 10,
+	// ratio of ticks that must be satisfied to count as overall satisfied
 	SATISFACTION_THRESHOLD: 0.9,
+	// size of the log to keep for satisfaction calculations
 	SATISFACTION_LOG_SIZE: 100,
+	// initialize the colony, generating construction plans and idle location
 	initialize: function(room, room_data) {
+		// the list of structures this colony will have
 		let structures = [];
+		// these are the locations of containers and source ids that go with them
 		let source_plans = room.getSourcePlans(structures);
+		// get the location to place the base
 		let base_location = room.findBaseLocation(structures);
+		// generate the base structures from the location
 		structures = room.getBasePlans(base_location, structures);
+		// get the location to send idle creeps
 		let idle_location = room.getIdleLocation(structures);
 
+		// setting all the data on the room_data object
 		room_data.idle_x = idle_location.x;
 		room_data.idle_y = idle_location.y;
 		room_data.base_x = base_location.x;
@@ -29,12 +43,16 @@ module.exports = {
 
 		return room_data;
 	},
+	// tests the room for suitability of a colony
 	testRoom: function(room) {
+		// count all the sources
 		let sources = room.find(FIND_SOURCES);
+		// see if we can fit a base in the room
 		let base_location = room.findBaseLocation([]);
-
+		// return if both requirements are met
 		return (sources.length > 1 && base_location != null);
 	},
+	// do the planning step where we gather data to update
 	plan: function(room, room_data) {
 		if (room_data.population_timer > this.POPULATION_TIMER_LENGTH) {
 			room_data = this.runPopulation(room, room_data);
@@ -57,6 +75,7 @@ module.exports = {
 
 		return room_data;
 	},
+	// handle the population needs and save the requested creeps to room_data
 	runPopulation: function(room, room_data) {
 		let pop = Memory.populations[room.name];
 		let requested_creeps = [];
@@ -119,44 +138,17 @@ module.exports = {
 		room_data.requested_creeps = requested_creeps;
 		return room_data;
 	},
+	// do the running step where we execute the info from the planning phase
 	run: function(room, room_data) {
 		if (room_data.construction_timer > this.CONSTRUCTION_TIMER_LENGTH) {
-			let site_count = room.find(FIND_MY_CONSTRUCTION_SITES).length;
-			if (site_count < 5) {
-				let sources = room_data.sources;
-				let structures = room_data.structures;
-
-				sources.forEach(function(source_data){
-					if (site_count >= 5) {
-						return;
-					}
-					if (!Util.checkFor(room, source_data.container_x, source_data.container_y, STRUCTURE_CONTAINER)) {
-						let result = room.createConstructionSite(source_data.container_x, source_data.container_y, STRUCTURE_CONTAINER);
-						if (result == OK) {
-							site_count++;
-						}
-					}
-				});
-
-				structures.forEach(function(structure){
-					if (site_count >= 5) {
-						return;
-					}
-					if (!Util.checkFor(room, structure.x, structure.y, structure.type)) {
-						let result = room.createConstructionSite(structure.x, structure.y, structure.type);
-						if (result == OK) {
-							site_count++;
-						}
-					}
-				});
-				room_data.construction_timer = 0;
-			}
+			room.createConstructionSites(room_data.structures, room_data.source_plans);
+			room_data.construction_timer = 0;
 		}else{
 			room_data.construction_timer++;
 		}
 
 		if (room_data.requested_creeps.length > 0) {
-			let success = false;
+			let success;
 			if (room_data.requested_creeps[0].role == Util.CLAIMER.NAME) {
 				success = room.spawnRoleGlobal(room_data.requested_creeps[0]);
 			}else{

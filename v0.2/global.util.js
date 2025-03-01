@@ -1,9 +1,14 @@
-// noinspection JSUnusedGlobalSymbols
+// utility module, contains creep role constants and commonly used methods
 module.exports = {
+	// constants for creep role usage
 	ATTACKER: {
+		// identifying string
 		NAME: "attacker",
+		// standard body build, can be multiplied arbitrarily to build larger creeps
 		BODY: [ATTACK, TOUGH, MOVE, MOVE],
+		// energy cost of the body
 		ENERGY_COST: 100,
+		// initializer that assembles the initial creep memory
 		init: function(room_name){
 			return {
 				role: this.NAME,
@@ -158,6 +163,7 @@ module.exports = {
 		},
 	},
 
+	// converts an x/y room coordinate to a string name
 	worldXYToRoomName: function(x, y) {
 		let size = Game.map.getWorldSize();
 		let max = (size - 2) / 2;
@@ -178,6 +184,7 @@ module.exports = {
 		return str;
 	},
 
+	// converts a string room name to x/y room coordinates
 	roomNameToWorldXY: function(name) {
 		let size = Game.map.getWorldSize()
 		let max = (size - 2) / 2;
@@ -208,17 +215,7 @@ module.exports = {
 		return coordinates;
 	},
 
-	checkFor: function(room, x, y, structure_type) {
-		let found = false;
-		let structures = room.lookForAt(LOOK_STRUCTURES, x, y);
-		structures.forEach(function(structure){
-			if (structure.structureType == structure_type) {
-				found = true;
-			}
-		});
-		return found;
-	},
-
+	// multiplies an array by num times
 	multiArray: function(array, num) {
 		let result = [];
 		for (let i = 0; i < num; i++) {
@@ -227,6 +224,7 @@ module.exports = {
 		return result;
 	},
 
+	// gets the corresponding role constant set for the given role
 	getRole: function(role) {
 		if (this.ATTACKER.NAME == role) {
 			return this.ATTACKER;
@@ -263,6 +261,7 @@ module.exports = {
 		}
 	},
 
+	// generates an id, using a memory entry to ensure no collisions
 	generateId: function(){
 		if (Memory.id_counter == undefined) {
 			Memory.id_counter = 0;
@@ -273,14 +272,17 @@ module.exports = {
 		return id;
 	},
 
+	// calculates the ratio of time used so far this tick
 	timeUsed: function(){
 		return (Game.cpu.tickLimit - Game.cpu.getUsed())/Game.cpu.tickLimit;
 	},
 
+	// calculates the distance between two points
 	distance: function(x1, y1, x2, y2){
 		return Math.sqrt(((x2-x1)*(x2-x1)) + ((y2-y1)*(y2-y1)));
 	},
 
+	// delete old creep memories to free up memory and prevent leaks
 	collectGarbage: function(){
 		for (let name in Memory.creeps) {
 			if (Game.creeps[name] == undefined) {
@@ -289,6 +291,7 @@ module.exports = {
 		}
 	},
 
+	// calculates what percentage of the given array are true
 	getSatisfiedRatio: function(room_data){
 		let total = 0;
 		room_data.satisfaction_log.forEach(function(amount){

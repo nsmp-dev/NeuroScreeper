@@ -1,11 +1,19 @@
 const Util = require("global.util");
 
+// this is an expansion: a room where we are just harvesting sources
+// manages its own data by passing its memory object "room data" around, along with a reference to the room itself
 module.exports = {
+	// constant used to id an expansion
 	NAME: "expansion",
+	// ticks between making construction sites
 	CONSTRUCTION_TIMER_LENGTH: 10,
+	// ticks between calculating population needs
 	POPULATION_TIMER_LENGTH: 10,
+	// ratio of ticks that must be satisfied to count as overall satisfied
 	SATISFACTION_THRESHOLD: 0.9,
+	// size of the log to keep for satisfaction calculations
 	SATISFACTION_LOG_SIZE: 100,
+	// initialize the expansion, generating construction plans and idle location
 	initialize: function(room, room_data) {
 		let structures = [];
 		let source_plans = room.getSourcePlans(structures);
@@ -24,10 +32,12 @@ module.exports = {
 
 		return room_data;
 	},
+	// tests the room for suitability of an expansion
 	testRoom: function(room) {
 		let sources = room.find(FIND_SOURCES);
 		return (sources.length > 0);
 	},
+	// do the planning step where we gather data to update
 	plan: function(room, room_data) {
 		if (room_data.population_timer > this.POPULATION_TIMER_LENGTH) {
 			room_data = this.runPopulation(room, room_data);
@@ -54,6 +64,7 @@ module.exports = {
 
 		return room_data;
 	},
+	// handle the population needs and save the requested creeps to room_data
 	runPopulation: function(room, room_data) {
 		let pop = Memory.populations[room.name];
 		let requested_creeps = [];
@@ -102,38 +113,11 @@ module.exports = {
 		room_data.requested_creeps = requested_creeps;
 		return room_data;
 	},
+	// do the running step where we execute the info from the planning phase
 	run: function(room, room_data) {
 		if (room_data.construction_timer > this.CONSTRUCTION_TIMER_LENGTH) {
-			let site_count = room.find(FIND_MY_CONSTRUCTION_SITES).length;
-			if (site_count < 5) {
-				let sources = room_data.sources;
-				let structures = room_data.structures;
-
-				sources.forEach(function(source_data){
-					if (site_count >= 5) {
-						return;
-					}
-					if (!Util.checkFor(room, source_data.container_x, source_data.container_y, STRUCTURE_CONTAINER)) {
-						let result = room.createConstructionSite(source_data.container_x, source_data.container_y, STRUCTURE_CONTAINER);
-						if (result == OK) {
-							site_count++;
-						}
-					}
-				});
-
-				structures.forEach(function(structure){
-					if (site_count >= 5) {
-						return;
-					}
-					if (!Util.checkFor(room, structure.x, structure.y, structure.type)) {
-						let result = room.createConstructionSite(structure.x, structure.y, structure.type);
-						if (result == OK) {
-							site_count++;
-						}
-					}
-				});
-				room_data.construction_timer = 0;
-			}
+			room_data.construction_timer = 0;
+			room.createConstructionSites(room_data.structures, room_data.source_plans);
 		}else{
 			room_data.construction_timer++;
 		}

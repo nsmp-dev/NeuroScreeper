@@ -1,9 +1,11 @@
 const Util = require('global.util');
 
+// finds a good idle location, avoiding any planned structures
 Room.prototype.getIdleLocation = function(structures){
 	return this.getClearArea(5,5,structures);
 };
 
+// gets the source plans for this room, avoiding any planned structures
 Room.prototype.getSourcePlans = function(structures){
 	let source_plans = [];
 	let sources = this.find(FIND_SOURCES);
@@ -21,10 +23,12 @@ Room.prototype.getSourcePlans = function(structures){
 	return source_plans;
 };
 
+// finds a good base location, avoiding any planned structures
 Room.prototype.findBaseLocation = function(structures){
 	return this.getClearArea(14, 14, structures);
 };
 
+// gets the base plans for this room, avoiding any planned structures
 Room.prototype.getBasePlans = function(base_location, structures){
 	let x = base_location.x;
 	let y = base_location.y;
@@ -308,6 +312,7 @@ Room.prototype.getBasePlans = function(base_location, structures){
 	return structures.concat(new_structures);
 };
 
+// finds a clear area of width and height, avoiding any planned structures
 Room.prototype.getClearArea = function(width, height, structures){
 	// returns the top left point of the area closest to center of the room that is clear of terrain and structures
 	// returns null if no area can be found
@@ -368,6 +373,7 @@ Room.prototype.getClearArea = function(width, height, structures){
 	return min;
 };
 
+// finds a clear spot that is adjacent to the given x/y coordinate, avoiding any planned structures
 Room.prototype.getClearAdjacentLocation = function(x, y, structures){
 	// returns the top left point of the area closest to center of the room that is clear of terrain and structures
 	// returns null if no area can be found
@@ -422,6 +428,7 @@ Room.prototype.getClearAdjacentLocation = function(x, y, structures){
 	return clear_spots[0];
 };
 
+// spawns the largest version of the given creep in this room
 Room.prototype.spawnRole = function(memory){
 	let success = false;
 	let spawns = [];
@@ -453,6 +460,7 @@ Room.prototype.spawnRole = function(memory){
 	return success;
 };
 
+// spawns the largest version of the given creep, using any spawn in any room
 Room.prototype.spawnRoleGlobal = function(memory){
 	let success = false;
 	let spawns = [];
@@ -482,4 +490,46 @@ Room.prototype.spawnRoleGlobal = function(memory){
 	}
 
 	return success;
+};
+
+// creates structures from the given list of planned structures and source plans, capping at 5 per room
+Room.prototype.createConstructionSites = function(structures, source_plans){
+	let site_count = room.find(FIND_MY_CONSTRUCTION_SITES).length;
+	if (site_count < 5) {
+		source_plans.forEach(function(source_data){
+			if (site_count >= 5) {
+				return;
+			}
+			if (!room.checkFor(source_data.container_x, source_data.container_y, STRUCTURE_CONTAINER)) {
+				let result = room.createConstructionSite(source_data.container_x, source_data.container_y, STRUCTURE_CONTAINER);
+				if (result == OK) {
+					site_count++;
+				}
+			}
+		});
+
+		structures.forEach(function(structure){
+			if (site_count >= 5) {
+				return;
+			}
+			if (!room.checkFor(structure.x, structure.y, structure.type)) {
+				let result = room.createConstructionSite(structure.x, structure.y, structure.type);
+				if (result == OK) {
+					site_count++;
+				}
+			}
+		});
+	}
+};
+
+// returns whether the given structure has been built at the given x/y coordinate
+Room.prototype.checkFor = function(x, y, structure_type){
+	let found = false;
+	let structures = this.lookForAt(LOOK_STRUCTURES, x, y);
+	structures.forEach(function(structure){
+		if (structure.structureType == structure_type) {
+			found = true;
+		}
+	});
+	return found;
 };

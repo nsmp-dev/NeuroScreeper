@@ -1,7 +1,11 @@
+// this is the timer module, it is able to time arbitrary things
+// it also maintains a log of previous tick lengths to calculate average cpu usage
 module.exports = {
+	// where we store the timers we are working with
 	timers: {},
+	// how many previous ticks to maintain for average cpu time
 	LOG_SIZE: 50,
-
+	// start a timer, defaults to the main timer
 	start: function(id = "main"){
 	    if (Memory.timer_log == undefined) {
         	Memory.timer_log = [];
@@ -11,7 +15,8 @@ module.exports = {
 			end: null,
 		};
 	},
-
+	// stop a timer, defaults to the main timer
+	// if stopping the main timer, advance the log and recalculate the average
 	stop: function(id = "main"){
 		this.timers[id].end = Game.cpu.getUsed();
 

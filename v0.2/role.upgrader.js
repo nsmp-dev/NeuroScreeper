@@ -1,5 +1,6 @@
 const Util = require("global.util");
 
+// upgrader that upgrades the room's controller
 Creep.prototype.runUpgrader = function(){
 	if(this.memory.state ==  Util.UPGRADER.FILLING){
         if(this.store.getFreeCapacity() == 0){

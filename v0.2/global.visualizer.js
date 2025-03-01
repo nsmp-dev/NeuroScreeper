@@ -1,4 +1,6 @@
+// visualizer module that displays various stats and populations in the relevant rooms
 module.exports = {
+	// renders the stats in the given room
 	render: function(room, room_data){
 		let times = Memory.timer_log;
 

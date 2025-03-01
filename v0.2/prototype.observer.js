@@ -1,5 +1,6 @@
 const Util = require('global.util');
 
+// run the observer, keeping a log of rooms to be scanned and scanning the next one
 StructureObserver.prototype.run = function(){
 	if (Memory.observer_log == undefined) {
 		Memory.observer_log = {};

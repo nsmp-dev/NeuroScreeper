@@ -1,4 +1,6 @@
+// how often to run the tower
 StructureTower.prototype.TIMER_LENGTH = 10;
+// run the tower, shooting enemies, repairing structures and healing creeps
 StructureTower.prototype.run = function(){
 	if (this.store[RESOURCE_ENERGY] < 100) {
 		return;

@@ -2,8 +2,11 @@ const Colony = require("controller.colony");
 const Expansion = require("controller.expansion");
 const Util = require("global.util");
 
+// room manager module that handles scanning/adding new rooms
 module.exports = {
+	// how often to recalculate the populations
 	POPULATION_TIMER_LENGTH: 10,
+	// create all the starter data needed to run the system
 	initialize: function() {
 		Memory.room_data = {};
 		Memory.population_timer = this.POPULATION_TIMER_LENGTH;
@@ -20,6 +23,7 @@ module.exports = {
 
 		Memory.room_data[room.name] = Colony.initialize(room, Memory.room_data[room.name]);
 	},
+	// count up all the creeps in the game
 	countPopulation: function() {
 		let pop = {};
 		
@@ -66,6 +70,7 @@ module.exports = {
 		}
 		Memory.population = pop;
 	},
+	// rescan the population occasionally, add colonies/expansions if stable, and scan nrw rooms
 	run: function() {
 		Memory.population_timer++;
 
