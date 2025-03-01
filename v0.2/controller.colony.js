@@ -2,7 +2,7 @@ const Util = require('global.util');
 
 module.exports = {
 	NAME: "colony",
-	CONTRUCTION_TIMER_LENGTH: 10,
+	CONSTRUCTION_TIMER_LENGTH: 10,
 	POPULATION_TIMER_LENGTH: 10,
 	SATISFACTION_THRESHOLD: 0.9,
 	SATISFACTION_LOG_SIZE: 100,
@@ -15,6 +15,8 @@ module.exports = {
 
 		room_data.idle_x = idle_location.x;
 		room_data.idle_y = idle_location.y;
+		room_data.base_x = base_location.x;
+		room_data.base_y = base_location.y;
 		room_data.source_plans = source_plans;
 		room_data.structures = structures;
 		room_data.bootstrap = true;
@@ -35,19 +37,12 @@ module.exports = {
 	},
 	plan: function(room, room_data) {
 		if (room_data.population_timer > this.POPULATION_TIMER_LENGTH) {
-			if (room_data.bootstrap) {
-				// check for bootstrap ending
-				room_data = this.runBootstrapPopulation(room, room_data);
-			}else{
-				// check for bootstrap starting
-				room_data = this.runPopulation(room, room_data);
-			}
+			room_data = this.runPopulation(room, room_data);
 			room_data.population_timer = 0;
 		}else{
 			room_data.population_timer++;
 		}
 
-		
 		if (room_data.requested_creeps.length == 0) {
 			room_data.satisfaction_log.push(0);
 		}else{
@@ -58,13 +53,18 @@ module.exports = {
 			room_data.satisfaction_log.shift();
 		}
 
-		room_data.satisfied = Util.getSatifiedRatio(room_data) > this.SATISFACTION_THRESHOLD;
+		room_data.satisfied = (Util.getSatisfiedRatio(room_data) > this.SATISFACTION_THRESHOLD);
 
 		return room_data;
 	},
 	runPopulation: function(room, room_data) {
 		let pop = Memory.populations[room.name];
 		let requested_creeps = [];
+
+		// claimer
+		if (!room.controller.my && (pop[Util.CLAIMER.NAME] == undefined || pop[Util.CLAIMER.NAME] < 1)) {
+			requested_creeps.push(Util.CLAIMER.init(room.name));
+		}
 
 		// drillers and transporters
 		for (let source_id in pop.sources) {
@@ -83,7 +83,6 @@ module.exports = {
 		}
 
 		// builders
-		// noinspection DuplicatedCode
 		let site_count = room.find(FIND_MY_CONSTRUCTION_SITES).length;
 		if (site_count > 0 && (pop[Util.BUILDER.NAME] == undefined || pop[Util.BUILDER.NAME] < 2)) {
 			requested_creeps.push(Util.BUILDER.init(room.name));
@@ -118,63 +117,51 @@ module.exports = {
 		}
 
 		room_data.requested_creeps = requested_creeps;
-	},
-	runBootstrapPopulation: function(room, room_data) {
-		let pop = Memory.populations[room.name];
-		let requested_creeps = [];
-
-		if (!room.controller.my && pop[Util.CLAIMER.NAME] < 1) {
-			requested_creeps.push(Util.CLAIMER.init(room.name));
-		}else{
-			requested_creeps.push(Util.HARVESTER.init(room.name));
-			if (pop[Util.HARVESTER.NAME] == undefined || pop[Util.HARVESTER.NAME] < 2) {
-				requested_creeps.push(Util.HARVESTER.init(room.name));
-			}
-			let site_count = room.find(FIND_MY_CONSTRUCTION_SITES).length;
-			if (site_count > 0 && (pop[Util.BUILDER.NAME] == undefined || pop[Util.BUILDER.NAME] < 1)) {
-				requested_creeps.push(Util.BUILDER.init(room.name));
-			}
-		}
-
-		room_data.requested_creeps = requested_creeps;
+		return room_data;
 	},
 	run: function(room, room_data) {
-		if (room_data.construction_timer > this.CONTRUCTION_TIMER_LENGTH) {
+		if (room_data.construction_timer > this.CONSTRUCTION_TIMER_LENGTH) {
 			let site_count = room.find(FIND_MY_CONSTRUCTION_SITES).length;
-			if (site_count >= 5) {
-				return;
+			if (site_count < 5) {
+				let sources = room_data.sources;
+				let structures = room_data.structures;
+
+				sources.forEach(function(source_data){
+					if (site_count >= 5) {
+						return;
+					}
+					if (!Util.checkFor(room, source_data.container_x, source_data.container_y, STRUCTURE_CONTAINER)) {
+						let result = room.createConstructionSite(source_data.container_x, source_data.container_y, STRUCTURE_CONTAINER);
+						if (result == OK) {
+							site_count++;
+						}
+					}
+				});
+
+				structures.forEach(function(structure){
+					if (site_count >= 5) {
+						return;
+					}
+					if (!Util.checkFor(room, structure.x, structure.y, structure.type)) {
+						let result = room.createConstructionSite(structure.x, structure.y, structure.type);
+						if (result == OK) {
+							site_count++;
+						}
+					}
+				});
+				room_data.construction_timer = 0;
 			}
-
-			let sources = room_data.sources;
-			let structures = room_data.structures;
-
-			sources.forEach(function(source_data){
-				if (!Util.checkFor(room, source_data.container_x, source_data.container_y, STRUCTURE_CONTAINER)) {
-					let result = room.createConstructionSite(source_data.container_x, source_data.container_y, STRUCTURE_CONTAINER);
-					if (result == OK) {
-						site_count++;
-					}
-				}
-			});
-
-			structures.forEach(function(structure){
-				if (site_count >= 5) {
-					return;
-				}
-				if (!Util.checkFor(room, structure.x, structure.y, structure.type)) {
-					let result = room.createConstructionSite(structure.x, structure.y, structure.type);
-					if (result == OK) {
-						site_count++;
-					}
-				}
-			});
-			room_data.construction_timer = 0;
 		}else{
 			room_data.construction_timer++;
 		}
 
 		if (room_data.requested_creeps.length > 0) {
-			let success = room.spawnRole(room_data.requested_creeps[0]);
+			let success = false;
+			if (room_data.requested_creeps[0].role == Util.CLAIMER.NAME) {
+				success = room.spawnRoleGlobal(room_data.requested_creeps[0]);
+			}else{
+				success = room.spawnRole(room_data.requested_creeps[0]);
+			}
 			if (success) {
 				room_data.requested_creeps.shift();
 			}

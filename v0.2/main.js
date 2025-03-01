@@ -45,21 +45,15 @@ module.exports.loop = function () {
 	}
 
 	for (let name in Memory.room_data) {
-		let room = Game.rooms(name);
+		let room = Game.rooms[name];
 		let room_data = Memory.room_data[name];
 
 		if (room_data.type == Colony.NAME) {
-			if (room_data.initalized !== true) {
-				room_data = Colony.initialize(room, room_data);
-			}
 			room_data = Colony.plan(room, room_data);
 			room_data = Colony.run(room, room_data);
 		}
 
 		if (room_data.type == Expansion.NAME) {
-			if (room_data.initalized !== true) {
-				room_data = Expansion.initialize(room, room_data);
-			}
 			room_data = Expansion.plan(room, room_data);
 			room_data = Expansion.run(room, room_data);
 		}

@@ -1,3 +1,5 @@
+const Util = require('global.util');
+
 Room.prototype.getIdleLocation = function(structures){
 	return this.getClearArea(5,5,structures);
 };
@@ -448,5 +450,36 @@ Room.prototype.spawnRole = function(memory){
 		}
 	}
 	
+	return success;
+};
+
+Room.prototype.spawnRoleGlobal = function(memory){
+	let success = false;
+	let spawns = [];
+	let role = Util.getRole(memory.role);
+
+
+	for(let name in Game.spawns) {
+		if (Game.spawns[name].spawning == null && Game.spawns[name].room.energyAvailable > role.ENERGY_COST) {
+			spawns.push(Game.spawns[name]);
+		}
+	}
+
+	if (spawns.length > 0) {
+		for (let i = 10; i > 0; i--) {
+			let result = spawns[0].spawnCreep(Util.multiArray(role.BODY, i), "test", {
+				memory: memory,
+				dryRun: true,
+			});
+
+			if (result == OK) {
+				spawns[0].spawnCreep(Util.multiArray(role.BODY, i), role.NAME + Util.generateId(), {
+					memory: memory,
+				});
+				success = true;
+			}
+		}
+	}
+
 	return success;
 };

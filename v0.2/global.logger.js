@@ -10,7 +10,6 @@ module.exports = {
 			console.log(JSON.stringify(obj));
 		}
 	},
-
 	printSummary: function(){
 		let str = "";
 		str += "tick: " + Game.time;

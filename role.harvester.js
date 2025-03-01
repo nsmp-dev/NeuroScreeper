@@ -1,4 +1,4 @@
-const Util = require("global.util");
+const Util = require("my_util");
 
 Creep.prototype.runHarvester = function(){
 	if(this.memory.state ==  Util.HARVESTER.HARVESTING){

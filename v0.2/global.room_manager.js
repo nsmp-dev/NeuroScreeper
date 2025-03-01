@@ -1,5 +1,6 @@
 const Colony = require("controller.colony");
 const Expansion = require("controller.expansion");
+const Util = require("global.util");
 
 module.exports = {
 	POPULATION_TIMER_LENGTH: 10,
@@ -8,11 +9,8 @@ module.exports = {
 		Memory.population_timer = this.POPULATION_TIMER_LENGTH;
 		Memory.population = {};
 
-		let room = null;
-		for (let spawn_name in Game.spawns) {
-			room = Game.spawns[spawn_name];
-			break;
-		}
+		let spawn_name = Object.keys(Game.spawns)[0];
+		let room = Game.spawns[spawn_name].room;
 
 		Memory.room_data[room.name] = {
 			type: Colony.NAME,
@@ -26,15 +24,14 @@ module.exports = {
 		let pop = {};
 		
 		for (let name in Memory.room_data) {
-			if (Memory.room_data[name].type == Capitol.NAME ||
-				Memory.room_data[name].type == Colony.NAME ||
+			if (Memory.room_data[name].type == Colony.NAME ||
 				Memory.room_data[name].type == Expansion.NAME) {
 
 				pop[name] = {};
 				pop[name].sources = {};
 				pop[name].total = 0;
 
-				let sources = Memory.room_data[name].sources;
+				let sources = Memory.room_data[name].source_plans;
 
 				sources.forEach(function(source){
 					pop[name].sources[source.source_id] = {
@@ -87,7 +84,42 @@ module.exports = {
 			}
 		}
 
-		// decide if we are stable
-			// if stable, add a room
+		let satisfied = true;
+		let colony_count = 0;
+		let expansion_count = 0;
+
+		for (let name in Memory.room_data) {
+			if ((Memory.room_data[name].type == Colony.NAME || Memory.room_data[name].type == Expansion.NAME) && !Memory.room_data[name].satisfied) {
+				satisfied = false;
+			}
+			if (Memory.room_data[name].type == Colony.NAME) {
+				colony_count++;
+			}
+			if (Memory.room_data[name].type == Expansion.NAME) {
+				expansion_count++;
+			}
+		}
+
+		if (satisfied) {
+			if (expansion_count > colony_count) {
+				if (colony_count < Game.gcl.level) {
+					for (let name in Memory.room_data) {
+						if (Memory.room_data[name].possible_colony) {
+							Memory.room_data[name].type = Colony.NAME;
+							Memory.room_data[name] = Colony.initialize(Game.rooms[name]);
+							break;
+						}
+					}
+				}
+			}else{
+				for (let name in Memory.room_data) {
+					if (Memory.room_data[name].possible_expansion) {
+						Memory.room_data[name].type = Expansion.NAME;
+						Memory.room_data[name] = Expansion.initialize(Game.rooms[name]);
+						break;
+					}
+				}
+			}
+		}
 	},
 };

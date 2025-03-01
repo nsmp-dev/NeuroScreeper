@@ -289,7 +289,7 @@ module.exports = {
 		}
 	},
 
-	getSatifiedRatio: function(room_data){
+	getSatisfiedRatio: function(room_data){
 		let total = 0;
 		room_data.satisfaction_log.forEach(function(amount){
 			total += amount;

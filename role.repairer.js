@@ -1,4 +1,4 @@
-const Util = require("global.util");
+const Util = require("my_util");
 
 Creep.prototype.runRepairer = function(){
 	if(this.memory.state ==  Util.REPAIRER.FILLING){

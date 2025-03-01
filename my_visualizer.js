@@ -1,5 +1,3 @@
-const Population = require('my_population');
-
 module.exports = {
     TEXT_STYLE: {
 	    font: 0.8,
