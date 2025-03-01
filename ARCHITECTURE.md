@@ -16,7 +16,12 @@ run off of a room_log, providing the data to the planning and running functions
 - expansion
 
 ## global contextualized
-initializer code and 
+-initializer code
+-room management
+-utilities
+-timer
+-visualizer
+-logger
 
 
 ## request/fill systems
