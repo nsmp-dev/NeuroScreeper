@@ -7,35 +7,36 @@
  *
  * @see {@link http://support.screeps.com/hc/en-us/articles/208488525-Nuke}
  */
-Nuke = function() { };
+Nuke = function () {
+};
 
 Nuke.prototype =
-{
-    /**
-     * A unique object identificator.
-     * You can use Game.getObjectById method to retrieve an object instance by its id.
-     *
-     * @see {@link http://support.screeps.com/hc/en-us/articles/208488525-Nuke#id}
-     *
-     * @type {string}
-     */
-    id: "",
+    {
+        /**
+         * A unique object identificator.
+         * You can use Game.getObjectById method to retrieve an object instance by its id.
+         *
+         * @see {@link http://support.screeps.com/hc/en-us/articles/208488525-Nuke#id}
+         *
+         * @type {string}
+         */
+        id: "",
 
-    /**
-     * The name of the room where this nuke has been launched from.
-     *
-     * @see {@link http://support.screeps.com/hc/en-us/articles/208488525-Nuke#launchRoomName}
-     *
-     * @type {string}
-     */
-    launchRoomName: "",
+        /**
+         * The name of the room where this nuke has been launched from.
+         *
+         * @see {@link http://support.screeps.com/hc/en-us/articles/208488525-Nuke#launchRoomName}
+         *
+         * @type {string}
+         */
+        launchRoomName: "",
 
-    /**
-     * The remaining landing time.
-     *
-     * @see {@link http://support.screeps.com/hc/en-us/articles/208488525-Nuke#timeToLand}
-     *
-     * @type {number}
-     */
-    timeToLand: 0
-};
+        /**
+         * The remaining landing time.
+         *
+         * @see {@link http://support.screeps.com/hc/en-us/articles/208488525-Nuke#timeToLand}
+         *
+         * @type {number}
+         */
+        timeToLand: 0
+    };

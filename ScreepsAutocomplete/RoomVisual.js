@@ -18,7 +18,8 @@
  *
  * @see {@link http://support.screeps.com/hc/en-us/articles/208488525-Nuke}
  */
-RoomVisual = function(roomName) { };
+RoomVisual = function (roomName) {
+};
 
 RoomVisual.prototype =
     {
@@ -46,24 +47,26 @@ RoomVisual.prototype =
          *
          * @return {RoomVisual}
          */
-        line: function(x1, y1, x2, y2, style) { },
+        line: function (x1, y1, x2, y2, style) {
+        },
 
         /**
-          * Draw a circle.
-          *
-          * @see {@link https://docs.screeps.com/api/#RoomVisual.circle}
-          *
-          * @type {function}
-          *
-          * @param {number | RoomPosition} x The X coordinate of the center.
-          * @param {number} [y] The Y coordinate of the center.
-          * @param {Object} [style] Style object
-          *
-          * @alias circle(pos, [style])
-          *
-          * @return {RoomVisual}
-          */
-        circle: function(x, y, style) { },
+         * Draw a circle.
+         *
+         * @see {@link https://docs.screeps.com/api/#RoomVisual.circle}
+         *
+         * @type {function}
+         *
+         * @param {number | RoomPosition} x The X coordinate of the center.
+         * @param {number} [y] The Y coordinate of the center.
+         * @param {Object} [style] Style object
+         *
+         * @alias circle(pos, [style])
+         *
+         * @return {RoomVisual}
+         */
+        circle: function (x, y, style) {
+        },
 
         /**
          * Draw a rectangle.
@@ -82,7 +85,8 @@ RoomVisual.prototype =
          *
          * @return {RoomVisual}
          */
-        rect(x, y, width, height, style) { },
+        rect(x, y, width, height, style) {
+        },
 
         /**
          * Draw a line.
@@ -96,7 +100,8 @@ RoomVisual.prototype =
          *
          * @return {RoomVisual}
          */
-        poly: function(points, style) { },
+        poly: function (points, style) {
+        },
 
         /**
          * Draw a text label. You can use any valid Unicode characters, including emoji.
@@ -114,7 +119,8 @@ RoomVisual.prototype =
          *
          * @return {RoomVisual}
          */
-         text: function(text, x, y, style) { },
+        text: function (text, x, y, style) {
+        },
 
         /**
          * Remove all visuals from the room.
@@ -125,7 +131,8 @@ RoomVisual.prototype =
          *
          * @return {RoomVisual}
          */
-         clear: function() { },
+        clear: function () {
+        },
 
         /**
          * Get the stored size of all visuals added in the room in the current tick. It must not exceed 512,000 (500 KB).
@@ -134,5 +141,6 @@ RoomVisual.prototype =
          *
          * @return {number} The size of the visuals in bytes.
          */
-         getSize: function() { },
+        getSize: function () {
+        },
     };

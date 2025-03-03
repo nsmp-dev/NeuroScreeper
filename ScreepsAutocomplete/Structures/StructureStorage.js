@@ -7,28 +7,29 @@
  *
  * @see {@link http://support.screeps.com/hc/en-us/articles/208436805-StructureStorage}
  */
-StructureStorage = function() { };
+StructureStorage = function () {
+};
 
 StructureStorage.prototype =
-{
-    /**
-     * A Store object that contains cargo of this structure.
-     *
-     * @see {@link https://docs.screeps.com/api/#StructureStorage.store}
-     *
-     * @type {Store}
-     */
-    store: {},
+    {
+        /**
+         * A Store object that contains cargo of this structure.
+         *
+         * @see {@link https://docs.screeps.com/api/#StructureStorage.store}
+         *
+         * @type {Store}
+         */
+        store: {},
 
-    /**
-     * @deprecated Since version 4.x, replaced by `.store.getCapacity()`.
-     *
-     * The total amount of resources the storage can contain.
-     *
-     * @see {@link http://support.screeps.com/hc/en-us/articles/208436805-StructureStorage#storeCapacity}
-     *
-     * @type {number}
-     */
-    storeCapacity: 0,
+        /**
+         * @deprecated Since version 4.x, replaced by `.store.getCapacity()`.
+         *
+         * The total amount of resources the storage can contain.
+         *
+         * @see {@link http://support.screeps.com/hc/en-us/articles/208436805-StructureStorage#storeCapacity}
+         *
+         * @type {number}
+         */
+        storeCapacity: 0,
 
-};
+    };

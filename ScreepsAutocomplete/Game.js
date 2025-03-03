@@ -57,32 +57,35 @@ Game = {
          *
          * @return {object} Returns an objects with heap statistics in the following format:
          * {
-               "total_heap_size": 29085696,
-               "total_heap_size_executable": 3670016,
-               "total_physical_size": 26447928,
-               "total_available_size": 319649520,
-               "used_heap_size": 17493824,
-               "heap_size_limit": 343932928,
-               "malloced_memory": 8192,
-               "peak_malloced_memory": 1060096,
-               "does_zap_garbage": 0,
-               "externally_allocated_size": 38430000
-           }
+         "total_heap_size": 29085696,
+         "total_heap_size_executable": 3670016,
+         "total_physical_size": 26447928,
+         "total_available_size": 319649520,
+         "used_heap_size": 17493824,
+         "heap_size_limit": 343932928,
+         "malloced_memory": 8192,
+         "peak_malloced_memory": 1060096,
+         "does_zap_garbage": 0,
+         "externally_allocated_size": 38430000
+         }
          */
-        getHeapStatistics: function() {},
+        getHeapStatistics: function () {
+        },
 
         /**
          * Get amount of CPU time used from the beginning of the current game tick. Always returns 0 in the Simulation mode.
          *
          * @return {number} Returns the currently used CPU time as a float number
          */
-        getUsed: function () {},
+        getUsed: function () {
+        },
 
         /**
          * This method is only available when Virtual machine is set to Isolated in your account runtime settings.
          * Reset your runtime environment and wipe all data in heap memory.
          */
-        halt: function() {},
+        halt: function () {
+        },
 
         /**
          * Allocate CPU limits to different shards. Total amount of CPU should remain equal to Game.cpu.shardLimits. This method can be used only once per 12 hours.
@@ -90,7 +93,8 @@ Game = {
          *
          * @return {OK|ERR_BUSY|ERR_INVALID_ARGS}
          */
-        setShardLimits: function(limits) {},
+        setShardLimits: function (limits) {
+        },
     },
 
 
@@ -199,7 +203,8 @@ Game = {
          * @param {string} roomName
          * @return {{status: 'normal' | 'closed' | 'novice' | 'respawn', timestamp: number | null}}
          */
-        getRoomStatus: function (roomName) {},
+        getRoomStatus: function (roomName) {
+        },
 
         /**
          * List all exits available from the room with the given name.
@@ -207,19 +212,20 @@ Game = {
          * @param {string} roomName The room name.
          *
          * @return {null|object} The exits information in the following format, or null if the room not found.
-           {
-               "1": "W8N4",    // TOP
-               "3": "W7N3",    // RIGHT
-               "5": "W8N2",    // BOTTOM
-               "7": "W9N3"     // LEFT
-           }
+         {
+         "1": "W8N4",    // TOP
+         "3": "W7N3",    // RIGHT
+         "5": "W8N2",    // BOTTOM
+         "7": "W9N3"     // LEFT
+         }
          *
          * @type {function}
          * @see {@link http://support.screeps.com/hc/en-us/articles/203079191-Map#describeExits}
          * @example
          * var exits = Game.map.describeExits('W8N3');
          */
-        describeExits: function (roomName) {},
+        describeExits: function (roomName) {
+        },
 
         /**
          * Find the exit direction from the given room en route to another room.
@@ -233,7 +239,8 @@ Game = {
          *
          * @see {@link http://support.screeps.com/hc/en-us/articles/203079191-Map#findExit}
          */
-        findExit: function (fromRoom, toRoom, opts) {},
+        findExit: function (fromRoom, toRoom, opts) {
+        },
 
         /**
          * Find route from the given room to another room.
@@ -248,12 +255,13 @@ Game = {
          * @param {function} [opts.routeCallback] This callback accepts two arguments: function(roomName, fromRoomName). It can be used to calculate the cost of entering that room. You can use this to do things like prioritize your own rooms, or avoid some rooms. You can return a floating point cost or Infinity to block the room.
          *
          * @return {Array|number|ERR_NO_PATH} The route array in the following format:
-            [
-                { exit: FIND_EXIT_RIGHT, room: 'arena21' },
-                { exit: FIND_EXIT_BOTTOM, room: 'arena22' }
-            ]
+         [
+         { exit: FIND_EXIT_RIGHT, room: 'arena21' },
+         { exit: FIND_EXIT_BOTTOM, room: 'arena22' }
+         ]
          */
-        findRoute: function (fromRoom, toRoom, opts) {},
+        findRoute: function (fromRoom, toRoom, opts) {
+        },
 
         /**
          * Get the linear distance (in rooms) between two rooms.
@@ -269,7 +277,8 @@ Game = {
          *
          * @return {number} A number of rooms between the given two rooms.
          */
-        getRoomLinearDistance: function (roomName1, roomName2, continuous) {},
+        getRoomLinearDistance: function (roomName1, roomName2, continuous) {
+        },
 
         /**
          * Get a Room.Terrain object which provides fast access to static terrain data. This method works for any room in the world even if you have no access to it.
@@ -282,7 +291,8 @@ Game = {
          *
          * @return {Room.Terrain} Returns new Room.Terrain object.
          */
-        getRoomTerrain: function(roomName) {},
+        getRoomTerrain: function (roomName) {
+        },
 
         /**
          * Get terrain type at the specified room position.
@@ -303,7 +313,8 @@ Game = {
          *
          * @return {"plain"|"swamp"|"wall"}
          */
-        getTerrainAt: function (x, y, roomName) {},
+        getTerrainAt: function (x, y, roomName) {
+        },
 
         /**
          * Check if the room with the given name is available to move into
@@ -316,7 +327,8 @@ Game = {
          *
          * @return {boolean}
          */
-        isRoomAvailable: function (roomName) {},
+        isRoomAvailable: function (roomName) {
+        },
         /**
          * get world size
          *
@@ -326,7 +338,7 @@ Game = {
          *
          * @return {number}
          */
-        getWorldSize: function() {
+        getWorldSize: function () {
             return undefined;
         }
     },
@@ -349,21 +361,21 @@ Game = {
         /**
          * An array of the last 100 incoming transactions to your terminals with the following format:
          [{
-            transactionId : "56dec546a180ce641dd65960",
-            time : 10390687,
-            sender : {username: "Sender"},
-            recipient : {username: "Me"},
-            resourceType : "U",
-            amount : 100,
-            from : "W0N0",
-            to : "W10N10",
-            description : "trade contract #1",
-            order: {		// optional
-                id : "55c34a6b5be41a0a6e80c68b",
-                type : "sell",
-                price : 2.95
-            }
-        }]
+         transactionId : "56dec546a180ce641dd65960",
+         time : 10390687,
+         sender : {username: "Sender"},
+         recipient : {username: "Me"},
+         resourceType : "U",
+         amount : 100,
+         from : "W0N0",
+         to : "W10N10",
+         description : "trade contract #1",
+         order: {		// optional
+         id : "55c34a6b5be41a0a6e80c68b",
+         type : "sell",
+         price : 2.95
+         }
+         }]
          * @see {@link http://support.screeps.com/hc/en-us/articles/207928635-Market#incomingTransactions}
          *
          * @type {Array}
@@ -373,20 +385,20 @@ Game = {
         /**
          * An array of the last 100 outgoing transactions from your terminals with the following format:
          [{
-            transactionId : "56dec546a180ce641dd65960",
-            time : 10390687,
-            sender : {username: "Me"},
-            recipient : {username: "Recipient"},
-            resourceType : "U",
-            amount : 100,
-            from : "W0N0",
-            to : "W10N10",
-            description : "trade contract #1",
-            order: {		// optional
-                id : "55c34a6b5be41a0a6e80c68b",
-                type : "sell",
-                price : 2.95
-            }
+         transactionId : "56dec546a180ce641dd65960",
+         time : 10390687,
+         sender : {username: "Me"},
+         recipient : {username: "Recipient"},
+         resourceType : "U",
+         amount : 100,
+         from : "W0N0",
+         to : "W10N10",
+         description : "trade contract #1",
+         order: {		// optional
+         id : "55c34a6b5be41a0a6e80c68b",
+         type : "sell",
+         price : 2.95
+         }
          }]
          * @see {@link http://support.screeps.com/hc/en-us/articles/207928635-Market#outgoingTransactions}
          *
@@ -397,42 +409,42 @@ Game = {
         /**
          *An object with your active and inactive buy/sell orders on the market.
          * {
-                "55c34a6b5be41a0a6e80c68b": {
-                    id : "55c34a6b5be41a0a6e80c68b",
-                    created : 13131117,
-                    active: true,
-                    type : "sell"
-                    resourceType : "OH",
-                    roomName : "W1N1",
-                    amount : 15821,
-                    remainingAmount : 30000,
-                    totalAmount : 50000,
-                    price : 2.95
-                },
-                "55c34a6b52411a0a6e80693a": {
-                    id : "55c34a6b52411a0a6e80693a",
-                    created : 13134122,
-                    active: true,
-                    type : "buy"
-                    resourceType : "energy",
-                    roomName : "W1N1",
-                    amount : 94000,
-                    remainingAmount : 94000,
-                    totalAmount : 94000
-                    price : 0.45
-                },
-                "55c34a6b5be41a0a6e80c123": {
-                    id : "55c34a6b5be41a0a6e80c123",
-                    created : 13105123,
-                    active: false,
-                    type : "sell"
-                    resourceType : "token",
-                    amount : 0,
-                    remainingAmount : 10,
-                    totalAmount : 10,
-                    price : 50000
-                }
-            }
+         "55c34a6b5be41a0a6e80c68b": {
+         id : "55c34a6b5be41a0a6e80c68b",
+         created : 13131117,
+         active: true,
+         type : "sell"
+         resourceType : "OH",
+         roomName : "W1N1",
+         amount : 15821,
+         remainingAmount : 30000,
+         totalAmount : 50000,
+         price : 2.95
+         },
+         "55c34a6b52411a0a6e80693a": {
+         id : "55c34a6b52411a0a6e80693a",
+         created : 13134122,
+         active: true,
+         type : "buy"
+         resourceType : "energy",
+         roomName : "W1N1",
+         amount : 94000,
+         remainingAmount : 94000,
+         totalAmount : 94000
+         price : 0.45
+         },
+         "55c34a6b5be41a0a6e80c123": {
+         id : "55c34a6b5be41a0a6e80c123",
+         created : 13105123,
+         active: false,
+         type : "sell"
+         resourceType : "token",
+         amount : 0,
+         remainingAmount : 10,
+         totalAmount : 10,
+         price : 50000
+         }
+         }
          * @see {@link http://support.screeps.com/hc/en-us/articles/207928635-Market#orders}
          *
          * @type {Array<string,Order>}

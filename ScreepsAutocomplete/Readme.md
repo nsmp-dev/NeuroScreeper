@@ -7,13 +7,19 @@ somewhat in JetBrain's WebStorm
 ## How to Install
 
 #### Webstorm (Or Other Jetbrains IDE's)
-This can be done by quite simply copying the `ScreepsAutocomplete` folder in their project, and Webstorm should automatically
+
+This can be done by quite simply copying the `ScreepsAutocomplete` folder in their project, and Webstorm should
+automatically
 detect it and add it to the autocompletion
+
 ###### Adding it as a library
-Instead of copying the `ScreepsAutocomplete` folder to each and every project folder, you can add it as a global library.
+
+Instead of copying the `ScreepsAutocomplete` folder to each and every project folder, you can add it as a global
+library.
 
 * Create a new project in Webstorm if you don't already have one and open it.
-* In the menu bar at the top of the screen, navigate to `File` -> `Settings` -> `Languages & Frameworks` -> `JavaScript` -> `Libraries`
+* In the menu bar at the top of the screen, navigate to `File` -> `Settings` -> `Languages & Frameworks` ->
+  `JavaScript` -> `Libraries`
 * Click `Add`.
 * Name the Library whatever you want.
 * Set `Framework type` to custom, if it is not already so. `Version` can be left blank.
@@ -27,29 +33,40 @@ Instead of copying the `ScreepsAutocomplete` folder to each and every project fo
 Webstorm should automatically detect the library and add it to the autocompletion.
 
 #### Visual Studio
-1. Create a new empty web site (File -> New -> Web Site -> ASP.NET Empty Web Site) and set the location to the location of your program.
-2. Copy the `ScreepsAutocomplete` folder into your project and create a new file called `_references.js` (right click in solution explorer -> Add New Item -> `_references.js`).
-3. Right click within the empty file and select `Update JavaScript References` which will populate the file and make autocomplete avaliable.
+
+1. Create a new empty web site (File -> New -> Web Site -> ASP.NET Empty Web Site) and set the location to the location
+   of your program.
+2. Copy the `ScreepsAutocomplete` folder into your project and create a new file called `_references.js` (right click in
+   solution explorer -> Add New Item -> `_references.js`).
+3. Right click within the empty file and select `Update JavaScript References` which will populate the file and make
+   autocomplete avaliable.
 
 [Video](https://youtu.be/XgCBdF1BBdE?t=48s)
 
 #### Sublime Text
-There are two ways to enable Autocomplete in Sublime Text, both of them require installing a plugin through 
+
+There are two ways to enable Autocomplete in Sublime Text, both of them require installing a plugin through
 [`Package Control`](https://packagecontrol.io/installation), and copying `ScreepsAutocomplete` in to your project.
 
- * `TernJS` - Install `TernJS` through `Package Control`, restart Sublime Text and try `var room = new Room(); room.lookAt(x, y)` 
- to see if Autocomplete is working. If not, try the next options
- 
- * `SublimeCodeIntel` - Install `SublimeCodeIntel` through `Package Control`. Go to `Preferences > Package Settings > SublimeCodeIntel > Settings -- User`
- and copy the contents of `ScreepsAutocomplete/config/SublimeCodeIntel.json` in to the file that opens. Save and restart Sublime
- Text. After waiting for CodeIntel to process JavaScript, Autocomplete should be working
- 
-#### Atom
-Integration with Atom is done through use of the [`atom-ternjs`](https://github.com/tststs/atom-ternjs) package. Here's the steps
+* `TernJS` - Install `TernJS` through `Package Control`, restart Sublime Text and try
+  `var room = new Room(); room.lookAt(x, y)`
+  to see if Autocomplete is working. If not, try the next options
 
- * Copy `ScreepsAutocomplete` in to your project folder
- * Install the `atom-ternjs` package
- * Put the following in your `.tern-project` file
+* `SublimeCodeIntel` - Install `SublimeCodeIntel` through `Package Control`. Go to
+  `Preferences > Package Settings > SublimeCodeIntel > Settings -- User`
+  and copy the contents of `ScreepsAutocomplete/config/SublimeCodeIntel.json` in to the file that opens. Save and
+  restart Sublime
+  Text. After waiting for CodeIntel to process JavaScript, Autocomplete should be working
+
+#### Atom
+
+Integration with Atom is done through use of the [`atom-ternjs`](https://github.com/tststs/atom-ternjs) package. Here's
+the steps
+
+* Copy `ScreepsAutocomplete` in to your project folder
+* Install the `atom-ternjs` package
+* Put the following in your `.tern-project` file
+
 ```json
 {
   "ecmaVersion": 6,
@@ -59,4 +76,5 @@ Integration with Atom is done through use of the [`atom-ternjs`](https://github.
   ]
 }
 ```
- * Restart and Enjoy
+
+* Restart and Enjoy

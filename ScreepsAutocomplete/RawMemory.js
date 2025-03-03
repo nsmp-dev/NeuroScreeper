@@ -55,7 +55,8 @@ RawMemory = {
      *
      * @return {string}
      */
-    get: function() { },
+    get: function () {
+    },
 
     /**
      * Set new memory value.
@@ -68,7 +69,8 @@ RawMemory = {
      *
      * @return {void}
      */
-    set: function(value) { },
+    set: function (value) {
+    },
 
     /**
      * Request memory segments using the list of their IDs.
@@ -85,7 +87,8 @@ RawMemory = {
      *
      * @return {void}
      */
-    setActiveSegments: function(ids) { },
+    setActiveSegments: function (ids) {
+    },
 
     /**
      * Request a memory segment of another user.
@@ -103,7 +106,8 @@ RawMemory = {
      *
      * @return {void}
      */
-    setActiveForeignSegment: function(username, id) { },
+    setActiveForeignSegment: function (username, id) {
+    },
 
     /**
      * Set the specified segment as your default public segment.
@@ -117,7 +121,8 @@ RawMemory = {
      *
      * @return {void}
      */
-    setDefaultPublicSegment: function(id) { },
+    setDefaultPublicSegment: function (id) {
+    },
 
     /**
      * Set specified segments as public.
@@ -131,5 +136,6 @@ RawMemory = {
      *
      * @return {void}
      */
-    setPublicSegments: function(ids) { },
+    setPublicSegments: function (ids) {
+    },
 };

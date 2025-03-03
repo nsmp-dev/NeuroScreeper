@@ -1,44 +1,44 @@
 const Util = require("global.util");
 
 // upgrader that upgrades the room's controller
-Creep.prototype.runUpgrader = function(){
-	if(this.memory.state ==  Util.UPGRADER.FILLING){
-        if(this.store.getFreeCapacity() == 0){
-        	this.memory.state = Util.UPGRADER.UPGRADING;
-        	this.memory.filling_target = null;
-        }else{
-        	let target = Game.getObjectById(this.memory.filling_target);
-        	
-        	if (target == null) {
-	    		target = this.getFillTarget();
-	    		if (target !== null) {
-	    		    this.memory.filling_target = target.id;
-	    		}
-	    	}
+Creep.prototype.runUpgrader = function () {
+    if (this.memory.state == Util.UPGRADER.FILLING) {
+        if (this.store.getFreeCapacity() == 0) {
+            this.memory.state = Util.UPGRADER.UPGRADING;
+            this.memory.filling_target = null;
+        } else {
+            let target = Game.getObjectById(this.memory.filling_target);
 
-        	if (target != null) {
-        	    if (target instanceof Resource) {
-        	        if (this.pickup(target) == ERR_NOT_IN_RANGE) {
-    		        	this.moveTo(target);
-    		        }
-        	    }else{
-        	        if (this.withdraw(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-    		        	this.moveTo(target);
-    		        }
-        	    }
-        	}	
+            if (target == null) {
+                target = this.getFillTarget();
+                if (target !== null) {
+                    this.memory.filling_target = target.id;
+                }
+            }
+
+            if (target != null) {
+                if (target instanceof Resource) {
+                    if (this.pickup(target) == ERR_NOT_IN_RANGE) {
+                        this.moveTo(target);
+                    }
+                } else {
+                    if (this.withdraw(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                        this.moveTo(target);
+                    }
+                }
+            }
         }
     }
-    if(this.memory.state ==  Util.UPGRADER.UPGRADING){
-    	if(this.store[RESOURCE_ENERGY] == 0){
-        	this.memory.state = Util.UPGRADER.FILLING;
-        	this.memory.filling_target = this.getFillTarget().id;
-        }else{
-        	let controller = this.room.controller;
+    if (this.memory.state == Util.UPGRADER.UPGRADING) {
+        if (this.store[RESOURCE_ENERGY] == 0) {
+            this.memory.state = Util.UPGRADER.FILLING;
+            this.memory.filling_target = this.getFillTarget().id;
+        } else {
+            let controller = this.room.controller;
 
-        	if (this.upgradeController(controller) == ERR_NOT_IN_RANGE) {
-        		this.moveTo(controller);
-        	}
+            if (this.upgradeController(controller) == ERR_NOT_IN_RANGE) {
+                this.moveTo(controller);
+            }
         }
     }
 };

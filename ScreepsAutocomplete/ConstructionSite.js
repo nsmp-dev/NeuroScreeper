@@ -8,76 +8,78 @@
  *
  * @see {@link http://support.screeps.com/hc/en-us/articles/203016342-ConstructionSite}
  */
-ConstructionSite = function() { };
+ConstructionSite = function () {
+};
 
 ConstructionSite.prototype =
-{
-    /**
-     * A unique object identificator.
-     * You can use Game.getObjectById method to retrieve an object instance by its id.
-     *
-     * @see {@link http://support.screeps.com/hc/en-us/articles/203016342-ConstructionSite#id}
-     *
-     * @type {string}
-     */
-    id: "",
-
-    /**
-     * Whether this is your own construction site.
-     *
-     * @see {@link http://support.screeps.com/hc/en-us/articles/203016342-ConstructionSite#my}
-     *
-     * @type {boolean}
-     */
-    my: true,
-
-    /**
-     * An object with the structure’s owner info
-     *
-     * @see {@link http://support.screeps.com/hc/en-us/articles/203016342-ConstructionSite#owner}
-     *
-     * @type {{username: string}}
-     */
-    owner:
     {
-        username: ""
-    },
+        /**
+         * A unique object identificator.
+         * You can use Game.getObjectById method to retrieve an object instance by its id.
+         *
+         * @see {@link http://support.screeps.com/hc/en-us/articles/203016342-ConstructionSite#id}
+         *
+         * @type {string}
+         */
+        id: "",
 
-    /**
-     * The current construction progress.
-     *
-     * @see {@link http://support.screeps.com/hc/en-us/articles/203016342-ConstructionSite#progress}
-     *
-     * @type {number}
-     */
-    progress: 0,
+        /**
+         * Whether this is your own construction site.
+         *
+         * @see {@link http://support.screeps.com/hc/en-us/articles/203016342-ConstructionSite#my}
+         *
+         * @type {boolean}
+         */
+        my: true,
 
-    /**
-     * The total construction progress needed for the structure to be built.
-     *
-     * @see {@link http://support.screeps.com/hc/en-us/articles/203016342-ConstructionSite#progressTotal}
-     *
-     * @type {number}
-     */
-    progressTotal: 0,
+        /**
+         * An object with the structure’s owner info
+         *
+         * @see {@link http://support.screeps.com/hc/en-us/articles/203016342-ConstructionSite#owner}
+         *
+         * @type {{username: string}}
+         */
+        owner:
+            {
+                username: ""
+            },
 
-    /**
-     * One of the STRUCTURE_* constants.
-     *
-     * @see {@link http://support.screeps.com/hc/en-us/articles/203016342-ConstructionSite#structureType}
-     *
-     * @type {string}
-     */
-    structureType: "",
+        /**
+         * The current construction progress.
+         *
+         * @see {@link http://support.screeps.com/hc/en-us/articles/203016342-ConstructionSite#progress}
+         *
+         * @type {number}
+         */
+        progress: 0,
 
-    /**
-     * Remove the construction site.
-     *
-     * @see {@link http://support.screeps.com/hc/en-us/articles/203016342-ConstructionSite#remove}
-     *
-     * @type {function}
-     *
-     * @return {number|OK|ERR_NOT_OWNER}
-     */
-    remove: function() { }
-};
+        /**
+         * The total construction progress needed for the structure to be built.
+         *
+         * @see {@link http://support.screeps.com/hc/en-us/articles/203016342-ConstructionSite#progressTotal}
+         *
+         * @type {number}
+         */
+        progressTotal: 0,
+
+        /**
+         * One of the STRUCTURE_* constants.
+         *
+         * @see {@link http://support.screeps.com/hc/en-us/articles/203016342-ConstructionSite#structureType}
+         *
+         * @type {string}
+         */
+        structureType: "",
+
+        /**
+         * Remove the construction site.
+         *
+         * @see {@link http://support.screeps.com/hc/en-us/articles/203016342-ConstructionSite#remove}
+         *
+         * @type {function}
+         *
+         * @return {number|OK|ERR_NOT_OWNER}
+         */
+        remove: function () {
+        }
+    };
