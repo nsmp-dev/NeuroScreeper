@@ -1,6 +1,5 @@
-const Util = require("global.util");
+const Util = require("my_util");
 
-// harvester that harvests energy from a source and builds any sites found
 Creep.prototype.runHarvester = function(){
 	if(this.memory.state ==  Util.HARVESTER.HARVESTING){
 	    if(this.store.getFreeCapacity() == 0){

@@ -1,4 +1,3 @@
-// scout that explores rooms via a BFS search algorithm
 Creep.prototype.runScout = function(){
 	if (this.memory.room_queue.length == 0) {
 		this.memory.room_queue.push(this.room.name);

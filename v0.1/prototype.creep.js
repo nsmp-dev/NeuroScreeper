@@ -1,4 +1,4 @@
-const Util = require("global.util");
+const Util = require("my_util");
 require('role.attacker');
 require('role.builder');
 require('role.claimer');
@@ -11,7 +11,6 @@ require('role.scout');
 require('role.transporter');
 require('role.upgrader');
 
-// gets a dumping target for a queen
 Creep.prototype.getQueenDumpTarget = function(){
 	let targets = this.room.find(FIND_MY_STRUCTURES, {
 		filter: function(structure){ 
@@ -46,7 +45,6 @@ Creep.prototype.getQueenDumpTarget = function(){
 	return this.pos.findClosestByPath(targets);
 };
 
-// gets a dumping target for a harvester
 Creep.prototype.getHarvesterDumpTarget = function(){
 	let sites = this.room.find(FIND_MY_CONSTRUCTION_SITES);
 
@@ -75,7 +73,6 @@ Creep.prototype.getHarvesterDumpTarget = function(){
 	return this.pos.findClosestByPath(targets);
 };
 
-// gets a general dumping target
 Creep.prototype.getDumpTarget = function(){
 	let targets = this.room.find(FIND_MY_STRUCTURES, {
 		filter: function(structure){ 
@@ -98,7 +95,6 @@ Creep.prototype.getDumpTarget = function(){
 	return this.pos.findClosestByPath(targets);
 };
 
-// gets a general filling target
 Creep.prototype.getFillTarget = function(){
 	let targets = this.room.find(FIND_DROPPED_RESOURCES, { filter: { resourceType: RESOURCE_ENERGY }});
 
@@ -118,12 +114,10 @@ Creep.prototype.getFillTarget = function(){
 	return this.pos.findClosestByPath(targets);
 };
 
-// get a building target
 Creep.prototype.getBuildTarget = function(){
 	return this.pos.findClosestByPath(FIND_MY_CONSTRUCTION_SITES);
 };
 
-// get a repairing target
 Creep.prototype.getRepairTarget = function(){
 	return this.pos.findClosestByPath(FIND_STRUCTURES, {
 		filter: function(structure){
@@ -132,12 +126,10 @@ Creep.prototype.getRepairTarget = function(){
 	});
 };
 
-// get a source target
 Creep.prototype.getSourceTarget = function(){
 	return this.pos.findClosestByPath(FIND_SOURCES_ACTIVE);
 };
 
-// move toward the idle location for the current room to get out of the way
 Creep.prototype.idle = function(){
 	let room_data = Memory.room_log[this.room.name];
 
@@ -146,7 +138,6 @@ Creep.prototype.idle = function(){
 	}
 };
 
-// run the relevant function for the role that this creep has
 Creep.prototype.run = function(){
 	switch (this.memory.role) {
 		case Util.ATTACKER.NAME:

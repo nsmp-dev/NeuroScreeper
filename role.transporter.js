@@ -1,5 +1,6 @@
-const Util = require("my_util");
+const Util = require("global.util");
 
+// transporter that takes energy from the containers under drillers and dumps the energy into the base
 Creep.prototype.runTransporter = function(){
 	if(this.memory.state ==  Util.TRANSPORTER.FILLING){
 	    if(this.store.getFreeCapacity() == 0){

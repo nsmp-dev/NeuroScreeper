@@ -54,6 +54,7 @@ module.exports = {
 	},
 	// do the planning step where we gather data to update
 	plan: function(room, room_data) {
+
 		if (room_data.population_timer > this.POPULATION_TIMER_LENGTH) {
 			room_data = this.runPopulation(room, room_data);
 			room_data.population_timer = 0;

@@ -1,3 +1,4 @@
+// attacker that attacks hostile creeps in the room
 Creep.prototype.runAttacker = function(){
 	if (this.memory.target == undefined) {
 		this.memory.target = null;

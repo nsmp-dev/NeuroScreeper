@@ -1,6 +1,5 @@
-const Util = require("global.util");
+const Util = require("my_util");
 
-// queen that takes energy from the storage and dumps it into the towers, terminal, and extensions
 Creep.prototype.runQueen = function(){
 	if(this.memory.state ==  Util.QUEEN.FILLING){
         if(this.store.getFreeCapacity() == 0){

@@ -1,7 +1,4 @@
-// how often to run the terminal
 StructureTerminal.prototype.TIMER_LENGTH = 10;
-
-// sell any excess energy
 StructureTerminal.prototype.sell = function(){
 	if (Memory.terminal == undefined) {
 		Memory.terminal = {};
@@ -45,7 +42,6 @@ StructureTerminal.prototype.sell = function(){
 	this.send(RESOURCE_ENERGY, optimal_amount-1, highest.roomName, 'Thanks!');
 };
 
-// buy any affordable subscription tokens
 StructureTerminal.prototype.buy = function(){
 	if (Memory.terminal == undefined) {
 		Memory.terminal = {};

@@ -1,6 +1,5 @@
-const Util = require("global.util");
+const Util = require("my_util");
 
-// repairer that repairs any damaged structures in the room
 Creep.prototype.runRepairer = function(){
 	if(this.memory.state ==  Util.REPAIRER.FILLING){
         if(this.store.getFreeCapacity() == 0){

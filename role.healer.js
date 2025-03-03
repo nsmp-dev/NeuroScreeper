@@ -1,3 +1,4 @@
+// healer that heals any damaged creeps in the room
 Creep.prototype.runHealer = function(){
 	let target = Game.getObjectById(this.memory.target);
 	if (target == null) {
