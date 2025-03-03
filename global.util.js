@@ -2,139 +2,180 @@
 module.exports = {
     // converts an x/y room coordinate to a string name
     worldXYToRoomName: function (x, y) {
+        // get the size of the world
         let size = Game.map.getWorldSize();
+        // calculate the max number the string name uses
         let max = (size - 2) / 2;
+        // the string name we are building
         let str = "";
 
+        // if we are on the west side of the map
         if (x < (size / 2)) {
+            // add the coordinate to the string name
             str += (max - x) + "W";
         } else {
+            // add the coordinate to the string name
             str += (x + 1 + max - size) + "E";
         }
 
+        // if we are on the east side of the map
         if (y < (size / 2)) {
+            // add the coordinate to the string name
             str += (max - y) + "N";
         } else {
+            // add the coordinate to the string name
             str += (y + 1 + max - size) + "S";
         }
 
+        // return the string name
         return str;
     },
 
     // converts a string room name to x/y room coordinates
     roomNameToWorldXY: function (name) {
-        let size = Game.map.getWorldSize()
+        // get the size of the world
+        let size = Game.map.getWorldSize();
+        // calculate the max number the string name uses
         let max = (size - 2) / 2;
+        // the coordinates we are finding
         let coordinates = {
             x: null,
             y: null,
         };
+
+        // if the string contains a W
         if (name.includes("W")) {
+            // split up the string
             let arr = name.split("W");
+            // calculate the x coordinate
             coordinates.x = max - Number(arr[0]);
+            // store the rest of the string
             name = arr[1];
         }
+        // if the string contains an E
         if (name.includes("E")) {
+            // split up the string
             let arr = name.split("E");
+            // calculate the x coordinate
             coordinates.x = max + 1 + Number(arr[0]);
+            // store the rest of the string
             name = arr[1];
         }
+        // if the string contains a N
         if (name.includes("N")) {
+            // split up the string
             let arr = name.split("N");
+            // calculate the y coordinate
             coordinates.y = max - Number(arr[0]);
+            // store the rest of the string
             name = arr[1];
         }
+        // if the string contains an S
         if (name.includes("S")) {
+            // split up the string
             let arr = name.split("S");
+            // calculate the y coordinate
             coordinates.y = max + 1 + Number(arr[0]);
         }
 
+        // return the coordinates
         return coordinates;
     },
 
     // multiplies an array by num times
     multiArray: function (array, num) {
+        // create the array we are building
         let result = [];
+        // loop num amount of times
         for (let i = 0; i < num; i++) {
+            // add the array to the result
             result = result.concat(array);
         }
+        // return the new array
         return result;
     },
 
     // gets the corresponding role constant set for the given role
     getRole: function (role) {
-        if (this.ATTACKER.NAME == role) {
-            return this.ATTACKER;
-        }
-        if (this.BUILDER.NAME == role) {
-            return this.BUILDER;
-        }
-        if (this.CLAIMER.NAME == role) {
-            return this.CLAIMER;
-        }
-        if (this.DRILLER.NAME == role) {
-            return this.DRILLER;
-        }
-        if (this.HARVESTER.NAME == role) {
-            return this.HARVESTER;
-        }
-        if (this.HEALER.NAME == role) {
-            return this.HEALER;
-        }
-        if (this.QUEEN.NAME == role) {
-            return this.QUEEN;
-        }
-        if (this.REPAIRER.NAME == role) {
-            return this.REPAIRER;
-        }
-        if (this.SCOUT.NAME == role) {
-            return this.SCOUT;
-        }
-        if (this.TRANSPORTER.NAME == role) {
-            return this.TRANSPORTER;
-        }
-        if (this.UPGRADER.NAME == role) {
-            return this.UPGRADER;
+        // switch based on the role
+        switch (role) {
+            case this.ATTACKER.NAME:
+                return this.ATTACKER;
+            case this.BUILDER.NAME:
+                return this.BUILDER;
+            case this.CLAIMER.NAME:
+                return this.CLAIMER;
+            case this.DRILLER.NAME:
+                return this.DRILLER;
+            case this.HARVESTER.NAME:
+                return this.HARVESTER;
+            case this.HEALER.NAME:
+                return this.HEALER;
+            case this.QUEEN.NAME:
+                return this.QUEEN;
+            case this.REPAIRER.NAME:
+                return this.REPAIRER;
+            case this.SCOUT.NAME:
+                return this.SCOUT;
+            case this.TRANSPORTER.NAME:
+                return this.TRANSPORTER;
+            case this.UPGRADER.NAME:
+                return this.UPGRADER;
         }
     },
 
     // generates an id, using a memory entry to ensure no collisions
     generateId: function () {
+        // if the id counter has not been set before
         if (Memory.id_counter == undefined) {
+            // set the id counter to 0
             Memory.id_counter = 0;
         }
+        // the id we are building
         let id = "";
+        // store the id
         id += Memory.id_counter;
+        // increment the id counter
         Memory.id_counter++;
+        // return the id
         return id;
     },
 
     // calculates the ratio of time used so far this tick
     timeUsed: function () {
+        // calculate the time used so far and return it
         return (Game.cpu.tickLimit - Game.cpu.getUsed()) / Game.cpu.tickLimit;
     },
 
     // calculates the distance between two points
     distance: function (x1, y1, x2, y2) {
+        // calculate and return the distance using D = (dx^2 + dy^2)^(1/2)
         return Math.sqrt(((x2 - x1) * (x2 - x1)) + ((y2 - y1) * (y2 - y1)));
     },
 
     // delete old creep memories to free up memory and prevent leaks
     collectGarbage: function () {
+        // loop through all the creep's memories
         for (let name in Memory.creeps) {
+            // if the creep is dead
             if (Game.creeps[name] == undefined) {
+                // delete the creep's memory
                 delete Memory.creeps[name];
             }
         }
     },
 
-    // calculates what percentage of the given array are true
+    // calculates what percentage of the satisfaction log in the given room data is 1
     getSatisfiedRatio: function (room_data) {
+        // the total number of 1s in the room satisfaction log
         let total = 0;
+        // loop through the satisfaction log
         room_data.satisfaction_log.forEach(function (amount) {
+            // increment the total
             total += amount;
         });
 
+        // calculate the average and return it
         return (total / room_data.satisfaction_log.length);
     },
 

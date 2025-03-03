@@ -14,69 +14,87 @@ const Expansion = require("controller.expansion");
 // change the build number to trigger a memory wipe
 const BUILD = 1;
 
+// the main loop that gets run every tick
 module.exports.loop = function () {
     // wipe the memory if the build has changed
     if (Memory.build !== BUILD) {
+        // loop through all the entries in memory
         for (let name in Memory) {
+            // delete the entry
             delete Memory[name];
         }
+        // set the build to the new one
         Memory.build = BUILD;
+        // initialize the room manager
         RoomManager.initialize();
     }
 
     // start the main timer
     Timer.start();
 
-    // if we are not initialized, initialize the room manager
+    // if we are not initialized
     if (Memory.init !== true) {
+        // initialize the room manager
         RoomManager.initialize();
     }
 
     // run the room manager to scan/add rooms
     RoomManager.run();
 
-    // run every creep
+    // loop through every creep
     for (let name in Game.creeps) {
+        // run the creep
         Game.creeps[name].run();
     }
 
-    // loop thru ever structure
+    // loop thru every structure
     for (let id in Game.structures) {
-        // if it's a tower or observer, run them
+        // if it's a tower or observer
         if (Game.structures[id].structureType == STRUCTURE_TOWER ||
             Game.structures[id].structureType == STRUCTURE_OBSERVER) {
+            // run the structure
             Game.structures[id].run();
         }
-        // if it's a terminal, sell and buy
+        // if it's a terminal
         if (Game.structures[id].structureType == STRUCTURE_TERMINAL) {
+            // sell any resources
             Game.structures[id].sell();
+            // buy any subscription tokens
             Game.structures[id].buy();
         }
     }
 
     // loop thru all the rooms we know of
     for (let name in Memory.room_data) {
+        // grab the room reference
         let room = Game.rooms[name];
+        // grab the room data
         let room_data = Memory.room_data[name];
 
         // if room is a colony, plan and run it
         if (room_data.type == Colony.NAME) {
+            // plan the colony
             room_data = Colony.plan(room, room_data);
+            // run the colony
             room_data = Colony.run(room, room_data);
         }
 
         // if room is a expansion, plan and run it
         if (room_data.type == Expansion.NAME) {
+            // plan the expansion
             room_data = Expansion.plan(room, room_data);
+            // run the expansion
             room_data = Expansion.run(room, room_data);
         }
 
+        // save the room data
         Memory.room_data[name] = room_data;
         // render the visuals for the room
         Visualizer.render(room, room_data);
 
-        // if the room died, remove it's data
+        // if the room died
         if (Memory.room_data[name].dead) {
+            // delete the room data
             delete Memory.room_data[name];
         }
     }
