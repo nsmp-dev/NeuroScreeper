@@ -2,37 +2,52 @@ const Util = require('global.util');
 
 // finds a good idle location, avoiding any planned structures
 Room.prototype.getIdleLocation = function (structures) {
+    // return a clear area of size 5 x 5
     return this.getClearArea(5, 5, structures);
 };
 
 // gets the source plans for this room, avoiding any planned structures
 Room.prototype.getSourcePlans = function (structures) {
+    // create the list of source plans
     let source_plans = [];
+    // find all the sources in the room
     let sources = this.find(FIND_SOURCES);
 
+    // loop through the sources
     sources.forEach(function (source) {
+        // find an adjacent space to put the container
         let container_location = this.getClearAdjacentLocation(source.pos.x, source.pos.y, structures);
 
+        // add the plans to the plans list
         source_plans.push({
+            // id of the source
             source_id: source.id,
+            // x coordinate of the container
             container_x: container_location.x,
+            // y coordinate of the container
             container_y: container_location.y,
         });
     });
 
+    // return the source plans
     return source_plans;
 };
 
 // finds a good base location, avoiding any planned structures
 Room.prototype.findBaseLocation = function (structures) {
+    // find a clear area of size 14 x 14
     return this.getClearArea(14, 14, structures);
 };
 
 // gets the base plans for this room, avoiding any planned structures
 Room.prototype.getBasePlans = function (base_location, structures) {
+    // get the base x coordinate
     let x = base_location.x;
+    // get the base y coordinate
     let y = base_location.y;
+    // create the list of structures
     let new_structures = [
+        // coordinates and type of the structure
         {x: x + 1, y: y, type: STRUCTURE_EXTENSION},
         {x: x + 5, y: y, type: STRUCTURE_EXTENSION},
         {x: x + 7, y: y, type: STRUCTURE_EXTENSION},
@@ -309,24 +324,26 @@ Room.prototype.getBasePlans = function (base_location, structures) {
         {x: x + 12, y: y + 12, type: STRUCTURE_RAMPART},
     ];
 
+    // concat the structure lists together
     return structures.concat(new_structures);
 };
 
 // finds a clear area of width and height, avoiding any planned structures
 Room.prototype.getClearArea = function (width, height, structures) {
-    // returns the top left point of the area closest to center of the room that is clear of terrain and structures
-    // returns null if no area can be found
-
+    // grab the terrain for the room
     let terrain_grid = this.getTerrain();
+    // create a structure grid to reference
     let structure_grid = [];
-
+    // create a list of clear spots that pass the check
     let clear_spots = [];
-    // calculates if a base can be made in this room
-    // returns it's top left corner coordinates
 
+    // loop through the X coordinates
     for (let x = 0; x < 50; x++) {
+        // add a column to the structure grid
         structure_grid.push([]);
+        // loop through the Y coordinates
         for (let y = 0; y < 50; y++) {
+            // place a false for that position
             structure_grid[x].push(false);
         }
     }
@@ -340,8 +357,8 @@ Room.prototype.getClearArea = function (width, height, structures) {
 
             let clear = true;
 
-            for (let i = 0; i < width; i++) {
-                for (let j = 0; j < height; j++) {
+            for (let i = 0; i < 50 - width; i++) {
+                for (let j = 0; j < 50 - height; j++) {
                     if (terrain_grid.get(x + i, y + j) == TERRAIN_MASK_WALL || structure_grid[x + i][y + j]) {
                         clear = false;
                     }
@@ -532,4 +549,49 @@ Room.prototype.checkFor = function (x, y, structure_type) {
         }
     });
     return found;
+};
+
+// finds all towers that are not full
+Room.prototype.findLowTowers = function () {
+    // return all the towers that are not full
+    return this.find(FIND_MY_STRUCTURES, {
+        // declare the filter function to use
+        filter: function (structure) {
+            // if the structure is a tower and not full
+            return (structure.structureType == STRUCTURE_TOWER && structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0);
+        },
+    });
+};
+
+// finds all extensions that are not full
+Room.prototype.findLowExtensions = function () {
+    // find any extensions that are not full
+    return this.find(FIND_MY_STRUCTURES, {
+        // declare the filter function to use
+        filter: function (structure) {
+            // if the structure is an extension and not full
+            return (structure.structureType == STRUCTURE_EXTENSION && structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0);
+        },
+    });
+};
+
+// finds all spawns that are not full
+Room.prototype.findLowSpawns = function () {
+    // find all the spawns that are not full
+    return this.find(FIND_MY_STRUCTURES, {
+        // declare the filter function to use
+        filter: function (structure) {
+            // if the structure is a spawn and not full
+            return (structure.structureType == STRUCTURE_SPAWN && structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0);
+        },
+    });
+};
+
+// finds all non-empty containers
+Room.prototype.findFilledContainers = function () {
+    return this.find(FIND_STRUCTURES, {
+        filter: function (structure) {
+            return (structure.structureType == STRUCTURE_CONTAINER && structure.store[RESOURCE_ENERGY] > 0);
+        },
+    });
 };

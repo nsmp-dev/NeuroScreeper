@@ -22,25 +22,25 @@ module.exports = {
         // get the location to send idle creeps
         let idle_location = room.getIdleLocation(structures);
 
-		// set the idle location x coordinate
+        // set the idle location x coordinate
         room_data.idle_x = idle_location.x;
-		// set the idle location y coordinate
+        // set the idle location y coordinate
         room_data.idle_y = idle_location.y;
-		// set the source plans
+        // set the source plans
         room_data.source_plans = source_plans;
-		// set the structure list
+        // set the structure list
         room_data.structures = structures;
-		// set the population timer to go off in 2 ticks
-		room_data.population_timer = this.POPULATION_TIMER_LENGTH - 2;
-		// set the construction timer to go off in 4 ticks
-		room_data.construction_timer = this.CONSTRUCTION_TIMER_LENGTH - 4;
-		// create the list of previous tick's satisfaction
+        // set the population timer to go off in 2 ticks
+        room_data.population_timer = this.POPULATION_TIMER_LENGTH - 2;
+        // set the construction timer to go off in 4 ticks
+        room_data.construction_timer = this.CONSTRUCTION_TIMER_LENGTH - 4;
+        // create the list of previous tick's satisfaction
         room_data.satisfaction_log = [];
-		// whether the expansion is currently satisfied or not
+        // whether the expansion is currently satisfied or not
         room_data.satisfied = false;
-		// whether the expansion is currently dead or not
+        // whether the expansion is currently dead or not
         room_data.dead = false;
-		// list of the creeps that are requested
+        // list of the creeps that are requested
         room_data.requested_creeps = [];
 
         // return the room_data for saving

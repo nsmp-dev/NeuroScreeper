@@ -10,13 +10,13 @@ module.exports = {
     NEW_ROOM_TIMER_LENGTH: 100,
     // create all the starter data needed to run the system
     initialize: function () {
-		// create the room data object
+        // create the room data object
         Memory.room_data = {};
-		// set the population timer to 2 ticks from now
+        // set the population timer to 2 ticks from now
         Memory.population_timer = this.POPULATION_TIMER_LENGTH - 2;
         // start the new room timer
         Memory.new_room_timer = 0;
-		// create the population
+        // create the population
         Memory.populations = {};
 
         // grab one of the names of the spawns
@@ -33,7 +33,7 @@ module.exports = {
             // check if this room can be an expansion
             possible_expansion: Expansion.testRoom(room),
         };
-		// initialize the colony and store the room data
+        // initialize the colony and store the room data
         Memory.room_data[room.name] = Colony.initialize(room, Memory.room_data[room.name]);
     },
     // scan for any new rooms and add their data if found
@@ -170,7 +170,7 @@ module.exports = {
             this.countPopulation();
             // reset the population timer
             Memory.population_timer = 0;
-        }else{
+        } else {
             // increment the population timer
             Memory.population_timer++;
         }
@@ -219,7 +219,7 @@ module.exports = {
             }
             // reset the new room timer
             Memory.new_room_timer = 0;
-        }else{
+        } else {
             // increment the new room timer
             Memory.new_room_timer++;
         }

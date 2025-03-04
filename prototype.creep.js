@@ -13,120 +13,132 @@ require('role.upgrader');
 
 // gets a dumping target for a queen
 Creep.prototype.getQueenDumpTarget = function () {
-    let targets = this.room.find(FIND_MY_STRUCTURES, {
-        filter: function (structure) {
-            return (structure.structureType == STRUCTURE_TOWER && structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0);
-        },
-    });
+    // find all the towers that are not full
+    let targets = this.room.findLowTowers();
 
+    // if no towers are found
     if (targets.length == 0) {
-        targets = this.room.find(FIND_MY_STRUCTURES, {
-            filter: function (structure) {
-                return (structure.structureType == STRUCTURE_EXTENSION && structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0);
-            },
-        });
+        // find any extensions that are not full
+        targets = this.room.findLowExtensions();
     }
 
+    // if no extensions are found
     if (targets.length == 0) {
-        targets = this.room.find(FIND_MY_STRUCTURES, {
-            filter: function (structure) {
-                return (structure.structureType == STRUCTURE_SPAWN && structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0);
-            },
-        });
+        // find all the spawns that are not full
+        targets = this.room.findLowSpawns();
     }
 
-    if (targets.length == 0) {
-        targets = this.room.find(FIND_MY_STRUCTURES, {
-            filter: function (structure) {
-                return (structure.structureType == STRUCTURE_TERMINAL && structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0);
-            },
-        });
+    // if no spawns are found
+    if (targets.length == 0 &&
+        // and there is a terminal in the room
+        this.room.terminal != undefined &&
+        // and the terminal is not full
+        this.room.terminal.store.getFreeCapacity(RESOURCE_ENERGY) > 0) {
+        // return the terminal
+        return this.room.terminal;
     }
 
+    // return the closest one by path
     return this.pos.findClosestByPath(targets);
 };
 
 // gets a dumping target for a harvester
 Creep.prototype.getHarvesterDumpTarget = function () {
+    // find any construction sites
     let sites = this.room.find(FIND_MY_CONSTRUCTION_SITES);
 
+    // if any construction sites were found
     if (sites.length > 0) {
+        // return the closest one
         return this.pos.findClosestByPath(sites);
     }
 
-    let targets = this.room.find(FIND_MY_STRUCTURES, {
-        filter: function (structure) {
-            return (structure.structureType == STRUCTURE_EXTENSION && structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0);
-        },
-    });
+    // find any extensions that are not full
+    let targets = this.room.findLowTowers();
 
+    // if no extensions are found
     if (targets.length == 0) {
-        targets = this.room.find(FIND_MY_STRUCTURES, {
-            filter: function (structure) {
-                return (structure.structureType == STRUCTURE_SPAWN && structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0);
-            },
-        });
+        // find all the spawns that are not full
+        targets = this.room.findLowSpawns();
     }
 
-    if (targets.length == 0 && this.room.storage) {
-        targets = [this.room.storage];
+    // if no spawns are found
+    if (targets.length == 0 &&
+        // and there is a terminal in the room
+        this.room.terminal != undefined &&
+        // and the terminal is not full
+        this.room.terminal.store.getFreeCapacity(RESOURCE_ENERGY) > 0) {
+        // return the terminal
+        return this.room.terminal;
     }
 
+    // return the closest one by path
     return this.pos.findClosestByPath(targets);
 };
 
 // gets a general dumping target
 Creep.prototype.getDumpTarget = function () {
-    let targets = this.room.find(FIND_MY_STRUCTURES, {
-        filter: function (structure) {
-            return (structure.structureType == STRUCTURE_EXTENSION && structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0);
-        },
-    });
+    // find any extensions that are not full
+    let targets = this.room.findLowExtensions();
 
+    // if no extensions are found
     if (targets.length == 0) {
-        targets = this.room.find(FIND_MY_STRUCTURES, {
-            filter: function (structure) {
-                return (structure.structureType == STRUCTURE_SPAWN && structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0);
-            },
-        });
+        // find all the spawns that are not full
+        targets = this.room.findLowSpawns();
     }
 
-    if (targets.length == 0 && this.room.storage) {
-        targets = [this.room.storage];
+    // if no spawns are found
+    if (targets.length == 0 &&
+        // and there is a terminal in the room
+        this.room.terminal != undefined &&
+        // and the terminal is not full
+        this.room.terminal.store.getFreeCapacity(RESOURCE_ENERGY) > 0) {
+        // return the terminal
+        return this.room.terminal;
     }
 
+    // return the closest one by path
     return this.pos.findClosestByPath(targets);
 };
 
 // gets a general filling target
 Creep.prototype.getFillTarget = function () {
+    // find any dropped energy
     let targets = this.room.find(FIND_DROPPED_RESOURCES, {filter: {resourceType: RESOURCE_ENERGY}});
 
+    // if no dropped energy is found
     if (targets.length == 0) {
-        targets = this.room.find(FIND_MY_STRUCTURES, {
-            filter: function (structure) {
-                return (structure.structureType == STRUCTURE_CONTAINER && structure.store[RESOURCE_ENERGY] > 0);
-            },
-        });
+        // find any non-empty containers
+        targets = this.room.findFilledContainers();
     }
 
-
-    if (targets.length == 0 && this.room.storage && this.room.storage.store[RESOURCE_ENERGY] > 0) {
-        targets = [this.room.storage];
+    // if no spawns are found
+    if (targets.length == 0 &&
+        // and there is a terminal in the room
+        this.room.terminal != undefined &&
+        // and the terminal is not empty
+        this.room.storage.store[RESOURCE_ENERGY] > 0) {
+        // return the terminal
+        return this.room.terminal;
     }
 
+    // return the closest one by path
     return this.pos.findClosestByPath(targets);
 };
 
 // get a building target
 Creep.prototype.getBuildTarget = function () {
+    // find and return the closest construction site
     return this.pos.findClosestByPath(FIND_MY_CONSTRUCTION_SITES);
 };
 
 // get a repairing target
 Creep.prototype.getRepairTarget = function () {
+    // return the closest damaged structure
     return this.pos.findClosestByPath(FIND_STRUCTURES, {
+        // declare the filter function to use
         filter: function (structure) {
+            // if the structure is damaged
             return structure.hits < structure.hitsMax;
         },
     });
@@ -134,23 +146,31 @@ Creep.prototype.getRepairTarget = function () {
 
 // get a source target
 Creep.prototype.getSourceTarget = function () {
+    // return the closest active source
     return this.pos.findClosestByPath(FIND_SOURCES_ACTIVE);
 };
 
 // move toward the idle location for the current room to get out of the way
 Creep.prototype.idle = function () {
+    // grab the room data
     let room_data = Memory.room_log[this.room.name];
 
+    // if we are more than 3 tiles away
     if (!this.pos.inRangeTo(room_data.idle_x, room_data.idle_y, 3)) {
+        // move toward the idle location
         this.moveTo(room_data.idle_x, room_data.idle_y);
     }
 };
 
 // run the relevant function for the role that this creep has
 Creep.prototype.run = function () {
+    // switch based on the creep's role
     switch (this.memory.role) {
+        // if the role matches
         case Util.ATTACKER.NAME:
+            // call the function for this role
             this.runAttacker();
+            // break the switch
             break;
         case Util.BUILDER.NAME:
             this.runBuilder();
