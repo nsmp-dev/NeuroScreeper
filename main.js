@@ -47,7 +47,7 @@ module.exports.loop = function () {
         Game.creeps[name].run();
     }
 
-    // loop thru every structure
+    // loop through every structure
     for (let id in Game.structures) {
         // if it's a tower or observer
         if (Game.structures[id].structureType == STRUCTURE_TOWER ||
@@ -64,7 +64,7 @@ module.exports.loop = function () {
         }
     }
 
-    // loop thru all the rooms we know of
+    // loop through all the rooms we know of
     for (let name in Memory.room_data) {
         // grab the room reference
         let room = Game.rooms[name];
@@ -79,7 +79,7 @@ module.exports.loop = function () {
             room_data = Colony.run(room, room_data);
         }
 
-        // if room is a expansion, plan and run it
+        // if room is an expansion, plan and run it
         if (room_data.type == Expansion.NAME) {
             // plan the expansion
             room_data = Expansion.plan(room, room_data);

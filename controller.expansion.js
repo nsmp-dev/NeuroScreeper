@@ -172,7 +172,7 @@ module.exports = {
         // if there are any creeps still needed
         if (room_data.requested_creeps.length > 0) {
             // spawn the creep globally
-            let success = room.spawnRoleGlobal(room_data.requested_creeps[0]);
+            let success = room.spawnRole(room_data.requested_creeps[0], true);
             // check if we successfully spawned the creep
             if (success) {
                 // remove the creep that was successfully spawned

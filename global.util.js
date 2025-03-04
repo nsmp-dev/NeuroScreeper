@@ -61,7 +61,7 @@ module.exports = {
             // store the rest of the string
             name = arr[1];
         }
-        // if the string contains a N
+        // if the string contains an N
         if (name.includes("N")) {
             // split up the string
             let arr = name.split("N");
@@ -107,8 +107,6 @@ module.exports = {
                 return this.CLAIMER;
             case this.DRILLER.NAME:
                 return this.DRILLER;
-            case this.HARVESTER.NAME:
-                return this.HARVESTER;
             case this.HEALER.NAME:
                 return this.HEALER;
             case this.QUEEN.NAME:
@@ -141,18 +139,20 @@ module.exports = {
         return id;
     },
 
+    /*
     // calculates the ratio of time used so far this tick
     timeUsed: function () {
         // calculate the time used so far and return it
         return (Game.cpu.tickLimit - Game.cpu.getUsed()) / Game.cpu.tickLimit;
     },
-
+    */
+    /*
     // calculates the distance between two points
     distance: function (x1, y1, x2, y2) {
         // calculate and return the distance using D = (dx^2 + dy^2)^(1/2)
         return Math.sqrt(((x2 - x1) * (x2 - x1)) + ((y2 - y1) * (y2 - y1)));
     },
-
+    */
     // delete old creep memories to free up memory and prevent leaks
     collectGarbage: function () {
         // loop through all the creep's memories
@@ -238,22 +238,6 @@ module.exports = {
                 source: source_id,
                 container_x: container_x,
                 container_y: container_y,
-            };
-        },
-    },
-    HARVESTER: {
-        NAME: "harvester",
-        BODY: [WORK, CARRY, MOVE, MOVE],
-        ENERGY_COST: 250,
-        DUMPING: 0,
-        HARVESTING: 1,
-        init: function (room_name) {
-            return {
-                role: this.NAME,
-                state: this.HARVESTING,
-                room_name: room_name,
-                source_target: null,
-                dumping_target: null,
             };
         },
     },

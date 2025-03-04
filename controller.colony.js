@@ -204,7 +204,7 @@ module.exports = {
             // check if the creep is a claimer
             if (room_data.requested_creeps[0].role == Util.CLAIMER.NAME) {
                 // spawn the claimer globally
-                success = room.spawnRoleGlobal(room_data.requested_creeps[0]);
+                success = room.spawnRole(room_data.requested_creeps[0], true);
             } else {
                 // spawn the creep locally
                 success = room.spawnRole(room_data.requested_creeps[0]);

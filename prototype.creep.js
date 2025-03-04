@@ -3,7 +3,6 @@ require('role.attacker');
 require('role.builder');
 require('role.claimer');
 require('role.driller');
-require('role.harvester');
 require('role.healer');
 require('role.queen');
 require('role.repairer');
@@ -21,40 +20,6 @@ Creep.prototype.getQueenDumpTarget = function () {
         // find any extensions that are not full
         targets = this.room.findLowExtensions();
     }
-
-    // if no extensions are found
-    if (targets.length == 0) {
-        // find all the spawns that are not full
-        targets = this.room.findLowSpawns();
-    }
-
-    // if no spawns are found
-    if (targets.length == 0 &&
-        // and there is a terminal in the room
-        this.room.terminal != undefined &&
-        // and the terminal is not full
-        this.room.terminal.store.getFreeCapacity(RESOURCE_ENERGY) > 0) {
-        // return the terminal
-        return this.room.terminal;
-    }
-
-    // return the closest one by path
-    return this.pos.findClosestByPath(targets);
-};
-
-// gets a dumping target for a harvester
-Creep.prototype.getHarvesterDumpTarget = function () {
-    // find any construction sites
-    let sites = this.room.find(FIND_MY_CONSTRUCTION_SITES);
-
-    // if any construction sites were found
-    if (sites.length > 0) {
-        // return the closest one
-        return this.pos.findClosestByPath(sites);
-    }
-
-    // find any extensions that are not full
-    let targets = this.room.findLowTowers();
 
     // if no extensions are found
     if (targets.length == 0) {
@@ -144,12 +109,6 @@ Creep.prototype.getRepairTarget = function () {
     });
 };
 
-// get a source target
-Creep.prototype.getSourceTarget = function () {
-    // return the closest active source
-    return this.pos.findClosestByPath(FIND_SOURCES_ACTIVE);
-};
-
 // move toward the idle location for the current room to get out of the way
 Creep.prototype.idle = function () {
     // grab the room data
@@ -180,9 +139,6 @@ Creep.prototype.run = function () {
             break;
         case Util.DRILLER.NAME:
             this.runDriller();
-            break;
-        case Util.HARVESTER.NAME:
-            this.runHarvester();
             break;
         case Util.HEALER.NAME:
             this.runHealer();
