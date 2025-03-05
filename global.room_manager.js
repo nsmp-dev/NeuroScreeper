@@ -1,6 +1,7 @@
 const Colony = require("controller.colony");
 const Expansion = require("controller.expansion");
 const Util = require("global.util");
+const MyLogger = require('global.logger');
 
 // room manager module that handles scanning/adding new rooms
 module.exports = {
@@ -10,6 +11,7 @@ module.exports = {
     NEW_ROOM_TIMER_LENGTH: 100,
     // create all the starter data needed to run the system
     initialize: function () {
+        MyLogger.log("initializing the room manager...");
         // create the room data object
         Memory.room_data = {};
         // set the population timer to 2 ticks from now
@@ -90,6 +92,7 @@ module.exports = {
     },
     // count up all the creeps in the game
     countPopulation: function () {
+        MyLogger.log("counting the population...");
         // create our population object
         let pop = {};
 

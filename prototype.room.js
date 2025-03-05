@@ -14,7 +14,7 @@ Room.prototype.getSourcePlans = function (structures) {
     let sources = this.find(FIND_SOURCES);
 
     // loop through the sources
-    sources.forEach(function (source) {
+    for (let source of sources) {
         // find an adjacent space to put the container
         let container_location = this.getClearAdjacentLocation(source.pos.x, source.pos.y, structures);
 
@@ -27,7 +27,7 @@ Room.prototype.getSourcePlans = function (structures) {
             // y coordinate of the container
             container_y: container_location.y,
         });
-    });
+    }
 
     // return the source plans
     return source_plans;

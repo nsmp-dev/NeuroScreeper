@@ -1,4 +1,5 @@
 const Util = require('global.util');
+const MyLogger = require('global.logger');
 
 // this is a colony: a type of room where we have a standard base with spawns, towers, storage, etc.
 // manages its own data by passing its memory object "room data" around, along with a reference to the room itself
@@ -15,6 +16,7 @@ module.exports = {
     SATISFACTION_LOG_SIZE: 100,
     // initialize the colony, generating construction plans and idle location
     initialize: function (room, room_data) {
+        MyLogger.log("initializing a colony...");
         // the list of structures this colony will have
         let structures = [];
         // these are the locations of containers and source ids that go with them
@@ -67,6 +69,7 @@ module.exports = {
     plan: function (room, room_data) {
         // check if the population timer has gone off
         if (room_data.population_timer > this.POPULATION_TIMER_LENGTH) {
+            MyLogger.log("initializing the room manager...");
             // recalculate population
             room_data = this.runPopulation(room, room_data);
             // reset the population timer

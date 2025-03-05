@@ -12,7 +12,7 @@ const Colony = require("controller.colony");
 const Expansion = require("controller.expansion");
 
 // change the build number to trigger a memory wipe
-const BUILD = 1;
+const BUILD = 2;
 
 // the main loop that gets run every tick
 module.exports.loop = function () {
