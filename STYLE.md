@@ -1,8 +1,7 @@
-
-
 ## example code
 
 ### find
+
 ```javascript
 let targets = this.find(FIND_MY_STRUCTURES, {
     filter: struct => struct.hits < struct.hitsMax,
@@ -10,6 +9,7 @@ let targets = this.find(FIND_MY_STRUCTURES, {
 ```
 
 ### array for loop
+
 ```javascript
 let names = ["Hanna", "Atlas"];
 for (let name of names) {
@@ -18,6 +18,7 @@ for (let name of names) {
 ```
 
 ### object for loop
+
 ```javascript
 let person = {
     id: 1,

@@ -543,31 +543,49 @@ Room.prototype.spawnRole = function (memory, global = false) {
 
 // creates structures from the given list of planned structures and source plans, capping at 5 per room
 Room.prototype.createConstructionSites = function (structures, source_plans) {
+    // count all the sites in the room
     let site_count = this.find(FIND_MY_CONSTRUCTION_SITES).length;
+    // if we have less than 5 construction sites
     if (site_count < 5) {
-        source_plans.forEach(function (source_data) {
-            if (site_count >= 5) {
-                return;
-            }
-            if (!this.checkFor(source_data.container_x, source_data.container_y, STRUCTURE_CONTAINER)) {
-                let result = this.createConstructionSite(source_data.container_x, source_data.container_y, STRUCTURE_CONTAINER);
+        // loop through the source plans for this room
+        for (let source_plan of source_plans) {
+            // if the container is not built
+            if (!this.checkFor(source_plan.container_x, source_plan.container_y, STRUCTURE_CONTAINER)) {
+                // try to place the container
+                let result = this.createConstructionSite(source_plan.container_x, source_plan.container_y, STRUCTURE_CONTAINER);
+                // if creating the site was successful
                 if (result == OK) {
+                    // increment the site_count
                     site_count++;
+                    // if we have reached 5 or more sites
+                    if (site_count >= 5) {
+                        // break the loop
+                        break;
+                    }
                 }
             }
-        });
-
-        structures.forEach(function (structure) {
-            if (site_count >= 5) {
-                return;
-            }
+        }
+    }
+    // if we have less than 5 construction sites
+    if (site_count < 5) {
+        // loop through the planned structures for this room
+        for (let structure of structures) {
+            // if the structure is not built
             if (!this.checkFor(structure.x, structure.y, structure.type)) {
+                // try to place the structure
                 let result = this.createConstructionSite(structure.x, structure.y, structure.type);
+                // if creating the site was successful
                 if (result == OK) {
+                    // increment the site_count
                     site_count++;
+                    // if we have reached 5 or more sites
+                    if (site_count >= 5) {
+                        // break the loop
+                        break;
+                    }
                 }
             }
-        });
+        }
     }
 };
 
@@ -575,11 +593,11 @@ Room.prototype.createConstructionSites = function (structures, source_plans) {
 Room.prototype.checkFor = function (x, y, structure_type) {
     let found = false;
     let structures = this.lookForAt(LOOK_STRUCTURES, x, y);
-    structures.forEach(function (structure) {
+    for (let structure of structures) {
         if (structure.structureType == structure_type) {
             found = true;
         }
-    });
+    }
     return found;
 };
 
@@ -588,10 +606,7 @@ Room.prototype.findLowTowers = function () {
     // return all the towers that are not full
     return this.find(FIND_MY_STRUCTURES, {
         // declare the filter function to use
-        filter: function (structure) {
-            // if the structure is a tower and not full
-            return (structure.structureType == STRUCTURE_TOWER && structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0);
-        },
+        filter: structure => (structure.structureType == STRUCTURE_TOWER && structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0),
     });
 };
 
@@ -600,10 +615,7 @@ Room.prototype.findLowExtensions = function () {
     // find any extensions that are not full
     return this.find(FIND_MY_STRUCTURES, {
         // declare the filter function to use
-        filter: function (structure) {
-            // if the structure is an extension and not full
-            return (structure.structureType == STRUCTURE_EXTENSION && structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0);
-        },
+        filter: structure => (structure.structureType == STRUCTURE_EXTENSION && structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0),
     });
 };
 
@@ -612,18 +624,13 @@ Room.prototype.findLowSpawns = function () {
     // find all the spawns that are not full
     return this.find(FIND_MY_STRUCTURES, {
         // declare the filter function to use
-        filter: function (structure) {
-            // if the structure is a spawn and not full
-            return (structure.structureType == STRUCTURE_SPAWN && structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0);
-        },
+        filter: (structure.structureType == STRUCTURE_SPAWN && structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0),
     });
 };
 
 // finds all non-empty containers
 Room.prototype.findFilledContainers = function () {
     return this.find(FIND_STRUCTURES, {
-        filter: function (structure) {
-            return (structure.structureType == STRUCTURE_CONTAINER && structure.store[RESOURCE_ENERGY] > 0);
-        },
+        filter: structure => (structure.structureType == STRUCTURE_CONTAINER && structure.store[RESOURCE_ENERGY] > 0),
     });
 };

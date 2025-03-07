@@ -149,9 +149,7 @@ module.exports = {
 
         // count the damaged structures
         let structure_count = room.find(FIND_STRUCTURES, {
-            filter: function (structure) {
-                return (structure.hits < structure.hitsMax);
-            },
+            filter: structure => structure.hits < structure.hitsMax,
         }).length;
         // check if a repairer is needed
         if (structure_count > 0 && (pop[Util.REPAIRER.NAME] == undefined || pop[Util.REPAIRER.NAME] < 1)) {

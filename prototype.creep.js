@@ -102,10 +102,7 @@ Creep.prototype.getRepairTarget = function () {
     // return the closest damaged structure
     return this.pos.findClosestByPath(FIND_STRUCTURES, {
         // declare the filter function to use
-        filter: function (structure) {
-            // if the structure is damaged
-            return structure.hits < structure.hitsMax;
-        },
+        filter: structure => structure.hits < structure.hitsMax,
     });
 };
 

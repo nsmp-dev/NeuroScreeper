@@ -1,7 +1,9 @@
 # Screeps AI
+
 Role-based, polished AI for the programming game Screeps.
 
 ## features
+
 - robust, consistent, and role-based creep behaviour
 - extensive prototyping, high-level management code
 - polished with many statistics, visuals, and monitoring systems
