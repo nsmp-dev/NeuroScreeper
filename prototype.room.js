@@ -644,3 +644,35 @@ Room.prototype.findFilledContainers = function () {
         filter: structure => (structure.structureType == STRUCTURE_CONTAINER && structure.store[RESOURCE_ENERGY] > 0),
     });
 };
+
+// get all names of adjacent rooms
+Room.prototype.getAdjacentRooms = function () {
+    // grab all the exits in the room
+    let exits = Game.map.describeExits(this.name);
+    // make a list of all the room names we find
+    let room_names = [];
+
+    // if the left exit is not null
+    if (exits[LEFT] != null) {
+        // add it to the list
+        room_names.push(exits[LEFT]);
+    }
+    // if the top exit is not null
+    if (exits[TOP] != null) {
+        // add it to the list
+        room_names.push(exits[TOP]);
+    }
+    // if the right exit is not null
+    if (exits[RIGHT] != null) {
+        // add it to the list
+        room_names.push(exits[RIGHT]);
+    }
+    // if the bottom exit is not null
+    if (exits[BOTTOM] != null) {
+        // add it to the list
+        room_names.push(exits[BOTTOM]);
+    }
+
+    // return the list of room names found
+    return room_names;
+};

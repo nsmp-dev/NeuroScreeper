@@ -7,6 +7,16 @@ add road anchor points to base plans
 create roads between source containers and the anchor points
 put the roads in a separate list to not count them in collisions
 
+## `Room.prototype.myFind()`
+custom "find" wrapper that extends the constant set
+- FIND_MY_DAMAGED_STRUCTURES
+- FIND_CONTAINERS
+- FIND_MY_DAMAGED_CREEPS
+
+## `global.cmd.js`
+new module for running arbitrary commands
+
+
 # v0.3
 
 ## new roles

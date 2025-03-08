@@ -293,6 +293,7 @@ module.exports = {
                 room_name: room_name,
                 room_queue: [],
                 room_log: [],
+                started: false,
             };
         },
     },

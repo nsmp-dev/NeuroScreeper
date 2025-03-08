@@ -69,6 +69,7 @@ module.exports = {
     planPopulationRequests: function (room, room_data) {
         // ease of access variables
         let pop = Memory.populations[room.name];
+        // create a list of requested creeps
         let requested_creeps = [];
 
         // check if a claimer is needed

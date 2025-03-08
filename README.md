@@ -17,4 +17,16 @@ This allows for ample room for a base to be built in the first room.
 ## Visualizer
 Each Colony, Expansion, and Capitol will run a visualizer.
 The top left has the population broken down by role and assignment.
-The bottom has a log of the last 50 times in the timer log, drawing it as a bar graph.
+The bottom has a log of the last 50 tick's CPU usage in the timer log, drawing it as a bar graph.
+
+## Architecture
+- Detailed information on the design of the AI
+- Each creep role's purpose and usage
+- Descriptions for the global modules
+- Prototype extensions and their specifics
+- Explanations for design decisions
+
+## Style Guide
+- Rules for how to style the code
+- Example code for common actions
+- Naming Conventions

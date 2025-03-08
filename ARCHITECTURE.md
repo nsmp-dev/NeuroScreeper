@@ -1,7 +1,7 @@
 # general approach
 
 We focus on role-base creep and structure behaviour via extensive prototyping.
-We put as much of the bulk of code into prototyped functions as we can to consolidate the code and improve stability.
+We put as much of the bulk of code into prototyped functions so we can to consolidate the code and improve stability.
 We should never be repeating ourselves much.
 Higher level functions like population and construction are handled on a room-by-room basis, with tailored behaviour for
 their type.
@@ -17,7 +17,7 @@ Stability is a large focus, with no breaking errors and no time-outs.
 We also make sure to support occasional memory wipes so that the system can recover after a fix or change to the code.
 Support for build numbers allows for automatic memory wipe and recovery to prevent version differences causing breaking
 changes.
-All of the code is in raw Javascript.
+All the code is in raw Javascript.
 The code is kept simple to aid in teaching and readability.
 No libraries, typescript, syntactic sugar, or compilation allows the code to be read by a beginner.
 Nearly every single line of code is commented and explained.

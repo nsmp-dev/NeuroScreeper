@@ -2,31 +2,56 @@ const Util = require("global.util");
 
 // queen that takes energy from the storage and dumps it into the towers, terminal, and extensions
 Creep.prototype.runQueen = function () {
+    // if we are currently filling
     if (this.memory.state == Util.QUEEN.FILLING) {
+        // if the energy store is full
         if (this.store.getFreeCapacity(RESOURCE_ENERGY) == 0) {
+            // set the state to dumping
             this.memory.state = Util.QUEEN.DUMPING;
-            this.memory.dumping_target = this.getQueenDumpTarget().id;
+            // find a new dump target
+            let new_target = this.getQueenDumpTarget();
+            // if we found one
+            if (new_target != null) {
+                // save the target id in memory
+                this.memory.dumping_target = new_target.id;
+            }
         } else {
-            let target = this.room.storage;
-            if (target !== null && target !== undefined && target.store[RESOURCE_ENERGY] > 0) {
-                if (this.withdraw(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                    this.moveTo(target);
+            // if the storage exists and is not empty
+            if (this.room.storage != undefined && this.room.storage.store[RESOURCE_ENERGY] > 0) {
+                // if withdrawing from the storage results in not being in range
+                if (this.withdraw(this.room.storage, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                    // move to the storage
+                    this.moveTo(this.room.storage);
                 }
             }
         }
     }
+    // if we are dumping
     if (this.memory.state == Util.QUEEN.DUMPING) {
+        // if we the store is out of energy
         if (this.store[RESOURCE_ENERGY] == 0) {
+            // set the state back to filling
             this.memory.state = Util.QUEEN.FILLING;
         } else {
+            // grab the target
             let target = Game.getObjectById(this.memory.dumping_target);
+            // if the target is not null
             if (target == null) {
+                // grab a new target
                 target = this.getQueenDumpTarget();
-                this.memory.dumping_target = target.id;
+                // if the target is not null
+                if (target != null) {
+                    // save the target id to memory
+                    this.memory.dumping_target = target.id;
+                }
             }
-
-            if (this.build(target) == ERR_NOT_IN_RANGE) {
-                this.moveTo(target);
+            // if the target is not null
+            if (target != null) {
+                // if transferring to the target results in not being in range
+                if (this.transfer(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                    // move to the target
+                    this.moveTo(target);
+                }
             }
         }
     }
