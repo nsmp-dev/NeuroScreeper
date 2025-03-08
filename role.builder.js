@@ -2,8 +2,10 @@ const Util = require("global.util");
 
 // builder that builds any construction sites that are found
 Creep.prototype.runBuilder = function () {
+    // if the creep is currently filling
     if (this.memory.state == Util.BUILDER.FILLING) {
-        if (this.store.getFreeCapacity() == 0) {
+        // if the creep's storage is full
+        if (this.store.getFreeCapacity(RESOURCE_ENERGY) == 0) {
             this.memory.state = Util.BUILDER.BUILDING;
             this.memory.filling_target = null;
             this.memory.building_target = this.getBuildTarget().id;

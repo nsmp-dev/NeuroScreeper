@@ -53,48 +53,8 @@ module.exports = {
         // return if both requirements are met
         return (sources.length > 0);
     },
-    // do the planning step where we gather data to update
-    plan: function (room, room_data) {
-        // check if the population timer has gone off
-        if (room_data.population_timer > this.POPULATION_TIMER_LENGTH) {
-            // recalculate population
-            room_data = this.runPopulation(room, room_data);
-            // reset the population timer
-            room_data.population_timer = 0;
-        } else {
-            // increment the population timer
-            room_data.population_timer++;
-        }
-
-        // if no creeps are needed
-        if (room_data.requested_creeps.length == 0) {
-            // push a 1 to the satisfaction log to show we were satisfied for this tick
-            room_data.satisfaction_log.push(0);
-        } else {
-            // push a 0 to the satisfaction log to show we were unsatisfied for this tick
-            room_data.satisfaction_log.push(1);
-        }
-
-        // check if the satisfaction log is too big
-        if (room_data.satisfaction_log.length > this.SATISFACTION_LOG_SIZE) {
-            // remove the first element
-            room_data.satisfaction_log.shift();
-        }
-
-        // calculate the average satisfaction and see if it meets the threshold of satisfaction
-        room_data.satisfied = (Util.getSatisfiedRatio(room_data) > this.SATISFACTION_THRESHOLD);
-
-        // check if we have lost control of the controller
-        if (!room.controller.my) {
-            // mark ths room as dead
-            room_data.dead = true;
-        }
-
-        // return the room_data for saving
-        return room_data;
-    },
-    // handle the population needs and save the requested creeps to room_data
-    runPopulation: function (room, room_data) {
+    // recalculate the population needs and save the requested creeps to room_data
+    planPopulationRequests: function (room, room_data) {
         let pop = Memory.populations[room.name];
         let requested_creeps = [];
 
@@ -154,8 +114,68 @@ module.exports = {
         // return the room data for saving
         return room_data;
     },
+    // attempt to spawn any creeps that are requested
+    runPopulationRequests: function (room, room_data) {
+        // spawn the creep globally
+        let success = room.spawnRole(room_data.requested_creeps[0], true);
+        // check if we successfully spawned the creep
+        if (success) {
+            // remove the creep that was successfully spawned
+            room_data.requested_creeps.shift();
+        }
+        // return the room data for saving
+        return room_data;
+    },
+    // do the running step where we execute the info from the planning phase
+    runSatisfaction: function (room, room_data) {
+        // if no creeps are needed
+        if (room_data.requested_creeps.length == 0) {
+            // push a 1 to the satisfaction log to show we were satisfied for this tick
+            room_data.satisfaction_log.push(0);
+        } else {
+            // push a 0 to the satisfaction log to show we were unsatisfied for this tick
+            room_data.satisfaction_log.push(1);
+        }
+
+        // check if the satisfaction log is too big
+        if (room_data.satisfaction_log.length > this.SATISFACTION_LOG_SIZE) {
+            // remove the first element
+            room_data.satisfaction_log.shift();
+        }
+
+        // calculate the average satisfaction and see if it meets the threshold of satisfaction
+        room_data.satisfied = (Util.getSatisfiedRatio(room_data) > this.SATISFACTION_THRESHOLD);
+
+        // check if we have lost control of the controller
+        if (!room.controller.my) {
+            // mark ths room as dead
+            room_data.dead = true;
+        }
+
+        // return the room data for saving
+        return room_data;
+    },
     // do the running step where we execute the info from the planning phase
     run: function (room, room_data) {
+        // check if the population timer has gone off
+        if (room_data.population_timer > this.POPULATION_TIMER_LENGTH) {
+            // recalculate population
+            room_data = this.planPopulationRequests(room, room_data);
+            // reset the population timer
+            room_data.population_timer = 0;
+        } else {
+            // increment the population timer
+            room_data.population_timer++;
+        }
+
+        // refresh the satisfaction calculation
+        room_data = this.runSatisfaction(room, room_data);
+
+        // if there are any creeps still needed
+        if (room_data.requested_creeps.length > 0) {
+            room_data = this.runPopulationRequests(room, room_data);
+        }
+
         // check if the construction timer has gone off
         if (room_data.construction_timer > this.CONSTRUCTION_TIMER_LENGTH) {
             // place up to 5 structures from the structure plans
@@ -165,17 +185,6 @@ module.exports = {
         } else {
             // increment the construction timer
             room_data.construction_timer++;
-        }
-
-        // if there are any creeps still needed
-        if (room_data.requested_creeps.length > 0) {
-            // spawn the creep globally
-            let success = room.spawnRole(room_data.requested_creeps[0], true);
-            // check if we successfully spawned the creep
-            if (success) {
-                // remove the creep that was successfully spawned
-                room_data.requested_creeps.shift();
-            }
         }
 
         // return the room data for saving

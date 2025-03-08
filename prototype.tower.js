@@ -1,95 +1,120 @@
 // how often to run the tower
 StructureTower.prototype.TIMER_LENGTH = 10;
+
 // run the tower, shooting enemies, repairing structures and healing creeps
 StructureTower.prototype.run = function () {
+    // if the tower has less than 100 energy
     if (this.store[RESOURCE_ENERGY] < 100) {
+        // return and wait for more energy
         return;
     }
 
+    // find all the creeps in the room
     let creeps = this.room.find(FIND_CREEPS);
+    // create a list of targets
     let targets = [];
 
-    // attack hostiles
+    // loop through the creeps
     for (let i = 0; i < creeps.length; i++) {
+        // if the creep is an enemy that is alive
         if (!creeps[i].my && creeps[i].hits > 0) {
+            // add the creep to the target list
             targets.push(creeps[i]);
         }
     }
 
+    // if the list of targets is not empty
     if (targets.length > 0) {
-        targets.sort(function (a, b) {
-            return a.hits - b.hits;
-        });
+        // sort the targets by hits remaining
+        targets.sort((a, b) => a.hits - b.hits);
+        // attack the lowest hits target
         this.attack(targets[0]);
+        // exit the function
         return;
     }
 
-    // heal friendlies
+    // loop through the creeps
     for (let i = 0; i < creeps.length; i++) {
+        // if the creep is ours and is damaged
         if (creeps[i].my && creeps[i].hits < creeps[i].hitsMax) {
+            // add the creep to the list of targets
             targets.push(creeps[i]);
         }
     }
 
+    // if the list of targets is not empty
     if (targets.length > 0) {
-        //find lowest % health
-        targets.sort(function (a, b) {
-            return (a.hits / a.hitsMax) - (b.hits / b.hitsMax);
-        });
+        //sort by lowest % health
+        targets.sort((a, b) => (a.hits / a.hitsMax) - (b.hits / b.hitsMax));
+        // heal the lowest health creep
         this.heal(targets[0]);
+        // exit the function
         return;
     }
 
+    // find all the structures in the room
     let structures = this.room.find(FIND_MY_STRUCTURES);
 
-    // heal non-road, non-rampart structures
+    // loop through the structures
     for (let i = 0; i < structures.length; i++) {
+        // if the structure is not a road
         if (structures[i].structureType !== STRUCTURE_ROAD &&
+            // and not a rampart
             structures[i].structureType !== STRUCTURE_RAMPART &&
+            // and damaged
             structures[i].hits < structures[i].hitsMax) {
+            // add it to the list of targets
             targets.push(structures[i]);
         }
     }
 
+    // if the list of targets is not empty
     if (targets.length > 0) {
-        //find lowest % health
-        targets.sort(function (a, b) {
-            //double check direction
-            return (a.hits / a.hitsMax) - (b.hits / b.hitsMax);
-        });
+        // sort by the lowest % health
+        targets.sort((a, b) => (a.hits / a.hitsMax) - (b.hits / b.hitsMax));
+        // repair the lowest health % structure
         this.repair(targets[0]);
+        // exit the function
         return;
     }
 
-    // repair roads
+    // loop through the structures
     for (let i = 0; i < structures.length; i++) {
+        // if the structure is a road
         if (structures[i].structureType == STRUCTURE_ROAD &&
+            // and damaged
             structures[i].hits < structures[i].hitsMax) {
+            // add the structure to the list of targets
             targets.push(structures[i]);
         }
     }
 
+    // if the list of targets is not empty
     if (targets.length > 0) {
-        //find lowest % health
-        targets.sort(function (a, b) {
-            return a.hits - b.hits;
-        });
+        // sort the targets by hits remaining
+        targets.sort((a, b) => a.hits - b.hits);
+        // repair the lowest hits remaining structure
         this.repair(targets[0]);
+        // exit the function
+        return;
     }
 
-    // repair ramparts
+    // loop through the structures
     for (let i = 0; i < structures.length; i++) {
+        // if the structure is a rampart
         if (structures[i].structureType == STRUCTURE_RAMPART &&
+            // and damaged
             structures[i].hits < structures[i].hitsMax) {
+            // add the rampart to the list of targets
             targets.push(structures[i]);
         }
     }
 
+    // if the list of targets is not empty
     if (targets.length > 0) {
-        //find lowest % health
-        targets.sort(function (a, b) {
-            return a.hits - b.hits;
-        });
+        // sort the targets by hits remaining
+        targets.sort((a, b) => a.hits - b.hits);
+        // repair the lowest hits remaining rampart
         this.repair(targets[0]);
     }
 };

@@ -49,18 +49,12 @@ module.exports.loop = function () {
 
     // loop through every structure
     for (let id in Game.structures) {
-        // if it's a tower or observer
+        // if it's a tower, terminal, or observer
         if (Game.structures[id].structureType == STRUCTURE_TOWER ||
-            Game.structures[id].structureType == STRUCTURE_OBSERVER) {
+            Game.structures[id].structureType == STRUCTURE_OBSERVER ||
+            Game.structures[id].structureType == STRUCTURE_TERMINAL) {
             // run the structure
             Game.structures[id].run();
-        }
-        // if it's a terminal
-        if (Game.structures[id].structureType == STRUCTURE_TERMINAL) {
-            // sell any resources
-            Game.structures[id].sell();
-            // buy any subscription tokens
-            Game.structures[id].buy();
         }
     }
 
@@ -73,16 +67,12 @@ module.exports.loop = function () {
 
         // if room is a colony, plan and run it
         if (room_data.type == Colony.NAME) {
-            // plan the colony
-            room_data = Colony.plan(room, room_data);
             // run the colony
             room_data = Colony.run(room, room_data);
         }
 
         // if room is an expansion, plan and run it
         if (room_data.type == Expansion.NAME) {
-            // plan the expansion
-            room_data = Expansion.plan(room, room_data);
             // run the expansion
             room_data = Expansion.run(room, room_data);
         }

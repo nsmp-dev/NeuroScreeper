@@ -591,13 +591,21 @@ Room.prototype.createConstructionSites = function (structures, source_plans) {
 
 // returns whether the given structure has been built at the given x/y coordinate
 Room.prototype.checkFor = function (x, y, structure_type) {
+    // assume we have not found the structure
     let found = false;
+    // grab the structures at this location
     let structures = this.lookForAt(LOOK_STRUCTURES, x, y);
+    // loop through the structures
     for (let structure of structures) {
+        // if the structure is the type we are looking for
         if (structure.structureType == structure_type) {
+            // set found to true
             found = true;
+            // break out of the loop
+            break;
         }
     }
+    // return the result of the search
     return found;
 };
 
@@ -630,7 +638,9 @@ Room.prototype.findLowSpawns = function () {
 
 // finds all non-empty containers
 Room.prototype.findFilledContainers = function () {
+    // find all the containers that are not empty
     return this.find(FIND_STRUCTURES, {
+        // declare the filter function to use
         filter: structure => (structure.structureType == STRUCTURE_CONTAINER && structure.store[RESOURCE_ENERGY] > 0),
     });
 };

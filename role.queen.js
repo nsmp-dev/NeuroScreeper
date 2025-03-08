@@ -3,7 +3,7 @@ const Util = require("global.util");
 // queen that takes energy from the storage and dumps it into the towers, terminal, and extensions
 Creep.prototype.runQueen = function () {
     if (this.memory.state == Util.QUEEN.FILLING) {
-        if (this.store.getFreeCapacity() == 0) {
+        if (this.store.getFreeCapacity(RESOURCE_ENERGY) == 0) {
             this.memory.state = Util.QUEEN.DUMPING;
             this.memory.dumping_target = this.getQueenDumpTarget().id;
         } else {

@@ -3,7 +3,7 @@ const Util = require("global.util");
 // repairer that repairs any damaged structures in the room
 Creep.prototype.runRepairer = function () {
     if (this.memory.state == Util.REPAIRER.FILLING) {
-        if (this.store.getFreeCapacity() == 0) {
+        if (this.store.getFreeCapacity(RESOURCE_ENERGY) == 0) {
             this.memory.state = Util.REPAIRER.REPAIRING;
             this.memory.filling_target = null;
             let new_target = this.getRepairTarget();

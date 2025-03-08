@@ -1,9 +1,7 @@
 # Screeps AI
-
 Role-based, polished AI for the programming game Screeps.
 
-## features
-
+## Features
 - robust, consistent, and role-based creep behaviour
 - extensive prototyping, high-level management code
 - polished with many statistics, visuals, and monitoring systems
@@ -12,3 +10,11 @@ Role-based, polished AI for the programming game Screeps.
 - fully mechanically complete: uses all mechanics and systems in the game
 - raw Javascript only, no typescript, no libraries, no compilation, no obfuscation, no syntactic sugar
 
+## Spawning
+Your first spawn must be placed with a clearance of 5 spaces to it's left, 6 to the top and bottom, and 7 to the right.
+This allows for ample room for a base to be built in the first room.
+
+## Visualizer
+Each Colony, Expansion, and Capitol will run a visualizer.
+The top left has the population broken down by role and assignment.
+The bottom has a log of the last 50 times in the timer log, drawing it as a bar graph.
