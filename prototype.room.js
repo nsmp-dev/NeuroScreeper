@@ -632,7 +632,7 @@ Room.prototype.findLowSpawns = function () {
     // find all the spawns that are not full
     return this.find(FIND_MY_STRUCTURES, {
         // declare the filter function to use
-        filter: (structure.structureType == STRUCTURE_SPAWN && structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0),
+        filter: structure => (structure.structureType == STRUCTURE_SPAWN && structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0),
     });
 };
 

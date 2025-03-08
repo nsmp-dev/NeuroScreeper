@@ -56,7 +56,6 @@ add in logic to check for a capitol when adding rooms
 add in check for if a room can be a capitol
 
 ## new prototypes
-- `findPlantLocation()`
-- `getMineralPlans()`
-- `getPlantPlans()`
-- `findPlantLocation()`
+- `Room.prototype.findPlantLocation()`
+- `Room.prototype.getMineralPlans()`
+- `Room.prototype.getPlantPlans()`

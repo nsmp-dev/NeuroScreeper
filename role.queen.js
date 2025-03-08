@@ -28,7 +28,7 @@ Creep.prototype.runQueen = function () {
     }
     // if we are dumping
     if (this.memory.state == Util.QUEEN.DUMPING) {
-        // if we the store is out of energy
+        // if the store is out of energy
         if (this.store[RESOURCE_ENERGY] == 0) {
             // set the state back to filling
             this.memory.state = Util.QUEEN.FILLING;
