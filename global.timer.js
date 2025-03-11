@@ -5,13 +5,12 @@ module.exports = {
     timers: {},
     // how many previous ticks to maintain for average cpu time
     LOG_SIZE: 50,
+    // initialize this global object, setting up memory
+    initialize: function () {
+        Memory.timer_log = [];
+    },
     // start a timer, defaults to the main timer
     start: function (id = "main") {
-        // if the timer log has not been initialized
-        if (Memory.timer_log == undefined) {
-            // create the timer log
-            Memory.timer_log = [];
-        }
         // set the start of the timer
         this.timers[id] = {
             // the time used at the start of the timer

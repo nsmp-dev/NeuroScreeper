@@ -1,0 +1,3 @@
+Creep.prototype.runPowerHealer = function () {
+
+};

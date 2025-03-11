@@ -1,5 +1,5 @@
-require('prototype.creep');
 require('prototype.room');
+require('prototype.creep');
 require('prototype.tower');
 require('prototype.terminal');
 require('prototype.observer');
@@ -12,7 +12,7 @@ const Colony = require("controller.colony");
 const Expansion = require("controller.expansion");
 
 // change the build number to trigger a memory wipe
-const BUILD = 2;
+const BUILD = 3;
 
 // the main loop that gets run every tick
 module.exports.loop = function () {
@@ -27,16 +27,11 @@ module.exports.loop = function () {
         Memory.build = BUILD;
         // initialize the room manager
         RoomManager.initialize();
+        Timer.initialize();
     }
 
     // start the main timer
     Timer.start();
-
-    // if we are not initialized
-    if (Memory.init !== true) {
-        // initialize the room manager
-        RoomManager.initialize();
-    }
 
     // run the room manager to scan/add rooms
     RoomManager.run();
@@ -65,13 +60,13 @@ module.exports.loop = function () {
         // grab the room data
         let room_data = Memory.room_data[name];
 
-        // if room is a colony, plan and run it
+        // if room is a colony, run it
         if (room_data.type == Colony.NAME) {
             // run the colony
             room_data = Colony.run(room, room_data);
         }
 
-        // if room is an expansion, plan and run it
+        // if room is an expansion, run it
         if (room_data.type == Expansion.NAME) {
             // run the expansion
             room_data = Expansion.run(room, room_data);

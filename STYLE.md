@@ -8,6 +8,7 @@
 5. Every line must be commented*
 6. Avoid "forEach()" when looping
 7. Break up lines if they go too long
+8. Avoid strict `===`/`!==` comparisons, screeps constants do not like them
 
 \* comments may be omitted on sections of heavily repeated code that all do the exact same thing
 

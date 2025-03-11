@@ -1,0 +1,3 @@
+PowerCreep.prototype.runOperator = function () {
+
+};
