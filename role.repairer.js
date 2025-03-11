@@ -1,5 +1,14 @@
 const Util = require("global.util");
 
+// get a repairing target
+Creep.prototype.getRepairTarget = function () {
+    // return the closest damaged structure
+    return this.pos.findClosestByPath(FIND_STRUCTURES, {
+        // declare the filter function to use
+        filter: structure => structure.hits < structure.hitsMax,
+    });
+};
+
 // repairer that repairs any damaged structures in the room
 Creep.prototype.runRepairer = function () {
     // if we are currently filling

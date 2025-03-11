@@ -40,10 +40,10 @@ module.exports = {
         room_data.source_plans = source_plans;
         // set the structure list
         room_data.structures = structures;
-        // set the population timer to go off in 2 ticks
-        room_data.population_timer = this.POPULATION_TIMER_LENGTH - 2;
-        // set the construction timer to go off in 4 ticks
-        room_data.construction_timer = this.CONSTRUCTION_TIMER_LENGTH - 4;
+        // set the population timer to go off immediately
+        room_data.population_timer = this.POPULATION_TIMER_LENGTH;
+        // set the construction timer to go off offset from the population timer
+        room_data.construction_timer = Math.floor(this.CONSTRUCTION_TIMER_LENGTH / 2);
         // create the list of previous tick's satisfaction
         room_data.satisfaction_log = [];
         // whether the colony is currently satisfied or not

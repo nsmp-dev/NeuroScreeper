@@ -6,7 +6,7 @@ module.exports = {
     // constant used to id an expansion
     NAME: "expansion",
     // ticks between making construction sites
-    CONSTRUCTION_TIMER_LENGTH: 10,
+    CONSTRUCTION_TIMER_LENGTH: 50,
     // ticks between calculating population needs
     POPULATION_TIMER_LENGTH: 10,
     // ratio of ticks that must be satisfied to count as overall satisfied
@@ -31,9 +31,9 @@ module.exports = {
         // set the structure list
         room_data.structures = structures;
         // set the population timer to go off in 2 ticks
-        room_data.population_timer = this.POPULATION_TIMER_LENGTH - 2;
+        room_data.population_timer = this.POPULATION_TIMER_LENGTH;
         // set the construction timer to go off in 4 ticks
-        room_data.construction_timer = this.CONSTRUCTION_TIMER_LENGTH - 4;
+        room_data.construction_timer = Math.floor(this.CONSTRUCTION_TIMER_LENGTH / 2);
         // create the list of previous tick's satisfaction
         room_data.satisfaction_log = [];
         // whether the expansion is currently satisfied or not

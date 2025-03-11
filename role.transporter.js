@@ -79,11 +79,16 @@ Creep.prototype.runTransporter = function () {
                 }
             }
 
-            // if transferring to the target results in being not in range
-            if (this.transfer(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                // move to the target
-                this.moveTo(target);
+            if (target != null) {
+                // if transferring to the target results in being not in range
+                if (this.transfer(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                    // move to the target
+                    this.moveTo(target);
+                }
+            }else{
+                this.idle();
             }
+
         }
     }
 };

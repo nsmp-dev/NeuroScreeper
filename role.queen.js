@@ -1,5 +1,36 @@
 const Util = require("global.util");
 
+// gets a dumping target for a queen
+Creep.prototype.getQueenDumpTarget = function () {
+    // find all the towers that are not full
+    let targets = this.room.findLowTowers();
+
+    // if no towers are found
+    if (targets.length == 0) {
+        // find any extensions that are not full
+        targets = this.room.findLowExtensions();
+    }
+
+    // if no extensions are found
+    if (targets.length == 0) {
+        // find all the spawns that are not full
+        targets = this.room.findLowSpawns();
+    }
+
+    // if no spawns are found
+    if (targets.length == 0 &&
+        // and there is a terminal in the room
+        this.room.terminal != undefined &&
+        // and the terminal is not full
+        this.room.terminal.store.getFreeCapacity(RESOURCE_ENERGY) > 0) {
+        // return the terminal
+        return this.room.terminal;
+    }
+
+    // return the closest one by path
+    return this.pos.findClosestByPath(targets);
+};
+
 // queen that takes energy from the storage and dumps it into the towers, terminal, and extensions
 Creep.prototype.runQueen = function () {
     // if we are currently filling

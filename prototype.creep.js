@@ -10,37 +10,6 @@ require('role.scout');
 require('role.transporter');
 require('role.upgrader');
 
-// gets a dumping target for a queen
-Creep.prototype.getQueenDumpTarget = function () {
-    // find all the towers that are not full
-    let targets = this.room.findLowTowers();
-
-    // if no towers are found
-    if (targets.length == 0) {
-        // find any extensions that are not full
-        targets = this.room.findLowExtensions();
-    }
-
-    // if no extensions are found
-    if (targets.length == 0) {
-        // find all the spawns that are not full
-        targets = this.room.findLowSpawns();
-    }
-
-    // if no spawns are found
-    if (targets.length == 0 &&
-        // and there is a terminal in the room
-        this.room.terminal != undefined &&
-        // and the terminal is not full
-        this.room.terminal.store.getFreeCapacity(RESOURCE_ENERGY) > 0) {
-        // return the terminal
-        return this.room.terminal;
-    }
-
-    // return the closest one by path
-    return this.pos.findClosestByPath(targets);
-};
-
 // gets a general dumping target
 Creep.prototype.getDumpTarget = function () {
     // find any extensions that are not full
@@ -89,21 +58,6 @@ Creep.prototype.getFillTarget = function () {
 
     // return the closest one by path
     return this.pos.findClosestByPath(targets);
-};
-
-// get a building target
-Creep.prototype.getBuildTarget = function () {
-    // find and return the closest construction site
-    return this.pos.findClosestByPath(FIND_MY_CONSTRUCTION_SITES);
-};
-
-// get a repairing target
-Creep.prototype.getRepairTarget = function () {
-    // return the closest damaged structure
-    return this.pos.findClosestByPath(FIND_STRUCTURES, {
-        // declare the filter function to use
-        filter: structure => structure.hits < structure.hitsMax,
-    });
 };
 
 // move toward the idle location for the current room to get out of the way

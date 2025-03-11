@@ -1,5 +1,6 @@
 const Util = require('global.util');
 const MyLogger = require('global.logger');
+const Plant = require('controller.plant');
 
 // this is a capitol: a type of room where we keep all minerals, power, and commodities
 // has a special plant area that handles the labs, factory, and power spawn
@@ -18,14 +19,20 @@ module.exports = {
     // initialize the capitol, generating construction plans and idle location
     initialize: function (room, room_data) {
         MyLogger.log("initializing a capitol...");
-        // the list of structures this colony will have
+        // the list of structures this capitol will have
         let structures = [];
         // these are the locations of containers and source ids that go with them
         let source_plans = room.getSourcePlans(structures);
+        // these are the locations of containers and source ids that go with them
+        let mineral_plans = room.getMineralPlans(structures);
         // get the location to place the base
         let base_location = room.findBaseLocation(structures);
         // generate the base structures from the location
         structures = room.getBasePlans(base_location, structures);
+        // get the location to place the base
+        let plant_location = room.findPlantLocation(structures);
+        // generate the base structures from the location
+        structures = room.getPlantPlans(plant_location, structures);
         // get the location to send idle creeps
         let idle_location = room.getIdleLocation(structures);
 
@@ -37,8 +44,14 @@ module.exports = {
         room_data.base_x = base_location.x;
         // set the base location y coordinate
         room_data.base_y = base_location.y;
+        // set the base location x coordinate
+        room_data.plant_x = plant_location.x;
+        // set the base location y coordinate
+        room_data.plant_y = plant_location.y;
         // set the source plans
         room_data.source_plans = source_plans;
+        // set the source plans
+        room_data.mineral_plans = mineral_plans;
         // set the structure list
         room_data.structures = structures;
         // set the population timer to go off in 2 ticks
@@ -54,6 +67,8 @@ module.exports = {
         // list of the creeps that are requested
         room_data.requested_creeps = [];
 
+        room_data.plant_data = Plant.initialize(room);
+
         // return the room_data for saving
         return room_data;
     },
@@ -61,10 +76,24 @@ module.exports = {
     testRoom: function (room) {
         // count all the sources
         let sources = room.find(FIND_SOURCES);
+        // count all the sources
+        let minerals = room.find(FIND_MINERALS);
+        let structures = [];
         // see if we can fit a base in the room
-        let base_location = room.findBaseLocation([]);
-        // return if both requirements are met
-        return (sources.length > 1 && base_location != null);
+        let base_location = room.findBaseLocation(structures);
+        let plant_location = null;
+        if (base_location != null) {
+            structures = room.getBasePlans(base_location, structures);
+            plant_location = room.findPlantLocation(structures);
+        }
+
+        // return if all requirements are met
+        return (
+            sources.length > 1 &&
+            minerals.length > 0 &&
+            base_location != null &&
+            plant_location != null
+        );
     },
     // recalculate the population needs and save the requested creeps to room_data
     planPopulationRequests: function (room, room_data) {
@@ -228,6 +257,8 @@ module.exports = {
             // increment the construction timer
             room_data.construction_timer++;
         }
+
+        room_data.plant_data = Plant.run(room, room_data.plant_data);
 
         // return the room data for saving
         return room_data;

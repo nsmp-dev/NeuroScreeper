@@ -9,6 +9,14 @@ put the roads in a separate list to not count them in collisions
 ## `global.cmd.js`
 new module for running arbitrary commands
 
+## RoomManager
+add in logic for "lastScanned" tick
+scan when it gets too long ago, if we have vision
+add in threat system and ownership markers too
+account for threat when spawning new colonies and expansions
+
+## Colony/Expansion
+rework and add in conditionals for roles that are conditional on structures built
 
 # v0.3
 

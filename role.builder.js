@@ -1,5 +1,11 @@
 const Util = require("global.util");
 
+// get a building target
+Creep.prototype.getBuildTarget = function () {
+    // find and return the closest construction site
+    return this.pos.findClosestByPath(FIND_MY_CONSTRUCTION_SITES);
+};
+
 // builder that builds any construction sites that are found
 Creep.prototype.runBuilder = function () {
     // if we are currently filling
