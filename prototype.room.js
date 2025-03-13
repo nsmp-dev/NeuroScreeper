@@ -1,15 +1,18 @@
 const Util = require('global.util');
 
 // finds a good idle location, avoiding any planned structures
-Room.prototype.getIdleLocation = function (structures) {
+Room.prototype.planIdleLocation = function (plans) {
     // return a clear area of size 5 x 5
-    return this.getClearArea(5, 5, structures);
+    let idle_location = this.getClearArea(5, 5, plans);
+    plans.idle_x = idle_location.x;
+    plans.idle_y = idle_location.y;
+    return plans;
 };
 
 // gets the source plans for this room, avoiding any planned structures
-Room.prototype.getSourcePlans = function (structures) {
+Room.prototype.planSources = function (plans) {
     // create the list of source plans
-    let source_plans = [];
+    plans.source_plans = [];
     // find all the sources in the room
     let sources = this.find(FIND_SOURCES);
 
@@ -19,7 +22,7 @@ Room.prototype.getSourcePlans = function (structures) {
         let container_location = this.getClearAdjacentLocation(source.pos.x, source.pos.y, structures);
 
         // add the plans to the plans list
-        source_plans.push({
+        plans.source_plans.push({
             // id of the source
             source_id: source.id,
             // x coordinate of the container
@@ -30,23 +33,26 @@ Room.prototype.getSourcePlans = function (structures) {
     }
 
     // return the source plans
-    return source_plans;
+    return plans;
 };
 
 // finds a good base location, avoiding any planned structures
-Room.prototype.findBaseLocation = function (structures) {
+Room.prototype.planBaseLocation = function (plans) {
     // find a clear area of size 14 x 14
-    return this.getClearArea(14, 14, structures);
+    let base_location = this.getClearArea(14, 14, plans);
+    plans.base_x = base_location.x;
+    plans.base_y = base_location.y;
+    return plans;
 };
 
 // gets the base plans for this room, avoiding any planned structures
-Room.prototype.getBasePlans = function (base_location, structures) {
+Room.prototype.planBase = function (plans) {
     // get the base x coordinate
-    let x = base_location.x;
+    let x = plans.base_x;
     // get the base y coordinate
-    let y = base_location.y;
+    let y = plans.base_y;
     // create the list of structures
-    let new_structures = [
+    plans.structures = plans.structures.concat([
         // coordinates and type of the structure
         {x: x + 1, y: y, type: STRUCTURE_EXTENSION},
         {x: x + 5, y: y, type: STRUCTURE_EXTENSION},
@@ -140,51 +146,8 @@ Room.prototype.getBasePlans = function (base_location, structures) {
         {x: x + 6, y: y + 7, type: STRUCTURE_STORAGE},
         {x: x + 5, y: y + 6, type: STRUCTURE_OBSERVER},
         {x: x + 7, y: y + 10, type: STRUCTURE_TERMINAL},
-        {x: x, y: y, type: STRUCTURE_ROAD},
-        {x: x + 6, y: y, type: STRUCTURE_ROAD},
-        {x: x + 12, y: y, type: STRUCTURE_ROAD},
-        {x: x + 1, y: y + 1, type: STRUCTURE_ROAD},
-        {x: x + 6, y: y + 1, type: STRUCTURE_ROAD},
-        {x: x + 11, y: y + 1, type: STRUCTURE_ROAD},
-        {x: x + 2, y: y + 2, type: STRUCTURE_ROAD},
-        {x: x + 6, y: y + 2, type: STRUCTURE_ROAD},
-        {x: x + 10, y: y + 2, type: STRUCTURE_ROAD},
-        {x: x + 3, y: y + 3, type: STRUCTURE_ROAD},
-        {x: x + 6, y: y + 3, type: STRUCTURE_ROAD},
-        {x: x + 9, y: y + 3, type: STRUCTURE_ROAD},
-        {x: x + 4, y: y + 4, type: STRUCTURE_ROAD},
-        {x: x + 6, y: y + 4, type: STRUCTURE_ROAD},
-        {x: x + 8, y: y + 4, type: STRUCTURE_ROAD},
-        {x: x + 5, y: y + 5, type: STRUCTURE_ROAD},
-        {x: x + 7, y: y + 5, type: STRUCTURE_ROAD},
-        {x: x, y: y + 6, type: STRUCTURE_ROAD},
-        {x: x + 1, y: y + 6, type: STRUCTURE_ROAD},
-        {x: x + 2, y: y + 6, type: STRUCTURE_ROAD},
-        {x: x + 3, y: y + 6, type: STRUCTURE_ROAD},
-        {x: x + 4, y: y + 6, type: STRUCTURE_ROAD},
-        {x: x + 6, y: y + 6, type: STRUCTURE_ROAD},
-        {x: x + 8, y: y + 6, type: STRUCTURE_ROAD},
-        {x: x + 9, y: y + 6, type: STRUCTURE_ROAD},
-        {x: x + 10, y: y + 6, type: STRUCTURE_ROAD},
-        {x: x + 11, y: y + 6, type: STRUCTURE_ROAD},
-        {x: x + 12, y: y + 6, type: STRUCTURE_ROAD},
-        {x: x + 5, y: y + 7, type: STRUCTURE_ROAD},
-        {x: x + 7, y: y + 7, type: STRUCTURE_ROAD},
-        {x: x + 4, y: y + 8, type: STRUCTURE_ROAD},
-        {x: x + 6, y: y + 8, type: STRUCTURE_ROAD},
-        {x: x + 8, y: y + 8, type: STRUCTURE_ROAD},
-        {x: x + 3, y: y + 9, type: STRUCTURE_ROAD},
-        {x: x + 6, y: y + 9, type: STRUCTURE_ROAD},
-        {x: x + 9, y: y + 9, type: STRUCTURE_ROAD},
-        {x: x + 2, y: y + 10, type: STRUCTURE_ROAD},
-        {x: x + 6, y: y + 10, type: STRUCTURE_ROAD},
-        {x: x + 10, y: y + 10, type: STRUCTURE_ROAD},
-        {x: x + 1, y: y + 11, type: STRUCTURE_ROAD},
-        {x: x + 6, y: y + 11, type: STRUCTURE_ROAD},
-        {x: x + 11, y: y + 11, type: STRUCTURE_ROAD},
-        {x: x, y: y + 12, type: STRUCTURE_ROAD},
-        {x: x + 6, y: y + 12, type: STRUCTURE_ROAD},
-        {x: x + 12, y: y + 12, type: STRUCTURE_ROAD},
+    ]);
+    plans.ramparts = plans.ramparts.concat([
         {x: x + 1, y: y, type: STRUCTURE_RAMPART},
         {x: x + 5, y: y, type: STRUCTURE_RAMPART},
         {x: x + 7, y: y, type: STRUCTURE_RAMPART},
@@ -322,10 +285,56 @@ Room.prototype.getBasePlans = function (base_location, structures) {
         {x: x, y: y + 12, type: STRUCTURE_RAMPART},
         {x: x + 6, y: y + 12, type: STRUCTURE_RAMPART},
         {x: x + 12, y: y + 12, type: STRUCTURE_RAMPART},
-    ];
-
+    ]);
+    plans.roads = plans.roads.concat([
+        {x: x, y: y, type: STRUCTURE_ROAD},
+        {x: x + 6, y: y, type: STRUCTURE_ROAD},
+        {x: x + 12, y: y, type: STRUCTURE_ROAD},
+        {x: x + 1, y: y + 1, type: STRUCTURE_ROAD},
+        {x: x + 6, y: y + 1, type: STRUCTURE_ROAD},
+        {x: x + 11, y: y + 1, type: STRUCTURE_ROAD},
+        {x: x + 2, y: y + 2, type: STRUCTURE_ROAD},
+        {x: x + 6, y: y + 2, type: STRUCTURE_ROAD},
+        {x: x + 10, y: y + 2, type: STRUCTURE_ROAD},
+        {x: x + 3, y: y + 3, type: STRUCTURE_ROAD},
+        {x: x + 6, y: y + 3, type: STRUCTURE_ROAD},
+        {x: x + 9, y: y + 3, type: STRUCTURE_ROAD},
+        {x: x + 4, y: y + 4, type: STRUCTURE_ROAD},
+        {x: x + 6, y: y + 4, type: STRUCTURE_ROAD},
+        {x: x + 8, y: y + 4, type: STRUCTURE_ROAD},
+        {x: x + 5, y: y + 5, type: STRUCTURE_ROAD},
+        {x: x + 7, y: y + 5, type: STRUCTURE_ROAD},
+        {x: x, y: y + 6, type: STRUCTURE_ROAD},
+        {x: x + 1, y: y + 6, type: STRUCTURE_ROAD},
+        {x: x + 2, y: y + 6, type: STRUCTURE_ROAD},
+        {x: x + 3, y: y + 6, type: STRUCTURE_ROAD},
+        {x: x + 4, y: y + 6, type: STRUCTURE_ROAD},
+        {x: x + 6, y: y + 6, type: STRUCTURE_ROAD},
+        {x: x + 8, y: y + 6, type: STRUCTURE_ROAD},
+        {x: x + 9, y: y + 6, type: STRUCTURE_ROAD},
+        {x: x + 10, y: y + 6, type: STRUCTURE_ROAD},
+        {x: x + 11, y: y + 6, type: STRUCTURE_ROAD},
+        {x: x + 12, y: y + 6, type: STRUCTURE_ROAD},
+        {x: x + 5, y: y + 7, type: STRUCTURE_ROAD},
+        {x: x + 7, y: y + 7, type: STRUCTURE_ROAD},
+        {x: x + 4, y: y + 8, type: STRUCTURE_ROAD},
+        {x: x + 6, y: y + 8, type: STRUCTURE_ROAD},
+        {x: x + 8, y: y + 8, type: STRUCTURE_ROAD},
+        {x: x + 3, y: y + 9, type: STRUCTURE_ROAD},
+        {x: x + 6, y: y + 9, type: STRUCTURE_ROAD},
+        {x: x + 9, y: y + 9, type: STRUCTURE_ROAD},
+        {x: x + 2, y: y + 10, type: STRUCTURE_ROAD},
+        {x: x + 6, y: y + 10, type: STRUCTURE_ROAD},
+        {x: x + 10, y: y + 10, type: STRUCTURE_ROAD},
+        {x: x + 1, y: y + 11, type: STRUCTURE_ROAD},
+        {x: x + 6, y: y + 11, type: STRUCTURE_ROAD},
+        {x: x + 11, y: y + 11, type: STRUCTURE_ROAD},
+        {x: x, y: y + 12, type: STRUCTURE_ROAD},
+        {x: x + 6, y: y + 12, type: STRUCTURE_ROAD},
+        {x: x + 12, y: y + 12, type: STRUCTURE_ROAD},
+    ]);
     // concat the structure lists together
-    return structures.concat(new_structures);
+    return plans;
 };
 
 // finds a clear area of width and height, avoiding any planned structures
@@ -542,7 +551,7 @@ Room.prototype.spawnRole = function (memory, global = false) {
 };
 
 // creates structures from the given list of planned structures and source plans, capping at 5 per room
-Room.prototype.createConstructionSites = function (structures, source_plans) {
+Room.prototype.createConstructionSites = function (plans) {
     // count all the sites in the room
     let site_count = this.find(FIND_MY_CONSTRUCTION_SITES).length;
     // if we have less than 5 construction sites

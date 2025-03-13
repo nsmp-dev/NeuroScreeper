@@ -1,7 +1,7 @@
 module.exports = {
     upgradeLowestPower: function (operator) {
         let lowest_power_id = null;
-        for (let power_id of operator.powers) {
+        for (let power_id of POWER_INFO) {
             if (operator.powers[lowest_power_id] == null || operator.powers[lowest_power_id].level < operator.powers[power_id].level) {
                 lowest_power_id = power_id;
             }

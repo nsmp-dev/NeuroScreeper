@@ -18,28 +18,18 @@ module.exports = {
     initialize: function (room, room_data) {
         MyLogger.log("initializing a colony...");
         // the list of structures this colony will have
-        let structures = [];
+        let plans = {};
         // these are the locations of containers and source ids that go with them
-        let source_plans = room.getSourcePlans(structures);
+        plans = room.planSources(plans);
         // get the location to place the base
-        let base_location = room.findBaseLocation(structures);
+        plans = room.planBaseLocation(plans);
         // generate the base structures from the location
-        structures = room.getBasePlans(base_location, structures);
+        plans = room.planBase(plans);
         // get the location to send idle creeps
-        let idle_location = room.getIdleLocation(structures);
+        plans = room.planIdleLocation(plans);
 
         // set the idle location x coordinate
-        room_data.idle_x = idle_location.x;
-        // set the idle location y coordinate
-        room_data.idle_y = idle_location.y;
-        // set the base location x coordinate
-        room_data.base_x = base_location.x;
-        // set the base location y coordinate
-        room_data.base_y = base_location.y;
-        // set the source plans
-        room_data.source_plans = source_plans;
-        // set the structure list
-        room_data.structures = structures;
+        room_data.plans = plans;
         // set the population timer to go off immediately
         room_data.population_timer = this.POPULATION_TIMER_LENGTH;
         // set the construction timer to go off offset from the population timer
@@ -61,9 +51,9 @@ module.exports = {
         // count all the sources
         let sources = room.find(FIND_SOURCES);
         // see if we can fit a base in the room
-        let base_location = room.findBaseLocation([]);
+        let plans = room.planBaseLocation({});
         // return if both requirements are met
-        return (sources.length > 1 && base_location != null);
+        return (sources.length > 1 && plans.base_x != null);
     },
     // recalculate the population needs and save the requested creeps to room_data
     planPopulationRequests: function (room, room_data) {
@@ -220,7 +210,7 @@ module.exports = {
         // check if the construction timer has gone off
         if (room_data.construction_timer > this.CONSTRUCTION_TIMER_LENGTH) {
             // place up to 5 structures from the structure plans
-            room.createConstructionSites(room_data.structures, room_data.source_plans);
+            room.createConstructionSites(room_data.plans);
             // reset the construction timer
             room_data.construction_timer = 0;
         } else {
