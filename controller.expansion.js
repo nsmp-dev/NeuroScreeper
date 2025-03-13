@@ -15,42 +15,20 @@ module.exports = {
     SATISFACTION_LOG_SIZE: 100,
     // initialize the expansion, generating construction plans and idle location
     initialize: function (room, room_data) {
-        // the list of structures this expansion will have
-        let structures = [];
         // these are the locations of containers and source ids that go with them
-        let source_plans = room.getSourcePlans(structures);
+        room.planSources(room_data.plans);
         // get the location to send idle creeps
-        let idle_location = room.getIdleLocation(structures);
-
-        // set the idle location x coordinate
-        room_data.idle_x = idle_location.x;
-        // set the idle location y coordinate
-        room_data.idle_y = idle_location.y;
-        // set the source plans
-        room_data.source_plans = source_plans;
-        // set the structure list
-        room_data.structures = structures;
+        room.planIdleLocation(room_data.plans);
         // set the population timer to go off in 2 ticks
         room_data.population_timer = this.POPULATION_TIMER_LENGTH;
         // set the construction timer to go off in 4 ticks
         room_data.construction_timer = Math.floor(this.CONSTRUCTION_TIMER_LENGTH / 2);
-        // create the list of previous tick's satisfaction
-        room_data.satisfaction_log = [];
-        // whether the expansion is currently satisfied or not
-        room_data.satisfied = false;
-        // whether the expansion is currently dead or not
-        room_data.dead = false;
-        // list of the creeps that are requested
-        room_data.requested_creeps = [];
-
-        // return the room_data for saving
-        return room_data;
     },
     // tests the room for suitability of an expansion
     testRoom: function (room) {
         // count all the sources
         let sources = room.find(FIND_SOURCES);
-        // return if both requirements are met
+        // return if the requirement is met
         return (sources.length > 0);
     },
     // recalculate the population needs and save the requested creeps to room_data
@@ -111,8 +89,6 @@ module.exports = {
 
         // set the requested creeps on the room_data
         room_data.requested_creeps = requested_creeps;
-        // return the room data for saving
-        return room_data;
     },
     // attempt to spawn any creeps that are requested
     runPopulationRequests: function (room, room_data) {
@@ -123,8 +99,6 @@ module.exports = {
             // remove the creep that was successfully spawned
             room_data.requested_creeps.shift();
         }
-        // return the room data for saving
-        return room_data;
     },
     // do the running step where we execute the info from the planning phase
     runSatisfaction: function (room, room_data) {
@@ -151,16 +125,13 @@ module.exports = {
             // mark ths room as dead
             room_data.dead = true;
         }
-
-        // return the room data for saving
-        return room_data;
     },
     // do the running step where we execute the info from the planning phase
     run: function (room, room_data) {
         // check if the population timer has gone off
         if (room_data.population_timer > this.POPULATION_TIMER_LENGTH) {
             // recalculate population
-            room_data = this.planPopulationRequests(room, room_data);
+            this.planPopulationRequests(room, room_data);
             // reset the population timer
             room_data.population_timer = 0;
         } else {
@@ -169,11 +140,11 @@ module.exports = {
         }
 
         // refresh the satisfaction calculation
-        room_data = this.runSatisfaction(room, room_data);
+        this.runSatisfaction(room, room_data);
 
         // if there are any creeps still needed
         if (room_data.requested_creeps.length > 0) {
-            room_data = this.runPopulationRequests(room, room_data);
+            this.runPopulationRequests(room, room_data);
         }
 
         // check if the construction timer has gone off
@@ -186,8 +157,5 @@ module.exports = {
             // increment the construction timer
             room_data.construction_timer++;
         }
-
-        // return the room data for saving
-        return room_data;
     },
 };

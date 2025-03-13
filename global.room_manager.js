@@ -2,6 +2,7 @@ const Colony = require("controller.colony");
 const Expansion = require("controller.expansion");
 const Util = require("global.util");
 const MyLogger = require('global.logger');
+const RoomData = require("data.room_data");
 
 // room manager module that handles scanning/adding new rooms
 module.exports = {
@@ -27,16 +28,9 @@ module.exports = {
         let room = Game.spawns[spawn_name].room;
 
         // initialize the room data entry
-        Memory.room_data[room.name] = {
-            // force the type to a colony
-            type: Colony.NAME,
-            // check if this room can be a colony
-            possible_colony: Colony.testRoom(room),
-            // check if this room can be an expansion
-            possible_expansion: Expansion.testRoom(room),
-        };
+        Memory.room_data[room.name] = new RoomData(room);
         // initialize the colony and store the room data
-        Memory.room_data[room.name] = Colony.initialize(room, Memory.room_data[room.name]);
+        Colony.initialize(room, Memory.room_data[room.name]);
     },
     // scan for any new rooms and add their data if found
     scanNewRooms: function () {
@@ -45,14 +39,7 @@ module.exports = {
             // if we have not scanned this room yet
             if (Memory.room_data[name] == undefined) {
                 // initialize the room data for this room
-                Memory.room_data[name] = {
-                    // the type is not set yet so it is set to null
-                    type: null,
-                    // check whether the room can be a colony
-                    possible_colony: Colony.testRoom(Game.rooms[name]),
-                    // check whether the room can be an expansion
-                    possible_expansion: Expansion.testRoom(Game.rooms[name]),
-                };
+                Memory.room_data[name] = new RoomData(Game.rooms[name]);
             }
         }
     },
@@ -62,10 +49,8 @@ module.exports = {
         for (let name in Memory.room_data) {
             // if this room is not used and is a possible colony
             if (Memory.room_data[name].type == null && Memory.room_data[name].possible_colony) {
-                // set the room's type to colony
-                Memory.room_data[name].type = Colony.NAME;
                 // initialize the room data
-                Memory.room_data[name] = Colony.initialize(Game.rooms[name], Memory.room_data[name]);
+                Colony.initialize(Game.rooms[name], Memory.room_data[name]);
                 // return true for success
                 return true;
             }
@@ -79,10 +64,8 @@ module.exports = {
         for (let name in Memory.room_data) {
             // if this room is not used and is a possible expansion
             if (Memory.room_data[name].type == null && Memory.room_data[name].possible_expansion) {
-                // set the room's type to expansion
-                Memory.room_data[name].type = Expansion.NAME;
                 // initialize the room data
-                Memory.room_data[name] = Expansion.initialize(Game.rooms[name], Memory.room_data[name]);
+                Expansion.initialize(Game.rooms[name], Memory.room_data[name]);
                 // return true for success
                 return true;
             }
@@ -110,7 +93,7 @@ module.exports = {
                 pop[name].total = 0;
 
                 // grab the source plans from the room data
-                let source_plans = Memory.room_data[name].source_plans;
+                let source_plans = Memory.room_data[name].plans.sources;
 
                 // loop through the source plans
                 for (let source_plan of source_plans) {

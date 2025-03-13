@@ -6,13 +6,24 @@ Room.prototype.planIdleLocation = function (plans) {
     let idle_location = this.getClearArea(5, 5, plans);
     plans.idle_x = idle_location.x;
     plans.idle_y = idle_location.y;
-    return plans;
+};
+
+// finds a good base location, avoiding any planned structures
+Room.prototype.planBaseLocation = function (plans) {
+    // find a clear area of size 14 x 14
+    let base_location = this.getClearArea(14, 14, plans);
+    plans.base_x = base_location.x;
+    plans.base_y = base_location.y;
+};
+
+Room.prototype.planPlantLocation = function (plans) {
+    let plant_location = this.getClearArea(14, 14, plans);
+    plans.plant_x = plant_location.x;
+    plans.plant_y = plant_location.y;
 };
 
 // gets the source plans for this room, avoiding any planned structures
 Room.prototype.planSources = function (plans) {
-    // create the list of source plans
-    plans.source_plans = [];
     // find all the sources in the room
     let sources = this.find(FIND_SOURCES);
 
@@ -36,13 +47,29 @@ Room.prototype.planSources = function (plans) {
     return plans;
 };
 
-// finds a good base location, avoiding any planned structures
-Room.prototype.planBaseLocation = function (plans) {
-    // find a clear area of size 14 x 14
-    let base_location = this.getClearArea(14, 14, plans);
-    plans.base_x = base_location.x;
-    plans.base_y = base_location.y;
-    return plans;
+Room.prototype.planMinerals = function (plans) {
+    // find all the sources in the room
+    let minerals = this.find(FIND_MINERALS);
+
+    // loop through the sources
+    for (let mineral of minerals) {
+        // find an adjacent space to put the container
+        let container_location = this.getClearAdjacentLocation(mineral.pos.x, mineral.pos.y, structures);
+
+        // add the plans to the plans list
+        plans.mineral_plans.push({
+            // id of the source
+            mineral_id: mineral.id,
+            // x coordinate of the container
+            mineral_x: mineral.pos.x,
+            // y coordinate of the container
+            mineral_y: mineral.pos.y,
+            // x coordinate of the container
+            container_x: container_location.x,
+            // y coordinate of the container
+            container_y: container_location.y,
+        });
+    }
 };
 
 // gets the base plans for this room, avoiding any planned structures
@@ -333,12 +360,41 @@ Room.prototype.planBase = function (plans) {
         {x: x + 6, y: y + 12, type: STRUCTURE_ROAD},
         {x: x + 12, y: y + 12, type: STRUCTURE_ROAD},
     ]);
+};
+
+Room.prototype.planPlant = function (plans) {
+// get the base x coordinate
+    let x = plans.plant_x;
+    // get the base y coordinate
+    let y = plans.plant_y;
+
+    plans.input_lab_1_x = x + 2;
+    plans.input_lab_1_y = y;
+    plans.input_lab_2_x = x + 2;
+    plans.input_lab_2_y = y + 2;
+    plans.output_lab_x = x + 3;
+    plans.output_lab_y = y + 1;
+
     // concat the structure lists together
-    return plans;
+    plans.structures = plans.structures.concat([
+        // coordinates and type of the structure
+        {x: x, y: y, type: STRUCTURE_POWER_SPAWN},
+        {x: x, y: y + 2, type: STRUCTURE_FACTORY},
+        {x: x + 2, y: y, type: STRUCTURE_LAB},
+        {x: x + 3, y: y + 1, type: STRUCTURE_LAB},
+        {x: x + 2, y: y + 2, type: STRUCTURE_LAB},
+        {x: x + 1, y: y, type: STRUCTURE_ROAD},
+        {x: x + 3, y: y, type: STRUCTURE_ROAD},
+        {x: x, y: y + 1, type: STRUCTURE_ROAD},
+        {x: x + 1, y: y + 1, type: STRUCTURE_ROAD},
+        {x: x + 2, y: y + 1, type: STRUCTURE_ROAD},
+        {x: x + 1, y: y + 2, type: STRUCTURE_ROAD},
+        {x: x + 3, y: y + 2, type: STRUCTURE_ROAD},
+    ]);
 };
 
 // finds a clear area of width and height, avoiding any planned structures
-Room.prototype.getClearArea = function (width, height, structures) {
+Room.prototype.getClearArea = function (width, height, plans) {
     // grab the terrain for the room
     let terrain_grid = this.getTerrain();
     // create a structure grid to reference
@@ -358,10 +414,12 @@ Room.prototype.getClearArea = function (width, height, structures) {
     }
 
     // loop through the planned structures
-    structures.forEach(function (structure) {
+    plans.structures.forEach(function (structure) {
         // set this spot to taken
         structure_grid[structure.x][structure.y] = true;
     });
+
+    // TODO: add in accounting for minerals/sources/plant
 
     // loop through all the X coordinates
     for (let x = 0; x < 50 - width; x++) {
@@ -385,9 +443,9 @@ Room.prototype.getClearArea = function (width, height, structures) {
             // if the entire area is clear
             if (clear) {
                 // get the center X coordinate
-                let tx = (x + 7) - 25;
+                let tx = (x + Math.floor(width/2)) - 25;
                 // get the center Y coordinate
-                let ty = (y + 7) - 25;
+                let ty = (y + Math.floor(height/2)) - 25;
                 // add the location to the list of clear spots
                 clear_spots.push({
                     // the X coordinate of the area
@@ -684,4 +742,14 @@ Room.prototype.getAdjacentRooms = function () {
 
     // return the list of room names found
     return room_names;
+};
+
+Room.prototype.getStructureAt = function (structure_type, x, y) {
+    let structures = this.lookForAt(LOOK_STRUCTURES, x, y);
+    for (let structure in structures) {
+        if (structure.structureType == structure_type) {
+            return structure;
+        }
+    }
+    return null;
 };

@@ -17,41 +17,28 @@ module.exports = {
     // initialize the colony, generating construction plans and idle location
     initialize: function (room, room_data) {
         MyLogger.log("initializing a colony...");
-        // the list of structures this colony will have
-        let plans = {};
-        // these are the locations of containers and source ids that go with them
-        plans = room.planSources(plans);
-        // get the location to place the base
-        plans = room.planBaseLocation(plans);
-        // generate the base structures from the location
-        plans = room.planBase(plans);
-        // get the location to send idle creeps
-        plans = room.planIdleLocation(plans);
 
-        // set the idle location x coordinate
-        room_data.plans = plans;
+        // these are the locations of containers and source ids that go with them
+        room.planSources(room_data.plans);
+        // get the location to place the base
+        room.planBaseLocation(room_data.plans);
+        // generate the base structures from the location
+        room.planBase(room_data.plans);
+        // get the location to send idle creeps
+        room.planIdleLocation(room_data.plans);
+        room_data.type = this.NAME;
         // set the population timer to go off immediately
         room_data.population_timer = this.POPULATION_TIMER_LENGTH;
         // set the construction timer to go off offset from the population timer
         room_data.construction_timer = Math.floor(this.CONSTRUCTION_TIMER_LENGTH / 2);
-        // create the list of previous tick's satisfaction
-        room_data.satisfaction_log = [];
-        // whether the colony is currently satisfied or not
-        room_data.satisfied = false;
-        // whether the colony is currently dead or not
-        room_data.dead = false;
-        // list of the creeps that are requested
-        room_data.requested_creeps = [];
-
-        // return the room_data for saving
-        return room_data;
     },
     // tests the room for suitability of a colony
     testRoom: function (room) {
         // count all the sources
         let sources = room.find(FIND_SOURCES);
         // see if we can fit a base in the room
-        let plans = room.planBaseLocation({});
+        let plans = {};
+        room.planBaseLocation(plans);
         // return if both requirements are met
         return (sources.length > 1 && plans.base_x != null);
     },
@@ -133,8 +120,6 @@ module.exports = {
 
         // set the requested creeps on the room_data
         room_data.requested_creeps = requested_creeps;
-        // return the room data for saving
-        return room_data;
     },
     // attempt to spawn any creeps that are requested
     runPopulationRequests: function (room, room_data) {
@@ -152,9 +137,6 @@ module.exports = {
             // remove the creep that was successfully spawned
             room_data.requested_creeps.shift();
         }
-
-        // return the room data for saving
-        return room_data;
     },
     // do the running step where we execute the info from the planning phase
     runSatisfaction: function (room, room_data) {
@@ -181,16 +163,13 @@ module.exports = {
             // mark ths room as dead
             room_data.dead = true;
         }
-
-        // return the room data for saving
-        return room_data;
     },
     // run the colony, kicking off sub-functions for specific activities
     run: function (room, room_data) {
         // if the population timer has gone off
         if (room_data.population_timer > this.POPULATION_TIMER_LENGTH) {
             // recalculate population
-            room_data = this.planPopulationRequests(room, room_data);
+            this.planPopulationRequests(room, room_data);
             // reset the population timer
             room_data.population_timer = 0;
         } else {
@@ -199,12 +178,12 @@ module.exports = {
         }
 
         // refresh the satisfaction calculation
-        room_data = this.runSatisfaction(room, room_data);
+        this.runSatisfaction(room, room_data);
 
         // if there are any creeps still needed
         if (room_data.requested_creeps.length > 0) {
             // try to spawn creeps if possible
-            room_data = this.runPopulationRequests(room, room_data);
+            this.runPopulationRequests(room, room_data);
         }
 
         // check if the construction timer has gone off
@@ -217,8 +196,5 @@ module.exports = {
             // increment the construction timer
             room_data.construction_timer++;
         }
-
-        // return the room data for saving
-        return room_data;
     },
 };

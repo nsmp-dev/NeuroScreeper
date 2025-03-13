@@ -12,7 +12,7 @@ const Colony = require("controller.colony");
 const Expansion = require("controller.expansion");
 
 // change the build number to trigger a memory wipe
-const BUILD = 3;
+const BUILD = 4;
 
 // the main loop that gets run every tick
 module.exports.loop = function () {
@@ -63,17 +63,14 @@ module.exports.loop = function () {
         // if room is a colony, run it
         if (room_data.type == Colony.NAME) {
             // run the colony
-            room_data = Colony.run(room, room_data);
+            Colony.run(room, room_data);
         }
 
         // if room is an expansion, run it
         if (room_data.type == Expansion.NAME) {
             // run the expansion
-            room_data = Expansion.run(room, room_data);
+            Expansion.run(room, room_data);
         }
-
-        // save the room data
-        Memory.room_data[name] = room_data;
         // render the visuals for the room
         Visualizer.render(room, room_data);
 
