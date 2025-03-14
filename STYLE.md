@@ -42,6 +42,7 @@ let targets = this.find(FIND_MY_STRUCTURES, {
 ```
 
 ### array for loop
+"for each element **in** an array"
 ```javascript
 let names = ["Hanna", "Atlas"];
 for (let name of names) {
@@ -50,6 +51,7 @@ for (let name of names) {
 ```
 
 ### object for loop
+"for each word **in** a dictionary"
 ```javascript
 let person = {
     id: 1,

@@ -393,15 +393,8 @@ Room.prototype.planPlant = function (plans) {
     ]);
 };
 
-// finds a clear area of width and height, avoiding any planned structures
-Room.prototype.getClearArea = function (width, height, plans) {
-    // grab the terrain for the room
-    let terrain_grid = this.getTerrain();
-    // create a structure grid to reference
+Room.prototype.getStructureGrid = function (plans) {
     let structure_grid = [];
-    // create a list of clear spots that pass the check
-    let clear_spots = [];
-
     // loop through the X coordinates
     for (let x = 0; x < 50; x++) {
         // add a column to the structure grid
@@ -414,12 +407,34 @@ Room.prototype.getClearArea = function (width, height, plans) {
     }
 
     // loop through the planned structures
-    plans.structures.forEach(function (structure) {
+    for (let structure of plans.structures) {
         // set this spot to taken
         structure_grid[structure.x][structure.y] = true;
-    });
+    }
 
-    // TODO: add in accounting for minerals/sources/plant
+    for (let source_plan of plans.sources) {
+        // set this spot to taken
+        structure_grid[source_plan.container_x][source_plan.container_y] = true;
+    }
+
+    for (let mineral_plan of plans.minerals) {
+        // set this spot to taken
+        structure_grid[mineral_plan.container_x][mineral_plan.container_y] = true;
+    }
+
+    return structure_grid;
+};
+
+// finds a clear area of width and height, avoiding any planned structures
+Room.prototype.getClearArea = function (width, height, plans) {
+    // grab the terrain for the room
+    let terrain_grid = this.getTerrain();
+    // create a structure grid to reference
+    let structure_grid = this.getStructureGrid(plans);
+    // create a list of clear spots that pass the check
+    let clear_spots = [];
+
+
 
     // loop through all the X coordinates
     for (let x = 0; x < 50 - width; x++) {
@@ -481,30 +496,13 @@ Room.prototype.getClearArea = function (width, height, plans) {
 };
 
 // finds a clear spot that is adjacent to the given x/y coordinate, avoiding any planned structures
-Room.prototype.getClearAdjacentLocation = function (x, y, structures) {
+Room.prototype.getClearAdjacentLocation = function (x, y, plans) {
     // grab the terrain for the room
     let terrain_grid = this.getTerrain();
     // create a structure grid to reference
-    let structure_grid = [];
+    let structure_grid = this.getStructureGrid(plans);
     // create a list of clear spots that pass the check
     let clear_spots = [];
-
-    // loop through the X coordinates
-    for (let x = 0; x < 50; x++) {
-        // add a column to the structure grid
-        structure_grid.push([]);
-        // loop through the Y coordinates
-        for (let y = 0; y < 50; y++) {
-            // place a false for that position
-            structure_grid[x].push(false);
-        }
-    }
-
-    // loop through the planned structures
-    structures.forEach(function (structure) {
-        // set this spot to taken
-        structure_grid[structure.x][structure.y] = true;
-    });
 
     // if the top left adjacent tile is not a wall or a planned structure
     if (terrain_grid.get(x - 1, y - 1) !== TERRAIN_MASK_WALL && !structure_grid[x - 1][y - 1]) {
@@ -613,43 +611,67 @@ Room.prototype.createConstructionSites = function (plans) {
     // count all the sites in the room
     let site_count = this.find(FIND_MY_CONSTRUCTION_SITES).length;
     // if we have less than 5 construction sites
-    if (site_count < 5) {
-        // loop through the source plans for this room
-        for (let source_plan of source_plans) {
-            // if the container is not built
-            if (!this.checkFor(source_plan.container_x, source_plan.container_y, STRUCTURE_CONTAINER)) {
-                // try to place the container
-                let result = this.createConstructionSite(source_plan.container_x, source_plan.container_y, STRUCTURE_CONTAINER);
-                // if creating the site was successful
-                if (result == OK) {
-                    // increment the site_count
-                    site_count++;
-                    // if we have reached 5 or more sites
-                    if (site_count >= 5) {
-                        // break the loop
-                        break;
-                    }
+    if (site_count > 5) {
+        return;
+    }
+    // loop through the source plans for this room
+    for (let source_plan of plans.sources) {
+        // if the container is not built
+        if (!this.checkFor(source_plan.container_x, source_plan.container_y, STRUCTURE_CONTAINER)) {
+            // try to place the container
+            let result = this.createConstructionSite(source_plan.container_x, source_plan.container_y, STRUCTURE_CONTAINER);
+            // if creating the site was successful
+            if (result == OK) {
+                // increment the site_count
+                site_count++;
+                // if we have reached 5 or more sites
+                if (site_count >= 5) {
+                    // break the loop
+                    break;
                 }
             }
         }
     }
     // if we have less than 5 construction sites
-    if (site_count < 5) {
-        // loop through the planned structures for this room
-        for (let structure of structures) {
-            // if the structure is not built
-            if (!this.checkFor(structure.x, structure.y, structure.type)) {
-                // try to place the structure
-                let result = this.createConstructionSite(structure.x, structure.y, structure.type);
-                // if creating the site was successful
-                if (result == OK) {
-                    // increment the site_count
-                    site_count++;
-                    // if we have reached 5 or more sites
-                    if (site_count >= 5) {
-                        // break the loop
-                        break;
-                    }
+    if (site_count > 5) {
+        return;
+    }
+    // loop through the mineral plans for this room
+    for (let mineral_plan of plans.minerals) {
+        // if the container is not built
+        if (!this.checkFor(mineral_plan.container_x, mineral_plan.container_y, STRUCTURE_CONTAINER)) {
+            // try to place the container
+            let result = this.createConstructionSite(mineral_plan.container_x, mineral_plan.container_y, STRUCTURE_CONTAINER);
+            // if creating the site was successful
+            if (result == OK) {
+                // increment the site_count
+                site_count++;
+                // if we have reached 5 or more sites
+                if (site_count >= 5) {
+                    // break the loop
+                    break;
+                }
+            }
+        }
+    }
+    // if we have less than 5 construction sites
+    if (site_count > 5) {
+        return;
+    }
+    // loop through the planned structures for this room
+    for (let structure of plans.structures) {
+        // if the structure is not built
+        if (!this.checkFor(structure.x, structure.y, structure.type)) {
+            // try to place the structure
+            let result = this.createConstructionSite(structure.x, structure.y, structure.type);
+            // if creating the site was successful
+            if (result == OK) {
+                // increment the site_count
+                site_count++;
+                // if we have reached 5 or more sites
+                if (site_count >= 5) {
+                    // break the loop
+                    break;
                 }
             }
         }
