@@ -1,5 +1,4 @@
 const Util = require('global.util');
-const MyLogger = require('global.logger');
 
 // this is a room runner: it contains logic for running each kind of room
 // manages its own data by passing its memory via a RoomData object, along with a reference to the room itself
@@ -44,7 +43,7 @@ module.exports = {
         }
 
         // check if an upgrader is needed
-        if (pop[Util.UPGRADER.NAME] == undefined || pop[Util.UPGRADER.NAME] < 1) {
+        if (room_data.type == COLONY && [Util.UPGRADER.NAME] == undefined || pop[Util.UPGRADER.NAME] < 1) {
             // request an upgrader
             requested_creeps.push(Util.UPGRADER.init(room.name));
         }
@@ -104,7 +103,7 @@ module.exports = {
             filter: structure => structure.structureType == STRUCTURE_OBSERVER,
         }).length;
         // check if a scout is needed
-        if (observer_count == 0 && (pop[Util.SCOUT.NAME] == undefined || pop[Util.SCOUT.NAME] < 1)) {
+        if (room_data.type == COLONY && observer_count == 0 && (pop[Util.SCOUT.NAME] == undefined || pop[Util.SCOUT.NAME] < 1)) {
             // request a scout
             requested_creeps.push(Util.SCOUT.init(room.name));
         }
@@ -127,13 +126,11 @@ module.exports = {
     // attempt to spawn any creeps that are requested
     spawnRequestedCreeps: function (room, room_data) {
         let success;
-        // check if the creep is a claimer
-        if (room_data.requested_creeps[0].role == Util.CLAIMER.NAME) {
-            // spawn the claimer globally
-            success = room.spawnRole(room_data.requested_creeps[0], true);
-        } else {
-            // spawn the creep locally
+
+        if (room_data.type == COLONY) {
             success = room.spawnRole(room_data.requested_creeps[0]);
+        }else{
+            success = room.spawnRole(room_data.requested_creeps[0], true);
         }
         // check if we successfully spawned the creep
         if (success) {
@@ -146,10 +143,10 @@ module.exports = {
         // if no creeps are needed
         if (room_data.requested_creeps.length == 0) {
             // push a 1 to the satisfaction log to show we were satisfied for this tick
-            room_data.satisfaction_log.push(1);
+            room_data.satisfaction_log.push(true);
         } else {
             // push a 0 to the satisfaction log to show we were unsatisfied for this tick
-            room_data.satisfaction_log.push(0);
+            room_data.satisfaction_log.push(false);
         }
 
         // check if the satisfaction log is too big
@@ -173,13 +170,8 @@ module.exports = {
     run: function (room, room_data) {
         // if the population timer has gone off
         if (room_data.population_timer > this.POPULATION_TIMER_LENGTH) {
-            // recalculate population
-            if (room_data.type == COLONY) {
-                this.requestColonyCreeps(room, room_data);
-            }
-            if (room_data.type == EXPANSION) {
-                this.requestExpansionCreeps(room, room_data);
-            }
+            // recalculate requested creeps
+            this.requestCreeps(room, room_data);
             // reset the population timer
             room_data.population_timer = 0;
         } else {
@@ -190,7 +182,7 @@ module.exports = {
         // refresh the satisfaction calculation
         this.calculateSatisfaction(room, room_data);
 
-        // if there are any creeps still needed
+        // if there are any creeps still requested
         if (room_data.requested_creeps.length > 0) {
             // try to spawn creeps if possible
             this.spawnRequestedCreeps(room, room_data);

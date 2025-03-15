@@ -1,15 +1,9 @@
-const Colony = require("controller.colony");
-const Expansion = require("controller.expansion");
 const Util = require("global.util");
 const MyLogger = require('global.logger');
 const RoomData = require("data.room_data");
 
 // room manager module that handles scanning/adding new rooms
 module.exports = {
-    // how often to recalculate the populations
-    POPULATION_TIMER_LENGTH: 10,
-    // how often to consider adding a new room
-    NEW_ROOM_TIMER_LENGTH: 100,
     // create all the starter data needed to run the system
     initialize: function () {
         MyLogger.log("initializing the room manager...");
@@ -29,8 +23,7 @@ module.exports = {
 
         // initialize the room data entry
         Memory.room_data[room.name] = new RoomData(room);
-        // initialize the colony and store the room data
-        Colony.initialize(room, Memory.room_data[room.name]);
+        Memory.room_data[room.name].type = COLONY;
     },
     // scan for any new rooms and add their data if found
     scanNewRooms: function () {
@@ -50,7 +43,7 @@ module.exports = {
             // if this room is not used and is a possible colony
             if (Memory.room_data[name].type == null && Memory.room_data[name].possible_colony) {
                 // initialize the room data
-                Colony.initialize(Game.rooms[name], Memory.room_data[name]);
+                Memory.room_data[name].type = COLONY;
                 // return true for success
                 return true;
             }
@@ -65,7 +58,7 @@ module.exports = {
             // if this room is not used and is a possible expansion
             if (Memory.room_data[name].type == null && Memory.room_data[name].possible_expansion) {
                 // initialize the room data
-                Expansion.initialize(Game.rooms[name], Memory.room_data[name]);
+                Memory.room_data[name].type = EXPANSION;
                 // return true for success
                 return true;
             }
@@ -82,8 +75,8 @@ module.exports = {
         // loop through each room in the room data
         for (let name in Memory.room_data) {
             // if this room is a colony or expansion
-            if (Memory.room_data[name].type == Colony.NAME ||
-                Memory.room_data[name].type == Expansion.NAME) {
+            if (Memory.room_data[name].type == COLONY ||
+                Memory.room_data[name].type == EXPANSION) {
 
                 // create the room's population object
                 pop[name] = {};

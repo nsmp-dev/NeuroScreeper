@@ -170,9 +170,12 @@ module.exports = {
         // the total number of 1s in the room satisfaction log
         let total = 0;
         // loop through the satisfaction log
-        room_data.satisfaction_log.forEach(function (amount) {
-            // increment the total
-            total += amount;
+        room_data.satisfaction_log.forEach(function (satisfied) {
+            // if satisfied on that tick
+            if (satisfied) {
+                // increment the total
+                total++;
+            }
         });
 
         // calculate the average and return it
@@ -304,9 +307,12 @@ module.exports = {
         DUMPING: 0,
         FILLING: 1,
         init: function (room_name, source_id, container_x, container_y) {
+            // TODO: find the nearest colony room name
+            let nearest_colony_room_name = null;
             return {
                 role: this.NAME,
                 room_name: room_name,
+                nearest_colony_room_name: nearest_colony_room_name,
                 source: source_id,
                 container_x: container_x,
                 container_y: container_y,

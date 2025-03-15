@@ -165,6 +165,7 @@ Room.prototype.getClearAdjacentLocation = function (x, y, plans) {
 };
 
 // spawns the largest version of the given creep in this room
+// TODO: on global, spawn from nearest colony
 Room.prototype.spawnRole = function (memory, global = false) {
     // default success to false
     let success = false;
