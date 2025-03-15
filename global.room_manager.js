@@ -89,14 +89,13 @@ module.exports = {
                 pop[name] = {};
                 // create the sources array for counting drillers and transporters
                 pop[name].sources = {};
+                // create the minerals array for counting drillers and transporters
+                pop[name].minerals = {};
                 // create the total amount of creeps
                 pop[name].total = 0;
 
-                // grab the source plans from the room data
-                let source_plans = Memory.room_data[name].plans.sources;
-
                 // loop through the source plans
-                for (let source_plan of source_plans) {
+                for (let source_plan of Memory.room_data[name].plans.sources) {
                     // create the source entry on the population object
                     pop[name].sources[source_plan.source_id] = {
                         // empty slot to record a driller if found
@@ -107,6 +106,21 @@ module.exports = {
                         container_x: source_plan.container_x,
                         // y coordinate of the container assigned to this source
                         container_y: source_plan.container_y,
+                    };
+                }
+
+                // loop through the mineral plans
+                for (let mineral_plan of Memory.room_data[name].plans.minerals) {
+                    // create the source entry on the population object
+                    pop[name].sources[mineral_plan.source_id] = {
+                        // empty slot to record a driller if found
+                        driller: null,
+                        // empty slot to record a transporter if found
+                        transporter: null,
+                        // x coordinate of the container assigned to this source
+                        container_x: mineral_plan.container_x,
+                        // y coordinate of the container assigned to this source
+                        container_y: mineral_plan.container_y,
                     };
                 }
             }

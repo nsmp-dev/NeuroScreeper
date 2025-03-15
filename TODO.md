@@ -1,5 +1,11 @@
 # v0.2
 
+## refactor controllers into room runner
+adapt creep requests to the plans and what is built
+add in defcon system
+1 - room is not owned, and contains enemies
+2 - room is owned, and contains enemies
+
 ## `room_data.road_plans`
 add in road plans to expansions and colonies
 add road anchor points to base plans

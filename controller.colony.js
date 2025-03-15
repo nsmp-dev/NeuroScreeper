@@ -14,11 +14,11 @@ module.exports = {
     SATISFACTION_THRESHOLD: 0.9,
     // size of the log to keep for satisfaction calculations
     SATISFACTION_LOG_SIZE: 100,
-    // initialize the colony, generating construction plans and idle location
+    // initialize the colony, setting the timers
     initialize: function (room, room_data) {
         MyLogger.log("initializing a colony...");
+        // set the type to a colony
         room_data.type = this.NAME;
-
         // set the population timer to go off immediately
         room_data.population_timer = this.POPULATION_TIMER_LENGTH;
         // set the construction timer to go off offset from the population timer
@@ -26,14 +26,17 @@ module.exports = {
     },
     // tests the room for suitability of a colony
     testRoom: function (plans) {
+        // return whether the room meets the conditions
         return (
+            // more than 1 source and
             plans.sources.length > 1 &&
+            // we were able to find a spot for a base
             plans.base_x != null
         );
     },
     // recalculate the population needs and save the requested creeps to room_data
     planPopulationRequests: function (room, room_data) {
-        // ease of access variables
+        // grab the population for this room
         let pop = Memory.populations[room.name];
         // create a list of requested creeps
         let requested_creeps = [];
@@ -46,22 +49,33 @@ module.exports = {
 
         // loop through the sources
         for (let source_id in pop.sources) {
-            let data = pop.sources[source_id];
+            // grab the source data
+            let source_data = pop.sources[source_id];
             // check if a driller is needed for this source
-            if (data.driller == null) {
+            if (source_data.driller == null) {
                 // request a driller
-                requested_creeps.push(Util.DRILLER.init(room.name, source_id, data.container_x, data.container_y));
+                requested_creeps.push(Util.DRILLER.init(
+                    room.name,
+                    source_id,
+                    source_data.container_x,
+                    source_data.container_y
+                ));
             }
             // check if a transporter is needed for this source
-            if (data.transporter == null) {
+            if (source_data.transporter == null) {
                 // request a transporter
-                requested_creeps.push(Util.TRANSPORTER.init(room.name, source_id, data.container_x, data.container_y));
+                requested_creeps.push(Util.TRANSPORTER.init(
+                    room.name,
+                    source_id,
+                    source_data.container_x,
+                    source_data.container_y
+                ));
             }
         }
 
         // check if an upgrader is needed
         if (pop[Util.UPGRADER.NAME] == undefined || pop[Util.UPGRADER.NAME] < 1) {
-            // request a driller
+            // request an upgrader
             requested_creeps.push(Util.UPGRADER.init(room.name));
         }
 
@@ -84,13 +98,17 @@ module.exports = {
         }
 
         // check if a queen is needed
-        if (room.storage !== undefined && (pop[Util.QUEEN.NAME] == undefined || pop[Util.QUEEN.NAME] < 1)) {
+        if (room.storage != undefined && (pop[Util.QUEEN.NAME] == undefined || pop[Util.QUEEN.NAME] < 1)) {
             // request a queen
             requested_creeps.push(Util.QUEEN.init(room.name));
         }
 
+        // count the observers in the room
+        let observer_count = room.find(FIND_STRUCTURES, {
+            filter: structure => structure.structureType == STRUCTURE_OBSERVER,
+        }).length;
         // check if a scout is needed
-        if (pop[Util.SCOUT.NAME] == undefined || pop[Util.SCOUT.NAME] < 1) {
+        if (observer_count == 0 && (pop[Util.SCOUT.NAME] == undefined || pop[Util.SCOUT.NAME] < 1)) {
             // request a scout
             requested_creeps.push(Util.SCOUT.init(room.name));
         }
@@ -127,7 +145,7 @@ module.exports = {
             room_data.requested_creeps.shift();
         }
     },
-    // do the running step where we execute the info from the planning phase
+    // calculate to see if the room is satisfied
     runSatisfaction: function (room, room_data) {
         // if no creeps are needed
         if (room_data.requested_creeps.length == 0) {
@@ -147,11 +165,13 @@ module.exports = {
         // calculate the average satisfaction and see if it meets the threshold of satisfaction
         room_data.satisfied = (Util.getSatisfiedRatio(room_data) > this.SATISFACTION_THRESHOLD);
 
+        /* TODO: uncomment this and setup detection for room death
         // check if we have lost control of the controller
         if (!room.controller.my) {
             // mark ths room as dead
             room_data.dead = true;
         }
+         */
     },
     // run the colony, kicking off sub-functions for specific activities
     run: function (room, room_data) {

@@ -1,43 +1,18 @@
-const Util = require("global.util");
-const MyLogger = require("./global.logger");
+const Util = require('global.util');
+const MyLogger = require('global.logger');
 
-// this is an expansion: a room where we are just harvesting sources
-// manages its own data by passing its memory object "room data" around, along with a reference to the room itself
+// this is a room runner: it contains logic for running each kind of room
+// manages its own data by passing its memory via a RoomData object, along with a reference to the room itself
 module.exports = {
-    // constant used to id an expansion
-    NAME: "expansion",
-    // ticks between making construction sites
-    CONSTRUCTION_TIMER_LENGTH: 50,
-    // ticks between calculating population needs
-    POPULATION_TIMER_LENGTH: 10,
-    // ratio of ticks that must be satisfied to count as overall satisfied
-    SATISFACTION_THRESHOLD: 0.9,
-    // size of the log to keep for satisfaction calculations
-    SATISFACTION_LOG_SIZE: 100,
-    // initialize the expansion, setting the timers
-    initialize: function (room, room_data) {
-        MyLogger.log("initializing an expansion...");
-        // set the type to an expansion
-        room_data.type = this.NAME;
-        // set the population timer to go off in 2 ticks
-        room_data.population_timer = this.POPULATION_TIMER_LENGTH;
-        // set the construction timer to go off in 4 ticks
-        room_data.construction_timer = Math.floor(this.CONSTRUCTION_TIMER_LENGTH / 2);
-    },
-    // tests the room for suitability of an expansion
-    testRoom: function (plans) {
-        // return true if the room meets the requirements
-        return plans.sources.length > 0;
-    },
     // recalculate the population needs and save the requested creeps to room_data
-    planPopulationRequests: function (room, room_data) {
+    requestCreeps: function (room, room_data) {
         // grab the population for this room
         let pop = Memory.populations[room.name];
         // create a list of requested creeps
         let requested_creeps = [];
 
         // check if a claimer is needed
-        if (pop[Util.CLAIMER.NAME] == undefined || pop[Util.CLAIMER.NAME] < 1) {
+        if (!room.controller.my && (pop[Util.CLAIMER.NAME] == undefined || pop[Util.CLAIMER.NAME] < 1)) {
             // request a claimer
             requested_creeps.push(Util.CLAIMER.init(room.name));
         }
@@ -45,33 +20,39 @@ module.exports = {
         // loop through the sources
         for (let source_id in pop.sources) {
             // grab the source data
-            let data = pop.sources[source_id];
+            let source_data = pop.sources[source_id];
             // check if a driller is needed for this source
-            if (data.driller == null) {
+            if (source_data.driller == null) {
                 // request a driller
                 requested_creeps.push(Util.DRILLER.init(
                     room.name,
                     source_id,
-                    data.container_x,
-                    data.container_y
+                    source_data.container_x,
+                    source_data.container_y
                 ));
             }
             // check if a transporter is needed for this source
-            if (data.transporter == null) {
+            if (source_data.transporter == null) {
                 // request a transporter
                 requested_creeps.push(Util.TRANSPORTER.init(
                     room.name,
                     source_id,
-                    data.container_x,
-                    data.container_y
+                    source_data.container_x,
+                    source_data.container_y
                 ));
             }
+        }
+
+        // check if an upgrader is needed
+        if (pop[Util.UPGRADER.NAME] == undefined || pop[Util.UPGRADER.NAME] < 1) {
+            // request an upgrader
+            requested_creeps.push(Util.UPGRADER.init(room.name));
         }
 
         // count the construction sites
         let site_count = room.find(FIND_MY_CONSTRUCTION_SITES).length;
         // check if a builder is needed
-        if (site_count > 0 && (pop[Util.BUILDER.NAME] == undefined || pop[Util.BUILDER.NAME] < 1)) {
+        if (site_count > 0 && (pop[Util.BUILDER.NAME] == undefined || pop[Util.BUILDER.NAME] < 2)) {
             // request a builder
             requested_creeps.push(Util.BUILDER.init(room.name));
         }
@@ -84,6 +65,48 @@ module.exports = {
         if (structure_count > 0 && (pop[Util.REPAIRER.NAME] == undefined || pop[Util.REPAIRER.NAME] < 1)) {
             // request a repairer
             requested_creeps.push(Util.REPAIRER.init(room.name));
+        }
+
+        // check if a queen is needed
+        if (room.storage != undefined && (pop[Util.QUEEN.NAME] == undefined || pop[Util.QUEEN.NAME] < 1)) {
+            // request a queen
+            requested_creeps.push(Util.QUEEN.init(room.name));
+        }
+
+        // loop through the minerals
+        for (let mineral_id in pop.minerals) {
+            // grab the source data
+            let mineral_data = pop.minerals[mineral_id];
+            // check if a driller is needed for this source
+            if (mineral_data.driller == null) {
+                // request a driller
+                requested_creeps.push(Util.DRILLER.init(
+                    room.name,
+                    mineral_data,
+                    mineral_data.container_x,
+                    mineral_data.container_y
+                ));
+            }
+            // check if a transporter is needed for this source
+            if (mineral_data.transporter == null) {
+                // request a transporter
+                requested_creeps.push(Util.TRANSPORTER.init(
+                    room.name,
+                    mineral_data,
+                    mineral_data.container_x,
+                    mineral_data.container_y
+                ));
+            }
+        }
+
+        // count the observers in the room
+        let observer_count = room.find(FIND_STRUCTURES, {
+            filter: structure => structure.structureType == STRUCTURE_OBSERVER,
+        }).length;
+        // check if a scout is needed
+        if (observer_count == 0 && (pop[Util.SCOUT.NAME] == undefined || pop[Util.SCOUT.NAME] < 1)) {
+            // request a scout
+            requested_creeps.push(Util.SCOUT.init(room.name));
         }
 
         // check if an attacker is needed
@@ -102,9 +125,16 @@ module.exports = {
         room_data.requested_creeps = requested_creeps;
     },
     // attempt to spawn any creeps that are requested
-    runPopulationRequests: function (room, room_data) {
-        // spawn the creep globally
-        let success = room.spawnRole(room_data.requested_creeps[0], true);
+    spawnRequestedCreeps: function (room, room_data) {
+        let success;
+        // check if the creep is a claimer
+        if (room_data.requested_creeps[0].role == Util.CLAIMER.NAME) {
+            // spawn the claimer globally
+            success = room.spawnRole(room_data.requested_creeps[0], true);
+        } else {
+            // spawn the creep locally
+            success = room.spawnRole(room_data.requested_creeps[0]);
+        }
         // check if we successfully spawned the creep
         if (success) {
             // remove the creep that was successfully spawned
@@ -112,14 +142,14 @@ module.exports = {
         }
     },
     // calculate to see if the room is satisfied
-    runSatisfaction: function (room, room_data) {
+    calculateSatisfaction: function (room, room_data) {
         // if no creeps are needed
         if (room_data.requested_creeps.length == 0) {
             // push a 1 to the satisfaction log to show we were satisfied for this tick
-            room_data.satisfaction_log.push(0);
+            room_data.satisfaction_log.push(1);
         } else {
             // push a 0 to the satisfaction log to show we were unsatisfied for this tick
-            room_data.satisfaction_log.push(1);
+            room_data.satisfaction_log.push(0);
         }
 
         // check if the satisfaction log is too big
@@ -137,14 +167,19 @@ module.exports = {
             // mark ths room as dead
             room_data.dead = true;
         }
-        */
+         */
     },
-    // do the running step where we execute the info from the planning phase
+    // run the colony, kicking off sub-functions for specific activities
     run: function (room, room_data) {
-        // check if the population timer has gone off
+        // if the population timer has gone off
         if (room_data.population_timer > this.POPULATION_TIMER_LENGTH) {
             // recalculate population
-            this.planPopulationRequests(room, room_data);
+            if (room_data.type == COLONY) {
+                this.requestColonyCreeps(room, room_data);
+            }
+            if (room_data.type == EXPANSION) {
+                this.requestExpansionCreeps(room, room_data);
+            }
             // reset the population timer
             room_data.population_timer = 0;
         } else {
@@ -153,12 +188,12 @@ module.exports = {
         }
 
         // refresh the satisfaction calculation
-        this.runSatisfaction(room, room_data);
+        this.calculateSatisfaction(room, room_data);
 
         // if there are any creeps still needed
         if (room_data.requested_creeps.length > 0) {
             // try to spawn creeps if possible
-            this.runPopulationRequests(room, room_data);
+            this.spawnRequestedCreeps(room, room_data);
         }
 
         // check if the construction timer has gone off

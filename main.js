@@ -1,3 +1,4 @@
+require('global.config');
 require('prototype.room');
 require('prototype.creep');
 require('prototype.tower');
