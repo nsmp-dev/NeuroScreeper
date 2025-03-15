@@ -1,4 +1,5 @@
 const Util = require("global.util");
+const MyLogger = require("./global.logger");
 
 // this is an expansion: a room where we are just harvesting sources
 // manages its own data by passing its memory object "room data" around, along with a reference to the room itself
@@ -15,21 +16,19 @@ module.exports = {
     SATISFACTION_LOG_SIZE: 100,
     // initialize the expansion, generating construction plans and idle location
     initialize: function (room, room_data) {
-        // these are the locations of containers and source ids that go with them
-        room.planSources(room_data.plans);
-        // get the location to send idle creeps
-        room.planIdleLocation(room_data.plans);
+        MyLogger.log("initializing an expansion...");
+        room_data.type = this.NAME;
+
         // set the population timer to go off in 2 ticks
         room_data.population_timer = this.POPULATION_TIMER_LENGTH;
         // set the construction timer to go off in 4 ticks
         room_data.construction_timer = Math.floor(this.CONSTRUCTION_TIMER_LENGTH / 2);
     },
     // tests the room for suitability of an expansion
-    testRoom: function (room) {
-        // count all the sources
-        let sources = room.find(FIND_SOURCES);
-        // return if the requirement is met
-        return (sources.length > 0);
+    testRoom: function (plans) {
+        return (
+            plans.sources.length > 0
+        );
     },
     // recalculate the population needs and save the requested creeps to room_data
     planPopulationRequests: function (room, room_data) {

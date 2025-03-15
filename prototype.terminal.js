@@ -104,7 +104,7 @@ StructureTerminal.prototype.buy = function () {
         return;
     }
 
-    // default the cheapes price to the first order
+    // default the cheapest price to the first order
     let lowest = orders[0];
 
     // loop through the orders

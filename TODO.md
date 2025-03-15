@@ -12,7 +12,7 @@ new module for running arbitrary commands
 ## RoomManager
 add in logic for "lastScanned" tick
 scan when it gets too long ago, if we have vision
-add in threat system and ownership markers too
+add in threat system and ownership markers to
 account for threat when spawning new colonies and expansions
 
 ## Colony/Expansion

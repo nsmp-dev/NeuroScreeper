@@ -17,30 +17,19 @@ module.exports = {
     // initialize the colony, generating construction plans and idle location
     initialize: function (room, room_data) {
         MyLogger.log("initializing a colony...");
-
-        // these are the locations of containers and source ids that go with them
-        room.planSources(room_data.plans);
-        // get the location to place the base
-        room.planBaseLocation(room_data.plans);
-        // generate the base structures from the location
-        room.planBase(room_data.plans);
-        // get the location to send idle creeps
-        room.planIdleLocation(room_data.plans);
         room_data.type = this.NAME;
+
         // set the population timer to go off immediately
         room_data.population_timer = this.POPULATION_TIMER_LENGTH;
         // set the construction timer to go off offset from the population timer
         room_data.construction_timer = Math.floor(this.CONSTRUCTION_TIMER_LENGTH / 2);
     },
     // tests the room for suitability of a colony
-    testRoom: function (room) {
-        // count all the sources
-        let sources = room.find(FIND_SOURCES);
-        // see if we can fit a base in the room
-        let plans = {};
-        room.planBaseLocation(plans);
-        // return if both requirements are met
-        return (sources.length > 1 && plans.base_x != null);
+    testRoom: function (plans) {
+        return (
+            plans.sources.length > 1 &&
+            plans.base_x != null
+        );
     },
     // recalculate the population needs and save the requested creeps to room_data
     planPopulationRequests: function (room, room_data) {

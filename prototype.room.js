@@ -4,22 +4,28 @@ const Util = require('global.util');
 Room.prototype.planIdleLocation = function (plans) {
     // return a clear area of size 5 x 5
     let idle_location = this.getClearArea(5, 5, plans);
-    plans.idle_x = idle_location.x;
-    plans.idle_y = idle_location.y;
+    if (idle_location != null) {
+        plans.idle_x = idle_location.x;
+        plans.idle_y = idle_location.y;
+    }
 };
 
 // finds a good base location, avoiding any planned structures
 Room.prototype.planBaseLocation = function (plans) {
     // find a clear area of size 14 x 14
     let base_location = this.getClearArea(14, 14, plans);
-    plans.base_x = base_location.x;
-    plans.base_y = base_location.y;
+    if (base_location != null) {
+        plans.base_x = base_location.x;
+        plans.base_y = base_location.y;
+    }
 };
 
 Room.prototype.planPlantLocation = function (plans) {
     let plant_location = this.getClearArea(14, 14, plans);
-    plans.plant_x = plant_location.x;
-    plans.plant_y = plant_location.y;
+    if (plant_location != null) {
+        plans.plant_x = plant_location.x;
+        plans.plant_y = plant_location.y;
+    }
 };
 
 // gets the source plans for this room, avoiding any planned structures
@@ -30,10 +36,10 @@ Room.prototype.planSources = function (plans) {
     // loop through the sources
     for (let source of sources) {
         // find an adjacent space to put the container
-        let container_location = this.getClearAdjacentLocation(source.pos.x, source.pos.y, structures);
+        let container_location = this.getClearAdjacentLocation(source.pos.x, source.pos.y, plans);
 
         // add the plans to the plans list
-        plans.source_plans.push({
+        plans.sources.push({
             // id of the source
             source_id: source.id,
             // x coordinate of the container
@@ -42,9 +48,6 @@ Room.prototype.planSources = function (plans) {
             container_y: container_location.y,
         });
     }
-
-    // return the source plans
-    return plans;
 };
 
 Room.prototype.planMinerals = function (plans) {
@@ -54,10 +57,10 @@ Room.prototype.planMinerals = function (plans) {
     // loop through the sources
     for (let mineral of minerals) {
         // find an adjacent space to put the container
-        let container_location = this.getClearAdjacentLocation(mineral.pos.x, mineral.pos.y, structures);
+        let container_location = this.getClearAdjacentLocation(mineral.pos.x, mineral.pos.y, plans);
 
         // add the plans to the plans list
-        plans.mineral_plans.push({
+        plans.minerals.push({
             // id of the source
             mineral_id: mineral.id,
             // x coordinate of the container
@@ -74,6 +77,9 @@ Room.prototype.planMinerals = function (plans) {
 
 // gets the base plans for this room, avoiding any planned structures
 Room.prototype.planBase = function (plans) {
+    if (plans.base_x == null) {
+        return;
+    }
     // get the base x coordinate
     let x = plans.base_x;
     // get the base y coordinate
@@ -363,7 +369,10 @@ Room.prototype.planBase = function (plans) {
 };
 
 Room.prototype.planPlant = function (plans) {
-// get the base x coordinate
+    if (plans.plant_x == null) {
+        return;
+    }
+    // get the base x coordinate
     let x = plans.plant_x;
     // get the base y coordinate
     let y = plans.plant_y;
@@ -774,4 +783,14 @@ Room.prototype.getStructureAt = function (structure_type, x, y) {
         }
     }
     return null;
+};
+
+Room.prototype.planRoom = function (plans) {
+    this.planSources(plans);
+    this.planMinerals(plans);
+    this.planBaseLocation(plans);
+    this.planBase(plans);
+    this.planPlantLocation(plans);
+    this.planPlant(plans);
+    this.planIdleLocation(plans);
 };
