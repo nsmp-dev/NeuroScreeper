@@ -149,7 +149,7 @@ module.exports = {
         // check if the construction timer has gone off
         if (room_data.construction_timer > this.CONSTRUCTION_TIMER_LENGTH) {
             // place up to 5 structures from the structure plans
-            room.createConstructionSites(room_data.structures, room_data.source_plans);
+            room.createConstructionSites(room_data.plans);
             // reset the construction timer
             room_data.construction_timer = 0;
         } else {

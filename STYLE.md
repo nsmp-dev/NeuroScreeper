@@ -29,7 +29,7 @@ We have comments, but we should be able to know what the code does without them 
 - functions
 - methods
 ### filenames
-files get name in the format: `scope.name.js`, where `scope` is one of: controller, global, prototype, or role.
+files get name in the format: `scope.name.js`, where `scope` is one of: controller, global, prototype, data, or role.
 `main.js` is an exception to this rule as it is main and it's special
 
 ## example code
