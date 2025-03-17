@@ -8,9 +8,8 @@ const Timer = require('global.timer');
 const Util = require('global.util');
 const MyLogger = require('global.logger');
 const RoomManager = require('global.room_manager');
+const RoomRunner = require('global.room_runner');
 const Visualizer = require('global.visualizer');
-const Colony = require("controller.colony");
-const Expansion = require("controller.expansion");
 
 // change the build number to trigger a memory wipe
 const BUILD = 4;
@@ -62,18 +61,12 @@ module.exports.loop = function () {
         let room_data = Memory.room_data[name];
 
         // if room is a colony, run it
-        if (room_data.type == Colony.NAME) {
+        if (room_data.type == COLONY || room_data.type == EXPANSION) {
             // run the colony
-            Colony.run(room, room_data);
+            RoomRunner.run(room, room_data);
+            // render the visuals for the room
+            Visualizer.render(room, room_data);
         }
-
-        // if room is an expansion, run it
-        if (room_data.type == Expansion.NAME) {
-            // run the expansion
-            Expansion.run(room, room_data);
-        }
-        // render the visuals for the room
-        Visualizer.render(room, room_data);
 
         // if the room died
         if (Memory.room_data[name].dead) {

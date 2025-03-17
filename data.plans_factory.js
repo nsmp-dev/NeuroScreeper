@@ -1,36 +1,23 @@
+// plans factory that produces all needed construction data for a room
 module.exports = {
+    // start the planning of a room, the new plans will be added to the passed plans object
     planRoom: function (room, plans) {
+        // plan the sources in the room and their containers
         this.planSources(room, plans);
+        // plan the minerals in the room, if any, and their containers
         this.planMinerals(room, plans);
+        // locate a suitable location to place a base
         this.planBaseLocation(room, plans);
+        // fill the base with plans for the structures based on the base location
         this.planBase(room, plans);
+        // locate a suitable location to place a plant
         this.planPlantLocation(room, plans);
+        // fill the plant with plans for the structures based on the plant location
         this.planPlant(room, plans);
+        // find a location that is not around anything to send the idle creeps in the room
         this.planIdleLocation(room, plans);
     },
-    planIdleLocation: function (room, plans) {
-        // return a clear area of size 5 x 5
-        let idle_location = room.getClearArea(5, 5, plans);
-        if (idle_location != null) {
-            plans.idle_x = idle_location.x;
-            plans.idle_y = idle_location.y;
-        }
-    },
-    planBaseLocation: function (room, plans) {
-        // find a clear area of size 14 x 14
-        let base_location = room.getClearArea(14, 14, plans);
-        if (base_location != null) {
-            plans.base_x = base_location.x;
-            plans.base_y = base_location.y;
-        }
-    },
-    planPlantLocation: function (room, plans) {
-        let plant_location = room.getClearArea(14, 14, plans);
-        if (plant_location != null) {
-            plans.plant_x = plant_location.x;
-            plans.plant_y = plant_location.y;
-        }
-    },
+    // plan the sources in the room and their containers
     planSources: function (room, plans) {
         // find all the sources in the room
         let sources = room.find(FIND_SOURCES);
@@ -51,6 +38,7 @@ module.exports = {
             });
         }
     },
+    // plan the minerals in the room, if any, and their containers
     planMinerals: function (room, plans) {
         // find all the sources in the room
         let minerals = room.find(FIND_MINERALS);
@@ -75,6 +63,16 @@ module.exports = {
             });
         }
     },
+    // locate a suitable location to place a base
+    planBaseLocation: function (room, plans) {
+        // find a clear area of size 14 x 14
+        let base_location = room.getClearArea(14, 14, plans);
+        if (base_location != null) {
+            plans.base_x = base_location.x;
+            plans.base_y = base_location.y;
+        }
+    },
+    // fill the base with plans for the structures based on the base location
     planBase: function (room, plans) {
         if (plans.base_x == null) {
             return;
@@ -366,6 +364,15 @@ module.exports = {
             {x: x + 12, y: y + 12, type: STRUCTURE_ROAD},
         ]);
     },
+    // locate a suitable location to place a plant
+    planPlantLocation: function (room, plans) {
+        let plant_location = room.getClearArea(14, 14, plans);
+        if (plant_location != null) {
+            plans.plant_x = plant_location.x;
+            plans.plant_y = plant_location.y;
+        }
+    },
+    // fill the plant with plans for the structures based on the plant location
     planPlant: function (room, plans) {
         if (plans.plant_x == null) {
             return;
@@ -398,5 +405,14 @@ module.exports = {
             {x: x + 1, y: y + 2, type: STRUCTURE_ROAD},
             {x: x + 3, y: y + 2, type: STRUCTURE_ROAD},
         ]);
+    },
+    // find a location that is not around anything to send the idle creeps in the room
+    planIdleLocation: function (room, plans) {
+        // return a clear area of size 5 x 5
+        let idle_location = room.getClearArea(5, 5, plans);
+        if (idle_location != null) {
+            plans.idle_x = idle_location.x;
+            plans.idle_y = idle_location.y;
+        }
     },
 };

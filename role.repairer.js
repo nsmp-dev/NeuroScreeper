@@ -12,11 +12,11 @@ Creep.prototype.getRepairTarget = function () {
 // repairer that repairs any damaged structures in the room
 Creep.prototype.runRepairer = function () {
     // if we are currently filling
-    if (this.memory.state == Util.REPAIRER.FILLING) {
+    if (this.memory.state == REPAIRER.FILLING) {
         // if the store is out of energy
         if (this.store.getFreeCapacity(RESOURCE_ENERGY) == 0) {
             // set the state to repairing
-            this.memory.state = Util.REPAIRER.REPAIRING;
+            this.memory.state = REPAIRER.REPAIRING;
             // clear the filling target
             this.memory.filling_target = null;
             // grab a new repair target
@@ -60,11 +60,11 @@ Creep.prototype.runRepairer = function () {
         }
     }
     // if we are currently repairing
-    if (this.memory.state == Util.REPAIRER.REPAIRING) {
+    if (this.memory.state == REPAIRER.REPAIRING) {
         // if we are out of energy
         if (this.store[RESOURCE_ENERGY] == 0) {
             // set the state back to filling
-            this.memory.state = Util.REPAIRER.FILLING;
+            this.memory.state = REPAIRER.FILLING;
             // clear the repairing target
             this.memory.repairing_target = null;
             // find a new fill target

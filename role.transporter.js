@@ -3,11 +3,11 @@ const Util = require("global.util");
 // transporter that takes energy from the containers under drillers and dumps the energy into the base
 Creep.prototype.runTransporter = function () {
     // if we are currently filling
-    if (this.memory.state == Util.TRANSPORTER.FILLING) {
+    if (this.memory.state == TRANSPORTER.FILLING) {
         // if the energy store is full
         if (this.store.getFreeCapacity(RESOURCE_ENERGY) == 0) {
             // set the state to dumping
-            this.memory.state = Util.TRANSPORTER.DUMPING;
+            this.memory.state = TRANSPORTER.DUMPING;
             // find a new target for dumping
             let new_target = this.getDumpTarget();
             // if we found one
@@ -58,11 +58,11 @@ Creep.prototype.runTransporter = function () {
         }
     }
     // if we are dumping
-    if (this.memory.state == Util.TRANSPORTER.DUMPING) {
+    if (this.memory.state == TRANSPORTER.DUMPING) {
         // if we are out of energy
         if (this.store[RESOURCE_ENERGY] == 0) {
             // set the state to filling
-            this.memory.state = Util.TRANSPORTER.FILLING;
+            this.memory.state = TRANSPORTER.FILLING;
             // clear the dumping target
             this.memory.dumping_target = null;
         } else {

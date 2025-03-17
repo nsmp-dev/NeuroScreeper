@@ -77,36 +77,36 @@ Creep.prototype.run = function () {
     // switch based on the creep's role
     switch (this.memory.role) {
         // if the role matches
-        case Util.ATTACKER.NAME:
+        case ATTACKER.NAME:
             // call the function for this role
             this.runAttacker();
             // break the switch
             break;
-        case Util.BUILDER.NAME:
+        case BUILDER.NAME:
             this.runBuilder();
             break;
-        case Util.CLAIMER.NAME:
+        case CLAIMER.NAME:
             this.runClaimer();
             break;
-        case Util.DRILLER.NAME:
+        case DRILLER.NAME:
             this.runDriller();
             break;
-        case Util.HEALER.NAME:
+        case HEALER.NAME:
             this.runHealer();
             break;
-        case Util.QUEEN.NAME:
+        case QUEEN.NAME:
             this.runQueen();
             break;
-        case Util.REPAIRER.NAME:
+        case REPAIRER.NAME:
             this.runRepairer();
             break;
-        case Util.SCOUT.NAME:
+        case SCOUT.NAME:
             this.runScout();
             break;
-        case Util.TRANSPORTER.NAME:
+        case TRANSPORTER.NAME:
             this.runTransporter();
             break;
-        case Util.UPGRADER.NAME:
+        case UPGRADER.NAME:
             this.runUpgrader();
             break;
     }

@@ -142,12 +142,12 @@ module.exports = {
             pop[creep.memory.room_name].total++;
 
             // if this creep is a driller
-            if (creep.memory.role == Util.DRILLER.NAME) {
+            if (creep.memory.role == DRILLER.NAME) {
                 // set the entry for the driller to the id of the creep
                 pop[creep.memory.room_name].sources[creep.memory.source].driller = creep.id;
             }
             // if this creep is a transporter
-            if (creep.memory.role == Util.TRANSPORTER.NAME) {
+            if (creep.memory.role == TRANSPORTER.NAME) {
                 // set the entry for the transporter to the id of the creep
                 pop[creep.memory.room_name].sources[creep.memory.source].transporter = creep.id;
             }
@@ -180,17 +180,17 @@ module.exports = {
             // loop through all the room data
             for (let name in Memory.room_data) {
                 // if the room is a colony or expansion and is not satisfied
-                if ((Memory.room_data[name].type == Colony.NAME || Memory.room_data[name].type == Expansion.NAME) && !Memory.room_data[name].satisfied) {
+                if ((Memory.room_data[name].type == COLONY || Memory.room_data[name].type == EXPANSION) && !Memory.room_data[name].satisfied) {
                     // set satisfied to false since one of the rooms is not satisfied
                     satisfied = false;
                 }
                 // if the room is a colony
-                if (Memory.room_data[name].type == Colony.NAME) {
+                if (Memory.room_data[name].type == COLONY) {
                     // increment the colony count
                     colony_count++;
                 }
                 // if the room is an expansion
-                if (Memory.room_data[name].type == Expansion.NAME) {
+                if (Memory.room_data[name].type == EXPANSION) {
                     // increment the expansion count
                     expansion_count++;
                 }

@@ -9,11 +9,11 @@ Creep.prototype.getBuildTarget = function () {
 // builder that builds any construction sites that are found
 Creep.prototype.runBuilder = function () {
     // if we are currently filling
-    if (this.memory.state == Util.BUILDER.FILLING) {
+    if (this.memory.state == BUILDER.FILLING) {
         // if the energy storage is full
         if (this.store.getFreeCapacity(RESOURCE_ENERGY) == 0) {
             // set the state to building
-            this.memory.state = Util.BUILDER.BUILDING;
+            this.memory.state = BUILDER.BUILDING;
             // set the filling target to null
             this.memory.filling_target = null;
             // find a new building target
@@ -57,11 +57,11 @@ Creep.prototype.runBuilder = function () {
         }
     }
     // if we are currently building
-    if (this.memory.state == Util.BUILDER.BUILDING) {
+    if (this.memory.state == BUILDER.BUILDING) {
         // if we are out of energy
         if (this.store[RESOURCE_ENERGY] == 0) {
             // set the state back to filling
-            this.memory.state = Util.BUILDER.FILLING;
+            this.memory.state = BUILDER.FILLING;
             // clear the building target
             this.memory.building_target = null;
             // find a new fill target

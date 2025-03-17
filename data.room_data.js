@@ -1,9 +1,8 @@
 const Plans = require("data.plans");
-const Colony = require("controller.colony");
-const Expansion = require("controller.expansion");
 // TODO: uncomment for capitol in v0.3
 //const Plant = require("controller.plant");
 const RoomDataFactory = require("data.plans_factory");
+require('global.config');
 
 // RoomData class, an object that contains all the memory for each room
 class RoomData {
@@ -47,7 +46,7 @@ class RoomData {
         }
 
         // set the population timer to go off immediately
-        this.population_timer = POPULATION_TIMER_LENGTH;
+        this.population_timer = REQUEST_POPULATION_TIMER_LENGTH;
         // set the construction timer to go off offset from the population timer
         this.construction_timer = Math.floor(CONSTRUCTION_TIMER_LENGTH / 2);
     }

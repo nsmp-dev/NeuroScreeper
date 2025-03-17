@@ -1,4 +1,4 @@
-const Colony = require("controller.colony");
+
 
 // claimer that moves toward the assigned room and either reserves or claims the controller
 Creep.prototype.runClaimer = function () {
@@ -10,7 +10,7 @@ Creep.prototype.runClaimer = function () {
         // grab the controller
         let controller = this.room.controller;
         // if this room is a colony
-        if (Memory.room_data[this.memory.room_name].type == Colony.NAME) {
+        if (Memory.room_data[this.memory.room_name].type == COLONY) {
             // if claiming the controller results in not being in range
             if (this.claimController(controller) == ERR_NOT_IN_RANGE) {
                 // move toward the controller

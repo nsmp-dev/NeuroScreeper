@@ -3,11 +3,11 @@ const Util = require("global.util");
 // upgrader that upgrades the room's controller
 Creep.prototype.runUpgrader = function () {
     // if we are currently filling
-    if (this.memory.state == Util.UPGRADER.FILLING) {
+    if (this.memory.state == UPGRADER.FILLING) {
         // if the energy store is full
         if (this.store.getFreeCapacity(RESOURCE_ENERGY) == 0) {
             // change the state to upgrading
-            this.memory.state = Util.UPGRADER.UPGRADING;
+            this.memory.state = UPGRADER.UPGRADING;
             // clear the filling target
             this.memory.filling_target = null;
         } else {
@@ -45,11 +45,11 @@ Creep.prototype.runUpgrader = function () {
         }
     }
     // if we are upgrading
-    if (this.memory.state == Util.UPGRADER.UPGRADING) {
+    if (this.memory.state == UPGRADER.UPGRADING) {
         // if we are out of energy
         if (this.store[RESOURCE_ENERGY] == 0) {
             // set the state to filling
-            this.memory.state = Util.UPGRADER.FILLING;
+            this.memory.state = UPGRADER.FILLING;
             // find a new filling target
             let new_target = this.getFillTarget();
             // if we find one

@@ -34,11 +34,11 @@ Creep.prototype.getQueenDumpTarget = function () {
 // queen that takes energy from the storage and dumps it into the towers, terminal, and extensions
 Creep.prototype.runQueen = function () {
     // if we are currently filling
-    if (this.memory.state == Util.QUEEN.FILLING) {
+    if (this.memory.state == QUEEN.FILLING) {
         // if the energy store is full
         if (this.store.getFreeCapacity(RESOURCE_ENERGY) == 0) {
             // set the state to dumping
-            this.memory.state = Util.QUEEN.DUMPING;
+            this.memory.state = QUEEN.DUMPING;
             // find a new dump target
             let new_target = this.getQueenDumpTarget();
             // if we found one
@@ -58,11 +58,11 @@ Creep.prototype.runQueen = function () {
         }
     }
     // if we are dumping
-    if (this.memory.state == Util.QUEEN.DUMPING) {
+    if (this.memory.state == QUEEN.DUMPING) {
         // if the store is out of energy
         if (this.store[RESOURCE_ENERGY] == 0) {
             // set the state back to filling
-            this.memory.state = Util.QUEEN.FILLING;
+            this.memory.state = QUEEN.FILLING;
         } else {
             // grab the target
             let target = Game.getObjectById(this.memory.dumping_target);
