@@ -1,8 +1,8 @@
 // PlantData class, an object that contains all the memory for each plant
 class PlantData {
-    // the current reaction being ran
+    // the current reaction in progress
     current_reaction = null;
-    // the current production being ran
+    // the current production in progress
     current_production = null;
     // the timer for doing reactions
     reaction_timer = 0;

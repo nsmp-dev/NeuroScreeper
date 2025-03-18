@@ -28,14 +28,14 @@ module.exports = {
     run: function (room, plant_data) {
         if (plant_data.reaction_timer > this.REACTION_TIMER_LENGTH) {
             plant_data.reaction_timer = 0;
-            plant_data = this.getReactionRequest(room, plant_data);
+            this.getReactionRequest(room, plant_data);
         }else{
             plant_data.reaction_timer++;
         }
 
         if (plant_data.production_timer > this.PRODUCTION_TIMER_LENGTH) {
             plant_data.production_timer = 0;
-            plant_data = this.getProductionRequest(room, plant_data);
+            this.getProductionRequest(room, plant_data);
         }else{
             plant_data.production_timer++;
         }

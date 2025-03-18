@@ -219,7 +219,7 @@ module.exports = {
 
             // if we currently don't have a capitol
             if (Memory.capitol_room_name == null) {
-                // loop thru all the rooms
+                // loop through all the rooms
                 for (let name in Memory.room_data) {
                     // if the room is a colony and has a plant
                     if (Memory.room_data[name].type == COLONY && Memory.room_data[name].plans.base_x != null) {
