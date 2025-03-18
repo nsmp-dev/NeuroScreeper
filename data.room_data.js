@@ -1,8 +1,7 @@
-const Plans = require("data.plans");
-// TODO: uncomment for capitol in v0.3
-//const Plant = require("controller.plant");
+require('data.config');
 const RoomDataFactory = require("data.plans_factory");
-require('global.config');
+const RoomPlans = require("data.room_plans");
+const PlantData = require("data.plant_data");
 
 // RoomData class, an object that contains all the memory for each room
 class RoomData {
@@ -14,35 +13,63 @@ class RoomData {
     population_timer = 0;
     // log of how satisfied the colony is
     satisfaction_log = [];
+    // flag for whether the colony is satisfied
     satisfied = false;
+    // flag for when this room has died
     dead = false;
+    // list of creeps that need to be spawned for this colony
     requested_creeps = [];
-    plans = new Plans();
+    // plans for construction
+    plans = new RoomPlans();
+    // flag for if this room can be a colony
     possible_colony = null;
+    // flag for if this room can be an expansion
     possible_expansion = null;
-    possible_capitol = null;
+    // data for all the reactions and production for the plant
     plant_data = null;
 
-    constructor(room) {
-        RoomDataFactory.planRoom(room, this.plans);
+    // creates a room data object, with an optional starter spawn for the first room
+    constructor(room, initial_spawn = null) {
+        // if the initial spawn was provided
+        if (initial_spawn != null) {
+            // plan the first room
+            RoomDataFactory.planFirstRoom(room, this.plans, initial_spawn);
+            // set it to be a colony
+            this.type = COLONY;
+        }else{
+            // plan the room normally
+            RoomDataFactory.planRoom(room, this.plans);
+        }
 
-        this.possible_expansion = (
-            this.plans.sources.length > 1
-        );
-        this.possible_colony = (
-            this.plans.sources.length > 1 &&
-            this.plans.base_x != null
-        );
-        this.possible_capitol = (
-            this.plans.sources.length > 1 &&
-            this.plans.minerals.length > 0 &&
-            this.plans.base_x != null &&
-            this.plans.plant_x != null
-        );
+        if (room.controller == undefined) {
+            this.possible_expansion = false;
+            this.possible_colony = false;
+            let source_keepers = room.find(FIND_STRUCTURES, {
+                filter: (structure) => structure.structureType == STRUCTURE_KEEPER_LAIR
+            });
+            if (source_keepers.length > 0) {
+                this.type = KEEPER_LAIR;
+            }else{
+                this.type = HIGHWAY;
+            }
+        }else{
+            // check whether this room can be an expansion
+            this.possible_expansion = (
+                // if there's more than one source
+                this.plans.sources.length > 1
+            );
+            // check whether this room can be a colony
+            this.possible_colony = (
+                // if there's more than one source
+                this.plans.sources.length > 1 &&
+                // and it has a base
+                this.plans.base_x != null
+            );
+        }
 
-        if (this.possible_capitol) {
-            // TODO: uncomment for capitol in v0.3
-            //this.plant_data = Plant.initialize(room);
+        // if the plans include a plant
+        if (this.plans.plant_x != null) {
+            this.plant_data = new PlantData(this.plans);
         }
 
         // set the population timer to go off immediately
@@ -52,4 +79,5 @@ class RoomData {
     }
 }
 
+// exports the room data class
 module.exports = RoomData;

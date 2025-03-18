@@ -22,8 +22,7 @@ module.exports = {
         let room = Game.spawns[spawn_name].room;
 
         // initialize the room data entry
-        Memory.room_data[room.name] = new RoomData(room);
-        Memory.room_data[room.name].type = COLONY;
+        Memory.room_data[room.name] = new RoomData(room, Game.spawns[spawn_name]);
     },
     // scan for any new rooms and add their data if found
     scanNewRooms: function () {
@@ -41,7 +40,9 @@ module.exports = {
         // loop through all the room data
         for (let name in Memory.room_data) {
             // if this room is not used and is a possible colony
-            if (Memory.room_data[name].type == null && Memory.room_data[name].possible_colony) {
+            if (Memory.room_data[name].type == null &&
+                Memory.room_data[name].possible_colony &&
+                Util.isRoomAvailable(name)) {
                 // initialize the room data
                 Memory.room_data[name].type = COLONY;
                 // return true for success
@@ -56,7 +57,9 @@ module.exports = {
         // loop through all the room data
         for (let name in Memory.room_data) {
             // if this room is not used and is a possible expansion
-            if (Memory.room_data[name].type == null && Memory.room_data[name].possible_expansion) {
+            if (Memory.room_data[name].type == null &&
+                Memory.room_data[name].possible_expansion &&
+                Util.isRoomAvailable(name)) {
                 // initialize the room data
                 Memory.room_data[name].type = EXPANSION;
                 // return true for success

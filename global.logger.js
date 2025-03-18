@@ -4,7 +4,6 @@ module.exports = {
     DEBUG_MODE: true,
     // regular logging, simply logs to console
     log: function (str) {
-
         // if we have debug mode turned on
         if (this.DEBUG_MODE) {
             // print the string

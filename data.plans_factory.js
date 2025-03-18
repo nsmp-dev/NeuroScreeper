@@ -1,6 +1,26 @@
 // plans factory that produces all needed construction data for a room
 module.exports = {
     // start the planning of a room, the new plans will be added to the passed plans object
+    planFirstRoom: function (room, plans, initial_spawn) {
+        // plan the sources in the room and their containers
+        this.planSources(room, plans);
+        // plan the minerals in the room, if any, and their containers
+        this.planMinerals(room, plans);
+        // manually set the x location of the base using the provided initial spawn
+        plans.base_x = initial_spawn.pos.x - 5;
+        // manually set the y location of the base using the provided initial spawn
+        plans.base_y = initial_spawn.pos.y - 6;
+
+        // fill the base with plans for the structures based on the base location
+        this.planBase(room, plans);
+        // locate a suitable location to place a plant
+        this.planPlantLocation(room, plans);
+        // fill the plant with plans for the structures based on the plant location
+        this.planPlant(room, plans);
+        // find a location that is not around anything to send the idle creeps in the room
+        this.planIdleLocation(room, plans);
+    },
+    // start the planning of a room, the new plans will be added to the passed plans object
     planRoom: function (room, plans) {
         // plan the sources in the room and their containers
         this.planSources(room, plans);
@@ -67,21 +87,26 @@ module.exports = {
     planBaseLocation: function (room, plans) {
         // find a clear area of size 14 x 14
         let base_location = room.getClearArea(14, 14, plans);
+        // if we were able to find a location
         if (base_location != null) {
+            // save the x coordinate of the base
             plans.base_x = base_location.x;
+            // save the y coordinate of the base
             plans.base_y = base_location.y;
         }
     },
     // fill the base with plans for the structures based on the base location
     planBase: function (room, plans) {
+        // if we were unable to find a base location
         if (plans.base_x == null) {
+            // exit the function
             return;
         }
         // get the base x coordinate
         let x = plans.base_x;
         // get the base y coordinate
         let y = plans.base_y;
-        // create the list of structures
+        // add to the list of structures
         plans.structures = plans.structures.concat([
             // coordinates and type of the structure
             {x: x + 1, y: y, type: STRUCTURE_EXTENSION},
@@ -177,211 +202,222 @@ module.exports = {
             {x: x + 5, y: y + 6, type: STRUCTURE_OBSERVER},
             {x: x + 7, y: y + 10, type: STRUCTURE_TERMINAL},
         ]);
+        // add to the list of ramparts
         plans.ramparts = plans.ramparts.concat([
-            {x: x + 1, y: y, type: STRUCTURE_RAMPART},
-            {x: x + 5, y: y, type: STRUCTURE_RAMPART},
-            {x: x + 7, y: y, type: STRUCTURE_RAMPART},
-            {x: x + 11, y: y, type: STRUCTURE_RAMPART},
-            {x: x, y: y + 1, type: STRUCTURE_RAMPART},
-            {x: x + 2, y: y + 1, type: STRUCTURE_RAMPART},
-            {x: x + 3, y: y + 1, type: STRUCTURE_RAMPART},
-            {x: x + 5, y: y + 1, type: STRUCTURE_RAMPART},
-            {x: x + 7, y: y + 1, type: STRUCTURE_RAMPART},
-            {x: x + 9, y: y + 1, type: STRUCTURE_RAMPART},
-            {x: x + 10, y: y + 1, type: STRUCTURE_RAMPART},
-            {x: x + 12, y: y + 1, type: STRUCTURE_RAMPART},
-            {x: x + 1, y: y + 2, type: STRUCTURE_RAMPART},
-            {x: x + 3, y: y + 2, type: STRUCTURE_RAMPART},
-            {x: x + 4, y: y + 2, type: STRUCTURE_RAMPART},
-            {x: x + 5, y: y + 2, type: STRUCTURE_RAMPART},
-            {x: x + 7, y: y + 2, type: STRUCTURE_RAMPART},
-            {x: x + 8, y: y + 2, type: STRUCTURE_RAMPART},
-            {x: x + 9, y: y + 2, type: STRUCTURE_RAMPART},
-            {x: x + 11, y: y + 2, type: STRUCTURE_RAMPART},
-            {x: x + 1, y: y + 3, type: STRUCTURE_RAMPART},
-            {x: x + 2, y: y + 3, type: STRUCTURE_RAMPART},
-            {x: x + 4, y: y + 3, type: STRUCTURE_RAMPART},
-            {x: x + 5, y: y + 3, type: STRUCTURE_RAMPART},
-            {x: x + 7, y: y + 3, type: STRUCTURE_RAMPART},
-            {x: x + 8, y: y + 3, type: STRUCTURE_RAMPART},
-            {x: x + 10, y: y + 3, type: STRUCTURE_RAMPART},
-            {x: x + 11, y: y + 3, type: STRUCTURE_RAMPART},
-            {x: x + 2, y: y + 4, type: STRUCTURE_RAMPART},
-            {x: x + 3, y: y + 4, type: STRUCTURE_RAMPART},
-            {x: x + 9, y: y + 4, type: STRUCTURE_RAMPART},
-            {x: x + 10, y: y + 4, type: STRUCTURE_RAMPART},
-            {x: x, y: y + 5, type: STRUCTURE_RAMPART},
-            {x: x + 1, y: y + 5, type: STRUCTURE_RAMPART},
-            {x: x + 2, y: y + 5, type: STRUCTURE_RAMPART},
-            {x: x + 3, y: y + 5, type: STRUCTURE_RAMPART},
-            {x: x + 9, y: y + 5, type: STRUCTURE_RAMPART},
-            {x: x + 10, y: y + 5, type: STRUCTURE_RAMPART},
-            {x: x + 11, y: y + 5, type: STRUCTURE_RAMPART},
-            {x: x + 12, y: y + 5, type: STRUCTURE_RAMPART},
-            {x: x, y: y + 7, type: STRUCTURE_RAMPART},
-            {x: x + 1, y: y + 7, type: STRUCTURE_RAMPART},
-            {x: x + 2, y: y + 7, type: STRUCTURE_RAMPART},
-            {x: x + 3, y: y + 7, type: STRUCTURE_RAMPART},
-            {x: x + 9, y: y + 7, type: STRUCTURE_RAMPART},
-            {x: x + 10, y: y + 7, type: STRUCTURE_RAMPART},
-            {x: x + 11, y: y + 7, type: STRUCTURE_RAMPART},
-            {x: x + 12, y: y + 7, type: STRUCTURE_RAMPART},
-            {x: x + 2, y: y + 8, type: STRUCTURE_RAMPART},
-            {x: x + 3, y: y + 8, type: STRUCTURE_RAMPART},
-            {x: x + 9, y: y + 8, type: STRUCTURE_RAMPART},
-            {x: x + 10, y: y + 8, type: STRUCTURE_RAMPART},
-            {x: x + 1, y: y + 9, type: STRUCTURE_RAMPART},
-            {x: x + 2, y: y + 9, type: STRUCTURE_RAMPART},
-            {x: x + 4, y: y + 9, type: STRUCTURE_RAMPART},
-            {x: x + 5, y: y + 9, type: STRUCTURE_RAMPART},
-            {x: x + 7, y: y + 9, type: STRUCTURE_RAMPART},
-            {x: x + 8, y: y + 9, type: STRUCTURE_RAMPART},
-            {x: x + 10, y: y + 9, type: STRUCTURE_RAMPART},
-            {x: x + 11, y: y + 9, type: STRUCTURE_RAMPART},
-            {x: x + 1, y: y + 10, type: STRUCTURE_RAMPART},
-            {x: x + 3, y: y + 10, type: STRUCTURE_RAMPART},
-            {x: x + 4, y: y + 10, type: STRUCTURE_RAMPART},
-            {x: x + 5, y: y + 10, type: STRUCTURE_RAMPART},
-            {x: x + 7, y: y + 10, type: STRUCTURE_RAMPART},
-            {x: x + 8, y: y + 10, type: STRUCTURE_RAMPART},
-            {x: x + 9, y: y + 10, type: STRUCTURE_RAMPART},
-            {x: x + 11, y: y + 10, type: STRUCTURE_RAMPART},
-            {x: x, y: y + 11, type: STRUCTURE_RAMPART},
-            {x: x + 2, y: y + 11, type: STRUCTURE_RAMPART},
-            {x: x + 3, y: y + 11, type: STRUCTURE_RAMPART},
-            {x: x + 5, y: y + 11, type: STRUCTURE_RAMPART},
-            {x: x + 7, y: y + 11, type: STRUCTURE_RAMPART},
-            {x: x + 9, y: y + 11, type: STRUCTURE_RAMPART},
-            {x: x + 10, y: y + 11, type: STRUCTURE_RAMPART},
-            {x: x + 12, y: y + 11, type: STRUCTURE_RAMPART},
-            {x: x + 1, y: y + 12, type: STRUCTURE_RAMPART},
-            {x: x + 5, y: y + 12, type: STRUCTURE_RAMPART},
-            {x: x + 7, y: y + 12, type: STRUCTURE_RAMPART},
-            {x: x + 11, y: y + 12, type: STRUCTURE_RAMPART},
-            {x: x + 7, y: y + 6, type: STRUCTURE_RAMPART},
-            {x: x + 4, y: y + 7, type: STRUCTURE_RAMPART},
-            {x: x + 8, y: y + 7, type: STRUCTURE_RAMPART},
-            {x: x + 4, y: y + 9, type: STRUCTURE_RAMPART},
-            {x: x + 8, y: y + 9, type: STRUCTURE_RAMPART},
-            {x: x + 5, y: y + 10, type: STRUCTURE_RAMPART},
-            {x: x + 5, y: y + 8, type: STRUCTURE_RAMPART},
-            {x: x + 7, y: y + 8, type: STRUCTURE_RAMPART},
-            {x: x + 6, y: y + 9, type: STRUCTURE_RAMPART},
-            {x: x + 6, y: y + 7, type: STRUCTURE_RAMPART},
-            {x: x + 5, y: y + 6, type: STRUCTURE_RAMPART},
-            {x: x + 7, y: y + 10, type: STRUCTURE_RAMPART},
-            {x: x, y: y, type: STRUCTURE_RAMPART},
-            {x: x + 6, y: y, type: STRUCTURE_RAMPART},
-            {x: x + 12, y: y, type: STRUCTURE_RAMPART},
-            {x: x + 1, y: y + 1, type: STRUCTURE_RAMPART},
-            {x: x + 6, y: y + 1, type: STRUCTURE_RAMPART},
-            {x: x + 11, y: y + 1, type: STRUCTURE_RAMPART},
-            {x: x + 2, y: y + 2, type: STRUCTURE_RAMPART},
-            {x: x + 6, y: y + 2, type: STRUCTURE_RAMPART},
-            {x: x + 10, y: y + 2, type: STRUCTURE_RAMPART},
-            {x: x + 3, y: y + 3, type: STRUCTURE_RAMPART},
-            {x: x + 6, y: y + 3, type: STRUCTURE_RAMPART},
-            {x: x + 9, y: y + 3, type: STRUCTURE_RAMPART},
-            {x: x + 4, y: y + 4, type: STRUCTURE_RAMPART},
-            {x: x + 6, y: y + 4, type: STRUCTURE_RAMPART},
-            {x: x + 8, y: y + 4, type: STRUCTURE_RAMPART},
-            {x: x + 5, y: y + 5, type: STRUCTURE_RAMPART},
-            {x: x + 7, y: y + 5, type: STRUCTURE_RAMPART},
-            {x: x, y: y + 6, type: STRUCTURE_RAMPART},
-            {x: x + 1, y: y + 6, type: STRUCTURE_RAMPART},
-            {x: x + 2, y: y + 6, type: STRUCTURE_RAMPART},
-            {x: x + 3, y: y + 6, type: STRUCTURE_RAMPART},
-            {x: x + 4, y: y + 6, type: STRUCTURE_RAMPART},
-            {x: x + 6, y: y + 6, type: STRUCTURE_RAMPART},
-            {x: x + 8, y: y + 6, type: STRUCTURE_RAMPART},
-            {x: x + 9, y: y + 6, type: STRUCTURE_RAMPART},
-            {x: x + 10, y: y + 6, type: STRUCTURE_RAMPART},
-            {x: x + 11, y: y + 6, type: STRUCTURE_RAMPART},
-            {x: x + 12, y: y + 6, type: STRUCTURE_RAMPART},
-            {x: x + 5, y: y + 7, type: STRUCTURE_RAMPART},
-            {x: x + 7, y: y + 7, type: STRUCTURE_RAMPART},
-            {x: x + 4, y: y + 8, type: STRUCTURE_RAMPART},
-            {x: x + 6, y: y + 8, type: STRUCTURE_RAMPART},
-            {x: x + 8, y: y + 8, type: STRUCTURE_RAMPART},
-            {x: x + 3, y: y + 9, type: STRUCTURE_RAMPART},
-            {x: x + 6, y: y + 9, type: STRUCTURE_RAMPART},
-            {x: x + 9, y: y + 9, type: STRUCTURE_RAMPART},
-            {x: x + 2, y: y + 10, type: STRUCTURE_RAMPART},
-            {x: x + 6, y: y + 10, type: STRUCTURE_RAMPART},
-            {x: x + 10, y: y + 10, type: STRUCTURE_RAMPART},
-            {x: x + 1, y: y + 11, type: STRUCTURE_RAMPART},
-            {x: x + 6, y: y + 11, type: STRUCTURE_RAMPART},
-            {x: x + 11, y: y + 11, type: STRUCTURE_RAMPART},
-            {x: x, y: y + 12, type: STRUCTURE_RAMPART},
-            {x: x + 6, y: y + 12, type: STRUCTURE_RAMPART},
-            {x: x + 12, y: y + 12, type: STRUCTURE_RAMPART},
+            // coordinates of ramparts
+            {x: x + 1, y: y,},
+            {x: x + 5, y: y,},
+            {x: x + 7, y: y,},
+            {x: x + 11, y: y,},
+            {x: x, y: y + 1,},
+            {x: x + 2, y: y + 1,},
+            {x: x + 3, y: y + 1,},
+            {x: x + 5, y: y + 1,},
+            {x: x + 7, y: y + 1,},
+            {x: x + 9, y: y + 1,},
+            {x: x + 10, y: y + 1,},
+            {x: x + 12, y: y + 1,},
+            {x: x + 1, y: y + 2,},
+            {x: x + 3, y: y + 2,},
+            {x: x + 4, y: y + 2,},
+            {x: x + 5, y: y + 2,},
+            {x: x + 7, y: y + 2,},
+            {x: x + 8, y: y + 2,},
+            {x: x + 9, y: y + 2,},
+            {x: x + 11, y: y + 2,},
+            {x: x + 1, y: y + 3,},
+            {x: x + 2, y: y + 3,},
+            {x: x + 4, y: y + 3,},
+            {x: x + 5, y: y + 3,},
+            {x: x + 7, y: y + 3,},
+            {x: x + 8, y: y + 3,},
+            {x: x + 10, y: y + 3,},
+            {x: x + 11, y: y + 3,},
+            {x: x + 2, y: y + 4,},
+            {x: x + 3, y: y + 4,},
+            {x: x + 9, y: y + 4,},
+            {x: x + 10, y: y + 4,},
+            {x: x, y: y + 5,},
+            {x: x + 1, y: y + 5,},
+            {x: x + 2, y: y + 5,},
+            {x: x + 3, y: y + 5,},
+            {x: x + 9, y: y + 5,},
+            {x: x + 10, y: y + 5,},
+            {x: x + 11, y: y + 5,},
+            {x: x + 12, y: y + 5,},
+            {x: x, y: y + 7,},
+            {x: x + 1, y: y + 7,},
+            {x: x + 2, y: y + 7,},
+            {x: x + 3, y: y + 7,},
+            {x: x + 9, y: y + 7,},
+            {x: x + 10, y: y + 7,},
+            {x: x + 11, y: y + 7,},
+            {x: x + 12, y: y + 7,},
+            {x: x + 2, y: y + 8,},
+            {x: x + 3, y: y + 8,},
+            {x: x + 9, y: y + 8,},
+            {x: x + 10, y: y + 8,},
+            {x: x + 1, y: y + 9,},
+            {x: x + 2, y: y + 9,},
+            {x: x + 4, y: y + 9,},
+            {x: x + 5, y: y + 9,},
+            {x: x + 7, y: y + 9,},
+            {x: x + 8, y: y + 9,},
+            {x: x + 10, y: y + 9,},
+            {x: x + 11, y: y + 9,},
+            {x: x + 1, y: y + 10,},
+            {x: x + 3, y: y + 10,},
+            {x: x + 4, y: y + 10,},
+            {x: x + 5, y: y + 10,},
+            {x: x + 7, y: y + 10,},
+            {x: x + 8, y: y + 10,},
+            {x: x + 9, y: y + 10,},
+            {x: x + 11, y: y + 10,},
+            {x: x, y: y + 11,},
+            {x: x + 2, y: y + 11,},
+            {x: x + 3, y: y + 11,},
+            {x: x + 5, y: y + 11,},
+            {x: x + 7, y: y + 11,},
+            {x: x + 9, y: y + 11,},
+            {x: x + 10, y: y + 11,},
+            {x: x + 12, y: y + 11,},
+            {x: x + 1, y: y + 12,},
+            {x: x + 5, y: y + 12,},
+            {x: x + 7, y: y + 12,},
+            {x: x + 11, y: y + 12,},
+            {x: x + 7, y: y + 6,},
+            {x: x + 4, y: y + 7,},
+            {x: x + 8, y: y + 7,},
+            {x: x + 4, y: y + 9,},
+            {x: x + 8, y: y + 9,},
+            {x: x + 5, y: y + 10,},
+            {x: x + 5, y: y + 8,},
+            {x: x + 7, y: y + 8,},
+            {x: x + 6, y: y + 9,},
+            {x: x + 6, y: y + 7,},
+            {x: x + 5, y: y + 6,},
+            {x: x + 7, y: y + 10,},
+            {x: x, y: y,},
+            {x: x + 6, y: y,},
+            {x: x + 12, y: y,},
+            {x: x + 1, y: y + 1,},
+            {x: x + 6, y: y + 1,},
+            {x: x + 11, y: y + 1,},
+            {x: x + 2, y: y + 2,},
+            {x: x + 6, y: y + 2,},
+            {x: x + 10, y: y + 2,},
+            {x: x + 3, y: y + 3,},
+            {x: x + 6, y: y + 3,},
+            {x: x + 9, y: y + 3,},
+            {x: x + 4, y: y + 4,},
+            {x: x + 6, y: y + 4,},
+            {x: x + 8, y: y + 4,},
+            {x: x + 5, y: y + 5,},
+            {x: x + 7, y: y + 5,},
+            {x: x, y: y + 6,},
+            {x: x + 1, y: y + 6,},
+            {x: x + 2, y: y + 6,},
+            {x: x + 3, y: y + 6,},
+            {x: x + 4, y: y + 6,},
+            {x: x + 6, y: y + 6,},
+            {x: x + 8, y: y + 6,},
+            {x: x + 9, y: y + 6,},
+            {x: x + 10, y: y + 6,},
+            {x: x + 11, y: y + 6,},
+            {x: x + 12, y: y + 6,},
+            {x: x + 5, y: y + 7,},
+            {x: x + 7, y: y + 7,},
+            {x: x + 4, y: y + 8,},
+            {x: x + 6, y: y + 8,},
+            {x: x + 8, y: y + 8,},
+            {x: x + 3, y: y + 9,},
+            {x: x + 6, y: y + 9,},
+            {x: x + 9, y: y + 9,},
+            {x: x + 2, y: y + 10,},
+            {x: x + 6, y: y + 10,},
+            {x: x + 10, y: y + 10,},
+            {x: x + 1, y: y + 11,},
+            {x: x + 6, y: y + 11,},
+            {x: x + 11, y: y + 11,},
+            {x: x, y: y + 12,},
+            {x: x + 6, y: y + 12,},
+            {x: x + 12, y: y + 12,},
         ]);
+        // add to the list of roads
         plans.roads = plans.roads.concat([
-            {x: x, y: y, type: STRUCTURE_ROAD},
-            {x: x + 6, y: y, type: STRUCTURE_ROAD},
-            {x: x + 12, y: y, type: STRUCTURE_ROAD},
-            {x: x + 1, y: y + 1, type: STRUCTURE_ROAD},
-            {x: x + 6, y: y + 1, type: STRUCTURE_ROAD},
-            {x: x + 11, y: y + 1, type: STRUCTURE_ROAD},
-            {x: x + 2, y: y + 2, type: STRUCTURE_ROAD},
-            {x: x + 6, y: y + 2, type: STRUCTURE_ROAD},
-            {x: x + 10, y: y + 2, type: STRUCTURE_ROAD},
-            {x: x + 3, y: y + 3, type: STRUCTURE_ROAD},
-            {x: x + 6, y: y + 3, type: STRUCTURE_ROAD},
-            {x: x + 9, y: y + 3, type: STRUCTURE_ROAD},
-            {x: x + 4, y: y + 4, type: STRUCTURE_ROAD},
-            {x: x + 6, y: y + 4, type: STRUCTURE_ROAD},
-            {x: x + 8, y: y + 4, type: STRUCTURE_ROAD},
-            {x: x + 5, y: y + 5, type: STRUCTURE_ROAD},
-            {x: x + 7, y: y + 5, type: STRUCTURE_ROAD},
-            {x: x, y: y + 6, type: STRUCTURE_ROAD},
-            {x: x + 1, y: y + 6, type: STRUCTURE_ROAD},
-            {x: x + 2, y: y + 6, type: STRUCTURE_ROAD},
-            {x: x + 3, y: y + 6, type: STRUCTURE_ROAD},
-            {x: x + 4, y: y + 6, type: STRUCTURE_ROAD},
-            {x: x + 6, y: y + 6, type: STRUCTURE_ROAD},
-            {x: x + 8, y: y + 6, type: STRUCTURE_ROAD},
-            {x: x + 9, y: y + 6, type: STRUCTURE_ROAD},
-            {x: x + 10, y: y + 6, type: STRUCTURE_ROAD},
-            {x: x + 11, y: y + 6, type: STRUCTURE_ROAD},
-            {x: x + 12, y: y + 6, type: STRUCTURE_ROAD},
-            {x: x + 5, y: y + 7, type: STRUCTURE_ROAD},
-            {x: x + 7, y: y + 7, type: STRUCTURE_ROAD},
-            {x: x + 4, y: y + 8, type: STRUCTURE_ROAD},
-            {x: x + 6, y: y + 8, type: STRUCTURE_ROAD},
-            {x: x + 8, y: y + 8, type: STRUCTURE_ROAD},
-            {x: x + 3, y: y + 9, type: STRUCTURE_ROAD},
-            {x: x + 6, y: y + 9, type: STRUCTURE_ROAD},
-            {x: x + 9, y: y + 9, type: STRUCTURE_ROAD},
-            {x: x + 2, y: y + 10, type: STRUCTURE_ROAD},
-            {x: x + 6, y: y + 10, type: STRUCTURE_ROAD},
-            {x: x + 10, y: y + 10, type: STRUCTURE_ROAD},
-            {x: x + 1, y: y + 11, type: STRUCTURE_ROAD},
-            {x: x + 6, y: y + 11, type: STRUCTURE_ROAD},
-            {x: x + 11, y: y + 11, type: STRUCTURE_ROAD},
-            {x: x, y: y + 12, type: STRUCTURE_ROAD},
-            {x: x + 6, y: y + 12, type: STRUCTURE_ROAD},
-            {x: x + 12, y: y + 12, type: STRUCTURE_ROAD},
+            // coordinates of roads
+            {x: x, y: y,},
+            {x: x + 6, y: y,},
+            {x: x + 12, y: y,},
+            {x: x + 1, y: y + 1,},
+            {x: x + 6, y: y + 1,},
+            {x: x + 11, y: y + 1,},
+            {x: x + 2, y: y + 2,},
+            {x: x + 6, y: y + 2,},
+            {x: x + 10, y: y + 2,},
+            {x: x + 3, y: y + 3,},
+            {x: x + 6, y: y + 3,},
+            {x: x + 9, y: y + 3,},
+            {x: x + 4, y: y + 4,},
+            {x: x + 6, y: y + 4,},
+            {x: x + 8, y: y + 4,},
+            {x: x + 5, y: y + 5,},
+            {x: x + 7, y: y + 5,},
+            {x: x, y: y + 6,},
+            {x: x + 1, y: y + 6,},
+            {x: x + 2, y: y + 6,},
+            {x: x + 3, y: y + 6,},
+            {x: x + 4, y: y + 6,},
+            {x: x + 6, y: y + 6,},
+            {x: x + 8, y: y + 6,},
+            {x: x + 9, y: y + 6,},
+            {x: x + 10, y: y + 6,},
+            {x: x + 11, y: y + 6,},
+            {x: x + 12, y: y + 6,},
+            {x: x + 5, y: y + 7,},
+            {x: x + 7, y: y + 7,},
+            {x: x + 4, y: y + 8,},
+            {x: x + 6, y: y + 8,},
+            {x: x + 8, y: y + 8,},
+            {x: x + 3, y: y + 9,},
+            {x: x + 6, y: y + 9,},
+            {x: x + 9, y: y + 9,},
+            {x: x + 2, y: y + 10,},
+            {x: x + 6, y: y + 10,},
+            {x: x + 10, y: y + 10,},
+            {x: x + 1, y: y + 11,},
+            {x: x + 6, y: y + 11,},
+            {x: x + 11, y: y + 11,},
+            {x: x, y: y + 12,},
+            {x: x + 6, y: y + 12,},
+            {x: x + 12, y: y + 12,},
         ]);
     },
     // locate a suitable location to place a plant
     planPlantLocation: function (room, plans) {
-        let plant_location = room.getClearArea(14, 14, plans);
+        // find a clear area of size 4 x 3
+        let plant_location = room.getClearArea(4, 3, plans);
+        // if we were able to find a location
         if (plant_location != null) {
+            // save the x coordinate of the plant
             plans.plant_x = plant_location.x;
+            // save the y coordinate of the plant
             plans.plant_y = plant_location.y;
         }
     },
     // fill the plant with plans for the structures based on the plant location
     planPlant: function (room, plans) {
+        // if we were unable to find a plant location
         if (plans.plant_x == null) {
+            // exit the function
             return;
         }
-        // get the base x coordinate
+        // get the plant x coordinate
         let x = plans.plant_x;
-        // get the base y coordinate
+        // get the plant y coordinate
         let y = plans.plant_y;
 
+        // save the lab locations for easy access
         plans.input_lab_1_x = x + 2;
         plans.input_lab_1_y = y;
         plans.input_lab_2_x = x + 2;
@@ -397,21 +433,44 @@ module.exports = {
             {x: x + 2, y: y, type: STRUCTURE_LAB},
             {x: x + 3, y: y + 1, type: STRUCTURE_LAB},
             {x: x + 2, y: y + 2, type: STRUCTURE_LAB},
-            {x: x + 1, y: y, type: STRUCTURE_ROAD},
-            {x: x + 3, y: y, type: STRUCTURE_ROAD},
-            {x: x, y: y + 1, type: STRUCTURE_ROAD},
-            {x: x + 1, y: y + 1, type: STRUCTURE_ROAD},
-            {x: x + 2, y: y + 1, type: STRUCTURE_ROAD},
-            {x: x + 1, y: y + 2, type: STRUCTURE_ROAD},
-            {x: x + 3, y: y + 2, type: STRUCTURE_ROAD},
+        ]);
+        // concat the structure lists together
+        plans.ramparts = plans.ramparts.concat([
+            // coordinates and type of the structure
+            {x: x, y: y,},
+            {x: x + 1, y: y,},
+            {x: x + 2, y: y,},
+            {x: x + 3, y: y,},
+            {x: x, y: y + 1,},
+            {x: x + 1, y: y + 1,},
+            {x: x + 2, y: y + 1,},
+            {x: x + 3, y: y + 1,},
+            {x: x, y: y + 2,},
+            {x: x + 1, y: y + 2,},
+            {x: x + 2, y: y + 2,},
+            {x: x + 3, y: y + 2,},
+        ]);
+        // concat the structure lists together
+        plans.roads = plans.roads.concat([
+            // coordinates and type of the structure
+            {x: x + 1, y: y,},
+            {x: x + 3, y: y,},
+            {x: x, y: y + 1,},
+            {x: x + 1, y: y + 1,},
+            {x: x + 2, y: y + 1,},
+            {x: x + 1, y: y + 2,},
+            {x: x + 3, y: y + 2,},
         ]);
     },
     // find a location that is not around anything to send the idle creeps in the room
     planIdleLocation: function (room, plans) {
         // return a clear area of size 5 x 5
         let idle_location = room.getClearArea(5, 5, plans);
+        // if an area is found
         if (idle_location != null) {
+            // save the x coordinate of the idle location
             plans.idle_x = idle_location.x;
+            // save the y coordinate of the idle location
             plans.idle_y = idle_location.y;
         }
     },

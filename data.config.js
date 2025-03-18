@@ -1,9 +1,13 @@
-// used to id a capitol
-global.CAPITOL = "capitol";
+// username for comparing controllers
+global.USERNAME = "uhhyea";
 // used to id a colony
 global.COLONY = "colony";
 // used to id an expansion
 global.EXPANSION = "expansion";
+// used to id a keeper lair
+global.KEEPER_LAIR = "keeper_lair";
+// used to id a highway
+global.HIGHWAY = "highway";
 // ticks between making construction sites
 global.CONSTRUCTION_TIMER_LENGTH = 50;
 // ticks between calculating population needs

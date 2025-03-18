@@ -1,5 +1,5 @@
-// Plans class, an object containing all the construction plans for a room data object
-class Plans {
+// RoomPlans class, an object containing all the construction plans for a room data object
+class RoomPlans {
     // x coordinate of the idle location
     idle_x = null;
     // y coordinate of the idle location
@@ -40,4 +40,4 @@ class Plans {
     constructor() {}
 }
 // export the plans class
-module.exports = Plans;
+module.exports = RoomPlans;

@@ -181,4 +181,27 @@ module.exports = {
         // calculate the average and return it
         return (total / room_data.satisfaction_log.length);
     },
+
+    // see if a room is available
+    isRoomAvailable: function (room_name) {
+        let room = Game.rooms[room_name];
+
+        if (room == undefined) {
+            return false;
+        }
+
+        let status = Game.map.getRoomStatus(room.name).type;
+        if (status != "normal") {
+            return false;
+        }
+
+        // TODO: check if the room is controlled by another player
+        if (room.controller.owner != undefined && room.controller.owner != USERNAME) {
+            return false;
+        }
+
+        let hostile_creeps = room.find(FIND_HOSTILE_CREEPS).length;
+
+        return hostile_creeps <= 0;
+    },
 };

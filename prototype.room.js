@@ -296,7 +296,7 @@ Room.prototype.createConstructionSites = function (plans) {
         // if the structure is not built
         if (!this.checkFor(road.x, road.y, road.type)) {
             // try to place the structure
-            let result = this.createConstructionSite(road.x, road.y, road.type);
+            let result = this.createConstructionSite(road.x, road.y, STRUCTURE_ROAD);
             // if creating the site was successful
             if (result == OK) {
                 // increment the site_count
@@ -320,7 +320,7 @@ Room.prototype.createConstructionSites = function (plans) {
         // if the structure is not built
         if (!this.checkFor(rampart.x, rampart.y, rampart.type)) {
             // try to place the structure
-            let result = this.createConstructionSite(rampart.x, rampart.y, rampart.type);
+            let result = this.createConstructionSite(rampart.x, rampart.y, STRUCTURE_RAMPART);
             // if creating the site was successful
             if (result == OK) {
                 // increment the site_count

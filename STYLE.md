@@ -6,7 +6,7 @@
 3. No libraries
 4. No compilation
 5. Every line must be commented*
-6. Avoid "forEach()" when looping
+6. Avoid "forEach()" when looping, they break scope
 7. Break up lines if they go too long
 8. Avoid strict `===`/`!==` comparisons, screeps constants do not like them
 
@@ -15,7 +15,8 @@
 
 ## Naming Conventions
 Be descriptive, use as many words as absolutely necessary to get the idea across.
-We have comments, but we should be able to know what the code does without them from variable/class/function names alone.
+We have comments, but we should be able to know what the code does without them 
+from variable/class/function names alone.
 ### snake_case
 - variables
 - properties

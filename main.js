@@ -1,4 +1,4 @@
-require('global.config');
+require('data.config');
 require('prototype.room');
 require('prototype.creep');
 require('prototype.tower');

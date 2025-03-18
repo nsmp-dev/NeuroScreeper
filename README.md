@@ -15,7 +15,7 @@ Your first spawn must be placed with a clearance of 5 spaces to it's left, 6 to 
 This allows for ample room for a base to be built in the first room.
 
 ## Visualizer
-Each Colony, Expansion, and Capitol will run a visualizer.
+Each Colony and Expansion will run a visualizer.
 The top left has the population broken down by role and assignment.
 The bottom has a log of the last 50 tick's CPU usage in the timer log, drawing it as a bar graph.
 
