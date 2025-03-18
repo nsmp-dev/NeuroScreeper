@@ -23,6 +23,9 @@ module.exports = {
 
         // initialize the room data entry
         Memory.room_data[room.name] = new RoomData(room, Game.spawns[spawn_name]);
+
+        // save the capitol room name
+        Memory.capitol_room_name = room.name;
     },
     // scan for any new rooms and add their data if found
     scanNewRooms: function () {
@@ -213,6 +216,21 @@ module.exports = {
                     this.spawnNewExpansion();
                 }
             }
+
+            // if we currently don't have a capitol
+            if (Memory.capitol_room_name == null) {
+                // loop thru all the rooms
+                for (let name in Memory.room_data) {
+                    // if the room is a colony and has a plant
+                    if (Memory.room_data[name].type == COLONY && Memory.room_data[name].plans.base_x != null) {
+                        // set it to be the capitol
+                        Memory.capitol_room_name = name;
+                        // break out of the loop
+                        break;
+                    }
+                }
+            }
+
             // reset the new room timer
             Memory.new_room_timer = 0;
         } else {

@@ -20,6 +20,10 @@ global.REQUEST_POPULATION_TIMER_LENGTH = 10;
 global.COUNT_POPULATION_TIMER_LENGTH = 10;
 // ticks between  considering adding a new room
 global.NEW_ROOM_TIMER_LENGTH = 100;
+// ticks between getting reaction requests
+global.REACTION_TIMER_LENGTH = 10;
+// ticks between getting production requests
+global.PRODUCTION_TIMER_LENGTH = 10;
 // ratio of ticks that must be satisfied to count as overall satisfied
 global.SATISFACTION_THRESHOLD = 0.9;
 // size of the log to keep for satisfaction calculations
@@ -29,12 +33,12 @@ global.SATISFACTION_LOG_SIZE = 100;
 global.ATTACKER = {
     // identifying string
     NAME: "attacker",
-        // standard body build, can be multiplied arbitrarily to build larger creeps
-        BODY: [ATTACK, TOUGH, MOVE, MOVE],
-        // energy cost of the body
-        ENERGY_COST: 100,
-        // initializer that assembles the initial creep memory
-        init: function (room_name) {
+    // standard body build, can be multiplied arbitrarily to build larger creeps
+    BODY: [ATTACK, TOUGH, MOVE, MOVE],
+    // energy cost of the body
+    ENERGY_COST: 100,
+    // initializer that assembles the initial creep memory
+    init: function (room_name) {
         // return the memory object
         return {
             // role of the creep
@@ -48,11 +52,11 @@ global.ATTACKER = {
 };
 global.BUILDER = {
     NAME: "builder",
-        BODY: [WORK, CARRY, MOVE, MOVE],
-        ENERGY_COST: 250,
-        BUILDING: 0,
-        FILLING: 1,
-        init: function (room_name) {
+    BODY: [WORK, CARRY, MOVE, MOVE],
+    ENERGY_COST: 250,
+    BUILDING: 0,
+    FILLING: 1,
+    init: function (room_name) {
         return {
             role: this.NAME,
             state: this.FILLING,
@@ -64,9 +68,9 @@ global.BUILDER = {
 };
 global.CLAIMER = {
     NAME: "claimer",
-        BODY: [CLAIM, MOVE],
-        ENERGY_COST: 650,
-        init: function (room_name) {
+    BODY: [CLAIM, MOVE],
+    ENERGY_COST: 650,
+    init: function (room_name) {
         return {
             role: this.NAME,
             room_name: room_name,
@@ -75,9 +79,9 @@ global.CLAIMER = {
 };
 global.DRILLER = {
     NAME: "driller",
-        BODY: [WORK, MOVE],
-        ENERGY_COST: 150,
-        init: function (room_name, source_id, container_x, container_y) {
+    BODY: [WORK, MOVE],
+    ENERGY_COST: 150,
+    init: function (room_name, source_id, container_x, container_y) {
         return {
             role: this.NAME,
             room_name: room_name,
@@ -89,9 +93,9 @@ global.DRILLER = {
 };
 global.HEALER = {
     NAME: "healer",
-        BODY: [HEAL, TOUGH, MOVE, MOVE],
-        ENERGY_COST: 360,
-        init: function (room_name) {
+    BODY: [HEAL, TOUGH, MOVE, MOVE],
+    ENERGY_COST: 360,
+    init: function (room_name) {
         return {
             role: this.NAME,
             room_name: room_name,
@@ -100,11 +104,11 @@ global.HEALER = {
 };
 global.QUEEN = {
     NAME: "queen",
-        BODY: [CARRY, MOVE],
-        ENERGY_COST: 150,
-        DUMPING: 0,
-        FILLING: 1,
-        init: function (room_name) {
+    BODY: [CARRY, MOVE],
+    ENERGY_COST: 150,
+    DUMPING: 0,
+    FILLING: 1,
+    init: function (room_name) {
         return {
             role: this.NAME,
             room_name: room_name,
@@ -115,11 +119,11 @@ global.QUEEN = {
 };
 global.REPAIRER = {
     NAME: "repairer",
-        BODY: [WORK, CARRY, MOVE, MOVE],
-        ENERGY_COST: 250,
-        REPAIRING: 0,
-        FILLING: 1,
-        init: function (room_name) {
+    BODY: [WORK, CARRY, MOVE, MOVE],
+    ENERGY_COST: 250,
+    REPAIRING: 0,
+    FILLING: 1,
+    init: function (room_name) {
         return {
             role: this.NAME,
             state: this.FILLING,
@@ -131,9 +135,9 @@ global.REPAIRER = {
 };
 global.SCOUT = {
     NAME: "scout",
-        BODY: [MOVE],
-        ENERGY_COST: 50,
-        init: function (room_name) {
+    BODY: [MOVE],
+    ENERGY_COST: 50,
+    init: function (room_name) {
         return {
             role: this.NAME,
             room_name: room_name,
@@ -145,11 +149,11 @@ global.SCOUT = {
 };
 global.TRANSPORTER = {
     NAME: "transporter",
-        BODY: [CARRY, MOVE],
-        ENERGY_COST: 100,
-        DUMPING: 0,
-        FILLING: 1,
-        init: function (room_name, source_id, container_x, container_y) {
+    BODY: [CARRY, MOVE],
+    ENERGY_COST: 100,
+    DUMPING: 0,
+    FILLING: 1,
+    init: function (room_name, source_id, container_x, container_y) {
         // TODO: find the nearest colony room name
         let nearest_colony_room_name = null;
         return {
@@ -167,11 +171,11 @@ global.TRANSPORTER = {
 };
 global.UPGRADER = {
     NAME: "upgrader",
-        BODY: [WORK, CARRY, MOVE, MOVE],
-        ENERGY_COST: 250,
-        UPGRADING: 0,
-        FILLING: 1,
-        init: function (room_name) {
+    BODY: [WORK, CARRY, MOVE, MOVE],
+    ENERGY_COST: 250,
+    UPGRADING: 0,
+    FILLING: 1,
+    init: function (room_name) {
         return {
             role: this.NAME,
             room_name: room_name,

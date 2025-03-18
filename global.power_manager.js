@@ -14,15 +14,17 @@ module.exports = {
         }
         let operator = Game.powerCreeps["operator"];
         if (operator.ticksToLive == undefined) {
-            let power_spawns = [];
-            for (let id in Game.structures) {
-                if (Game.structures[id].structureType == STRUCTURE_POWER_SPAWN) {
-                    power_spawns.push(Game.structures[id]);
+            if (Memory.capitol_room_name != null) {
+                let power_spawn = null;
+                for (let id in Game.structures) {
+                    if (Game.structures[id].structureType == STRUCTURE_POWER_SPAWN && Game.structures[id].room.name == Memory.capitol_room_name) {
+                        power_spawn = Game.structures[id];
+                    }
                 }
-            }
 
-            if (power_spawns.length > 0) {
-                operator.spawn(power_spawns[0]);
+                if (power_spawn != null) {
+                    operator.spawn(power_spawn);
+                }
             }
         }else{
             if (operator.level < Game.gpl.level) {

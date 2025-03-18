@@ -10,6 +10,7 @@ const MyLogger = require('global.logger');
 const RoomManager = require('global.room_manager');
 const RoomRunner = require('global.room_runner');
 const Visualizer = require('global.visualizer');
+const PowerManager = require('global.power_manager');
 
 // change the build number to trigger a memory wipe
 const BUILD = 4;
@@ -42,6 +43,8 @@ module.exports.loop = function () {
         Game.creeps[name].run();
     }
 
+    PowerManager.run();
+
     // loop through every structure
     for (let id in Game.structures) {
         // if it's a tower, terminal, or observer
@@ -72,6 +75,9 @@ module.exports.loop = function () {
         if (Memory.room_data[name].dead) {
             // delete the room data
             delete Memory.room_data[name];
+            if (Memory.capitol_room_name == name) {
+                Memory.capitol_room_name = null;
+            }
         }
     }
     // collect any garbage

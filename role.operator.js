@@ -1,4 +1,4 @@
-PowerCreep.prototype.runOperator = function () {
+PowerCreep.prototype.runOperator = function (plant_data) {
     // if we are not in the middle of a request
         // if we have any requests
             // mark the front of the queue as in progress

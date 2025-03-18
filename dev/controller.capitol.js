@@ -1,6 +1,6 @@
 const Util = require('global.util');
 const MyLogger = require('global.logger');
-const Plant = require('controller.plant');
+const Plant = require('global.plant_runner');
 
 // this is a capitol: a type of room where we keep all minerals, power, and commodities
 // has a special plant area that handles the labs, factory, and power spawn

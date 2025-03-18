@@ -8,9 +8,9 @@ class RoomData {
     // type of the room
     type = null;
     // timer for when to do construction
-    construction_timer = 0;
+    construction_timer = Math.floor(CONSTRUCTION_TIMER_LENGTH / 2);
     // timer for when to spawn creeps
-    population_timer = 0;
+    population_timer = REQUEST_POPULATION_TIMER_LENGTH;
     // log of how satisfied the colony is
     satisfaction_log = [];
     // flag for whether the colony is satisfied
@@ -41,15 +41,23 @@ class RoomData {
             RoomDataFactory.planRoom(room, this.plans);
         }
 
+        // if this room doesn't have a controller
         if (room.controller == undefined) {
+            // set this room as not a possible expansion
             this.possible_expansion = false;
+            // set this room as not a possible colony
             this.possible_colony = false;
+            // find any structures
             let source_keepers = room.find(FIND_STRUCTURES, {
+                // that are source keeper lairs
                 filter: (structure) => structure.structureType == STRUCTURE_KEEPER_LAIR
             });
+            // if there are any source keepers in the room
             if (source_keepers.length > 0) {
+                // set the type to a keeper lair
                 this.type = KEEPER_LAIR;
             }else{
+                // set the type to a highway
                 this.type = HIGHWAY;
             }
         }else{
@@ -69,13 +77,9 @@ class RoomData {
 
         // if the plans include a plant
         if (this.plans.plant_x != null) {
+            // initialize the plant data
             this.plant_data = new PlantData(this.plans);
         }
-
-        // set the population timer to go off immediately
-        this.population_timer = REQUEST_POPULATION_TIMER_LENGTH;
-        // set the construction timer to go off offset from the population timer
-        this.construction_timer = Math.floor(CONSTRUCTION_TIMER_LENGTH / 2);
     }
 }
 
