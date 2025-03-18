@@ -1,11 +1,9 @@
 // logger module: has tools for logging things and can be shut off for easy debugging
 module.exports = {
-    // sets whether to print or not to clean up the console
-    DEBUG_MODE: true,
     // regular logging, simply logs to console
     log: function (str) {
         // if we have debug mode turned on
-        if (this.DEBUG_MODE) {
+        if (DEBUG_MODE) {
             // print the string
             console.log(str);
         }

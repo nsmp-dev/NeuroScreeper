@@ -3,8 +3,6 @@
 module.exports = {
     // where we store the timers we are working with
     timers: {},
-    // how many previous ticks to maintain for average cpu time
-    LOG_SIZE: 50,
     // initialize this global object, setting up memory
     initialize: function () {
         Memory.timer_log = [];

@@ -1,5 +1,9 @@
 // username for comparing controllers
 global.USERNAME = "uhhyea";
+// debug mode for logger
+global.DEBUG_MODE = true;
+// how many previous ticks to maintain for average cpu time
+global.LOG_SIZE = 50;
 // used to id a colony
 global.COLONY = "colony";
 // used to id an expansion
@@ -12,14 +16,14 @@ global.HIGHWAY = "highway";
 global.CONSTRUCTION_TIMER_LENGTH = 50;
 // ticks between calculating population needs
 global.REQUEST_POPULATION_TIMER_LENGTH = 10;
+// ticks between recounting the populations
+global.COUNT_POPULATION_TIMER_LENGTH = 10;
+// ticks between  considering adding a new room
+global.NEW_ROOM_TIMER_LENGTH = 100;
 // ratio of ticks that must be satisfied to count as overall satisfied
 global.SATISFACTION_THRESHOLD = 0.9;
 // size of the log to keep for satisfaction calculations
 global.SATISFACTION_LOG_SIZE = 100;
-// how often to recalculate the populations
-global.COUNT_POPULATION_TIMER_LENGTH = 10;
-// how often to consider adding a new room
-global.NEW_ROOM_TIMER_LENGTH = 100;
 
 // constants for creep role usage
 global.ATTACKER = {
