@@ -3,6 +3,7 @@ class RoomPlans {
     
     // empty constructor
     constructor() {
+        hlog("Creating a new RoomPlans Object...");
         // x coordinate of the idle location
         this.idle_x = null;
         // y coordinate of the idle location

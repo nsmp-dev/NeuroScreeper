@@ -2,6 +2,7 @@
 class PlantData {
     // creates a plant data object
     constructor(plans) {
+        hlog("Creating a new PlantData Object...");
         // the current reaction in progress
         this.current_reaction = null;
         // the current production in progress

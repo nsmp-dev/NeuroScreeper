@@ -9,7 +9,7 @@ class RoomData {
 
     // creates a room data object, with an optional starter spawn for the first room
     constructor(room, initial_spawn = null) {
-        
+        hlog("Creating a new RoomData Object...");
         // type of the room
         this.type = null;
         // timer for when to do construction
