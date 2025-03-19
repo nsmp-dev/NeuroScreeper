@@ -1,5 +1,3 @@
-const Util = require("global.util");
-
 // get a building target
 Creep.prototype.getBuildTarget = function () {
     // find and return the closest construction site

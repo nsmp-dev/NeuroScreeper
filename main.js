@@ -4,16 +4,19 @@ require('prototype.creep');
 require('prototype.tower');
 require('prototype.terminal');
 require('prototype.observer');
+console.log("loaded prototypes!");
 const Timer = require('global.timer');
 const Util = require('global.util');
 const MyLogger = require('global.logger');
 const RoomManager = require('global.room_manager');
+console.log("loaded some globals!");
 const RoomRunner = require('global.room_runner');
 const Visualizer = require('global.visualizer');
 const PowerManager = require('global.power_manager');
+console.log("loaded globals!");
 
 // change the build number to trigger a memory wipe
-const BUILD = 4;
+const BUILD = 6;
 
 // the main loop that gets run every tick
 module.exports.loop = function () {
@@ -30,6 +33,7 @@ module.exports.loop = function () {
         RoomManager.initialize();
         Timer.initialize();
     }
+
 
     // start the main timer
     Timer.start();

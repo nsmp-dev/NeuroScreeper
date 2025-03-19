@@ -1,5 +1,3 @@
-const Util = require("global.util");
-
 // transporter that takes energy from the containers under drillers and dumps the energy into the base
 Creep.prototype.runTransporter = function () {
     // if we are currently filling

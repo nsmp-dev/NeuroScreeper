@@ -1,16 +1,9 @@
 # v0.2
 
-## refactor controllers into room runner
-adapt creep requests to the plans and what is built
-add in defcon system
-1 - room is not owned, and contains enemies
-2 - room is owned, and contains enemies
-
-## `room_data.road_plans`
-add in road plans to expansions and colonies
-add road anchor points to base plans
-create roads between source containers and the anchor points
-put the roads in a separate list to not count them in collisions
+## flesh out road anchors
+finish up making road anchors and connecting them to containers
+connect lab anchors to the base anchors
+each container gets connected to the nearest anchor
 
 ## `global.cmd.js`
 new module for running arbitrary commands

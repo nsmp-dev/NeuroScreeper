@@ -13,6 +13,9 @@ module.exports = {
             PowerCreep.create("operator", POWER_CLASS.OPERATOR);
         }
         let operator = Game.powerCreeps["operator"];
+        if (operator == undefined) {
+            return;
+        }
         if (operator.ticksToLive == undefined) {
             if (Memory.capitol_room_name != null) {
                 let power_spawn = null;

@@ -1,5 +1,3 @@
-const Util = require("global.util");
-
 // upgrader that upgrades the room's controller
 Creep.prototype.runUpgrader = function () {
     // if we are currently filling

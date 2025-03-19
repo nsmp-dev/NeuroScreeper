@@ -1,5 +1,3 @@
-const Util = require("global.util");
-
 // get a repairing target
 Creep.prototype.getRepairTarget = function () {
     // return the closest damaged structure

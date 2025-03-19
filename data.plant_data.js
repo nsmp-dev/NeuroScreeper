@@ -1,28 +1,15 @@
 // PlantData class, an object that contains all the memory for each plant
 class PlantData {
-    // the current reaction in progress
-    current_reaction = null;
-    // the current production in progress
-    current_production = null;
-    // the timer for doing reactions
-    reaction_timer = 0;
-    // the timer for doing productions
-    production_timer = Math.floor(PRODUCTION_TIMER_LENGTH / 2);
-    // x coordinate of the first input lab
-    input_lab_1_x = null;
-    // y coordinate of the first input lab
-    input_lab_1_y = null;
-    // x coordinate of the second input lab
-    input_lab_2_x = null;
-    // y coordinate of the second input lab
-    input_lab_2_y = null;
-    // x coordinate of the output lab
-    output_lab_x = null;
-    // y coordinate of the output lab
-    output_lab_y = null;
-
     // creates a plant data object
     constructor(plans) {
+        // the current reaction in progress
+        this.current_reaction = null;
+        // the current production in progress
+        this.current_production = null;
+        // the timer for doing reactions
+        this.reaction_timer = 0;
+        // the timer for doing productions
+        this.production_timer = Math.floor(PRODUCTION_TIMER_LENGTH / 2);
         // set the data needed from the plans
         this.input_lab_1_x = plans.input_lab_1_x;
         this.input_lab_1_y = plans.input_lab_1_y;

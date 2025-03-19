@@ -1,7 +1,9 @@
 const Util = require("global.util");
 const MyLogger = require('global.logger');
+console.log("loading room data class...");
 const RoomData = require("data.room_data");
 
+console.log("loading room manager global...");
 // room manager module that handles scanning/adding new rooms
 module.exports = {
     // create all the starter data needed to run the system

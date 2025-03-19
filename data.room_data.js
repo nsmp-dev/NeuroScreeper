@@ -1,35 +1,38 @@
+'use strict';
+
 require('data.config');
 const RoomDataFactory = require("data.plans_factory");
 const RoomPlans = require("data.room_plans");
 const PlantData = require("data.plant_data");
-
 // RoomData class, an object that contains all the memory for each room
 class RoomData {
-    // type of the room
-    type = null;
-    // timer for when to do construction
-    construction_timer = Math.floor(CONSTRUCTION_TIMER_LENGTH / 2);
-    // timer for when to spawn creeps
-    population_timer = REQUEST_POPULATION_TIMER_LENGTH;
-    // log of how satisfied the colony is
-    satisfaction_log = [];
-    // flag for whether the colony is satisfied
-    satisfied = false;
-    // flag for when this room has died
-    dead = false;
-    // list of creeps that need to be spawned for this colony
-    requested_creeps = [];
-    // plans for construction
-    plans = new RoomPlans();
-    // flag for if this room can be a colony
-    possible_colony = null;
-    // flag for if this room can be an expansion
-    possible_expansion = null;
-    // data for all the reactions and production for the plant
-    plant_data = null;
 
     // creates a room data object, with an optional starter spawn for the first room
     constructor(room, initial_spawn = null) {
+        
+        // type of the room
+        this.type = null;
+        // timer for when to do construction
+        this.construction_timer = Math.floor(CONSTRUCTION_TIMER_LENGTH / 2);
+        // timer for when to spawn creeps
+        this.population_timer = REQUEST_POPULATION_TIMER_LENGTH;
+        // log of how satisfied the colony is
+        this.satisfaction_log = [];
+        // flag for whether the colony is satisfied
+        this.satisfied = false;
+        // flag for when this room has died
+        this.dead = false;
+        // list of creeps that need to be spawned for this colony
+        this.requested_creeps = [];
+        // plans for construction
+        this.plans = new RoomPlans();
+        // flag for if this room can be a colony
+        this.possible_colony = null;
+        // flag for if this room can be an expansion
+        this.possible_expansion = null;
+        // data for all the reactions and production for the plant
+        this.plant_data = null;
+        
         // if the initial spawn was provided
         if (initial_spawn != null) {
             // plan the first room
@@ -83,5 +86,4 @@ class RoomData {
     }
 }
 
-// exports the room data class
 module.exports = RoomData;
