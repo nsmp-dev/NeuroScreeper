@@ -9,6 +9,14 @@ require('role.scout');
 require('role.transporter');
 require('role.upgrader');
 
+hlog("Creating base creep prototypes...");
+
+// get a building target
+Creep.prototype.getBuildTarget = function () {
+    // find and return the closest construction site
+    return this.pos.findClosestByPath(FIND_MY_CONSTRUCTION_SITES);
+};
+
 // gets a general dumping target
 Creep.prototype.getDumpTarget = function () {
     // find any extensions that are not full

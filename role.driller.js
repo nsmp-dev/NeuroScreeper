@@ -1,3 +1,4 @@
+hlog("Creating driller role...");
 // driller that harvests energy from the assigned source, dropping the energy on the container
 Creep.prototype.runDriller = function () {
     // if we are at the location of the container

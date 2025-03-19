@@ -4,33 +4,24 @@ require('prototype.creep');
 require('prototype.tower');
 require('prototype.terminal');
 require('prototype.observer');
-console.log("loaded prototypes!");
 const Timer = require('global.timer');
 const Util = require('global.util');
-const MyLogger = require('global.logger');
 const RoomManager = require('global.room_manager');
-console.log("loaded some globals!");
 const RoomRunner = require('global.room_runner');
 const Visualizer = require('global.visualizer');
 const PowerManager = require('global.power_manager');
-console.log("loaded globals!");
-
-// change the build number to trigger a memory wipe
-const BUILD = 6;
 
 // the main loop that gets run every tick
 module.exports.loop = function () {
     // wipe the memory if the build has changed
-    if (Memory.build !== BUILD) {
-        // loop through all the entries in memory
-        for (let name in Memory) {
-            // delete the entry
-            delete Memory[name];
-        }
+    if (Memory.build != BUILD) {
+        hlog("Build has changed, clearing memory...");
+        Util.clearMemory();
         // set the build to the new one
         Memory.build = BUILD;
-        // initialize the room manager
+        hlog("initializing RoomManager...");
         RoomManager.initialize();
+        hlog("initializing Timer...");
         Timer.initialize();
     }
 
@@ -38,18 +29,19 @@ module.exports.loop = function () {
     // start the main timer
     Timer.start();
 
-    // run the room manager to scan/add rooms
+    hlog("Running RoomManager...");
     RoomManager.run();
 
-    // loop through every creep
+    hlog("Running creeps...");
     for (let name in Game.creeps) {
         // run the creep
         Game.creeps[name].run();
     }
 
+    hlog("Running PowerManager...");
     PowerManager.run();
 
-    // loop through every structure
+    hlog("Running structures...");
     for (let id in Game.structures) {
         // if it's a tower, terminal, or observer
         if (Game.structures[id].structureType == STRUCTURE_TOWER ||
@@ -60,7 +52,7 @@ module.exports.loop = function () {
         }
     }
 
-    // loop through all the rooms we know of
+    hlog("Running rooms...");
     for (let name in Memory.room_data) {
         // grab the room reference
         let room = Game.rooms[name];
@@ -77,6 +69,7 @@ module.exports.loop = function () {
 
         // if the room died
         if (Memory.room_data[name].dead) {
+            hlog("Room '" + name + "' died!");
             // delete the room data
             delete Memory.room_data[name];
             if (Memory.capitol_room_name == name) {
@@ -84,10 +77,10 @@ module.exports.loop = function () {
             }
         }
     }
-    // collect any garbage
+    hlog("Collecting garbage...");
     Util.collectGarbage();
     // print a nice tick summary
-    MyLogger.printSummary();
+    Util.printSummary();
     // stop the main timer
     Timer.stop();
 };

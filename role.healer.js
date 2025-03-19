@@ -1,3 +1,4 @@
+hlog("Creating healer role...");
 // healer that heals any damaged creeps in the room
 Creep.prototype.runHealer = function () {
     // grab the target from memory

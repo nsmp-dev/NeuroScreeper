@@ -168,9 +168,10 @@ module.exports = {
     },
     // run the colony, kicking off sub-functions for specific activities
     run: function (room, room_data) {
+        hlog("Running " + room_data.type + " room: '" + room.name + "'...");
         // if the population timer has gone off
         if (room_data.population_timer > this.POPULATION_TIMER_LENGTH) {
-            // recalculate requested creeps
+            hlog("Requesting creeps...");
             this.requestCreeps(room, room_data);
             // reset the population timer
             room_data.population_timer = 0;
@@ -184,13 +185,13 @@ module.exports = {
 
         // if there are any creeps still requested
         if (room_data.requested_creeps.length > 0) {
-            // try to spawn creeps if possible
+            hlog("Trying to spawn creeps...");
             this.spawnRequestedCreeps(room, room_data);
         }
 
         // check if the construction timer has gone off
         if (room_data.construction_timer > this.CONSTRUCTION_TIMER_LENGTH) {
-            // place up to 5 structures from the structure plans
+            hlog("Building construction sites...");
             room.createConstructionSites(room_data.plans);
             // reset the construction timer
             room_data.construction_timer = 0;

@@ -1,3 +1,4 @@
+hlog("Creating tower prototype...");
 // run the tower, shooting enemies, repairing structures and healing creeps
 StructureTower.prototype.run = function () {
     // if the tower has less than 100 energy

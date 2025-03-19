@@ -1,6 +1,4 @@
-// how often to run the terminal
-StructureTerminal.prototype.TIMER_LENGTH = 100;
-
+hlog("Creating terminal prototypes...");
 // run the tower
 StructureTerminal.prototype.run = function () {
     // if the terminal timers have not been initiated

@@ -26,8 +26,10 @@ module.exports = {
         // see what is in the storage and what we can produce with it
     },
     run: function (room, plant_data) {
+        hlog("Running Plant '" + room.name + "'...");
         if (plant_data.reaction_timer > this.REACTION_TIMER_LENGTH) {
             plant_data.reaction_timer = 0;
+            hlog("Recalculating Reaction...");
             this.getReactionRequest(room, plant_data);
         }else{
             plant_data.reaction_timer++;
@@ -35,6 +37,7 @@ module.exports = {
 
         if (plant_data.production_timer > this.PRODUCTION_TIMER_LENGTH) {
             plant_data.production_timer = 0;
+            hlog("Recalculating Production...");
             this.getProductionRequest(room, plant_data);
         }else{
             plant_data.production_timer++;

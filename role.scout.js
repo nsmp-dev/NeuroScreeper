@@ -1,3 +1,4 @@
+hlog("Creating scout role...");
 // scout that explores rooms via a BFS search algorithm
 Creep.prototype.runScout = function () {
     // if the room queue is empty

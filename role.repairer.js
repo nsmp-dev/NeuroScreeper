@@ -1,3 +1,4 @@
+hlog("Creating repairer role...");
 // get a repairing target
 Creep.prototype.getRepairTarget = function () {
     // return the closest damaged structure

@@ -1,14 +1,10 @@
 const Util = require("global.util");
-const MyLogger = require('global.logger');
-console.log("loading room data class...");
 const RoomData = require("data.room_data");
 
-console.log("loading room manager global...");
 // room manager module that handles scanning/adding new rooms
 module.exports = {
     // create all the starter data needed to run the system
     initialize: function () {
-        MyLogger.log("initializing the room manager...");
         // create the room data object
         Memory.room_data = {};
         // set the population timer to 2 ticks from now
@@ -35,7 +31,7 @@ module.exports = {
         for (let name in Game.rooms) {
             // if we have not scanned this room yet
             if (Memory.room_data[name] == undefined) {
-                // initialize the room data for this room
+                hlog("Found a new room!");
                 Memory.room_data[name] = new RoomData(Game.rooms[name]);
             }
         }
@@ -167,7 +163,7 @@ module.exports = {
     run: function () {
         // if the population timer has gone off
         if (Memory.population_timer > this.POPULATION_TIMER_LENGTH) {
-            // recalculate the populations
+            hlog("Recounting the population...");
             this.countPopulation();
             // reset the population timer
             Memory.population_timer = 0;
@@ -178,6 +174,7 @@ module.exports = {
 
         // if the new room timer has gone off
         if (Memory.new_room_timer > this.NEW_ROOM_TIMER_LENGTH) {
+            hlog("Checking if we can add a new room...");
             // default to satisfied
             let satisfied = true;
             // current count of colonies
@@ -210,11 +207,11 @@ module.exports = {
                 if (expansion_count > colony_count) {
                     // if we can control more rooms
                     if (colony_count < Game.gcl.level) {
-                        // spawn a new colony
+                        hlog("Attempting to add a colony...");
                         this.spawnNewColony();
                     }
                 } else {
-                    // spawn a new expansion
+                    hlog("Attempting to add an expansion...");
                     this.spawnNewExpansion();
                 }
             }
@@ -225,7 +222,7 @@ module.exports = {
                 for (let name in Memory.room_data) {
                     // if the room is a colony and has a plant
                     if (Memory.room_data[name].type == COLONY && Memory.room_data[name].plans.base_x != null) {
-                        // set it to be the capitol
+                        hlog("Designating a new Capitol...");
                         Memory.capitol_room_name = name;
                         // break out of the loop
                         break;

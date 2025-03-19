@@ -1,5 +1,4 @@
-
-
+hlog("Creating claimer role...");
 // claimer that moves toward the assigned room and either reserves or claims the controller
 Creep.prototype.runClaimer = function () {
     // if we are not in the assigned room

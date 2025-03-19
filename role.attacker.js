@@ -1,3 +1,4 @@
+hlog("Creating attacker role...");
 // attacker that attacks hostile creeps in the room
 Creep.prototype.runAttacker = function () {
     // attempt to grab the target

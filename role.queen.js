@@ -1,3 +1,4 @@
+hlog("Creating queen role...");
 // gets a dumping target for a queen
 Creep.prototype.getQueenDumpTarget = function () {
     // find all the towers that are not full

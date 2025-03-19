@@ -9,7 +9,9 @@ module.exports = {
         operator.upgrade(lowest_power_id);
     },
     run: function () {
+        hlog("Running PowerManager...");
         if (Game.powerCreeps["operator"] == undefined && Game.gpl.level > 0 ) {
+            hlog("Creating PowerCreep...");
             PowerCreep.create("operator", POWER_CLASS.OPERATOR);
         }
         let operator = Game.powerCreeps["operator"];
@@ -26,16 +28,19 @@ module.exports = {
                 }
 
                 if (power_spawn != null) {
+                    hlog("Spawning power creep...");
                     operator.spawn(power_spawn);
                 }
             }
         }else{
             if (operator.level < Game.gpl.level) {
+                hlog("Upgrading PowerCreep...");
                 let result = operator.upgrade(PWR_OPERATE_FACTORY);
                 if (result == ERR_FULL) {
                     this.upgradeLowestPower(operator);
                 }
             }
+            hlog("Running PowerCreep...");
             operator.run();
         }
     },

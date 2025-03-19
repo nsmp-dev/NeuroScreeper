@@ -1,5 +1,7 @@
 const Util = require('global.util');
 
+hlog("Creating observer prototype...");
+
 // run the observer, keeping a log of rooms to be scanned and scanning the next one
 StructureObserver.prototype.run = function () {
     // if the observer log has not been initialized

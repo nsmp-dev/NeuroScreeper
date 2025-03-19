@@ -204,4 +204,30 @@ module.exports = {
 
         return hostile_creeps <= 0;
     },
+    // print a summary of some stats
+    printSummary: function () {
+        // start a new string
+        let str = "";
+        // the current tick
+        str += "tick: " + Game.time;
+        // the amount of cpu used this tick
+        str += " | cpu used: " + Game.cpu.getUsed();
+        // the current bucket size
+        str += " | bucket: " + Game.cpu.bucket;
+        // the average cpu used
+        str += " | avg cpu: " + Memory.average_time;
+        // print the summary
+        console.log(str);
+    },
+    // clear all memory except for the id counter
+    clearMemory: function () {
+        // loop through all the entries in memory
+        for (let name in Memory) {
+            // if this field is not the id_counter
+            if (name != "id_counter") {
+                // delete the entry
+                delete Memory[name];
+            }
+        }
+    },
 };

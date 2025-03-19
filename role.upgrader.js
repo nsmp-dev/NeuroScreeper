@@ -1,3 +1,4 @@
+hlog("Creating upgrader role...");
 // upgrader that upgrades the room's controller
 Creep.prototype.runUpgrader = function () {
     // if we are currently filling

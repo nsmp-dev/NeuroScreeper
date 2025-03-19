@@ -1,6 +1,6 @@
 const Util = require('global.util');
 
-
+hlog("Creating room prototypes...");
 
 Room.prototype.getStructureGrid = function (plans) {
     let structure_grid = [];

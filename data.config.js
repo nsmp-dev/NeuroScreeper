@@ -2,6 +2,8 @@
 global.USERNAME = "uhhyea";
 // debug mode for logger
 global.DEBUG_MODE = true;
+// change the build number to trigger a memory wipe
+global.BUILD = 6;
 // how many previous ticks to maintain for average cpu time
 global.LOG_SIZE = 50;
 // used to id a colony
@@ -24,10 +26,27 @@ global.NEW_ROOM_TIMER_LENGTH = 100;
 global.REACTION_TIMER_LENGTH = 10;
 // ticks between getting production requests
 global.PRODUCTION_TIMER_LENGTH = 10;
+// ticks between running the terminal
+global.TERMINAL_TIMER_LENGTH = 100;
 // ratio of ticks that must be satisfied to count as overall satisfied
 global.SATISFACTION_THRESHOLD = 0.9;
 // size of the log to keep for satisfaction calculations
 global.SATISFACTION_LOG_SIZE = 100;
+
+// logger function for debugging
+global.hlog = function (str) {
+    // if we have debug mode turned on
+    if (DEBUG_MODE) {
+        // if the variable is a non-object
+        if (typeof str === "string" || typeof str === "number" || typeof str === "boolean") {
+            // print the variable
+            console.log(str);
+        }else {
+            // stringify then print the variable
+            console.log(JSON.stringify(str));
+        }
+    }
+};
 
 // constants for creep role usage
 global.ATTACKER = {
