@@ -1,6 +1,3 @@
-'use strict';
-
-require('data.config');
 const RoomDataFactory = require("data.plans_factory");
 const RoomPlans = require("data.room_plans");
 const PlantData = require("data.plant_data");
@@ -85,5 +82,5 @@ class RoomData {
         }
     }
 }
-
+// export the RoomData class
 module.exports = RoomData;

@@ -1,14 +1,17 @@
 # general approach
+The main challenge for Screeps is scoping out things and caching them in clever ways.
+There are 3 levels of scope we work with:
+- Prototype: Functions wrapped around built-in classes to enhance their functionality
+- Room: Handles running an individual room, spawning creeps and creating construction sites
+- Global: High level management that creates new rooms and counts the creeps
 
 We focus on role-base creep and structure behaviour via extensive prototyping.
 We put as much of the bulk of code into prototyped functions so we can to consolidate the code and improve stability.
 We should never be repeating ourselves much.
 Higher level functions like population and construction are handled on a room-by-room basis, with tailored behaviour for
 their type.
-Capitol rooms are rooms that concentrate resources to one place for processing.
-Only one capitol may be active at a time, as all higher level resources get sent here.
-Colony rooms are normal bases that have all the major structures but not the advanced ones, leading to slimmer base and
-less required resources to maintain.
+The Capitol room is a room that all non-energy resources are concentrated at.
+Colony rooms are normal bases that have all the major structures.
 Expansion rooms harvest extra energy, and are not fully owned, but reserved.
 We focus on making polished features like time statistics, visuals, loggers, memory wiping, and commands.
 This creates a pleasant and native experience for the player watching the colony.
@@ -99,53 +102,3 @@ Moves energy from assigned container back to the spawn/extensions/storage
 ## upgrader
 
 Upgrades the room's controller to level it up and maintain ownership
-
-# 3 tiers of systems
-
-There are 3 tiers of system that we work with.
-The tier describes the scope of the thing we are managing.
-This allows us to organize code into the appropriate place to properly consolidate the code and prevent duplication.
-
-## entity contextualized
-
-Runs every tick for every entity, implemented as prototype functions.
-These maintain their own memory and only need to be "kicked off" each tick, but not managed.
-
-- creep roles
-- towers
-- observers
-- terminals
-
-## room contextualized
-
-run off of a room_log, providing the data to the planning and running functions
-
-### planning
-
-planning happens sporadically when time allows
-
-### running
-
-running happens every tick
-
-## types of room
-
-- capitol
-- colony
-- expansion
-
-## global contextualized
-
-- initializer code
-- room management
-- utilities
-- timer
-- visualizer
-- logger
-
-## request/fill systems
-
-- population
-- construction
-- lab jobs
-- factory jobs

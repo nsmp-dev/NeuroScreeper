@@ -42,5 +42,5 @@ class RoomPlans {
         this.output_lab_y = null;
     }
 }
-// export the plans class
+// export the RoomPlans class
 module.exports = RoomPlans;
