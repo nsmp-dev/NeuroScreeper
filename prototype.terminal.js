@@ -18,7 +18,7 @@ StructureTerminal.prototype.run = function () {
     }
 
     // if the sell timer has gone off
-    if (Memory.terminal_timers[this.room.name].sell >= this.TIMER_LENGTH &&
+    if (Memory.terminal_timers[this.room.name].sell >= TERMINAL_TIMER_LENGTH &&
         // and the terminal has a minimal amount of energy
         this.store[RESOURCE_ENERGY] > 1000 &&
         // and the terminal is not on cooldown
@@ -33,7 +33,7 @@ StructureTerminal.prototype.run = function () {
     }
 
     // if the buy timer has gone off
-    if (Memory.terminal_timers[this.room.name].buy >= this.TIMER_LENGTH &&
+    if (Memory.terminal_timers[this.room.name].buy >= TERMINAL_TIMER_LENGTH &&
         // and the terminal has a minimal amount of energy
         this.store[RESOURCE_ENERGY] > 1000 &&
         // and the terminal is not on cooldown

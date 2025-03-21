@@ -48,6 +48,20 @@ global.hlog = function (str) {
     }
 };
 
+
+global.OPERATOR = {
+    IDLE: 0,
+    RENEWING: 1,
+    LOADING: 2,
+    UNLOADING: 3,
+};
+
+global.PLANT = {
+    IDLE: 0,
+    PRODUCING: 1,
+    REACTING: 2,
+};
+
 // constants for creep role usage
 global.ATTACKER = {
     // identifying string

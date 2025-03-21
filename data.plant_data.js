@@ -22,6 +22,9 @@ class PlantData {
         this.output_lab_y = plans.output_lab_y;
         this.factory_x = plans.factory_x;
         this.factory_y = plans.factory_y;
+        this.operator_state = OPERATOR.IDLE;
+        this.operator_previous_state = null;
+        this.plant_state = PLANT.IDLE;
     }
 }
 

@@ -72,7 +72,7 @@ module.exports = {
     },
     // count up all the creeps in the game
     countPopulation: function () {
-        MyLogger.log("counting the population...");
+        hlog("counting the population...");
         // create our population object
         let pop = {};
 

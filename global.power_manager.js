@@ -10,6 +10,16 @@ module.exports = {
     },
     run: function () {
         hlog("Running PowerManager...");
+        let power_spawns = [];
+        for (let id in Game.structures) {
+            if (Game.structures[id].structureType == STRUCTURE_POWER_SPAWN) {
+                let power_spawn = Game.structures[id];
+                power_spawns.push(power_spawn);
+                if (power_spawn.store[RESOURCE_POWER] > 0 && power_spawn.store[RESOURCE_POWER] >= 50) {
+                    power_spawn.processPower();
+                }
+            }
+        }
         if (Game.powerCreeps["operator"] == undefined && Game.gpl.level > 0 ) {
             hlog("Creating PowerCreep...");
             PowerCreep.create("operator", POWER_CLASS.OPERATOR);
@@ -21,9 +31,9 @@ module.exports = {
         if (operator.ticksToLive == undefined) {
             if (Memory.capitol_room_name != null) {
                 let power_spawn = null;
-                for (let id in Game.structures) {
-                    if (Game.structures[id].structureType == STRUCTURE_POWER_SPAWN && Game.structures[id].room.name == Memory.capitol_room_name) {
-                        power_spawn = Game.structures[id];
+                for (let test_power_spawn of power_spawns) {
+                    if (test_power_spawn.room.name == Memory.capitol_room_name) {
+                        power_spawn = test_power_spawn;
                     }
                 }
 
@@ -41,7 +51,7 @@ module.exports = {
                 }
             }
             hlog("Running PowerCreep...");
-            operator.run();
+            operator.run(Memory.room_data[operator.room.name].plant_data);
         }
     },
 };
