@@ -10,7 +10,9 @@ class PlantData {
         // the current production in progress
         this.current_production = null;
         // the timer for doing reactions
-        this.reaction_timer = 0;
+        this.structure_timer = 0;
+        // the timer for doing reactions
+        this.reaction_timer = 2;
         // the timer for doing productions
         this.production_timer = Math.floor(PRODUCTION_TIMER_LENGTH / 2);
         // save the lab data needed from the plans
@@ -22,6 +24,13 @@ class PlantData {
         this.output_lab_y = plans.output_lab_y;
         this.factory_x = plans.factory_x;
         this.factory_y = plans.factory_y;
+        this.power_spawn_x = plans.power_spawn_x;
+        this.power_spawn_y = plans.power_spawn_y;
+        this.input_lab_1_id = null;
+        this.input_lab_2_id = null;
+        this.output_lab_id = null;
+        this.factory_id = null;
+        this.power_spawn_id = null;
         this.operator_state = OPERATOR.IDLE;
         this.operator_previous_state = null;
         this.plant_state = PLANT.IDLE;

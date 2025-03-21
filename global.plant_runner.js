@@ -2,24 +2,14 @@ const Reaction = require("data.reaction");
 const Production = require("data.production");
 module.exports = {
     getReactionRequest: function (room, plant_data) {
-        let input_lab_1 = room.getStructureAt(STRUCTURE_LAB, plant_data.input_lab_1_x, plant_data.input_lab_1_y);
-        let input_lab_2 = room.getStructureAt(STRUCTURE_LAB, plant_data.input_lab_2_x, plant_data.input_lab_2_y);
-        let output_lab = room.getStructureAt(STRUCTURE_LAB, plant_data.output_lab_x, plant_data.output_lab_y);
+        let input_lab_1 = Game.getObjectById(plant_data.input_lab_1_id);
+        let input_lab_2 = Game.getObjectById(plant_data.input_lab_2_id);
+        let output_lab = Game.getObjectById(plant_data.output_lab_id);
         let storage = room.storage;
 
-        if (input_lab_1 == null ||
-            input_lab_2 == null ||
-            output_lab == null ||
-            storage == undefined) {
-            plant_data.input_lab_1_id = null;
-            plant_data.input_lab_2_id = null;
-            plant_data.output_lab_id = null;
+        if (input_lab_1 == null || input_lab_2 == null || output_lab == null || storage == undefined) {
             return;
         }
-
-        plant_data.input_lab_1_id = input_lab_1.id;
-        plant_data.input_lab_2_id = input_lab_2.id;
-        plant_data.output_lab_id = output_lab.id;
 
         if (plant_data.current_reaction != null) {
             let reaction = plant_data.current_reaction;
@@ -48,15 +38,12 @@ module.exports = {
         }
     },
     getProductionRequest: function (room, plant_data) {
-        let factory = room.getStructureAt(STRUCTURE_LAB, plant_data.input_lab_1_x, plant_data.input_lab_1_y);
+        let factory = Game.getObjectById(plant_data.factory_id);
         let storage = room.storage;
 
         if (factory == null || storage == undefined) {
-            plant_data.factory_id = null;
             return;
         }
-
-        plant_data.factory_id = factory.id;
 
         if (plant_data.current_production != null) {
             let production = plant_data.current_production;
@@ -92,8 +79,55 @@ module.exports = {
             }
         }
     },
+    getStructures: function (room, plant_data) {
+        let input_lab_1 = room.getStructureAt(STRUCTURE_LAB, plant_data.input_lab_1_x, plant_data.input_lab_1_y);
+        let input_lab_2 = room.getStructureAt(STRUCTURE_LAB, plant_data.input_lab_2_x, plant_data.input_lab_2_y);
+        let output_lab = room.getStructureAt(STRUCTURE_LAB, plant_data.output_lab_x, plant_data.output_lab_y);
+        let factory = room.getStructureAt(STRUCTURE_LAB, plant_data.input_lab_1_x, plant_data.input_lab_1_y);
+        let power_spawn = room.getStructureAt(STRUCTURE_POWER_SPAWN, plant_data.power_spawn_x, plant_data.power_spawn_y);
+        let storage = room.storage;
+
+        if (input_lab_1 == null || input_lab_2 == null || output_lab == null || storage == undefined) {
+            plant_data.input_lab_1_id = null;
+            plant_data.input_lab_2_id = null;
+            plant_data.output_lab_id = null;
+        }else{
+            plant_data.input_lab_1_id = input_lab_1.id;
+            plant_data.input_lab_2_id = input_lab_2.id;
+            plant_data.output_lab_id = output_lab.id;
+        }
+
+        if (factory == null || storage == undefined) {
+            plant_data.factory_id = null;
+        }else{
+            plant_data.factory_id = factory.id;
+        }
+
+        if (power_spawn == null) {
+            plant_data.power_spawn_id = null;
+        }else{
+            plant_data.power_spawn_id = power_spawn.id;
+        }
+    },
     run: function (room, plant_data) {
         hlog("Running Plant '" + room.name + "'...");
+
+        if (plant_data.structure_timer > this.PLANT_STRUCTURES_TIMER_LENGTH) {
+            plant_data.structure_timer = 0;
+            hlog("Grabbing Plant Structures...");
+            this.getStructures(room, plant_data);
+        }else{
+            plant_data.structure_timer++;
+        }
+
+        if (plant_data.reaction_timer > this.REACTION_TIMER_LENGTH) {
+            plant_data.reaction_timer = 0;
+            hlog("Recalculating Reaction...");
+            this.getReactionRequest(room, plant_data);
+        }else{
+            plant_data.reaction_timer++;
+        }
+
         if (plant_data.reaction_timer > this.REACTION_TIMER_LENGTH) {
             plant_data.reaction_timer = 0;
             hlog("Recalculating Reaction...");

@@ -6,12 +6,18 @@ PowerCreep.prototype.runOperator = function (plant_data) {
     }
 
     if (plant_data.operator_state == PLANT.RENEWING) {
-        // move to the power spawn
-        // if we've been renewed
-            // set the state back to the previous state
+        let power_spawn = Game.getObjectById(plant_data.power_spawn_id);
+        let result = this.renew(power_spawn);
+        if (result == ERR_NOT_IN_RANGE) {
+            this.moveTo(power_spawn);
+        }
+        if (result == OK) {
+            plant_data.operator_state = plant_data.operator_previous_state;
+            plant_data.operator_previous_state = null;
+        }
     }
 
-    
+
 
     // if we are not in the middle of a request
         // if we have any requests

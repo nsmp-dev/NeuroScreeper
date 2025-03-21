@@ -426,6 +426,8 @@ module.exports = {
         plans.output_lab_y = y + 1;
         plans.factory_x = x;
         plans.factory_y = y + 2;
+        plans.power_spawn_x = x;
+        plans.power_spawn_y = y;
 
         // concat the structure lists together
         plans.structures = plans.structures.concat([

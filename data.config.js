@@ -22,6 +22,8 @@ global.REQUEST_POPULATION_TIMER_LENGTH = 10;
 global.COUNT_POPULATION_TIMER_LENGTH = 10;
 // ticks between  considering adding a new room
 global.NEW_ROOM_TIMER_LENGTH = 100;
+// ticks between getting plant structures
+global.PLANT_STRUCTURES_TIMER_LENGTH = 10;
 // ticks between getting reaction requests
 global.REACTION_TIMER_LENGTH = 10;
 // ticks between getting production requests
