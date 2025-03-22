@@ -50,6 +50,25 @@ global.hlog = function (str) {
     }
 };
 
+global.STATES = {
+    FILLING: 0,
+    DUMPING: 1,
+};
+
+global.TASK_TYPES = {
+    GATHER: 0,
+    DEPOSIT: 1,
+    REPAIR: 2,
+    BUILD: 2,
+    UPGRADE: 3,
+    CLAIM: 4,
+    RESERVE: 5,
+    DRILL: 6,
+    ATTACK: 7,
+    HEAL: 8,
+    MOVE_ROOM: 9,
+    IDLE: 9,
+};
 
 global.OPERATOR = {
     IDLE: 0,
