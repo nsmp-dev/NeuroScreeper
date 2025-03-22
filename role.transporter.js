@@ -1,6 +1,16 @@
+const Tasks = require("data.tasks");
+const TaskRunner = require("global.task_runner");
+
 hlog("Creating transporter role...");
 // transporter that takes energy from the containers under drillers and dumps the energy into the base
 Creep.prototype.runTransporter = function () {
+
+    if (this.memory.task == null) {
+        // assign a new task
+    }
+    // run the task
+    TaskRunner.run(this);
+
     // if we are currently filling
     if (this.memory.state == TRANSPORTER.FILLING) {
         // if the energy store is full

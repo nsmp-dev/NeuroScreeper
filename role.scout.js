@@ -1,6 +1,16 @@
+const Tasks = require("data.tasks");
+const TaskRunner = require("global.task_runner");
+
 hlog("Creating scout role...");
 // scout that explores rooms via a BFS search algorithm
 Creep.prototype.runScout = function () {
+
+    if (this.memory.task == null) {
+        // assign a new task
+    }
+    // run the task
+    TaskRunner.run(this);
+
     // if the room queue is empty
     if (!this.memory.started) {
         // set the scout to started

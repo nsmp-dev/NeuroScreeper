@@ -124,7 +124,12 @@ module.exports = {
             creep.moveTo(new RoomPosition(25, 25, task.room_name));
         }else{
             let target = Game.getObjectById(task.target);
-            if (creep.harvest(target) == ERR_NOT_IN_RANGE) {
+            // if we are at the location of the container
+            if (creep.pos.isEqualTo(task.container_x, task.container_y)) {
+                // harvest from the assigned source
+                creep.harvest(Game.getObjectById(task.memory.source));
+            } else {
+                // move to the location of the container
                 creep.moveTo(task.container_x, task.container_y);
             }
         }

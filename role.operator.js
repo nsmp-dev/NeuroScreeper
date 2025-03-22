@@ -1,5 +1,15 @@
+const Tasks = require("data.tasks");
+const TaskRunner = require("global.task_runner");
+
 hlog("Creating operator role...");
 PowerCreep.prototype.runOperator = function (plant_data) {
+
+    if (this.memory.task == null) {
+        // assign a new task
+    }
+    // run the task
+    TaskRunner.run(this);
+
     if (this.ticksToLive < 50 && plant_data.operator_state != PLANT.RENEWING) {
         plant_data.operator_previous_state = plant_data.operator_state;
         plant_data.operator_state = PLANT.RENEWING;

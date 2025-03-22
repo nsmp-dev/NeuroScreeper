@@ -69,7 +69,7 @@ module.exports = {
         task.room_name = room_name;
         return task;
     },
-    idle: function (room_name, tick_limit) {
+    idle: function (room_name, tick_limit = 10) {
         let task = new Task(TASK_TYPES.IDLE);
         task.room_name = room_name;
         task.tick_limit = tick_limit;
