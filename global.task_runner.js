@@ -186,6 +186,25 @@ module.exports = {
             }
         }
     },
+    runRenewOperator: function (creep) {
+        let task = creep.memory.task;
+        if (creep.room.name != task.room_name) {
+            creep.moveTo(new RoomPosition(25, 25, task.room_name));
+        }else{
+            let power_spawn = Game.getObjectById(task.target);
+            if (power_spawn == null) {
+                creep.memory.task = null;
+            }else{
+                let result = creep.renew(power_spawn);
+                if (result == ERR_NOT_IN_RANGE) {
+                    this.moveTo(power_spawn);
+                }
+                if (result == OK) {
+                    creep.memory.task = task.previous_task;
+                }
+            }
+        }
+    },
     run: function (creep) {
         let task = creep.memory.task;
 

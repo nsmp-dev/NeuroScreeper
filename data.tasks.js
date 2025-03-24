@@ -69,6 +69,13 @@ module.exports = {
         task.room_name = room_name;
         return task;
     },
+    renewOperator: function (power_spawn, previous_task) {
+        let task = new Task(TASK_TYPES.RENEW_OPERATOR);
+        task.room_name = power_spawn.room.name;
+        task.target = power_spawn.id;
+        task.previous_task = previous_task;
+        return task;
+    },
     idle: function (room_name, tick_limit = 10) {
         let task = new Task(TASK_TYPES.IDLE);
         task.room_name = room_name;

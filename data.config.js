@@ -68,6 +68,7 @@ global.TASK_TYPES = {
     HEAL: 8,
     MOVE_ROOM: 9,
     IDLE: 9,
+    RENEW_OPERATOR: 10,
 };
 
 global.OPERATOR = {
