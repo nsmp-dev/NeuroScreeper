@@ -1,9 +1,16 @@
 const Util = require('global.util');
 
-// this is a room runner: it contains logic for running each kind of room
-// manages its own data by passing its memory via a RoomData object, along with a reference to the room itself
+/**
+ * this is a room runner: it contains logic for running each kind of room
+ * manages its own data by passing its memory via a RoomData object
+ * @module RoomRunner
+ * */
 module.exports = {
-    // recalculate the population needs and save the requested creeps to room_data
+    /**
+     * recalculate the population needs and save the requested creeps to room_data
+     * @param {Room} room - The Room we are planning
+     * @param {RoomData} room_data - The Plans for the room.
+     */
     requestCreeps: function (room, room_data) {
         // grab the population for this room
         let pop = Memory.populations[room.name];
@@ -123,7 +130,11 @@ module.exports = {
         // set the requested creeps on the room_data
         room_data.requested_creeps = requested_creeps;
     },
-    // attempt to spawn any creeps that are requested
+    /**
+     * attempt to spawn any creeps that are requested
+     * @param {Room} room - The Room we are planning
+     * @param {RoomData} room_data - The Plans for the room.
+     */
     spawnRequestedCreeps: function (room, room_data) {
         let success;
 
@@ -138,7 +149,11 @@ module.exports = {
             room_data.requested_creeps.shift();
         }
     },
-    // calculate to see if the room is satisfied
+    /**
+     * calculate to see if the room is satisfied
+     * @param {Room} room - The Room we are planning
+     * @param {RoomData} room_data - The Plans for the room.
+     */
     calculateSatisfaction: function (room, room_data) {
         // if no creeps are needed
         if (room_data.requested_creeps.length == 0) {
@@ -166,7 +181,11 @@ module.exports = {
         }
          */
     },
-    // run the colony, kicking off sub-functions for specific activities
+    /**
+     * run the colony, kicking off sub-functions for specific activities
+     * @param {Room} room - The Room we are planning
+     * @param {RoomData} room_data - The Plans for the room.
+     */
     run: function (room, room_data) {
         hlog("Running " + room_data.type + " room: '" + room.name + "'...");
         // if the population timer has gone off

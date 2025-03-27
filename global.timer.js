@@ -1,13 +1,21 @@
-// this is the timer module, it is able to time arbitrary things
-// it also maintains a log of previous tick lengths to calculate average cpu usage
+/**
+ * this is the timer module, it is able to time arbitrary things
+ * it also maintains a log of previous tick lengths to calculate average cpu usage
+ * @module Timer
+ * */
 module.exports = {
     // where we store the timers we are working with
     timers: {},
-    // initialize this global object, setting up memory
+    /**
+     * initialize this global object, setting up memory
+     */
     initialize: function () {
         Memory.timer_log = [];
     },
-    // start a timer, defaults to the main timer
+    /**
+     * start a timer, defaults to the main timer
+     * @param {string} id - The Creep being ran
+     */
     start: function (id = "main") {
         // set the start of the timer
         this.timers[id] = {
@@ -17,8 +25,11 @@ module.exports = {
             end: null,
         };
     },
-    // stop a timer, defaults to the main timer
-    // if stopping the main timer, advance the log and recalculate the average
+    /**
+     * stop a timer, defaults to the main timer
+     * if stopping the main timer, advance the log and recalculate the average
+     * @param {string} id - The Creep being ran
+     */
     stop: function (id = "main") {
         // set the end time of the timer
         this.timers[id].end = Game.cpu.getUsed();

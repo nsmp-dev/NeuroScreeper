@@ -1,6 +1,12 @@
-// visualizer module that displays various stats and populations in the relevant rooms
+/**
+ * visualizer module that displays various stats and populations in the relevant rooms
+ * @module Util
+ * */
 module.exports = {
-    // renders the stats in the given room
+    /**
+     * renders the stats in the given room
+     * @param {Room} room - The Creep being ran
+     */
     render: function (room) {
         // grab the times from the timer log
         let times = Memory.timer_log;
