@@ -3,6 +3,10 @@ const TaskRunner = require("global.task_runner");
 
 hlog("Creating transporter role...");
 // transporter that takes energy from the containers under drillers and dumps the energy into the base
+
+/**
+ *
+ */
 Creep.prototype.runTransporter = function () {
 
     if (this.memory.task == null) {
@@ -32,17 +36,21 @@ Creep.prototype.runTransporter = function () {
                 }
             }
 
-            if (target == null || (target,store != undefined && target.store[RESOURCE_ENERGY] == 0)) {
+            if (target == null || (target.store != undefined && target.store[RESOURCE_ENERGY] == 0)) {
                 this.memory.task = Tasks.idle(this.memory.room_name, 10);
             }else{
                 this.memory.task = Tasks.gather(target, RESOURCE_ENERGY);
             }
         }else{
-            let target = this.getDumpTarget();
-            if (target != null) {
-                this.memory.task = Tasks.deposit(target, RESOURCE_ENERGY);
+            if (this.room.name == this.memory.nearest_colony_room_name) {
+                let target = this.getDumpTarget();
+                if (target != null) {
+                    this.memory.task = Tasks.deposit(target, RESOURCE_ENERGY);
+                }else{
+                    this.memory.task = Tasks.idle(this.memory.room_name, 10);
+                }
             }else{
-                this.memory.task = Tasks.idle(this.memory.room_name, 10);
+                this.memory.task = Tasks.moveRoom(this.memory.nearest_colony_room_name);
             }
         }
     }

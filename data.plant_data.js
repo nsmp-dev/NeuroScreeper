@@ -31,9 +31,7 @@ class PlantData {
         this.output_lab_id = null;
         this.factory_id = null;
         this.power_spawn_id = null;
-        this.operator_state = OPERATOR.IDLE;
-        this.operator_previous_state = null;
-        this.plant_state = PLANT.IDLE;
+        this.plant_state = STATES.IDLE;
     }
 }
 
