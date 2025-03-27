@@ -1,7 +1,8 @@
 # v0.2
 
 ## JSDoc overhaul
-- add type hints to everything (in progress)
+- add type hints to parameters (in progress)
+- add type hints to returns
 - add line comments to new code
 - review jsdoc descriptions
 

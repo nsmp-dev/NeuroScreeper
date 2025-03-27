@@ -3,7 +3,9 @@ const TaskRunner = require("global.task_runner");
 
 hlog("Creating queen role...");
 
-// queen that takes energy from the storage and dumps it into the towers, terminal, and extensions
+/**
+ * queen that takes energy from the storage and dumps it into the towers, terminal, and extensions
+ */
 Creep.prototype.runQueen = function () {
     if (this.memory.task == null) {
         // assign a new task

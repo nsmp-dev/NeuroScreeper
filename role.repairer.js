@@ -3,7 +3,9 @@ const TaskRunner = require("global.task_runner");
 
 hlog("Creating repairer role...");
 
-// repairer that repairs any damaged structures in the room
+/**
+ * repairer that repairs any damaged structures in the room
+ */
 Creep.prototype.runRepairer = function () {
     if (this.memory.task == null) {
         // assign a new task

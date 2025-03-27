@@ -2,7 +2,10 @@ const Tasks = require("data.tasks");
 const TaskRunner = require("global.task_runner");
 
 hlog("Creating healer role...");
-// healer that heals any damaged creeps in the room
+
+/**
+ * healer that heals any damaged creeps in the room
+ */
 Creep.prototype.runHealer = function () {
     if (this.memory.task == null) {
         let creeps = this.room.find(FIND_MY_CREEPS, {

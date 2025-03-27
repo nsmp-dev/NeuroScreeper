@@ -2,7 +2,10 @@ const Tasks = require("data.tasks");
 const TaskRunner = require("global.task_runner");
 
 hlog("Creating driller role...");
-// driller that harvests energy from the assigned source, dropping the energy on the container
+
+/**
+ * driller that harvests energy from the assigned source, dropping the energy on the container
+ */
 Creep.prototype.runDriller = function () {
     if (this.memory.task == null) {
         // assign a new task

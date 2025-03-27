@@ -2,7 +2,10 @@ const Tasks = require("data.tasks");
 const TaskRunner = require("global.task_runner");
 
 hlog("Creating attacker role...");
-// attacker that attacks hostile creeps in the room
+
+/**
+ * attacker that attacks hostile creeps in the room
+ */
 Creep.prototype.runAttacker = function () {
     if (this.memory.task == null) {
         // find all hostile creeps in the room

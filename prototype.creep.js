@@ -11,13 +11,18 @@ require('role.upgrader');
 
 hlog("Creating base creep prototypes...");
 
-// get a building target
+/**
+ * get a building target
+ * @return {ConstructionSite} The dot's width, in pixels.
+ */
 Creep.prototype.getBuildTarget = function () {
     // find and return the closest construction site
     return this.pos.findClosestByPath(FIND_MY_CONSTRUCTION_SITES);
 };
-
-// gets a general dumping target
+/**
+ * gets a general dumping target
+ * @return {Structure} The dot's width, in pixels.
+ */
 Creep.prototype.getDumpTarget = function () {
     // find any extensions that are not full
     let targets = this.room.findLowExtensions();
@@ -41,8 +46,10 @@ Creep.prototype.getDumpTarget = function () {
     // return the closest one by path
     return this.pos.findClosestByPath(targets);
 };
-
-// gets a general filling target
+/**
+ * gets a general filling target
+ * @return {Structure|Resource} The dot's width, in pixels.
+ */
 Creep.prototype.getFillTarget = function () {
     // find any dropped energy
     let targets = this.room.find(FIND_DROPPED_RESOURCES, {filter: {resourceType: RESOURCE_ENERGY}});
@@ -66,8 +73,10 @@ Creep.prototype.getFillTarget = function () {
     // return the closest one by path
     return this.pos.findClosestByPath(targets);
 };
-
-// get a repairing target
+/**
+ * get a repairing target
+ * @return {Structure} The dot's width, in pixels.
+ */
 Creep.prototype.getRepairTarget = function () {
     // return the closest damaged structure
     return this.pos.findClosestByPath(FIND_STRUCTURES, {
@@ -75,8 +84,10 @@ Creep.prototype.getRepairTarget = function () {
         filter: structure => structure.hits < structure.hitsMax,
     });
 };
-
-// gets a dumping target for a queen
+/**
+ * gets a dumping target for a queen
+ * @return {Structure} The dot's width, in pixels.
+ */
 Creep.prototype.getQueenDumpTarget = function () {
     // find all the towers that are not full
     let targets = this.room.findLowTowers();
@@ -106,8 +117,9 @@ Creep.prototype.getQueenDumpTarget = function () {
     // return the closest one by path
     return this.pos.findClosestByPath(targets);
 };
-
-// move toward the idle location for the current room to get out of the way
+/**
+ * move toward the idle location for the current room to get out of the way
+ */
 Creep.prototype.idle = function () {
     // grab the room data
     let room_data = Memory.room_log[this.room.name];
@@ -118,8 +130,9 @@ Creep.prototype.idle = function () {
         this.moveTo(room_data.idle_x, room_data.idle_y);
     }
 };
-
-// run the relevant function for the role that this creep has
+/**
+ * run the relevant function for the role that this creep has
+ */
 Creep.prototype.run = function () {
     // switch based on the creep's role
     switch (this.memory.role) {

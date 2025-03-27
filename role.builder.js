@@ -2,7 +2,10 @@ const Tasks = require("data.tasks");
 const TaskRunner = require("global.task_runner");
 
 hlog("Creating builder role...");
-// builder that builds any construction sites that are found
+
+/**
+ * builder that builds any construction sites that are found
+ */
 Creep.prototype.runBuilder = function () {
     if (this.memory.task == null) {
         // assign a new task

@@ -2,7 +2,10 @@ const Tasks = require("data.tasks");
 const TaskRunner = require("global.task_runner");
 
 hlog("Creating upgrader role...");
-// upgrader that upgrades the room's controller
+
+/**
+ * upgrader that upgrades the room's controller
+ */
 Creep.prototype.runUpgrader = function () {
     if (this.memory.task == null) {
         // assign a new task

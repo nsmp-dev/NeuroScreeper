@@ -2,6 +2,10 @@ const Util = require('global.util');
 
 hlog("Creating room prototypes...");
 
+/**
+ * renders the stats in the given room
+ * @param {RoomPlans} plans - The Creep being ran
+ */
 Room.prototype.getStructureGrid = function (plans) {
     let structure_grid = [];
     // loop through the X coordinates
@@ -33,8 +37,12 @@ Room.prototype.getStructureGrid = function (plans) {
 
     return structure_grid;
 };
-
-// finds a clear area of width and height, avoiding any planned structures
+/**
+ * finds a clear area of width and height, avoiding any planned structures
+ * @param {number} width - The Creep being ran
+ * @param {number} height - The Creep being ran
+ * @param {RoomPlans} plans - The Creep being ran
+ */
 Room.prototype.getClearArea = function (width, height, plans) {
     // grab the terrain for the room
     let terrain_grid = this.getTerrain();
@@ -103,8 +111,12 @@ Room.prototype.getClearArea = function (width, height, plans) {
     // return the clear spot that is closest to the center
     return min;
 };
-
-// finds a clear spot that is adjacent to the given x/y coordinate, avoiding any planned structures
+/**
+ * finds a clear spot that is adjacent to the given x/y coordinate, avoiding any planned structures
+ * @param {number} x - The Creep being ran
+ * @param {number} y - The Creep being ran
+ * @param {RoomPlans} plans - The Creep being ran
+ */
 Room.prototype.getClearAdjacentLocation = function (x, y, plans) {
     // grab the terrain for the room
     let terrain_grid = this.getTerrain();
@@ -163,10 +175,13 @@ Room.prototype.getClearAdjacentLocation = function (x, y, plans) {
     // return one of the clear spots
     return clear_spots[0];
 };
-
-// spawns the largest version of the given creep in this room
+/**
+ * spawns the largest version of the given creep in this room
+ * @param {Room} memory - The Creep being ran
+ * @param {Boolean} is_global - The Creep being ran
+ */
 // TODO: on global, spawn from nearest colony
-Room.prototype.spawnRole = function (memory, global = false) {
+Room.prototype.spawnRole = function (memory, is_global = false) {
     // default success to false
     let success = false;
     // list of spawns that might work
@@ -215,8 +230,10 @@ Room.prototype.spawnRole = function (memory, global = false) {
     // return the result
     return success;
 };
-
-// creates structures from the given list of planned structures and source plans, capping at 5 per room
+/**
+ * creates structures from the given list of planned structures and source plans, capping at 5 per room
+ * @param {RoomPlans} plans - The Creep being ran
+ */
 Room.prototype.createConstructionSites = function (plans) {
     // count all the sites in the room
     let site_count = this.find(FIND_MY_CONSTRUCTION_SITES).length;
@@ -334,8 +351,12 @@ Room.prototype.createConstructionSites = function (plans) {
         }
     }
 };
-
-// returns whether the given structure has been built at the given x/y coordinate
+/**
+ * returns whether the given structure has been built at the given x/y coordinate
+ * @param {number} x - The Creep being ran
+ * @param {number} y - The Creep being ran
+ * @param {string} structure_type - The Creep being ran
+ */
 Room.prototype.checkFor = function (x, y, structure_type) {
     // assume we have not found the structure
     let found = false;
@@ -354,8 +375,9 @@ Room.prototype.checkFor = function (x, y, structure_type) {
     // return the result of the search
     return found;
 };
-
-// finds all towers that are not full
+/**
+ * finds all towers that are not full
+ */
 Room.prototype.findLowTowers = function () {
     // return all the towers that are not full
     return this.find(FIND_MY_STRUCTURES, {
@@ -363,8 +385,9 @@ Room.prototype.findLowTowers = function () {
         filter: structure => (structure.structureType == STRUCTURE_TOWER && structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0),
     });
 };
-
-// finds all extensions that are not full
+/**
+ * finds all extensions that are not full
+ */
 Room.prototype.findLowExtensions = function () {
     // find any extensions that are not full
     return this.find(FIND_MY_STRUCTURES, {
@@ -372,8 +395,9 @@ Room.prototype.findLowExtensions = function () {
         filter: structure => (structure.structureType == STRUCTURE_EXTENSION && structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0),
     });
 };
-
-// finds all spawns that are not full
+/**
+ * finds all spawns that are not full
+ */
 Room.prototype.findLowSpawns = function () {
     // find all the spawns that are not full
     return this.find(FIND_MY_STRUCTURES, {
@@ -381,8 +405,9 @@ Room.prototype.findLowSpawns = function () {
         filter: structure => (structure.structureType == STRUCTURE_SPAWN && structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0),
     });
 };
-
-// finds all non-empty containers
+/**
+ * finds all non-empty containers
+ */
 Room.prototype.findFilledContainers = function () {
     // find all the containers that are not empty
     return this.find(FIND_STRUCTURES, {
@@ -390,8 +415,9 @@ Room.prototype.findFilledContainers = function () {
         filter: structure => (structure.structureType == STRUCTURE_CONTAINER && structure.store[RESOURCE_ENERGY] > 0),
     });
 };
-
-// get all names of adjacent rooms
+/**
+ * get all names of adjacent rooms
+ */
 Room.prototype.getAdjacentRooms = function () {
     // grab all the exits in the room
     let exits = Game.map.describeExits(this.name);
@@ -422,7 +448,12 @@ Room.prototype.getAdjacentRooms = function () {
     // return the list of room names found
     return room_names;
 };
-
+/**
+ * renders the stats in the given room
+ * @param {string} structure_type - The Creep being ran
+ * @param {number} x - The Creep being ran
+ * @param {number} y - The Creep being ran
+ */
 Room.prototype.getStructureAt = function (structure_type, x, y) {
     let structures = this.lookForAt(LOOK_STRUCTURES, x, y);
     for (let structure in structures) {
