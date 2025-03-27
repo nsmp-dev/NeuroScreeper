@@ -1,10 +1,18 @@
 const RoomDataFactory = require("data.plans_factory");
 const RoomPlans = require("data.room_plans");
 const PlantData = require("data.plant_data");
-// RoomData class, an object that contains all the memory for each room
-class RoomData {
 
-    // creates a room data object, with an optional starter spawn for the first room
+/**
+ * RoomData class, an object that contains all the memory for a room
+ * @class RoomData
+ * @classDesc Holds the stored data for a room
+ */
+class RoomData {
+    /**
+     * creates a room data object, with an optional starter spawn for the first room
+     * @param {Room|null} room - The room this data is for
+     * @param {StructureSpawn|null} initial_spawn - The initial spawn, if this is the first room
+     */
     constructor(room, initial_spawn = null) {
         hlog("Creating a new RoomData Object...");
         // type of the room
