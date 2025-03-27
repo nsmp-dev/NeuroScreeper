@@ -1,6 +1,11 @@
-// plans factory that produces all needed construction data for a room
+/** @module PlansFactory */
 module.exports = {
-    // start the planning of a room, the new plans will be added to the passed plans object
+    /**
+     * Plans the initial room, basing the base off the initial spawn
+     * @param {Room} room - The Room we are planning
+     * @param {RoomPlans} plans - The Plans for the room.
+     * @param {StructureSpawn} initial_spawn - The initial spawn in the room.
+     */
     planFirstRoom: function (room, plans, initial_spawn) {
         // plan the sources in the room and their containers
         this.planSources(room, plans);
@@ -20,7 +25,11 @@ module.exports = {
         // find a location that is not around anything to send the idle creeps in the room
         this.planIdleLocation(room, plans);
     },
-    // start the planning of a room, the new plans will be added to the passed plans object
+    /**
+     * start the planning of a room, the new plans will be added to the passed plans object
+     * @param {Room} room - The Room we are planning
+     * @param {RoomPlans} plans - The Plans for the room.
+     */
     planRoom: function (room, plans) {
         // plan the sources in the room and their containers
         this.planSources(room, plans);
@@ -37,7 +46,11 @@ module.exports = {
         // find a location that is not around anything to send the idle creeps in the room
         this.planIdleLocation(room, plans);
     },
-    // plan the sources in the room and their containers
+    /**
+     * plan the sources in the room and their containers
+     * @param {Room} room - The Room we are planning
+     * @param {RoomPlans} plans - The Plans for the room.
+     */
     planSources: function (room, plans) {
         // find all the sources in the room
         let sources = room.find(FIND_SOURCES);
@@ -58,7 +71,11 @@ module.exports = {
             });
         }
     },
-    // plan the minerals in the room, if any, and their containers
+    /**
+     * plan the minerals in the room, if any, and their containers
+     * @param {Room} room - The Room we are planning
+     * @param {RoomPlans} plans - The Plans for the room.
+     */
     planMinerals: function (room, plans) {
         // find all the sources in the room
         let minerals = room.find(FIND_MINERALS);
@@ -83,7 +100,11 @@ module.exports = {
             });
         }
     },
-    // locate a suitable location to place a base
+    /**
+     * locate a suitable location to place a base
+     * @param {Room} room - The Room we are planning
+     * @param {RoomPlans} plans - The Plans for the room.
+     */
     planBaseLocation: function (room, plans) {
         // find a clear area of size 14 x 14
         let base_location = room.getClearArea(14, 14, plans);
@@ -95,7 +116,11 @@ module.exports = {
             plans.base_y = base_location.y;
         }
     },
-    // fill the base with plans for the structures based on the base location
+    /**
+     * fill the base with plans for the structures based on the base location
+     * @param {Room} room - The Room we are planning
+     * @param {RoomPlans} plans - The Plans for the room.
+     */
     planBase: function (room, plans) {
         // if we were unable to find a base location
         if (plans.base_x == null) {
@@ -393,7 +418,11 @@ module.exports = {
             {x: x + 12, y: y + 12,},
         ]);
     },
-    // locate a suitable location to place a plant
+    /**
+     * locate a suitable location to place a plant
+     * @param {Room} room - The Room we are planning
+     * @param {RoomPlans} plans - The Plans for the room.
+     */
     planPlantLocation: function (room, plans) {
         // find a clear area of size 4 x 3
         let plant_location = room.getClearArea(4, 3, plans);
@@ -405,7 +434,11 @@ module.exports = {
             plans.plant_y = plant_location.y;
         }
     },
-    // fill the plant with plans for the structures based on the plant location
+    /**
+     * fill the plant with plans for the structures based on the plant location
+     * @param {Room} room - The Room we are planning
+     * @param {RoomPlans} plans - The Plans for the room.
+     */
     planPlant: function (room, plans) {
         // if we were unable to find a plant location
         if (plans.plant_x == null) {
@@ -466,7 +499,11 @@ module.exports = {
             {x: x + 3, y: y + 2,},
         ]);
     },
-    // find a location that is not around anything to send the idle creeps in the room
+    /**
+     * find a location that is not around anything to send the idle creeps in the room
+     * @param {Room} room - The Room we are planning
+     * @param {RoomPlans} plans - The Plans for the room.
+     */
     planIdleLocation: function (room, plans) {
         // return a clear area of size 5 x 5
         let idle_location = room.getClearArea(5, 5, plans);

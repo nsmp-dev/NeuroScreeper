@@ -1,8 +1,15 @@
 const Reaction = require("data.reaction.js");
 
-// PlantData class, an object that contains all the memory for each plant
+/**
+ * PlantData class, an object that contains all the memory for each plant
+ * @class PlantData
+ * @classDesc Holds the stored data for a plant.
+ */
 class PlantData {
-    // creates a plant data object
+    /**
+     * Creates a PlantData Object
+     * @param {RoomPlans} plans - The room's plans object
+     */
     constructor(plans) {
         hlog("Creating a new PlantData Object...");
         // the current reaction in progress
