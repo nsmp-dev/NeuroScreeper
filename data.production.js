@@ -1,7 +1,6 @@
 /**
  * Production class, an object that contains all the data for executing a production
  * @class Production
- * @classDesc Holds the stored data for a production in a factory.
  */
 class Production {
     /**

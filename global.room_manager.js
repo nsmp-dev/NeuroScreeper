@@ -1,9 +1,14 @@
 const Util = require("global.util");
 const RoomData = require("data.room_data");
 
-// room manager module that handles scanning/adding new rooms
+/**
+ * handles scanning/adding new rooms
+ * @module RoomManager
+ * */
 module.exports = {
-    // create all the starter data needed to run the system
+    /**
+     * create all the starter data needed to run the system
+     */
     initialize: function () {
         // create the room data object
         Memory.room_data = {};
@@ -25,7 +30,9 @@ module.exports = {
         // save the capitol room name
         Memory.capitol_room_name = room.name;
     },
-    // scan for any new rooms and add their data if found
+    /**
+     * scan for any new rooms and add their data if found
+     */
     scanNewRooms: function () {
         // loop through all the rooms
         for (let name in Game.rooms) {
@@ -36,7 +43,9 @@ module.exports = {
             }
         }
     },
-    // attempt to spawn a new colony
+    /**
+     * attempt to spawn a new colony
+     */
     spawnNewColony: function () {
         // loop through all the room data
         for (let name in Memory.room_data) {
@@ -53,7 +62,9 @@ module.exports = {
         // no rooms were found, return false for failure
         return false;
     },
-    // attempt to spawn a new expansion
+    /**
+     * attempt to spawn a new expansion
+     */
     spawnNewExpansion: function () {
         // loop through all the room data
         for (let name in Memory.room_data) {
@@ -70,7 +81,9 @@ module.exports = {
         // no rooms were found, return false for failure
         return false;
     },
-    // count up all the creeps in the game
+    /**
+     * count up all the creeps in the game
+     */
     countPopulation: function () {
         hlog("counting the population...");
         // create our population object
@@ -159,7 +172,9 @@ module.exports = {
         // store the populations
         Memory.populations = pop;
     },
-    // rescan the population occasionally, add colonies/expansions if stable, and scan nrw rooms
+    /**
+     * rescan the population occasionally, add colonies/expansions if stable, and scan nrw rooms
+     */
     run: function () {
         // if the population timer has gone off
         if (Memory.population_timer > this.POPULATION_TIMER_LENGTH) {

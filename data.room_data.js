@@ -5,7 +5,6 @@ const PlantData = require("data.plant_data");
 /**
  * RoomData class, an object that contains all the memory for a room
  * @class RoomData
- * @classDesc Holds the stored data for a room
  */
 class RoomData {
     /**

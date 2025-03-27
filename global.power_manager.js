@@ -1,4 +1,9 @@
+/** @module PowerManager */
 module.exports = {
+    /**
+     * Plans the initial room, basing the base off the initial spawn
+     * @param {PowerCreep} operator - The Room we are planning
+     */
     upgradeLowestPower: function (operator) {
         let lowest_power_id = null;
         for (let power_id of POWER_INFO) {
@@ -8,6 +13,9 @@ module.exports = {
         }
         operator.upgrade(lowest_power_id);
     },
+    /**
+     * Plans the initial room, basing the base off the initial spawn
+     */
     run: function () {
         hlog("Running PowerManager...");
         let power_spawns = [];

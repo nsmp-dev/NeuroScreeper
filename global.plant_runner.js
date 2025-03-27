@@ -1,6 +1,13 @@
 const Reaction = require("data.reaction");
 const Production = require("data.production");
+
+/** @module PlantRunner */
 module.exports = {
+    /**
+     * Plans the initial room, basing the base off the initial spawn
+     * @param {Room} room - The Room we are planning
+     * @param {PlantData} plant_data - The Plans for the room.
+     */
     getReactionRequest: function (room, plant_data) {
         let input_lab_1 = Game.getObjectById(plant_data.input_lab_1_id);
         let input_lab_2 = Game.getObjectById(plant_data.input_lab_2_id);
@@ -37,6 +44,11 @@ module.exports = {
             }
         }
     },
+    /**
+     * Plans the initial room, basing the base off the initial spawn
+     * @param {Room} room - The Room we are planning
+     * @param {PlantData} plant_data - The Plans for the room.
+     */
     getProductionRequest: function (room, plant_data) {
         let factory = Game.getObjectById(plant_data.factory_id);
         let storage = room.storage;
@@ -79,6 +91,11 @@ module.exports = {
             }
         }
     },
+    /**
+     * Plans the initial room, basing the base off the initial spawn
+     * @param {Room} room - The Room we are planning
+     * @param {PlantData} plant_data - The Plans for the room.
+     */
     getStructures: function (room, plant_data) {
         let input_lab_1 = room.getStructureAt(STRUCTURE_LAB, plant_data.input_lab_1_x, plant_data.input_lab_1_y);
         let input_lab_2 = room.getStructureAt(STRUCTURE_LAB, plant_data.input_lab_2_x, plant_data.input_lab_2_y);
@@ -109,6 +126,11 @@ module.exports = {
             plant_data.power_spawn_id = power_spawn.id;
         }
     },
+    /**
+     * Plans the initial room, basing the base off the initial spawn
+     * @param {Room} room - The Room we are planning
+     * @param {PlantData} plant_data - The Plans for the room.
+     */
     run: function (room, plant_data) {
         hlog("Running Plant '" + room.name + "'...");
 

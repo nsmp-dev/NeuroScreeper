@@ -1,5 +1,10 @@
 # v0.2
 
+## JSDoc overhaul
+- add type hints to everything (in progress)
+- add line comments to new code
+- review jsdoc descriptions
+
 ## flesh out road anchors
 finish up making road anchors and connecting them to containers
 connect lab anchors to the base anchors

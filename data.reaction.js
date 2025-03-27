@@ -1,7 +1,6 @@
 /**
  * Reaction class, an object that contains all the data for executing a reaction
  * @class Reaction
- * @classDesc Holds the stored data for a reaction in a factory.
  */
 class Reaction {
     /**

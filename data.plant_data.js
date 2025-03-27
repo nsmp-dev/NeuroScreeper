@@ -3,7 +3,6 @@ const Reaction = require("data.reaction.js");
 /**
  * PlantData class, an object that contains all the memory for each plant
  * @class PlantData
- * @classDesc Holds the stored data for a plant.
  */
 class PlantData {
     /**
