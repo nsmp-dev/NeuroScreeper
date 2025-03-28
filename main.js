@@ -64,7 +64,7 @@ module.exports.loop = function () {
             // run the colony
             RoomRunner.run(room, room_data);
             // render the visuals for the room
-            Visualizer.render(room, room_data);
+            Visualizer.render(room);
         }
 
         // if the room died

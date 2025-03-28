@@ -6,14 +6,14 @@
 module.exports = {
     /**
      * recalculate the population needs and save the requested creeps to room_data
-     * @param {Creep} creep - The Creep being ran
+     * @param {Creep|PowerCreep} creep - The Creep being ran
      */
     runGather: function (creep) {
         let task = creep.memory.task;
 
         if (creep.room.name != task.room_name) {
             creep.moveTo(new RoomPosition(25, 25, task.room_name));
-        }else if ((task.amount != null && creep.store[task.resource] >= task.amount) || creep.getFreeCapacity(task.resource) == 0) {
+        }else if ((task.amount != null && creep.store[task.resource] >= task.amount) || creep.store.getFreeCapacity(task.resource) == 0) {
             creep.memory.task = null;
         }else{
             let target = Game.getObjectById(task.target);
@@ -40,7 +40,7 @@ module.exports = {
     },
     /**
      * recalculate the population needs and save the requested creeps to room_data
-     * @param {Creep} creep - The Creep being ran
+     * @param {Creep|PowerCreep} creep - The Creep being ran
      */
     runDeposit: function (creep) {
         let task = creep.memory.task;
@@ -67,7 +67,7 @@ module.exports = {
     },
     /**
      * recalculate the population needs and save the requested creeps to room_data
-     * @param {Creep} creep - The Creep being ran
+     * @param {Creep|PowerCreep} creep - The Creep being ran
      */
     runRepair: function (creep) {
         let task = creep.memory.task;
@@ -88,7 +88,7 @@ module.exports = {
     },
     /**
      * recalculate the population needs and save the requested creeps to room_data
-     * @param {Creep} creep - The Creep being ran
+     * @param {Creep|PowerCreep} creep - The Creep being ran
      */
     runBuild: function (creep) {
         let task = creep.memory.task;
@@ -109,7 +109,7 @@ module.exports = {
     },
     /**
      * recalculate the population needs and save the requested creeps to room_data
-     * @param {Creep} creep - The Creep being ran
+     * @param {Creep|PowerCreep} creep - The Creep being ran
      */
     runUpgrade: function (creep) {
         let task = creep.memory.task;
@@ -125,7 +125,7 @@ module.exports = {
     },
     /**
      * recalculate the population needs and save the requested creeps to room_data
-     * @param {Creep} creep - The Creep being ran
+     * @param {Creep|PowerCreep} creep - The Creep being ran
      */
     runClaim: function (creep) {
         let task = creep.memory.task;
@@ -139,7 +139,7 @@ module.exports = {
     },
     /**
      * recalculate the population needs and save the requested creeps to room_data
-     * @param {Creep} creep - The Creep being ran
+     * @param {Creep|PowerCreep} creep - The Creep being ran
      */
     runReserve: function (creep) {
         let task = creep.memory.task;
@@ -153,7 +153,7 @@ module.exports = {
     },
     /**
      * recalculate the population needs and save the requested creeps to room_data
-     * @param {Creep} creep - The Creep being ran
+     * @param {Creep|PowerCreep} creep - The Creep being ran
      */
     runDrill: function (creep) {
         let task = creep.memory.task;
@@ -173,7 +173,7 @@ module.exports = {
     },
     /**
      * recalculate the population needs and save the requested creeps to room_data
-     * @param {Creep} creep - The Creep being ran
+     * @param {Creep|PowerCreep} creep - The Creep being ran
      */
     runAttack: function (creep) {
         let task = creep.memory.task;
@@ -192,7 +192,7 @@ module.exports = {
     },
     /**
      * recalculate the population needs and save the requested creeps to room_data
-     * @param {Creep} creep - The Creep being ran
+     * @param {Creep|PowerCreep} creep - The Creep being ran
      */
     runHeal: function (creep) {
         let task = creep.memory.task;
@@ -211,7 +211,7 @@ module.exports = {
     },
     /**
      * recalculate the population needs and save the requested creeps to room_data
-     * @param {Creep} creep - The Creep being ran
+     * @param {Creep|PowerCreep} creep - The Creep being ran
      */
     runMoveRoom: function (creep) {
         let task = creep.memory.task;
@@ -223,7 +223,7 @@ module.exports = {
     },
     /**
      * recalculate the population needs and save the requested creeps to room_data
-     * @param {Creep} creep - The Creep being ran
+     * @param {Creep|PowerCreep} creep - The Creep being ran
      */
     runIdle: function (creep) {
         let task = creep.memory.task;
@@ -241,7 +241,7 @@ module.exports = {
     },
     /**
      * recalculate the population needs and save the requested creeps to room_data
-     * @param {Creep} creep - The Creep being ran
+     * @param {Creep|PowerCreep} creep - The Creep being ran
      */
     runRenewOperator: function (creep) {
         let task = creep.memory.task;
@@ -264,7 +264,7 @@ module.exports = {
     },
     /**
      * recalculate the population needs and save the requested creeps to room_data
-     * @param {Creep} creep - The Creep being ran
+     * @param {Creep|PowerCreep} creep - The Creep being ran
      */
     run: function (creep) {
         let task = creep.memory.task;

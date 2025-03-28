@@ -1,9 +1,9 @@
 # v0.2
 
 ## JSDoc overhaul
-- add type hints to returns (in progress)
 - add line comments to new code
 - review jsdoc descriptions
+- review line comments
 
 ## flesh out road anchors
 finish up making road anchors and connecting them to containers

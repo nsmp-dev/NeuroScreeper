@@ -61,14 +61,16 @@ module.exports = {
             let container_location = room.getClearAdjacentLocation(source.pos.x, source.pos.y, plans);
 
             // add the plans to the plans list
-            plans.sources.push({
-                // id of the source
-                source_id: source.id,
-                // x coordinate of the container
-                container_x: container_location.x,
-                // y coordinate of the container
-                container_y: container_location.y,
-            });
+            if (container_location != null) {
+                plans.sources.push({
+                    // id of the source
+                    source_id: source.id,
+                    // x coordinate of the container
+                    container_x: container_location.x,
+                    // y coordinate of the container
+                    container_y: container_location.y,
+                });
+            }
         }
     },
     /**
@@ -86,18 +88,20 @@ module.exports = {
             let container_location = room.getClearAdjacentLocation(mineral.pos.x, mineral.pos.y, plans);
 
             // add the plans to the plans list
-            plans.minerals.push({
-                // id of the source
-                mineral_id: mineral.id,
-                // x coordinate of the container
-                mineral_x: mineral.pos.x,
-                // y coordinate of the container
-                mineral_y: mineral.pos.y,
-                // x coordinate of the container
-                container_x: container_location.x,
-                // y coordinate of the container
-                container_y: container_location.y,
-            });
+            if (container_location != null) {
+                plans.minerals.push({
+                    // id of the source
+                    mineral_id: mineral.id,
+                    // x coordinate of the container
+                    mineral_x: mineral.pos.x,
+                    // y coordinate of the container
+                    mineral_y: mineral.pos.y,
+                    // x coordinate of the container
+                    container_x: container_location.x,
+                    // y coordinate of the container
+                    container_y: container_location.y,
+                });
+            }
         }
     },
     /**

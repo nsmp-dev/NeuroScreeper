@@ -7,6 +7,7 @@ module.exports = {
      * converts an x/y room coordinate to a string name
      * @param {number} x - The Creep being ran
      * @param {number} y - The Creep being ran
+     * @return {string} the memory object for the creep
      */
     worldXYToRoomName: function (x, y) {
         // get the size of the world
@@ -40,6 +41,7 @@ module.exports = {
     /**
      * converts a string room name to x/y room coordinates
      * @param {string} name - The Creep being ran
+     * @return {Object} the memory object for the creep
      */
     roomNameToWorldXY: function (name) {
         // get the size of the world
@@ -94,6 +96,7 @@ module.exports = {
      * multiplies an array by num times
      * @param {Array} arr - The Creep being ran
      * @param {number} num - The Creep being ran
+     * @return {Array[string]} the memory object for the creep
      */
     multiArray: function (arr, num) {
         // create the array we are building
@@ -107,36 +110,8 @@ module.exports = {
         return result;
     },
     /**
-     * gets the corresponding role constant set for the given role
-     * @param {string} role - The Creep being ran
-     */
-    getRole: function (role) {
-        // switch based on the role
-        switch (role) {
-            case this.ATTACKER.NAME:
-                return this.ATTACKER;
-            case this.BUILDER.NAME:
-                return this.BUILDER;
-            case this.CLAIMER.NAME:
-                return this.CLAIMER;
-            case this.DRILLER.NAME:
-                return this.DRILLER;
-            case this.HEALER.NAME:
-                return this.HEALER;
-            case this.QUEEN.NAME:
-                return this.QUEEN;
-            case this.REPAIRER.NAME:
-                return this.REPAIRER;
-            case this.SCOUT.NAME:
-                return this.SCOUT;
-            case this.TRANSPORTER.NAME:
-                return this.TRANSPORTER;
-            case this.UPGRADER.NAME:
-                return this.UPGRADER;
-        }
-    },
-    /**
      * generates an id, using a memory entry to ensure no collisions
+     * @return {string} the memory object for the creep
      */
     generateId: function () {
         // if the id counter has not been set before
@@ -168,7 +143,8 @@ module.exports = {
     },
     /**
      * calculates what percentage of the satisfaction log in the given room data is 1
-     * @param {string} room_data - The Creep being ran
+     * @param {RoomData} room_data - The Creep being ran
+     * @return {number} the memory object for the creep
      */
     getSatisfiedRatio: function (room_data) {
         // the total number of 1s in the room satisfaction log
@@ -188,6 +164,7 @@ module.exports = {
     /**
      * see if a room is available
      * @param {string} room_name - The Creep being ran
+     * @return {Boolean} the memory object for the creep
      */
     isRoomAvailable: function (room_name) {
         let room = Game.rooms[room_name];
@@ -196,12 +173,11 @@ module.exports = {
             return false;
         }
 
-        let status = Game.map.getRoomStatus(room.name).type;
-        if (status != "normal") {
+        let status = Game.map.getRoomStatus(room.name);
+        if (status.status != "normal") {
             return false;
         }
 
-        // TODO: check if the room is controlled by another player
         if (room.controller.owner != undefined && room.controller.owner != USERNAME) {
             return false;
         }

@@ -21,7 +21,7 @@ module.exports = {
         // check if a claimer is needed
         if (!room.controller.my && (pop[CLAIMER.NAME] == undefined || pop[CLAIMER.NAME] < 1)) {
             // request a claimer
-            requested_creeps.push(CLAIMER.init(room.name));
+            requested_creeps.push(new CLAIMER.ClaimerMemory(room.name));
         }
 
         // loop through the sources
@@ -31,7 +31,7 @@ module.exports = {
             // check if a driller is needed for this source
             if (source_data.driller == null) {
                 // request a driller
-                requested_creeps.push(DRILLER.init(
+                requested_creeps.push(new DRILLER.DrillerMemory(
                     room.name,
                     source_id,
                     source_data.container_x,
@@ -41,7 +41,7 @@ module.exports = {
             // check if a transporter is needed for this source
             if (source_data.transporter == null) {
                 // request a transporter
-                requested_creeps.push(TRANSPORTER.init(
+                requested_creeps.push(new TRANSPORTER.TransporterMemory(
                     room.name,
                     source_id,
                     source_data.container_x,
@@ -53,7 +53,7 @@ module.exports = {
         // check if an upgrader is needed
         if (room_data.type == COLONY && [UPGRADER.NAME] == undefined || pop[UPGRADER.NAME] < 1) {
             // request an upgrader
-            requested_creeps.push(UPGRADER.init(room.name));
+            requested_creeps.push(new UPGRADER.UpgraderMemory(room.name));
         }
 
         // count the construction sites
@@ -61,7 +61,7 @@ module.exports = {
         // check if a builder is needed
         if (site_count > 0 && (pop[BUILDER.NAME] == undefined || pop[BUILDER.NAME] < 2)) {
             // request a builder
-            requested_creeps.push(BUILDER.init(room.name));
+            requested_creeps.push(new BUILDER.BuilderMemory(room.name));
         }
 
         // count the damaged structures
@@ -71,13 +71,13 @@ module.exports = {
         // check if a repairer is needed
         if (structure_count > 0 && (pop[REPAIRER.NAME] == undefined || pop[REPAIRER.NAME] < 1)) {
             // request a repairer
-            requested_creeps.push(REPAIRER.init(room.name));
+            requested_creeps.push(new REPAIRER.RepairerMemory(room.name));
         }
 
         // check if a queen is needed
         if (room.storage != undefined && (pop[QUEEN.NAME] == undefined || pop[QUEEN.NAME] < 1)) {
             // request a queen
-            requested_creeps.push(QUEEN.init(room.name));
+            requested_creeps.push(new QUEEN.QueenMemory(room.name));
         }
 
         // loop through the minerals
@@ -87,7 +87,7 @@ module.exports = {
             // check if a driller is needed for this source
             if (mineral_data.driller == null) {
                 // request a driller
-                requested_creeps.push(DRILLER.init(
+                requested_creeps.push(new DRILLER.DrillerMemory(
                     room.name,
                     mineral_data,
                     mineral_data.container_x,
@@ -97,7 +97,7 @@ module.exports = {
             // check if a transporter is needed for this source
             if (mineral_data.transporter == null) {
                 // request a transporter
-                requested_creeps.push(TRANSPORTER.init(
+                requested_creeps.push(new TRANSPORTER.TransporterMemory(
                     room.name,
                     mineral_data,
                     mineral_data.container_x,
@@ -113,19 +113,19 @@ module.exports = {
         // check if a scout is needed
         if (room_data.type == COLONY && observer_count == 0 && (pop[SCOUT.NAME] == undefined || pop[SCOUT.NAME] < 1)) {
             // request a scout
-            requested_creeps.push(SCOUT.init(room.name));
+            requested_creeps.push(new SCOUT.ScoutMemory(room.name));
         }
 
         // check if an attacker is needed
         if (pop[ATTACKER.NAME] == undefined || pop[ATTACKER.NAME] < 1) {
             // request an attacker
-            requested_creeps.push(ATTACKER.init(room.name));
+            requested_creeps.push(new ATTACKER.AttackerMemory(room.name));
         }
 
         // check if a healer is needed
         if (pop[HEALER.NAME] == undefined || pop[HEALER.NAME] < 1) {
             // request a healer
-            requested_creeps.push(HEALER.init(room.name));
+            requested_creeps.push(new HEALER.HealerMemory(room.name));
         }
 
         // set the requested creeps on the room_data
