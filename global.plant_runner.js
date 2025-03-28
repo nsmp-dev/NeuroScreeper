@@ -165,7 +165,5 @@ module.exports = {
         }else{
             plant_data.production_timer++;
         }
-
-        return plant_data;
     },
 };

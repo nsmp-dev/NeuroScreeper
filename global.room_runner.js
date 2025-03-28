@@ -1,4 +1,5 @@
 const Util = require('global.util');
+const PlantRunner = require('global.plant_runner');
 
 /**
  * this is a room runner: it contains logic for running each kind of room
@@ -217,6 +218,10 @@ module.exports = {
         } else {
             // increment the construction timer
             room_data.construction_timer++;
+        }
+
+        if (room_data.plans.plant_x != null) {
+            PlantRunner.run(room, room_data.plant_data);
         }
     },
 };

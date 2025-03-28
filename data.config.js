@@ -174,6 +174,7 @@ global.ATTACKER = {
     /**
      * initializer that assembles the initial creep memory
      * @param {String} room_name
+     * @return {Object} the memory object for the creep
      */
     init: function (room_name) {
         // return the memory object
@@ -196,6 +197,7 @@ global.BUILDER = {
     /**
      * initializer that assembles the initial creep memory
      * @param {String} room_name
+     * @return {Object} the memory object for the creep
      */
     init: function (room_name) {
         return {
@@ -217,6 +219,7 @@ global.CLAIMER = {
     /**
      * initializer that assembles the initial creep memory
      * @param {String} room_name
+     * @return {Object} the memory object for the creep
      */
     init: function (room_name) {
         return {
@@ -241,6 +244,7 @@ global.DRILLER = {
      * @param {String} source_id
      * @param {number} container_x
      * @param {number} container_y
+     * @return {Object} the memory object for the creep
      */
     init: function (room_name, source_id, container_x, container_y) {
         return {
@@ -265,6 +269,7 @@ global.HEALER = {
     /**
      * initializer that assembles the initial creep memory
      * @param {String} room_name
+     * @return {Object} the memory object for the creep
      */
     init: function (room_name) {
         return {
@@ -286,6 +291,7 @@ global.QUEEN = {
     /**
      * initializer that assembles the initial creep memory
      * @param {String} room_name
+     * @return {Object} the memory object for the creep
      */
     init: function (room_name) {
         return {
@@ -307,6 +313,7 @@ global.REPAIRER = {
     /**
      * initializer that assembles the initial creep memory
      * @param {String} room_name
+     * @return {Object} the memory object for the creep
      */
     init: function (room_name) {
         return {
@@ -328,6 +335,7 @@ global.SCOUT = {
     /**
      * initializer that assembles the initial creep memory
      * @param {String} room_name
+     * @return {Object} the memory object for the creep
      */
     init: function (room_name) {
         return {
@@ -354,6 +362,7 @@ global.TRANSPORTER = {
      * @param {String} source_id
      * @param {number} container_x
      * @param {number} container_y
+     * @return {Object} the memory object for the creep
      */
     init: function (room_name, source_id, container_x, container_y) {
         let nearest_colony_room_name = null;
@@ -394,6 +403,7 @@ global.UPGRADER = {
     /**
      * initializer that assembles the initial creep memory
      * @param {String} room_name
+     * @return {Object} the memory object for the creep
      */
     init: function (room_name) {
         return {
