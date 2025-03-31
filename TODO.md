@@ -1,7 +1,7 @@
 # v0.2
 
 ## JSDoc overhaul
-- add line comments to new code
+- add line comments to new code (in progress)
 - review jsdoc descriptions
 - review line comments
 
@@ -19,9 +19,6 @@ scan when it gets too long ago, if we have vision
 add in threat system and ownership markers to
 account for threat when spawning new colonies and expansions
 
-## Colony/Expansion
-rework and add in conditionals for roles that are conditional on structures built
-
 # v0.3
 
 ## new roles
@@ -33,34 +30,25 @@ attacks power bank
 heals the attacker
 
 ### power transporter
-picks up power and takes it back to capitol
+picks up power and takes it back to the nearest terminal
 
 ### mineral driller
 drills the mineral in the room if it exists
 
 ### mineral transporter
-transports the mined minerals to the capitol
+transports the mined minerals to the nearest terminal
 
 ### operator power creep
 able to operate factory to enable it
 transports reagents to labs and results back to storage
 transports commodities into/from factory
+moves all ingredients in the terminal to the storage
+moves all products in the terminal to the storage
 
 ### commodity collector
-goes out to find commodities and returns them to the capitol
+goes out to find commodities and returns them to nearest terminal
 
-## Capital Room
-new type of room that is unique
-has PowerSpawn/lab/factory area
-all collected power/minerals/commodities go to this room's storage
-spawns power creep lab tech to set up reactions and store result
-lab tech also feeds factories and sends output to be sold
-
-## Room manager
-add in logic to check for a capitol when adding rooms
-add in check for if a room can be a capitol
-
-## new prototypes
-- `Room.prototype.findPlantLocation()`
-- `Room.prototype.getMineralPlans()`
-- `Room.prototype.getPlantPlans()`
+## Terminal
+add in selling setting for when 1 ingredient gets too full
+add in selling for final products
+add in logic to move all minerals and commodities to the capitol

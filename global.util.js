@@ -41,7 +41,7 @@ module.exports = {
     /**
      * converts a string room name to x/y room coordinates
      * @param {string} name - The Creep being ran
-     * @return {Object} the memory object for the creep
+     * @return {x: number, y: string} the memory object for the creep
      */
     roomNameToWorldXY: function (name) {
         // get the size of the world
@@ -96,7 +96,7 @@ module.exports = {
      * multiplies an array by num times
      * @param {Array} arr - The Creep being ran
      * @param {number} num - The Creep being ran
-     * @return {Array[string]} the memory object for the creep
+     * @return {Array} the memory object for the creep
      */
     multiArray: function (arr, num) {
         // create the array we are building

@@ -1,5 +1,5 @@
 /**
- * CreepMemory class, an object that contains all the memory for each plant
+ * CreepMemory class, an object that contains all the memory for a creep
  * @class CreepMemory
  */
 class CreepMemory {
@@ -9,10 +9,13 @@ class CreepMemory {
      * @param {string} room_name - The room's plans object
      */
     constructor(role, room_name) {
+        // stores the role that is assigned to this creep
         this.role = role;
+        // stores the room that requested this creep
         this.room_name = room_name;
+        // empty spot where the task for running the creep will go
         this.task = null;
     }
 }
-
+// export the CreepMemory class
 module.exports = CreepMemory;

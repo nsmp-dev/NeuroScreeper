@@ -43,7 +43,7 @@ let targets = this.find(FIND_MY_STRUCTURES, {
 ```
 
 ### array for loop
-"for each element **in** an array"
+"for each element **of** an array"
 ```javascript
 let names = ["Hanna", "Atlas"];
 for (let name of names) {
@@ -71,7 +71,6 @@ for (let prop in person) {
 /**
  * Class representing a dot.
  * @class Dot
- * @classDesc Has a width in addition to an X and Y coordinate.
  * @extends Point
  */
 class Dot extends Point {

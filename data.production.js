@@ -5,8 +5,8 @@
 class Production {
     /**
      * creates a production object
-     * @param {Array[string]|null} inputs - The input resources
-     * @param {Array[string]|null} input_amounts - The input resources
+     * @param {string[]|null} inputs - The input resources
+     * @param {string[]|null} input_amounts - The input resources
      * @param {String|null} output - The output resource
      * @param {number|null} output_amount - The amount of resource the production will make
      */
