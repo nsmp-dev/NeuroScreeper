@@ -1,7 +1,7 @@
 /** @module PlansFactory */
 module.exports = {
     /**
-     * Plans the initial room, basing the base off the initial spawn
+     * Plans the initial room, placing the base off the initial spawn's position
      * @param {Room} room - The Room we are planning
      * @param {RoomPlans} plans - The Plans for the room.
      * @param {StructureSpawn} initial_spawn - The initial spawn in the room.
@@ -15,7 +15,6 @@ module.exports = {
         plans.base_x = initial_spawn.pos.x - 5;
         // manually set the y location of the base using the provided initial spawn
         plans.base_y = initial_spawn.pos.y - 6;
-
         // fill the base with plans for the structures based on the base location
         this.planBase(room, plans);
         // locate a suitable location to place a plant
@@ -28,7 +27,7 @@ module.exports = {
     /**
      * start the planning of a room, the new plans will be added to the passed plans object
      * @param {Room} room - The Room we are planning
-     * @param {RoomPlans} plans - The Plans for the room.
+     * @param {RoomPlans} plans - The RoomPlans for the room.
      */
     planRoom: function (room, plans) {
         // plan the sources in the room and their containers
@@ -60,8 +59,9 @@ module.exports = {
             // find an adjacent space to put the container
             let container_location = room.getClearAdjacentLocation(source.pos.x, source.pos.y, plans);
 
-            // add the plans to the plans list
+            // if a place was found
             if (container_location != null) {
+                // make the plans and add them to the source list
                 plans.sources.push({
                     // id of the source
                     source_id: source.id,
@@ -92,9 +92,9 @@ module.exports = {
                 plans.minerals.push({
                     // id of the source
                     mineral_id: mineral.id,
-                    // x coordinate of the container
+                    // x coordinate of the mineral
                     mineral_x: mineral.pos.x,
-                    // y coordinate of the container
+                    // y coordinate of the mineral
                     mineral_y: mineral.pos.y,
                     // x coordinate of the container
                     container_x: container_location.x,
@@ -454,7 +454,7 @@ module.exports = {
         // get the plant y coordinate
         let y = plans.plant_y;
 
-        // save the lab locations for easy access
+        // save the lab/factory/power spawn locations for easy access
         plans.input_lab_1_x = x + 2;
         plans.input_lab_1_y = y;
         plans.input_lab_2_x = x + 2;
@@ -475,7 +475,7 @@ module.exports = {
             {x: x + 3, y: y + 1, type: STRUCTURE_LAB},
             {x: x + 2, y: y + 2, type: STRUCTURE_LAB},
         ]);
-        // concat the structure lists together
+        // concat the rampart lists together
         plans.ramparts = plans.ramparts.concat([
             // coordinates and type of the structure
             {x: x, y: y,},
@@ -491,7 +491,7 @@ module.exports = {
             {x: x + 2, y: y + 2,},
             {x: x + 3, y: y + 2,},
         ]);
-        // concat the structure lists together
+        // concat the road lists together
         plans.roads = plans.roads.concat([
             // coordinates and type of the structure
             {x: x + 1, y: y,},
