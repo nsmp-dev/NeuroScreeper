@@ -9,32 +9,65 @@ const PlantData = require("data.plant_data");
 class RoomData {
     /**
      * creates a room data object, with an optional starter spawn for the first room
-     * @param {Room|null} room - The room this data is for
+     * @param {Room} room - The room this data is for
      * @param {StructureSpawn|null} initial_spawn - The initial spawn, if this is the first room
      */
     constructor(room, initial_spawn = null) {
         hlog("Creating a new RoomData Object...");
-        // type of the room
+        /**
+         * type of the room
+         * @type {number|null}
+         */
         this.type = null;
-        // timer for when to do construction
+        /**
+         * timer for when to do construction
+         * @type {number}
+         */
         this.construction_timer = Math.floor(CONSTRUCTION_TIMER_LENGTH / 2);
-        // timer for when to spawn creeps
+        /**
+         * timer for when to spawn creeps
+         * @type {number}
+         */
         this.population_timer = REQUEST_POPULATION_TIMER_LENGTH;
-        // log of how satisfied the colony is
+        /**
+         * log of how satisfied the colony is
+         * @type {Boolean[]}
+         */
         this.satisfaction_log = [];
-        // flag for whether the colony is satisfied
+        /**
+         * flag for whether the colony is satisfied
+         * @type {Boolean}
+         */
         this.satisfied = false;
-        // flag for when this room has died
+        /**
+         * flag for when this room has died
+         * @type {Boolean}
+         */
         this.dead = false;
-        // list of creeps that need to be spawned for this colony
+        /**
+         * list of creeps that need to be spawned for this colony
+         * @type {CreepMemory[]}
+         */
         this.requested_creeps = [];
-        // plans for construction
+        /**
+         * plans for construction
+         * @type {RoomPlans}
+         */
         this.plans = new RoomPlans();
-        // flag for if this room can be a colony
+        /**
+         * flag for if this room can be a colony
+         * @type {Boolean}
+         */
         this.possible_colony = null;
-        // flag for if this room can be an expansion
+        /**
+         * flag for if this room can be an expansion
+         * @type {Boolean}
+         */
         this.possible_expansion = null;
-        // data for all the reactions and production for the plant
+        /**
+         * data for all the reactions and production for the plant
+         * @type {PlantData|null}
+         */
         this.plant_data = null;
         
         // if the initial spawn was provided
@@ -54,13 +87,13 @@ class RoomData {
             this.possible_expansion = false;
             // set this room as not a possible colony
             this.possible_colony = false;
-            // find any structures
-            let source_keepers = room.find(FIND_STRUCTURES, {
+            // find any source keeper lairs
+            let source_keeper_lairs = room.find(FIND_STRUCTURES, {
                 // that are source keeper lairs
                 filter: (structure) => structure.structureType == STRUCTURE_KEEPER_LAIR
             });
-            // if there are any source keepers in the room
-            if (source_keepers.length > 0) {
+            // if there are any source keeper lairs in the room
+            if (source_keeper_lairs.length > 0) {
                 // set the type to a keeper lair
                 this.type = KEEPER_LAIR;
             }else{

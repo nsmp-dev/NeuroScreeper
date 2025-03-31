@@ -5,17 +5,34 @@
 class Reaction {
     /**
      * creates a reaction object
-     * @param {string|null} input_1 - The first input resource
-     * @param {string|null} input_2 - The second input resource
-     * @param {String|null} output - The output resource
-     * @param {number|null} amount - The amount of resource the production will use and make
+     * @param {string} input_1 - The first reagent resource
+     * @param {string} input_2 - The second reagent resource
+     * @param {String} output - The output product resource
+     * @param {number} amount - The amount of resource the production will use and make
      */
-    constructor(input_1 = null, input_2 = null, output = null, amount= null) {
+    constructor(input_1, input_2, output, amount) {
+        /**
+         * The first reagent resource
+         * @type {string}
+         */
         this.input_1 = input_1;
+        /**
+         * The second reagent resource
+         * @type {string}
+         */
         this.input_2 = input_2;
+        /**
+         * The output product resource
+         * @type {string}
+         */
         this.output = output;
+        /**
+         * The amount of resource the production will use and make
+         * @type {number}
+         */
         this.amount = amount;
     }
 }
 
+// exports the Reaction class
 module.exports = Reaction;

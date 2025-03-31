@@ -5,17 +5,34 @@
 class Production {
     /**
      * creates a production object
-     * @param {string[]|null} inputs - The input resources
-     * @param {string[]|null} input_amounts - The input resources
-     * @param {String|null} output - The output resource
-     * @param {number|null} output_amount - The amount of resource the production will make
+     * @param {string[]} inputs - The input resources
+     * @param {number[]} input_amounts - The input amounts
+     * @param {String} output - The output resource
+     * @param {number} output_amount - The amount of resource the production will make
      */
-    constructor(inputs = null, input_amounts = null, output = null, output_amount = null) {
+    constructor(inputs, input_amounts, output, output_amount) {
+        /**
+         * the input resources
+         * @type {string[]}
+         */
         this.inputs = inputs;
+        /**
+         * the corresponding input amounts
+         * @type {number[]}
+         */
         this.input_amounts = input_amounts;
+        /**
+         * The output resource
+         * @type {string}
+         */
         this.output = output;
+        /**
+         * The amount of resource the production will make
+         * @type {number}
+         */
         this.output_amount = output_amount;
     }
 }
 
+// exports the Production class
 module.exports = Production;

@@ -5,6 +5,16 @@
 - review jsdoc descriptions
 - review line comments
 
+## Start using new classes
+Point - holds x and y coordinates
+ConstructionPlan - holds x and y coordinates and a type of structure
+SourcePlan - holds source id, location, and container location
+MineralPlan - holds mineral id, location, and container location
+
+## file renaming
+data.plans_factory.js -> factory.room_plans.js
+data.tasks.js -> factory.task.js
+
 ## flesh out road anchors
 finish up making road anchors and connecting them to containers
 connect lab anchors to the base anchors
