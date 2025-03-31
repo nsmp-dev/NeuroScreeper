@@ -43,7 +43,7 @@ Room.prototype.getStructureGrid = function (plans) {
  * @param {number} width - The Creep being ran
  * @param {number} height - The Creep being ran
  * @param {RoomPlans} plans - The Creep being ran
- * @return {{x: number, y: string}|null} the memory object for the creep
+ * @return {{x: number, y: number}|null} the memory object for the creep
  */
 Room.prototype.getClearArea = function (width, height, plans) {
     // grab the terrain for the room
@@ -118,7 +118,7 @@ Room.prototype.getClearArea = function (width, height, plans) {
  * @param {number} x - The Creep being ran
  * @param {number} y - The Creep being ran
  * @param {RoomPlans} plans - The Creep being ran
- * @return {{x: number, y: string}|null} The Creep being ran
+ * @return {{x: number, y: number}|null} The Creep being ran
  */
 Room.prototype.getClearAdjacentLocation = function (x, y, plans) {
     // grab the terrain for the room

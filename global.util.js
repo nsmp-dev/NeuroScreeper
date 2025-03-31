@@ -41,7 +41,7 @@ module.exports = {
     /**
      * converts a string room name to x/y room coordinates
      * @param {string} name - The Creep being ran
-     * @return {x: number, y: string} the memory object for the creep
+     * @return {{x: number, y: number}} the memory object for the creep
      */
     roomNameToWorldXY: function (name) {
         // get the size of the world
@@ -50,8 +50,8 @@ module.exports = {
         let max = (size - 2) / 2;
         // the coordinates we are finding
         let coordinates = {
-            x: null,
-            y: null,
+            x: -1,
+            y: -1,
         };
 
         // if the string contains a W
