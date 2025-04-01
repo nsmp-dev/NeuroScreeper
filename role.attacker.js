@@ -1,5 +1,5 @@
-const Tasks = require("data.tasks");
-const TaskRunner = require("global.task_runner");
+const Tasks = require("factory.task");
+const TaskRunner = require("runner.task");
 
 hlog("Creating attacker role...");
 

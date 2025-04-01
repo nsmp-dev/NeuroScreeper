@@ -1,3 +1,5 @@
+const Point = require("data.point");
+
 /**
  * ConstructionPlan class, an object that contains data for planning a structure
  * @class ConstructionPlan
@@ -11,15 +13,10 @@ class ConstructionPlan {
      */
     constructor(x, y, structure_type) {
         /**
-         * x coordinate to place the construction site
-         * @type {number}
+         * location of the construction site
+         * @type {Point}
          */
-        this.x = x;
-        /**
-         * y coordinate to place the construction site
-         * @type {number}
-         */
-        this.y = y;
+        this.location = new Point(x, y);
         /**
          * type of structure that the construction site is for
          * @type {string}

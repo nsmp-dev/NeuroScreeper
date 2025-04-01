@@ -1,5 +1,5 @@
 const Util = require('global.util');
-const PlantRunner = require('global.plant_runner');
+const PlantRunner = require('runner.plant');
 
 /**
  * this is a room runner: it contains logic for running each kind of room

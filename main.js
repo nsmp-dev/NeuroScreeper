@@ -7,7 +7,7 @@ require('prototype.observer');
 const Timer = require('global.timer');
 const Util = require('global.util');
 const RoomManager = require('global.room_manager');
-const RoomRunner = require('global.room_runner');
+const RoomRunner = require('runner.room');
 const Visualizer = require('global.visualizer');
 const PowerManager = require('global.power_manager');
 

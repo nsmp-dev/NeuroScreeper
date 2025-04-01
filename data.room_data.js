@@ -1,4 +1,4 @@
-const RoomDataFactory = require("data.plans_factory");
+const RoomDataFactory = require("factory.plans");
 const RoomPlans = require("data.room_plans");
 const PlantData = require("data.plant_data");
 
