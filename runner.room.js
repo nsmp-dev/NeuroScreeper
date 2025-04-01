@@ -220,7 +220,7 @@ module.exports = {
             room_data.construction_timer++;
         }
 
-        if (room_data.plans.plant_x != null) {
+        if (room_data.plans.plant_location != null) {
             PlantRunner.run(room, room_data.plant_data);
         }
     },

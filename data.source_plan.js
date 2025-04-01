@@ -1,3 +1,5 @@
+const Point = require("data.point");
+
 /**
  * SourcePlan class, an object that contains data for planning a source
  * @class SourcePlan
@@ -17,14 +19,9 @@ class SourcePlan {
         this.source_id = source_id;
         /**
          * x coordinate of the container
-         * @type {number}
+         * @type {Point}
          */
-        this.container_x = container_x;
-        /**
-         * y coordinate of the container
-         * @type {number}
-         */
-        this.container_y = container_y;
+        this.container_location = new Point(container_x, container_y);
     }
 }
 

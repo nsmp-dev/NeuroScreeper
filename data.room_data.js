@@ -1,4 +1,4 @@
-const RoomDataFactory = require("factory.plans");
+const RoomDataFactory = require("factory.room_plans");
 const RoomPlans = require("data.room_plans");
 const PlantData = require("data.plant_data");
 
@@ -111,12 +111,12 @@ class RoomData {
                 // if there's more than one source
                 this.plans.sources.length > 1 &&
                 // and it has a base
-                this.plans.base_x != null
+                this.plans.base_location != null
             );
         }
 
         // if the plans include a plant
-        if (this.plans.plant_x != null) {
+        if (this.plans.plant_location != null) {
             // initialize the plant data
             this.plant_data = new PlantData(this.plans);
         }

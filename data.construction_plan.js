@@ -21,7 +21,7 @@ class ConstructionPlan {
          * type of structure that the construction site is for
          * @type {string}
          */
-        this.structure_type = structure_type;
+        this.type = structure_type;
     }
 }
 

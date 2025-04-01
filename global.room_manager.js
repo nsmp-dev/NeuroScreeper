@@ -113,24 +113,20 @@ module.exports = {
                         // empty slot to record a transporter if found
                         transporter: null,
                         // x coordinate of the container assigned to this source
-                        container_x: source_plan.container_x,
-                        // y coordinate of the container assigned to this source
-                        container_y: source_plan.container_y,
+                        container_location: source_plan.container_location,
                     };
                 }
 
                 // loop through the mineral plans
                 for (let mineral_plan of Memory.room_data[name].plans.minerals) {
                     // create the source entry on the population object
-                    pop[name].sources[mineral_plan.source_id] = {
+                    pop[name].sources[mineral_plan.mineral_id] = {
                         // empty slot to record a driller if found
                         driller: null,
                         // empty slot to record a transporter if found
                         transporter: null,
                         // x coordinate of the container assigned to this source
-                        container_x: mineral_plan.container_x,
-                        // y coordinate of the container assigned to this source
-                        container_y: mineral_plan.container_y,
+                        container_location: mineral_plan.container_location,
                     };
                 }
             }
@@ -236,7 +232,7 @@ module.exports = {
                 // loop through all the rooms
                 for (let name in Memory.room_data) {
                     // if the room is a colony and has a plant
-                    if (Memory.room_data[name].type == COLONY && Memory.room_data[name].plans.base_x != null) {
+                    if (Memory.room_data[name].type == COLONY && Memory.room_data[name].plans.base_location != null) {
                         hlog("Designating a new Capitol...");
                         Memory.capitol_room_name = name;
                         // break out of the loop

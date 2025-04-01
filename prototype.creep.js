@@ -125,9 +125,9 @@ Creep.prototype.idle = function () {
     let room_data = Memory.room_log[this.room.name];
 
     // if we are more than 3 tiles away
-    if (!this.pos.inRangeTo(room_data.idle_x, room_data.idle_y, 3)) {
+    if (!this.pos.inRangeTo(room_data.idle_location.x, room_data.idle_location.y, 3)) {
         // move toward the idle location
-        this.moveTo(room_data.idle_x, room_data.idle_y);
+        this.moveTo(room_data.idle_location.x, room_data.idle_location.y);
     }
 };
 /**

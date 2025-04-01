@@ -10,115 +10,75 @@ class RoomPlans {
     constructor() {
         hlog("Creating a new RoomPlans Object...");
         /**
-         * x coordinate of the idle location
-         * @type {number|null}
+         * coordinates of the idle location
+         * @type {Point|null}
          */
-        this.idle_x = null;
+        this.idle_location = null;
         /**
-         * y coordinate of the idle location
-         * @type {number|null}
+         * coordinates of the base location
+         * @type {Point|null}
          */
-        this.idle_y = null;
+        this.base_location = null;
         /**
-         * x coordinate of the base location
-         * @type {number|null}
+         * coordinates of the plant location
+         * @type {Point|null}
          */
-        this.base_x = null;
-        /**
-         * y coordinate of the base location
-         * @type {number|null}
-         */
-        this.base_y = null;
-        /**
-         * x coordinate of the plant location
-         * @type {number|null}
-         */
-        this.plant_x = null;
-        /**
-         * y coordinate of the plant location
-         * @type {number|null}
-         */
-        this.plant_y = null;
+        this.plant_location = null;
         /**
          * list of structures to place in the room
-         * @type {{x: number, y: number, type: string}[]}
+         * @type {ConstructionPlan[]}
          */
         this.structures = [];
         /**
          * points from which we draw roads between
-         * @type {{x: number, y: number}[]}
+         * @type {Point[]}
          */
         this.road_anchors = [];
         /**
          * list of roads to place in the room
-         * @type {{x: number, y: number}[]}
+         * @type {Point[]}
          */
         this.roads = [];
         /**
          * list of ramparts to place in the room
-         * @type {{x: number, y: number}[]}
+         * @type {Point[]}
          */
         this.ramparts = [];
         /**
          * list of sources and their containers
-         * @type {Array}
+         * @type {SourcePlan[]}
          */
         this.sources = [];
         /**
          * list of minerals and their containers
-         * @type {Array}
+         * @type {MineralPlan[]}
          */
         this.minerals = [];
         /**
-         * x coordinate for input lab 1
-         * @type {number|null}
+         * coordinates for input lab 1
+         * @type {Point|null}
          */
-        this.input_lab_1_x = null;
+        this.input_lab_1_location = null;
         /**
-         * y coordinate for input lab 1
-         * @type {number|null}
+         * coordinates for input lab 2
+         * @type {Point|null}
          */
-        this.input_lab_1_y = null;
+        this.input_lab_2_location = null;
         /**
-         * x coordinate for input lab 2
-         * @type {number|null}
+         * coordinates for output lab
+         * @type {Point|null}
          */
-        this.input_lab_2_x = null;
+        this.output_lab_location = null;
         /**
-         * y coordinate for input lab 2
-         * @type {number|null}
+         * coordinates for factory
+         * @type {Point|null}
          */
-        this.input_lab_2_y = null;
+        this.factory_location = null;
         /**
-         * x coordinate for output lab
-         * @type {number|null}
+         * coordinates for power spawn
+         * @type {Point|null}
          */
-        this.output_lab_x = null;
-        /**
-         * y coordinate for output lab
-         * @type {number|null}
-         */
-        this.output_lab_y = null;
-        /**
-         * y coordinate for output lab
-         * @type {number|null}
-         */
-        this.factory_x = null;
-        /**
-         * y coordinate for output lab
-         * @type {number|null}
-         */
-        this.factory_y = null;
-        /**
-         * y coordinate for output lab
-         * @type {number|null}
-         */
-        this.power_spawn_x = null;
-        /**
-         * y coordinate for output lab
-         * @type {number|null}
-         */
-        this.power_spawn_y = null;
+        this.power_spawn_location = null;
     }
 }
 

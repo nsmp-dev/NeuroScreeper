@@ -23,7 +23,8 @@ module.exports = {
             if ((input_lab_1.mineralType != undefined && input_lab_1.mineralType != reaction.input_1) ||
                 (input_lab_2.mineralType != undefined && input_lab_2.mineralType != reaction.input_2) ||
                 (output_lab.mineralType != undefined && output_lab.mineralType != reaction.output)) {
-                plant_data.current_reaction = new Reaction();
+                plant_data.current_reaction = null;
+                plant_data.cleanup_reaction = true;
                 return;
             }
         }
@@ -69,7 +70,8 @@ module.exports = {
             }
 
             if (!correct_contents) {
-                plant_data.current_production = new Production();
+                plant_data.current_production = null;
+                plant_data.cleanup_production = true;
             }
         }
 
@@ -97,11 +99,11 @@ module.exports = {
      * @param {PlantData} plant_data - The Plans for the room.
      */
     getStructures: function (room, plant_data) {
-        let input_lab_1 = room.getStructureAt(STRUCTURE_LAB, plant_data.input_lab_1_x, plant_data.input_lab_1_y);
-        let input_lab_2 = room.getStructureAt(STRUCTURE_LAB, plant_data.input_lab_2_x, plant_data.input_lab_2_y);
-        let output_lab = room.getStructureAt(STRUCTURE_LAB, plant_data.output_lab_x, plant_data.output_lab_y);
-        let factory = room.getStructureAt(STRUCTURE_LAB, plant_data.input_lab_1_x, plant_data.input_lab_1_y);
-        let power_spawn = room.getStructureAt(STRUCTURE_POWER_SPAWN, plant_data.power_spawn_x, plant_data.power_spawn_y);
+        let input_lab_1 = room.getStructureAt(STRUCTURE_LAB, plant_data.input_lab_1_location.x, plant_data.input_lab_1_location.y);
+        let input_lab_2 = room.getStructureAt(STRUCTURE_LAB, plant_data.input_lab_2_location.x, plant_data.input_lab_2_location.y);
+        let output_lab = room.getStructureAt(STRUCTURE_LAB, plant_data.output_lab_location.x, plant_data.output_lab_location.y);
+        let factory = room.getStructureAt(STRUCTURE_LAB, plant_data.factory_location.x, plant_data.factory_location.y);
+        let power_spawn = room.getStructureAt(STRUCTURE_POWER_SPAWN, plant_data.power_spawn_location.x, plant_data.power_spawn_location.y);
         let storage = room.storage;
 
         if (input_lab_1 == null || input_lab_2 == null || output_lab == null || storage == undefined) {

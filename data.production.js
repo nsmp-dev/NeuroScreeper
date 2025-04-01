@@ -5,22 +5,16 @@
 class Production {
     /**
      * creates a production object
-     * @param {string[]} inputs - The input resources
-     * @param {number[]} input_amounts - The input amounts
+     * @param {Object} inputs - The input resources
      * @param {String} output - The output resource
      * @param {number} output_amount - The amount of resource the production will make
      */
-    constructor(inputs, input_amounts, output, output_amount) {
+    constructor(inputs, output, output_amount) {
         /**
          * the input resources
-         * @type {string[]}
+         * @type {Object}
          */
         this.inputs = inputs;
-        /**
-         * the corresponding input amounts
-         * @type {number[]}
-         */
-        this.input_amounts = input_amounts;
         /**
          * The output resource
          * @type {string}

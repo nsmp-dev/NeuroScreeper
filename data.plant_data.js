@@ -1,3 +1,5 @@
+const Point = require("data.point");
+
 /**
  * PlantData class, an object that contains all the memory for a plant
  * @class PlantData
@@ -20,6 +22,16 @@ class PlantData {
          */
         this.current_production = null;
         /**
+         * flag for cleaning up a screwed up reaction
+         * @type {Boolean}
+         */
+        this.cleanup_reaction = false;
+        /**
+         * flag for cleaning up a screwed up production
+         * @type {Boolean}
+         */
+        this.cleanup_production = false;
+        /**
          * the timer for re-checking cached structure ids
          * @type {number}
          */
@@ -35,55 +47,30 @@ class PlantData {
          */
         this.production_timer = Math.floor(PRODUCTION_TIMER_LENGTH / 2);
         /**
-         * input lab 1 x coordinate from the plans
-         * @type {number}
+         * input lab 1 location from the plans
+         * @type {Point}
          */
-        this.input_lab_1_x = plans.input_lab_1_x;
+        this.input_lab_1_location = plans.input_lab_1_location;
         /**
-         * input lab 1 y coordinate from the plans
-         * @type {number}
+         * input lab 2 location from the plans
+         * @type {Point}
          */
-        this.input_lab_1_y = plans.input_lab_1_y;
+        this.input_lab_2_location = plans.input_lab_2_location;
         /**
-         * input lab 2 x coordinate from the plans
-         * @type {number}
+         * output lab location from the plans
+         * @type {Point}
          */
-        this.input_lab_2_x = plans.input_lab_2_x;
+        this.output_lab_location = plans.output_lab_location;
         /**
-         * input lab 2 y coordinate from the plans
-         * @type {number}
+         * factory location from the plans
+         * @type {Point}
          */
-        this.input_lab_2_y = plans.input_lab_2_y;
+        this.factory_location = plans.factory_location;
         /**
-         * output lab x coordinate from the plans
-         * @type {number}
+         * power spawn location from the plans
+         * @type {Point}
          */
-        this.output_lab_x = plans.output_lab_x;
-        /**
-         * output lab y coordinate from the plans
-         * @type {number}
-         */
-        this.output_lab_y = plans.output_lab_y;
-        /**
-         * factory x coordinate from the plans
-         * @type {number}
-         */
-        this.factory_x = plans.factory_x;
-        /**
-         * factory y coordinate from the plans
-         * @type {number}
-         */
-        this.factory_y = plans.factory_y;
-        /**
-         * power spawn x coordinate from the plans
-         * @type {number}
-         */
-        this.power_spawn_x = plans.power_spawn_x;
-        /**
-         * power spawn y coordinate from the plans
-         * @type {number}
-         */
-        this.power_spawn_y = plans.power_spawn_y;
+        this.power_spawn_location = plans.power_spawn_location;
         /**
          * input lab 1 id
          * @type {string|null}

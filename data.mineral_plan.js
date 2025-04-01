@@ -1,3 +1,5 @@
+const Point = require("data.point");
+
 /**
  * MineralPlan class, an object that contains data for planning a mineral
  * @class MineralPlan
@@ -18,25 +20,15 @@ class MineralPlan {
          */
         this.mineral_id = mineral_id;
         /**
-         * x coordinate of the mineral
-         * @type {number}
+         * location of the mineral
+         * @type {Point}
          */
-        this.mineral_x = mineral_x;
+        this.mineral_location = new Point(mineral_x, mineral_y);
         /**
-         * y coordinate of the mineral
-         * @type {number}
+         * location of the container
+         * @type {Point}
          */
-        this.mineral_y = mineral_y;
-        /**
-         * x coordinate of the container
-         * @type {number}
-         */
-        this.container_x = container_x;
-        /**
-         * y coordinate of the container
-         * @type {number}
-         */
-        this.container_y = container_y;
+        this.container_location = new Point(container_x, container_y);
     }
 }
 

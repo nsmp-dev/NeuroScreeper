@@ -34,23 +34,23 @@ module.exports = {
     },
     /**
      * Plans the initial room, basing the base off the initial spawn
-     * @param {RoomObject} target - The Room we are planning
+     * @param {Structure|ConstructionSite} target - The Room we are planning
      * @return {Task} the created Task
      */
     build: function (target) {
         let task = new Task(TASK_TYPES.BUILD);
-        task.target = target;
+        task.target = target.id;
         task.room_name = target.room.name;
         return task;
     },
     /**
      * Plans the initial room, basing the base off the initial spawn
-     * @param {RoomObject} target - The Room we are planning
+     * @param {Structure} target - The Room we are planning
      * @return {Task} the created Task
      */
     repair: function (target) {
         let task = new Task(TASK_TYPES.REPAIR);
-        task.target = target;
+        task.target = target.id;
         task.room_name = target.room.name;
         return task;
     },

@@ -1,4 +1,5 @@
 const Util = require('global.util');
+const Point = require("data.point");
 
 hlog("Creating room prototypes...");
 
@@ -23,17 +24,17 @@ Room.prototype.getStructureGrid = function (plans) {
     // loop through the planned structures
     for (let structure of plans.structures) {
         // set this spot to taken
-        structure_grid[structure.x][structure.y] = true;
+        structure_grid[structure.location.x][structure.location.y] = true;
     }
 
     for (let source_plan of plans.sources) {
         // set this spot to taken
-        structure_grid[source_plan.container_x][source_plan.container_y] = true;
+        structure_grid[source_plan.container_location.x][source_plan.container_location.y] = true;
     }
 
     for (let mineral_plan of plans.minerals) {
         // set this spot to taken
-        structure_grid[mineral_plan.container_x][mineral_plan.container_y] = true;
+        structure_grid[mineral_plan.container_location.x][mineral_plan.container_location.y] = true;
     }
 
     return structure_grid;
@@ -43,7 +44,7 @@ Room.prototype.getStructureGrid = function (plans) {
  * @param {number} width - The Creep being ran
  * @param {number} height - The Creep being ran
  * @param {RoomPlans} plans - The Creep being ran
- * @return {{x: number, y: number}|null} the memory object for the creep
+ * @return {Point|null} the memory object for the creep
  */
 Room.prototype.getClearArea = function (width, height, plans) {
     // grab the terrain for the room
@@ -111,14 +112,14 @@ Room.prototype.getClearArea = function (width, height, plans) {
     });
 
     // return the clear spot that is closest to the center
-    return min;
+    return new Point(min.x, min.y);
 };
 /**
  * finds a clear spot that is adjacent to the given x/y coordinate, avoiding any planned structures
  * @param {number} x - The Creep being ran
  * @param {number} y - The Creep being ran
  * @param {RoomPlans} plans - The Creep being ran
- * @return {{x: number, y: number}|null} The Creep being ran
+ * @return {Point|null} The Creep being ran
  */
 Room.prototype.getClearAdjacentLocation = function (x, y, plans) {
     // grab the terrain for the room
@@ -176,7 +177,7 @@ Room.prototype.getClearAdjacentLocation = function (x, y, plans) {
     }
 
     // return one of the clear spots
-    return clear_spots[0];
+    return new Point(clear_spots[0].x, clear_spots[0].y);
 };
 /**
  * spawns the largest version of the given creep in this room
@@ -248,9 +249,9 @@ Room.prototype.createConstructionSites = function (plans) {
     // loop through the source plans for this room
     for (let source_plan of plans.sources) {
         // if the container is not built
-        if (!this.checkFor(source_plan.container_x, source_plan.container_y, STRUCTURE_CONTAINER)) {
+        if (!this.checkFor(source_plan.container_location.x, source_plan.container_location.y, STRUCTURE_CONTAINER)) {
             // try to place the container
-            let result = this.createConstructionSite(source_plan.container_x, source_plan.container_y, STRUCTURE_CONTAINER);
+            let result = this.createConstructionSite(source_plan.container_location.x, source_plan.container_location.y, STRUCTURE_CONTAINER);
             // if creating the site was successful
             if (result == OK) {
                 // increment the site_count
@@ -270,9 +271,9 @@ Room.prototype.createConstructionSites = function (plans) {
     // loop through the mineral plans for this room
     for (let mineral_plan of plans.minerals) {
         // if the container is not built
-        if (!this.checkFor(mineral_plan.container_x, mineral_plan.container_y, STRUCTURE_CONTAINER)) {
+        if (!this.checkFor(mineral_plan.container_location.x, mineral_plan.container_location.y, STRUCTURE_CONTAINER)) {
             // try to place the container
-            let result = this.createConstructionSite(mineral_plan.container_x, mineral_plan.container_y, STRUCTURE_CONTAINER);
+            let result = this.createConstructionSite(mineral_plan.container_location.x, mineral_plan.container_location.y, STRUCTURE_CONTAINER);
             // if creating the site was successful
             if (result == OK) {
                 // increment the site_count
@@ -292,9 +293,9 @@ Room.prototype.createConstructionSites = function (plans) {
     // loop through the planned structures for this room
     for (let structure of plans.structures) {
         // if the structure is not built
-        if (!this.checkFor(structure.x, structure.y, structure.type)) {
+        if (!this.checkFor(structure.location.x, structure.location.y, structure.type)) {
             // try to place the structure
-            let result = this.createConstructionSite(structure.x, structure.y, structure.type);
+            let result = this.createConstructionSite(structure.location.x, structure.location.y, structure.type);
             // if creating the site was successful
             if (result == OK) {
                 // increment the site_count
@@ -315,7 +316,7 @@ Room.prototype.createConstructionSites = function (plans) {
     // loop through the planned structures for this room
     for (let road of plans.roads) {
         // if the structure is not built
-        if (!this.checkFor(road.x, road.y, road.type)) {
+        if (!this.checkFor(road.x, road.y, STRUCTURE_ROAD)) {
             // try to place the structure
             let result = this.createConstructionSite(road.x, road.y, STRUCTURE_ROAD);
             // if creating the site was successful
@@ -339,7 +340,7 @@ Room.prototype.createConstructionSites = function (plans) {
     // loop through the planned structures for this room
     for (let rampart of plans.ramparts) {
         // if the structure is not built
-        if (!this.checkFor(rampart.x, rampart.y, rampart.type)) {
+        if (!this.checkFor(rampart.x, rampart.y, STRUCTURE_RAMPART)) {
             // try to place the structure
             let result = this.createConstructionSite(rampart.x, rampart.y, STRUCTURE_RAMPART);
             // if creating the site was successful
