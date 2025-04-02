@@ -2,8 +2,37 @@
 
 ## JSDoc overhaul
 - add line comments to new code (in progress)
-- review jsdoc descriptions
-- review line comments
+- review jsdoc descriptions (in progress)
+- review line comments (in progress)
+
+files to be verified:
+factory.room_plans.js
+factory.task.js
+global.power_manager.js
+global.room_manager.js
+global.timer.js
+global.util.js
+global.visualizer.js
+main.js
+prototype.creep.js
+prototype.observer.js
+prototype.room.js
+prototype.terminal.js
+prototype.tower.js
+role.attacker.js
+role.builder.js
+role.claimer.js
+role.driller.js
+role.healer.js
+role.operator.js
+role.queen.js
+role.repairer.js
+role.scout.js
+role.transporter.js
+role.upgrader.js
+runner.plant.js
+runner.room.js
+runner.task.js
 
 ## Start using new classes
 Point - holds x and y coordinates

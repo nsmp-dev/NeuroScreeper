@@ -51,4 +51,5 @@ class Task {
     }
 }
 
+// export the Task class
 module.exports = Task;

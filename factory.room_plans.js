@@ -3,7 +3,7 @@ const SourcePlan = require("data.source_plan");
 const MineralPlan = require("data.mineral_plan");
 const ConstructionPlan = require("data.construction_plan");
 
-/** @module PlansFactory */
+/** @module RoomPlansFactory */
 module.exports = {
     /**
      * Plans the initial room, placing the base off the initial spawn's position

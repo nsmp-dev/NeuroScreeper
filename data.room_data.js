@@ -1,4 +1,4 @@
-const RoomDataFactory = require("factory.room_plans");
+const RoomPlansFactory = require("factory.room_plans");
 const RoomPlans = require("data.room_plans");
 const PlantData = require("data.plant_data");
 
@@ -73,12 +73,12 @@ class RoomData {
         // if the initial spawn was provided
         if (initial_spawn != null) {
             // plan the first room
-            RoomDataFactory.planFirstRoom(room, this.plans, initial_spawn);
+            RoomPlansFactory.planFirstRoom(room, this.plans, initial_spawn);
             // set it to be a colony
             this.type = COLONY;
         }else{
             // plan the room normally
-            RoomDataFactory.planRoom(room, this.plans);
+            RoomPlansFactory.planRoom(room, this.plans);
         }
 
         // if this room doesn't have a controller

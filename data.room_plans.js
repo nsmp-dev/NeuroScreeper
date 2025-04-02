@@ -5,7 +5,7 @@
 class RoomPlans {
 
     /**
-     * creates a room plans object
+     * creates a RoomPlans object
      */
     constructor() {
         hlog("Creating a new RoomPlans Object...");
