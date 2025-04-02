@@ -37,19 +37,24 @@ Creep.prototype.runTransporter = function () {
 
             if (target == null || (target.store != undefined && target.store[RESOURCE_ENERGY] == 0)) {
                 this.memory.task = Tasks.idle(this.memory.room_name, 10);
+                this.announceTask();
             }else{
                 this.memory.task = Tasks.gather(target, RESOURCE_ENERGY);
+                this.announceTask();
             }
         }else{
             if (this.room.name == this.memory.nearest_colony_room_name) {
                 let target = this.getDumpTarget();
                 if (target != null) {
                     this.memory.task = Tasks.deposit(target, RESOURCE_ENERGY);
+                    this.announceTask();
                 }else{
                     this.memory.task = Tasks.idle(this.memory.room_name, 10);
+                    this.announceTask();
                 }
             }else{
                 this.memory.task = Tasks.moveRoom(this.memory.nearest_colony_room_name);
+                this.announceTask();
             }
         }
     }

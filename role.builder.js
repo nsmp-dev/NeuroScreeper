@@ -13,15 +13,19 @@ Creep.prototype.runBuilder = function () {
             let target = this.getFillTarget();
             if (target != null) {
                 this.memory.task = Tasks.gather(target, RESOURCE_ENERGY);
+                this.announceTask();
             }else{
                 this.memory.task = Tasks.idle(this.memory.room_name, 10);
+                this.announceTask();
             }
         }else{
             let target = this.getBuildTarget();
             if (target != null) {
                 this.memory.task = Tasks.build(target);
+                this.announceTask();
             }else{
                 this.memory.task = Tasks.idle(this.memory.room_name, 10);
+                this.announceTask();
             }
         }
     }

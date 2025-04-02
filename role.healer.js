@@ -19,9 +19,11 @@ Creep.prototype.runHealer = function () {
             if (target != null) {
                 // save the creep's id in memory
                 this.memory.task = Tasks.heal(target);
+                this.announceTask();
             }else{
                 // assign a new task
                 this.memory.task = Tasks.idle(this.memory.room_name, 10);
+                this.announceTask();
             }
 
         }

@@ -216,4 +216,14 @@ module.exports = {
             }
         }
     },
+    /**
+     * converts RGB values to a hex code for drawing
+     * @param {number} r - the red value
+     * @param {number} g - the green value
+     * @param {number} b - the blue value
+     * @return {string} the resulting hex code, including the #
+     */
+    rgbToHex: function (r, g, b) {
+        return "#" + (1 << 24 | r << 16 | g << 8 | b).toString(16).slice(1);
+    },
 };

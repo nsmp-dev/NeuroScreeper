@@ -16,9 +16,11 @@ Creep.prototype.runAttacker = function () {
             let target = this.pos.findClosestByPath(creeps);
             // assign a new task
             this.memory.task = Tasks.attack(target);
+            this.announceTask();
         }else{
             // assign a new task
             this.memory.task = Tasks.idle(this.memory.room_name, 10);
+            this.announceTask();
         }
     }
 

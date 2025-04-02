@@ -13,15 +13,19 @@ Creep.prototype.runQueen = function () {
             let target = this.room.storage;
             if (target == undefined || target.store[RESOURCE_ENERGY] == 0) {
                 this.memory.task = Tasks.idle(this.memory.room_name, 10);
+                this.announceTask();
             }else{
                 this.memory.task = Tasks.gather(target, RESOURCE_ENERGY);
+                this.announceTask();
             }
         }else{
             let target = this.getQueenDumpTarget();
             if (target != null) {
                 this.memory.task = Tasks.deposit(target, RESOURCE_ENERGY);
+                this.announceTask();
             }else{
                 this.memory.task = Tasks.idle(this.memory.room_name, 10);
+                this.announceTask();
             }
         }
     }

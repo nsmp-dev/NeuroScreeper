@@ -179,6 +179,8 @@ global.TASK_TYPES = {
 global.ATTACKER = {
     // identifying string
     NAME: "attacker",
+    // emoji for shorthand visuals
+    EMOJI: "⚔️",
     // standard body build, can be multiplied arbitrarily to build larger creeps
     BODY: [ATTACK, TOUGH, MOVE, MOVE],
     // energy cost of the body
@@ -200,6 +202,8 @@ global.ATTACKER = {
 global.BUILDER = {
     // identifying string
     NAME: "builder",
+    // emoji for shorthand visuals
+    EMOJI: "🔨",
     // standard body build, can be multiplied arbitrarily to build larger creeps
     BODY: [WORK, CARRY, MOVE, MOVE],
     // energy cost of the body
@@ -221,6 +225,8 @@ global.BUILDER = {
 global.CLAIMER = {
     // identifying string
     NAME: "claimer",
+    // emoji for shorthand visuals
+    EMOJI: "🏰",
     // standard body build, can be multiplied arbitrarily to build larger creeps
     BODY: [CLAIM, MOVE],
     // energy cost of the body
@@ -242,6 +248,8 @@ global.CLAIMER = {
 global.DRILLER = {
     // identifying string
     NAME: "driller",
+    // emoji for shorthand visuals
+    EMOJI: "⛏️",
     // standard body build, can be multiplied arbitrarily to build larger creeps
     BODY: [WORK, MOVE],
     // energy cost of the body
@@ -266,6 +274,8 @@ global.DRILLER = {
 global.HEALER = {
     // identifying string
     NAME: "healer",
+    // emoji for shorthand visuals
+    EMOJI: "⚕️",
     // standard body build, can be multiplied arbitrarily to build larger creeps
     BODY: [HEAL, TOUGH, MOVE, MOVE],
     // energy cost of the body
@@ -287,6 +297,8 @@ global.HEALER = {
 global.QUEEN = {
     // identifying string
     NAME: "queen",
+    // emoji for shorthand visuals
+    EMOJI: "👑",
     // standard body build, can be multiplied arbitrarily to build larger creeps
     BODY: [CARRY, MOVE],
     // energy cost of the body
@@ -308,6 +320,8 @@ global.QUEEN = {
 global.REPAIRER = {
     // identifying string
     NAME: "repairer",
+    // emoji for shorthand visuals
+    EMOJI: "🪛",
     // standard body build, can be multiplied arbitrarily to build larger creeps
     BODY: [WORK, CARRY, MOVE, MOVE],
     // energy cost of the body
@@ -329,6 +343,8 @@ global.REPAIRER = {
 global.SCOUT = {
     // identifying string
     NAME: "scout",
+    // emoji for shorthand visuals
+    EMOJI: "🔭",
     // standard body build, can be multiplied arbitrarily to build larger creeps
     BODY: [MOVE],
     // energy cost of the body
@@ -353,6 +369,8 @@ global.SCOUT = {
 global.TRANSPORTER = {
     // identifying string
     NAME: "transporter",
+    // emoji for shorthand visuals
+    EMOJI: "🚛",
     // standard body build, can be multiplied arbitrarily to build larger creeps
     BODY: [CARRY, MOVE],
     // energy cost of the body
@@ -395,6 +413,8 @@ global.TRANSPORTER = {
 global.UPGRADER = {
     // identifying string
     NAME: "upgrader",
+    // emoji for shorthand visuals
+    EMOJI: "⬆️",
     // standard body build, can be multiplied arbitrarily to build larger creeps
     BODY: [WORK, CARRY, MOVE, MOVE],
     // energy cost of the body

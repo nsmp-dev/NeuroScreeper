@@ -171,3 +171,96 @@ Creep.prototype.run = function () {
             break;
     }
 };
+
+/**
+ * run the relevant function for the role that this creep has
+ */
+Creep.prototype.announceTask = function () {
+    let task = this.memory.task;
+
+    if (task == null) {
+        return;
+    }
+
+    // switch based on the task's type
+    switch (task.type) {
+        // if the task type matches
+        case TASK_TYPES.IDLE:
+            // announce the task
+            this.say("Idling...");
+            // break the switch
+            break;
+        // if the task type matches
+        case TASK_TYPES.GATHER:
+            // announce the task
+            this.say("Gathering " + (task.amount == null ? "some" : task.amount) + " " + task.resource + " from " + task.target.id + "...");
+            // break the switch
+            break;
+        // if the task type matches
+        case TASK_TYPES.DEPOSIT:
+            // announce the task
+            this.say("Depositing " + (task.amount == null ? "some" : task.amount) + " " + task.resource + " in " + task.target.id + "...");
+            // break the switch
+            break;
+        // if the task type matches
+        case TASK_TYPES.REPAIR:
+            // announce the task
+            this.say("Repairing " + task.target.id + "...");
+            // break the switch
+            break;
+        // if the task type matches
+        case TASK_TYPES.BUILD:
+            // announce the task
+            this.say("Building " + task.target.id + "...");
+            // break the switch
+            break;
+        // if the task type matches
+        case TASK_TYPES.UPGRADE:
+            // announce the task
+            this.say("Upgrading " + task.room_name + "'s controller...");
+            // break the switch
+            break;
+        // if the task type matches
+        case TASK_TYPES.CLAIM:
+            // announce the task
+            this.say("Claiming " + task.room_name + "'s controller...");
+            // break the switch
+            break;
+        // if the task type matches
+        case TASK_TYPES.RESERVE:
+            // announce the task
+            this.say("Reserving " + task.room_name + "'s controller...");
+            // break the switch
+            break;
+        // if the task type matches
+        case TASK_TYPES.DRILL:
+            // announce the task
+            this.say("Drilling " + task.target.id + "...");
+            // break the switch
+            break;
+        // if the task type matches
+        case TASK_TYPES.ATTACK:
+            // announce the task
+            this.say("Attacking " + task.target.id + "...");
+            // break the switch
+            break;
+        // if the task type matches
+        case TASK_TYPES.HEAL:
+            // announce the task
+            this.say("Healing " + task.target.id + "...");
+            // break the switch
+            break;
+        // if the task type matches
+        case TASK_TYPES.MOVE_ROOM:
+            // announce the task
+            this.say("Moving to room " + task.room_name + "...");
+            // break the switch
+            break;
+        // if the task type matches
+        case TASK_TYPES.RENEW_OPERATOR:
+            // announce the task
+            this.say("Renewing operator at " + task.target.id + "...");
+            // break the switch
+            break;
+    }
+};

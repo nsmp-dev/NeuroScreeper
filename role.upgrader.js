@@ -13,11 +13,14 @@ Creep.prototype.runUpgrader = function () {
             let target = this.getFillTarget();
             if (target != null) {
                 this.memory.task = Tasks.gather(target, RESOURCE_ENERGY);
+                this.announceTask();
             }else{
                 this.memory.task = Tasks.idle(this.memory.room_name, 10);
+                this.announceTask();
             }
         }else{
             this.memory.task = Tasks.upgrade(this.room.name);
+            this.announceTask();
         }
     }
     // run the task
