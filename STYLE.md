@@ -117,15 +117,15 @@ var TRI_STATE = {
 ```
 
 ### Tags
-@extends - Indicate that a symbol inherits from, and adds to, a parent symbol.
-@class - This function is intended to be called with the "new" keyword.
-@classdesc - Use the following text to describe the entire class.
-@constant - Document an object as a constant.
-@enum - Document a collection of related properties.
-@generator - Indicate that a function is a generator function.
-@global - Document a global object.
-@module - Document a JavaScript module.
-@param - Document the parameter to a function.
-@private - This symbol is meant to be private.
-@returns - Document the return value of a function.
-@static - Document a static member.
+- @extends - Indicate that a symbol inherits from, and adds to, a parent symbol.
+- @class - This function is intended to be called with the "new" keyword.
+- @classdesc - Use the following text to describe the entire class.
+- @constant - Document an object as a constant.
+- @enum - Document a collection of related properties.
+- @generator - Indicate that a function is a generator function.
+- @global - Document a global object.
+- @module - Document a JavaScript module.
+- @param - Document the parameter to a function.
+- @private - This symbol is meant to be private.
+- @returns - Document the return value of a function.
+- @static - Document a static member.
