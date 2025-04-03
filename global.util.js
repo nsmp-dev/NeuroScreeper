@@ -1,3 +1,5 @@
+const Point = require("data.point");
+
 /**
  * utility module, contains creep role constants and commonly used methods
  * @module Util
@@ -5,9 +7,9 @@
 module.exports = {
     /**
      * converts an x/y room coordinate to a string name
-     * @param {number} x - The Creep being ran
-     * @param {number} y - The Creep being ran
-     * @return {string} the memory object for the creep
+     * @param {number} x - x coordinate of the room in the world space
+     * @param {number} y - y coordinate of the room in the world space
+     * @return {string} the string name for the room
      */
     worldXYToRoomName: function (x, y) {
         // get the size of the world
@@ -40,8 +42,8 @@ module.exports = {
     },
     /**
      * converts a string room name to x/y room coordinates
-     * @param {string} name - The Creep being ran
-     * @return {{x: number, y: number}} the memory object for the creep
+     * @param {string} name - The name of the room
+     * @return {Point} the location of the room in world space
      */
     roomNameToWorldXY: function (name) {
         // get the size of the world
@@ -49,10 +51,7 @@ module.exports = {
         // calculate the max number the string name uses
         let max = (size - 2) / 2;
         // the coordinates we are finding
-        let coordinates = {
-            x: -1,
-            y: -1,
-        };
+        let coordinates = new Point(-1, -1);
 
         // if the string contains a W
         if (name.includes("W")) {
@@ -94,9 +93,9 @@ module.exports = {
     },
     /**
      * multiplies an array by num times
-     * @param {Array} arr - The Creep being ran
-     * @param {number} num - The Creep being ran
-     * @return {Array} the memory object for the creep
+     * @param {Array} arr - The array that will be duplicated
+     * @param {number} num - The number of times to repeat the array
+     * @return {Array} the new resultant array
      */
     multiArray: function (arr, num) {
         // create the array we are building
@@ -111,7 +110,7 @@ module.exports = {
     },
     /**
      * generates an id, using a memory entry to ensure no collisions
-     * @return {string} the memory object for the creep
+     * @return {string} the guaranteed unique id
      */
     generateId: function () {
         // if the id counter has not been set before
@@ -142,9 +141,9 @@ module.exports = {
         }
     },
     /**
-     * calculates what percentage of the satisfaction log in the given room data is 1
-     * @param {RoomData} room_data - The Creep being ran
-     * @return {number} the memory object for the creep
+     * calculates what percentage of the satisfaction log in the given room data is true
+     * @param {RoomData} room_data - The room data that holds the satisfaction log
+     * @return {number} the calculated ratio
      */
     getSatisfiedRatio: function (room_data) {
         // the total number of 1s in the room satisfaction log
@@ -163,27 +162,37 @@ module.exports = {
     },
     /**
      * see if a room is available
-     * @param {string} room_name - The Creep being ran
-     * @return {Boolean} the memory object for the creep
+     * @param {string} room_name - The name of the room to test
+     * @return {Boolean} true if the room is available
      */
     isRoomAvailable: function (room_name) {
+        // grab the room
         let room = Game.rooms[room_name];
 
+        // if we don't have vision of the room
         if (room == undefined) {
+            // mark room as unavailable
             return false;
         }
 
+        // grab the status of the room
         let status = Game.map.getRoomStatus(room.name);
+        // if the room is not normal
         if (status.status != "normal") {
+            // mark room as unavailable
             return false;
         }
 
+        // if the owner of the room is not the player
         if (room.controller.owner != undefined && room.controller.owner != USERNAME) {
+            // mark room as unavailable
             return false;
         }
 
+        // find all the hostile creeps in the room
         let hostile_creeps = room.find(FIND_HOSTILE_CREEPS).length;
 
+        // return true if there are no hostile creeps in the room
         return hostile_creeps <= 0;
     },
     /**
@@ -198,10 +207,20 @@ module.exports = {
         str += " | cpu used: " + Game.cpu.getUsed();
         // the current bucket size
         str += " | bucket: " + Game.cpu.bucket;
-        // the average cpu used
-        str += " | avg cpu: " + Memory.average_time;
         // print the summary
         console.log(str);
+    },
+    /**
+     * print all the timers we have
+     */
+    printTimers: function () {
+        // draw a separator
+        console.log("-----Average Times-----");
+        // loop through all the timers
+        for (let id in Memory.timers) {
+            // print the id and average of this timer
+            console.log(id + ": " + Memory.timers[id].average);
+        }
     },
     /**
      * clear all memory except for the id counter
@@ -224,6 +243,7 @@ module.exports = {
      * @return {string} the resulting hex code, including the #
      */
     rgbToHex: function (r, g, b) {
+        // return the string version of the rgb value
         return "#" + (1 << 24 | r << 16 | g << 8 | b).toString(16).slice(1);
     },
 };

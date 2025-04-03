@@ -6,14 +6,6 @@
 - review line comments (in progress)
 
 files to be verified:
-factory.room_plans.js
-factory.task.js
-global.power_manager.js
-global.room_manager.js
-global.timer.js
-global.util.js
-global.visualizer.js
-main.js
 prototype.creep.js
 prototype.observer.js
 prototype.room.js
@@ -34,15 +26,11 @@ runner.plant.js
 runner.room.js
 runner.task.js
 
-## Start using new classes
-Point - holds x and y coordinates
-ConstructionPlan - holds x and y coordinates and a type of structure
-SourcePlan - holds source id, location, and container location
-MineralPlan - holds mineral id, location, and container location
-
-## file renaming
-data.plans_factory.js -> factory.room_plans.js
-data.tasks.js -> factory.task.js
+## rework timer
+work entirely off of memory
+each id gets its own buffer
+add in timers to all major logic
+add printAllTimers function to the visualizer
 
 ## flesh out road anchors
 finish up making road anchors and connecting them to containers

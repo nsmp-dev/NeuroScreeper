@@ -85,6 +85,7 @@ module.exports = {
 
             // add the plans to the plans list
             if (container_location != null) {
+                // create the MineralPlan and push it onto the plans
                 plans.minerals.push(new MineralPlan(mineral.id, mineral.pos.x, mineral.pos.y, container_location.x, container_location.y));
             }
         }
@@ -218,7 +219,6 @@ module.exports = {
         plans.ramparts = plans.ramparts.concat([
             // coordinates of ramparts
             new Point(x + 1, y + 1),
-
             new Point(x + 5, y),
             new Point(x + 1, y),
             new Point(x + 7, y),

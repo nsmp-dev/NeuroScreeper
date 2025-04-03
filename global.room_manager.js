@@ -18,17 +18,14 @@ module.exports = {
         Memory.new_room_timer = 0;
         // create the population
         Memory.populations = {};
-
         // grab one of the names of the spawns
         let spawn_name = Object.keys(Game.spawns)[0];
         // grab the room that spawn is in
         let room = Game.spawns[spawn_name].room;
-
         // initialize the room data entry
         Memory.room_data[room.name] = new RoomData(room, Game.spawns[spawn_name]);
-
         // save the capitol room name
-        Memory.capitol_room_name = room.name;
+        Memory.capitol_room_name = null;
     },
     /**
      * scan for any new rooms and add their data if found
@@ -39,6 +36,7 @@ module.exports = {
             // if we have not scanned this room yet
             if (Memory.room_data[name] == undefined) {
                 hlog("Found a new room!");
+                // create a new RoomData object for the new room
                 Memory.room_data[name] = new RoomData(Game.rooms[name]);
             }
         }
@@ -50,10 +48,8 @@ module.exports = {
         // loop through all the room data
         for (let name in Memory.room_data) {
             // if this room is not used and is a possible colony
-            if (Memory.room_data[name].type == null &&
-                Memory.room_data[name].possible_colony &&
-                Util.isRoomAvailable(name)) {
-                // initialize the room data
+            if (Memory.room_data[name].type == null && Memory.room_data[name].possible_colony && Util.isRoomAvailable(name)) {
+                // set the room type to a colony
                 Memory.room_data[name].type = COLONY;
                 // return true for success
                 return true;
@@ -69,10 +65,8 @@ module.exports = {
         // loop through all the room data
         for (let name in Memory.room_data) {
             // if this room is not used and is a possible expansion
-            if (Memory.room_data[name].type == null &&
-                Memory.room_data[name].possible_expansion &&
-                Util.isRoomAvailable(name)) {
-                // initialize the room data
+            if (Memory.room_data[name].type == null && Memory.room_data[name].possible_expansion && Util.isRoomAvailable(name)) {
+                // set the room type to a colony
                 Memory.room_data[name].type = EXPANSION;
                 // return true for success
                 return true;
@@ -175,6 +169,7 @@ module.exports = {
         // if the population timer has gone off
         if (Memory.population_timer > this.POPULATION_TIMER_LENGTH) {
             hlog("Recounting the population...");
+            // recount the population
             this.countPopulation();
             // reset the population timer
             Memory.population_timer = 0;
@@ -219,10 +214,12 @@ module.exports = {
                     // if we can control more rooms
                     if (colony_count < Game.gcl.level) {
                         hlog("Attempting to add a colony...");
+                        // spawn a new colony
                         this.spawnNewColony();
                     }
                 } else {
                     hlog("Attempting to add an expansion...");
+                    // spawn a new expansion
                     this.spawnNewExpansion();
                 }
             }
@@ -232,8 +229,9 @@ module.exports = {
                 // loop through all the rooms
                 for (let name in Memory.room_data) {
                     // if the room is a colony and has a plant
-                    if (Memory.room_data[name].type == COLONY && Memory.room_data[name].plans.base_location != null) {
+                    if (Memory.room_data[name].type == COLONY && Memory.room_data[name].plans.plant_location != null) {
                         hlog("Designating a new Capitol...");
+                        // store the new capitol room name
                         Memory.capitol_room_name = name;
                         // break out of the loop
                         break;
