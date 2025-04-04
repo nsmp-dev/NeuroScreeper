@@ -13,7 +13,7 @@ hlog("Creating base creep prototypes...");
 
 /**
  * get a building target
- * @return {ConstructionSite} The dot's width, in pixels.
+ * @return {ConstructionSite} The closest construction site
  */
 Creep.prototype.getBuildTarget = function () {
     // find and return the closest construction site
@@ -21,7 +21,7 @@ Creep.prototype.getBuildTarget = function () {
 };
 /**
  * gets a general dumping target
- * @return {Structure} The dot's width, in pixels.
+ * @return {Structure} The closest dumping target
  */
 Creep.prototype.getDumpTarget = function () {
     // find any extensions that are not full
@@ -48,7 +48,7 @@ Creep.prototype.getDumpTarget = function () {
 };
 /**
  * gets a general filling target
- * @return {Structure|Resource} The dot's width, in pixels.
+ * @return {Structure|Resource} The closest target to get energy from
  */
 Creep.prototype.getFillTarget = function () {
     // find any dropped energy
@@ -60,14 +60,14 @@ Creep.prototype.getFillTarget = function () {
         targets = this.room.findFilledContainers();
     }
 
-    // if no spawns are found
+    // if no non-empty containers are found
     if (targets.length == 0 &&
-        // and there is a terminal in the room
-        this.room.terminal != undefined &&
-        // and the terminal is not empty
+        // and there is a storage in the room
+        this.room.storage != undefined &&
+        // and the storage is not empty
         this.room.storage.store[RESOURCE_ENERGY] > 0) {
-        // return the terminal
-        return this.room.terminal;
+        // return the storage
+        return this.room.storage;
     }
 
     // return the closest one by path
@@ -75,18 +75,18 @@ Creep.prototype.getFillTarget = function () {
 };
 /**
  * get a repairing target
- * @return {Structure} The dot's width, in pixels.
+ * @return {Structure} the nearest damaged structure
  */
 Creep.prototype.getRepairTarget = function () {
-    // return the closest damaged structure
+    // return the closest structure
     return this.pos.findClosestByPath(FIND_STRUCTURES, {
-        // declare the filter function to use
+        // if the structure is damaged
         filter: structure => structure.hits < structure.hitsMax,
     });
 };
 /**
  * gets a dumping target for a queen
- * @return {Structure} The dot's width, in pixels.
+ * @return {Structure} The nearest target for dumping energy
  */
 Creep.prototype.getQueenDumpTarget = function () {
     // find all the towers that are not full
@@ -102,6 +102,17 @@ Creep.prototype.getQueenDumpTarget = function () {
     if (targets.length == 0) {
         // find all the spawns that are not full
         targets = this.room.findLowSpawns();
+    }
+
+    // if no spawns were found
+    if (targets.length == 0) {
+        // get the power spawn
+        let power_spawn = this.room.getPowerSpawn();
+        // if a power spawn is found, and it's energy is low
+        if (power_spawn != null && power_spawn.store.getFreeCapacity(RESOURCE_ENERGY) > 0) {
+            // return the power spawn
+            return power_spawn;
+        }
     }
 
     // if no spawns are found
@@ -171,14 +182,16 @@ Creep.prototype.run = function () {
             break;
     }
 };
-
 /**
- * run the relevant function for the role that this creep has
+ * announce the task that the creep is currently assigned
  */
 Creep.prototype.announceTask = function () {
+    // grab the task
     let task = this.memory.task;
 
+    // if the task is not set
     if (task == null) {
+        // exit the function early
         return;
     }
 

@@ -15,7 +15,7 @@ module.exports = {
     },
     /**
      * start a timer, defaults to the main timer
-     * @param {string} id - The Creep being ran
+     * @param {string} id - the id of the timer
      */
     start: function (id = "main") {
         // set the start of the timer
@@ -29,7 +29,7 @@ module.exports = {
     /**
      * stop a timer, defaults to the main timer
      * if stopping the main timer, advance the log and recalculate the average
-     * @param {string} id - The Creep being ran
+     * @param {string} id - the id of the timer
      */
     stop: function (id = "main") {
         // set the end time of the timer

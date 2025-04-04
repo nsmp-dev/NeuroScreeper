@@ -5,32 +5,8 @@
 - review jsdoc descriptions (in progress)
 - review line comments (in progress)
 
-files to be verified:
-prototype.creep.js
-prototype.observer.js
-prototype.room.js
-prototype.terminal.js
-prototype.tower.js
-role.attacker.js
-role.builder.js
-role.claimer.js
-role.driller.js
-role.healer.js
-role.operator.js
-role.queen.js
-role.repairer.js
-role.scout.js
-role.transporter.js
-role.upgrader.js
-runner.plant.js
-runner.room.js
+### files to be verified
 runner.task.js
-
-## rework timer
-work entirely off of memory
-each id gets its own buffer
-add in timers to all major logic
-add printAllTimers function to the visualizer
 
 ## flesh out road anchors
 finish up making road anchors and connecting them to containers
@@ -46,9 +22,23 @@ scan when it gets too long ago, if we have vision
 add in threat system and ownership markers to
 account for threat when spawning new colonies and expansions
 
+## add in fallback logic for creep roles that overlap
+for example, repairers fallback to building and builders fallback to upgrading
+
+## figure out JSDoc documentation rendering
+find out how to render html and md files that will go in a /docs folder
+add these files to a GitHub page
+
 # v0.3
 
+## flesh out operator
+add in logic to fill the currently requested reaction/production
+account for cleanup commands as well
+double-check the reaction/production assignment logic in plant runner
+double-check the cleanup detection
+
 ## new roles
+these roles fill out the operations of end game resource collection
 
 ### power attacker
 attacks power bank

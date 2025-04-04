@@ -9,8 +9,8 @@ const PlantRunner = require('runner.plant');
 module.exports = {
     /**
      * recalculate the population needs and save the requested creeps to room_data
-     * @param {Room} room - The Room we are planning
-     * @param {RoomData} room_data - The Plans for the room.
+     * @param {Room} room - The Room we are running
+     * @param {RoomData} room_data - The room data for the room.
      */
     requestCreeps: function (room, room_data) {
         // grab the population for this room
@@ -64,8 +64,9 @@ module.exports = {
             requested_creeps.push(new BUILDER.BuilderMemory(room.name));
         }
 
-        // count the damaged structures
+        // find all the structures
         let structure_count = room.find(FIND_STRUCTURES, {
+            // that are damaged
             filter: structure => structure.hits < structure.hitsMax,
         }).length;
         // check if a repairer is needed
@@ -82,9 +83,9 @@ module.exports = {
 
         // loop through the minerals
         for (let mineral_id in pop.minerals) {
-            // grab the source data
+            // grab the mineral data
             let mineral_data = pop.minerals[mineral_id];
-            // check if a driller is needed for this source
+            // check if a driller is needed for this mineral
             if (mineral_data.driller == null) {
                 // request a driller
                 requested_creeps.push(new DRILLER.DrillerMemory(
@@ -94,7 +95,7 @@ module.exports = {
                     mineral_data.container_y
                 ));
             }
-            // check if a transporter is needed for this source
+            // check if a transporter is needed for this mineral
             if (mineral_data.transporter == null) {
                 // request a transporter
                 requested_creeps.push(new TRANSPORTER.TransporterMemory(
@@ -106,14 +107,15 @@ module.exports = {
             }
         }
 
-        // count the observers in the room
+        // find all the structures
         let observer_count = room.find(FIND_STRUCTURES, {
+            // that are observers
             filter: structure => structure.structureType == STRUCTURE_OBSERVER,
         }).length;
         // check if a scout is needed
         if (room_data.type == COLONY && observer_count == 0 && (pop[SCOUT.NAME] == undefined || pop[SCOUT.NAME] < 1)) {
             // request a scout
-            requested_creeps.push(new SCOUT.ScoutMemory(room.name));
+            requested_creeps.push(new SCOUT.ScoutMemory(room));
         }
 
         // check if an attacker is needed
@@ -133,15 +135,19 @@ module.exports = {
     },
     /**
      * attempt to spawn any creeps that are requested
-     * @param {Room} room - The Room we are planning
-     * @param {RoomData} room_data - The Plans for the room.
+     * @param {Room} room - The Room we are running
+     * @param {RoomData} room_data - The room data for the room.
      */
     spawnRequestedCreeps: function (room, room_data) {
+        // declare a success variable
         let success;
 
+        // if this room is a colony
         if (room_data.type == COLONY) {
+            // attempt to spawn a creep locally
             success = room.spawnRole(room_data.requested_creeps[0]);
         }else{
+            // attempt to spawn a creep globally
             success = room.spawnRole(room_data.requested_creeps[0], true);
         }
         // check if we successfully spawned the creep
@@ -152,16 +158,16 @@ module.exports = {
     },
     /**
      * calculate to see if the room is satisfied
-     * @param {Room} room - The Room we are planning
-     * @param {RoomData} room_data - The Plans for the room.
+     * @param {Room} room - The Room we are running
+     * @param {RoomData} room_data - The room data for the room.
      */
     calculateSatisfaction: function (room, room_data) {
         // if no creeps are needed
         if (room_data.requested_creeps.length == 0) {
-            // push a 1 to the satisfaction log to show we were satisfied for this tick
+            // push true to the satisfaction log to show we were satisfied for this tick
             room_data.satisfaction_log.push(true);
         } else {
-            // push a 0 to the satisfaction log to show we were unsatisfied for this tick
+            // push false to the satisfaction log to show we were unsatisfied for this tick
             room_data.satisfaction_log.push(false);
         }
 
@@ -184,14 +190,15 @@ module.exports = {
     },
     /**
      * run the colony, kicking off sub-functions for specific activities
-     * @param {Room} room - The Room we are planning
-     * @param {RoomData} room_data - The Plans for the room.
+     * @param {Room} room - The Room we are running
+     * @param {RoomData} room_data - The room data for the room.
      */
     run: function (room, room_data) {
         hlog("Running " + room_data.type + " room: '" + room.name + "'...");
         // if the population timer has gone off
         if (room_data.population_timer > this.POPULATION_TIMER_LENGTH) {
             hlog("Requesting creeps...");
+            // request a new set of creeps
             this.requestCreeps(room, room_data);
             // reset the population timer
             room_data.population_timer = 0;
@@ -206,12 +213,14 @@ module.exports = {
         // if there are any creeps still requested
         if (room_data.requested_creeps.length > 0) {
             hlog("Trying to spawn creeps...");
+            // attempt to spawn another creep
             this.spawnRequestedCreeps(room, room_data);
         }
 
         // check if the construction timer has gone off
         if (room_data.construction_timer > this.CONSTRUCTION_TIMER_LENGTH) {
             hlog("Building construction sites...");
+            // try to create new construction sites
             room.createConstructionSites(room_data.plans);
             // reset the construction timer
             room_data.construction_timer = 0;
@@ -220,7 +229,9 @@ module.exports = {
             room_data.construction_timer++;
         }
 
+        // if the room has a plant
         if (room_data.plans.plant_location != null) {
+            // run the plant
             PlantRunner.run(room, room_data.plant_data);
         }
     },

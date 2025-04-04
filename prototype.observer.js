@@ -1,4 +1,5 @@
 const Util = require('global.util');
+const Point = require("data.point");
 
 hlog("Creating observer prototype...");
 
@@ -18,37 +19,31 @@ StructureObserver.prototype.run = function () {
         let room_coords = Util.roomNameToWorldXY(this.room.name);
         // initialize the log data
         Memory.observer_log[this.room.name] = {
-            // the left bounds of the observers range
-            min_x: room_coords.x - 10,
-            // the top bounds of the observers range
-            min_y: room_coords.y - 10,
-            // the right bounds of the observers range
-            max_x: room_coords.x + 10,
-            // the bottom bounds of the observers range
-            max_y: room_coords.y + 10,
-            // the current room X coordinate
-            current_x: room_coords.x - 10,
-            // the current room Y coordinate
-            current_y: room_coords.y - 10,
+            // the top left bounds of the observers range
+            top_left: new Point(room_coords.x - 10, room_coords.y - 10),
+            // the bottom right bounds of the observers range
+            bottom_right: new Point(room_coords.x + 10, room_coords.y + 10),
+            // the current room coordinate
+            current_location: new Point(room_coords.x - 10, room_coords.y - 10),
         };
     }
 
     // grab this room's observer log
     let log = Memory.observer_log[this.room.name];
     // scan the current target room
-    this.observeRoom(Util.worldXYToRoomName(log.current_x, log.current_y));
+    this.observeRoom(Util.worldXYToRoomName(log.current_location.x, log.current_location.y));
     // increment the current X
-    log.current_x++;
+    log.current_location.x++;
     // if the current room is outside the bounds
-    if (log.current_x >= log.max_x) {
+    if (log.current_location.x >= log.bottom_right.x) {
         // reset the x coordinate to the left bound
-        log.current_x = log.min_x;
+        log.current_location.x = log.top_left.x;
         // increment the current Y
-        log.current_y++;
+        log.current_location.y++;
     }
     // if the current room is outside the bounds
-    if (log.current_y >= log.max_y) {
+    if (log.current_location.y >= log.bottom_right.y) {
         // reset the y coordinate to the top bound
-        log.current_y = log.min_y;
+        log.current_location.y = log.top_left.y;
     }
 };

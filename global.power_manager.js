@@ -9,7 +9,7 @@ module.exports = {
         let lowest_power_id = null;
         // loop through every power
         for (let power_id of POWER_INFO) {
-            // if this is the first power or the operator doesn't have this power or it's a lower level than the lowest
+            // if this is the first power, or the operator doesn't have this power, or it's a lower level than the lowest
             if (lowest_power_id == null || operator.powers[lowest_power_id] == null || operator.powers[lowest_power_id].level < operator.powers[power_id].level) {
                 // save the new lowest power id
                 lowest_power_id = power_id;
@@ -40,7 +40,7 @@ module.exports = {
                 }
             }
         }
-        // if we have not created an operator before and we have the level needed for it
+        // if we have not created an operator before, and we have the level needed for it
         if (Game.powerCreeps["operator"] == undefined && Game.gpl.level > 0 ) {
             hlog("Creating PowerCreep...");
             // create the operator power creep

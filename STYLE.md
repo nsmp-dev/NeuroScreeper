@@ -129,3 +129,56 @@ var TRI_STATE = {
 - @private - This symbol is meant to be private.
 - @returns - Document the return value of a function.
 - @static - Document a static member.
+
+
+# CHANGELOG.md formatting
+
+
+## Types of changes
+- Added: for new features.
+- Changed: for changes in existing functionality.
+- Removed: for now removed features.
+- Fixed: for any bug fixes.
+
+## example
+```markdown
+# Changelog
+
+## [Unreleased]
+
+### Added
+
+- v1.1 Brazilian Portuguese translation.
+- v1.1 German Translation
+
+### Changed
+
+- Use formatter title & description in each language version template
+- Replace broken OpenGraph image with an...
+
+### Removed
+
+- Trademark sign previously shown after...
+
+## [1.1.1] - 2023-03-05
+
+### Added
+
+- Arabic translation (#444).
+- v1.1 French translation.
+- v1.1 Dutch translation (#371).
+
+### Fixed
+
+- Improve French translation (#377).
+- Improve id-ID translation (#416).
+
+### Changed
+
+- Upgrade dependencies: Ruby 3.2.1, Middleman, etc.
+
+### Removed
+
+- Unused normalize.css file.
+- Identical links assigned in each translation file.
+```

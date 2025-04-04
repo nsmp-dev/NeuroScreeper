@@ -1,4 +1,5 @@
 const CreepMemory = require("data.creep_memory");
+const Point = require("data.point");
 
 /**
  * username for comparing controllers
@@ -80,6 +81,11 @@ global.PRODUCTION_TIMER_LENGTH = 10;
  * @constant {number} TERMINAL_TIMER_LENGTH
  */
 global.TERMINAL_TIMER_LENGTH = 100;
+/**
+ * limit of how many construction sites are allowed in a single room
+ * @constant {number} ROOM_CONSTRUCTION_SITE_LIMIT
+ */
+global.ROOM_CONSTRUCTION_SITE_LIMIT = 5;
 /**
  * ratio of ticks that must be satisfied to count as overall satisfied
  * @constant {number} SATISFACTION_THRESHOLD
@@ -353,11 +359,10 @@ global.SCOUT = {
     MAX_BODY_MULTIPLIER: 1,
     // memory class used for this creep
     ScoutMemory: class ScoutMemory extends CreepMemory{
-        constructor(room_name){
-            super(SCOUT.NAME, room_name);
-            this.room_queue = [];
-            this.room_log = [];
-            this.started = false;
+        constructor(room){
+            super(SCOUT.NAME, room.name);
+            this.room_queue = room.getAdjacentRooms();
+            this.room_log = [room.name];
         }
     },
 };
@@ -399,9 +404,8 @@ global.TRANSPORTER = {
 
             this.nearest_colony_room_name = nearest_colony_room_name;
             this.source = source_id;
-            this.container_x = container_x;
-            this.container_y = container_y;
-            this.container = null;
+            this.container_location = new Point(container_x, container_y);
+            this.container_id = null;
         }
     },
 };

@@ -7,6 +7,7 @@ hlog("Creating attacker role...");
  * attacker that attacks hostile creeps in the room
  */
 Creep.prototype.runAttacker = function () {
+    // if we don't have a task currently assigned
     if (this.memory.task == null) {
         // find all hostile creeps in the room
         let creeps = this.room.find(FIND_HOSTILE_CREEPS);
@@ -16,10 +17,12 @@ Creep.prototype.runAttacker = function () {
             let target = this.pos.findClosestByPath(creeps);
             // assign a new task
             this.memory.task = Tasks.attack(target);
+            // announce the new task
             this.announceTask();
         }else{
             // assign a new task
             this.memory.task = Tasks.idle(this.memory.room_name, 10);
+            // announce the new task
             this.announceTask();
         }
     }
