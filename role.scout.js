@@ -7,14 +7,12 @@ hlog("Creating scout role...");
  * scout that explores rooms via a BFS search algorithm
  */
 Creep.prototype.runScout = function () {
-
     // if we don't have a task currently assigned
     if (this.memory.task == null) {
         // shift the queue
         let room_name = this.memory.room_queue.shift();
         // add the room to the log to prevent revisits
         this.memory.room_log.push(room_name);
-
         // find the adjacent rooms
         let adjacent_rooms = this.room.getAdjacentRooms();
 
