@@ -2,6 +2,18 @@
 
 ## [Unreleased]
 
+## [0.2.2] - 2025-04-07
+
+### Added
+- new road and rampart grid on RoomPlan objects
+- road anchors for bases and plant
+- new functions for drawing roads in the RoomPlans factory
+- new distance function in Util
+
+### Changed
+- changed road and rampart arrays to road and rampart grids with booleans
+- construction function on room prototype now uses the new road and rampart grids
+
 ## [0.2.1] - 2025-04-07
 
 ### Added

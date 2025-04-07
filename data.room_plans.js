@@ -1,3 +1,5 @@
+const Point = require("data.point");
+
 /**
  * RoomPlans class, an object containing all the construction plans for a room data object
  * @class RoomPlans
@@ -30,20 +32,41 @@ class RoomPlans {
          */
         this.structures = [];
         /**
-         * points from which we draw roads between
+         * base points from which we draw roads between
          * @type {Point[]}
          */
-        this.road_anchors = [];
+        this.base_road_anchors = [];
         /**
-         * list of roads to place in the room
+         * plant points from which we draw roads between
          * @type {Point[]}
+         */
+        this.plant_road_anchors = [];
+        /**
+         * 2D array of booleans for where to put roads
+         * @type {Boolean[][]}
          */
         this.roads = [];
         /**
-         * list of ramparts to place in the room
-         * @type {Point[]}
+         * 2D array of booleans for where to put ramparts
+         * @type {Boolean[][]}
          */
         this.ramparts = [];
+        // loop through all the room positions
+        for (let x = 0; x < 50; x++) {
+            // push a new row onto the road grid
+            // noinspection JSCheckFunctionSignatures
+            this.roads[x].push([]);
+            // push a new row onto the rampart grid
+            // noinspection JSCheckFunctionSignatures
+            this.ramparts[x].push([]);
+            // loop through all positions on the row
+            for (let y = 0; y < 50; y++) {
+                // push a false onto the roads grid
+                this.roads[x].push(false);
+                // push a false onto the ramparts grid
+                this.ramparts[x].push(false);
+            }
+        }
         /**
          * list of sources and their containers
          * @type {SourcePlan[]}

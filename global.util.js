@@ -246,4 +246,18 @@ module.exports = {
         // return the string version of the rgb value
         return "#" + (1 << 24 | r << 16 | g << 8 | b).toString(16).slice(1);
     },
+    /**
+     * distance between 2 Points
+     * @param {Point} a - the first point
+     * @param {Point} b - the second point
+     * @return {number} the distance between the points
+     */
+    distance: function (a, b) {
+        // get the distance between the x coordinates
+        let x = a.x - b.x;
+        // get the distance between the y coordinates
+        let y = b.y - b.y;
+        // return the hypotenuse of the two points
+        return Math.sqrt( (x * x) + (y * y) );
+    },
 };

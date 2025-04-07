@@ -328,21 +328,28 @@ Room.prototype.createConstructionSites = function (plans) {
     }
 
     // loop through the planned structures for this room
-    for (let road of plans.roads) {
-        // if the structure is not built
-        if (!this.checkFor(STRUCTURE_ROAD, road.x, road.y)) {
-            // try to place the structure
-            let result = this.createConstructionSite(road.x, road.y, STRUCTURE_ROAD);
-            // if creating the site was successful
-            if (result == OK) {
-                // increment the site_count
-                site_count++;
-                // if we have reached 5 or more sites
-                if (site_count >= ROOM_CONSTRUCTION_SITE_LIMIT) {
-                    // break the loop
-                    break;
+    for (let x in plans.roads) {
+        for (let y in plans.roads[x]) {
+            // if the structure is not built
+            if (plans.roads[x][y] && !this.checkFor(STRUCTURE_ROAD, x, y)) {
+                // try to place the structure
+                let result = this.createConstructionSite(x, y, STRUCTURE_ROAD);
+                // if creating the site was successful
+                if (result == OK) {
+                    // increment the site_count
+                    site_count++;
+                    // if we have reached 5 or more sites
+                    if (site_count >= ROOM_CONSTRUCTION_SITE_LIMIT) {
+                        // break the loop
+                        break;
+                    }
                 }
             }
+        }
+        // if we have less than 5 construction sites
+        if (site_count >= ROOM_CONSTRUCTION_SITE_LIMIT) {
+            // break the loop
+            break;
         }
     }
 
@@ -353,21 +360,28 @@ Room.prototype.createConstructionSites = function (plans) {
     }
 
     // loop through the planned structures for this room
-    for (let rampart of plans.ramparts) {
-        // if the structure is not built
-        if (!this.checkFor(STRUCTURE_RAMPART, rampart.x, rampart.y)) {
-            // try to place the structure
-            let result = this.createConstructionSite(rampart.x, rampart.y, STRUCTURE_RAMPART);
-            // if creating the site was successful
-            if (result == OK) {
-                // increment the site_count
-                site_count++;
-                // if we have reached 5 or more sites
-                if (site_count >= ROOM_CONSTRUCTION_SITE_LIMIT) {
-                    // break the loop
-                    break;
+    for (let x in plans.ramparts) {
+        for (let y in plans.ramparts[x]) {
+            // if the structure is not built
+            if (plans.ramparts[x][y] && !this.checkFor(STRUCTURE_RAMPART, x, y)) {
+                // try to place the structure
+                let result = this.createConstructionSite(x, y, STRUCTURE_RAMPART);
+                // if creating the site was successful
+                if (result == OK) {
+                    // increment the site_count
+                    site_count++;
+                    // if we have reached 5 or more sites
+                    if (site_count >= ROOM_CONSTRUCTION_SITE_LIMIT) {
+                        // break the loop
+                        break;
+                    }
                 }
             }
+        }
+        // if we have less than 5 construction sites
+        if (site_count >= ROOM_CONSTRUCTION_SITE_LIMIT) {
+            // break the loop
+            break;
         }
     }
 };

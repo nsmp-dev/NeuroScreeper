@@ -1,13 +1,5 @@
 # v0.2
 
-## flesh out road anchors
-finish up making road anchors and connecting them to containers
-connect lab anchors to the base anchors
-each container gets connected to the nearest anchor
-
-## `global.cmd.js`
-new module for running arbitrary commands
-
 ## RoomManager
 add in logic for "lastScanned" tick
 scan when it gets too long ago, if we have vision
@@ -16,10 +8,6 @@ account for threat when spawning new colonies and expansions
 
 ## add in fallback logic for creep roles that overlap
 for example, repairers fallback to building and builders fallback to upgrading
-
-## figure out JSDoc documentation rendering
-find out how to render html and md files that will go in a /docs folder
-add these files to a GitHub page
 
 # v0.3
 
