@@ -2,6 +2,12 @@
 
 ## [Unreleased]
 
+## [0.2.3] - 2025-04-07
+
+## Changed
+Builders now fallback to repairing and then upgrading
+Repairers now fallback to building and then upgrading
+
 ## [0.2.2] - 2025-04-07
 
 ### Added

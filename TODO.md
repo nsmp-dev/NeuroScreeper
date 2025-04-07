@@ -1,13 +1,6 @@
 # v0.2
 
-## RoomManager
-add in logic for "lastScanned" tick
-scan when it gets too long ago, if we have vision
-add in threat system and ownership markers to
-account for threat when spawning new colonies and expansions
-
-## add in fallback logic for creep roles that overlap
-for example, repairers fallback to building and builders fallback to upgrading
+## final review
 
 # v0.3
 

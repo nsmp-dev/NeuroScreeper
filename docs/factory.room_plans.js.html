@@ -30,6 +30,7 @@
 const SourcePlan = require("data.source_plan");
 const MineralPlan = require("data.mineral_plan");
 const ConstructionPlan = require("data.construction_plan");
+const Util = require("global.util");
 
 /** @module RoomPlansFactory */
 module.exports = {
@@ -52,6 +53,10 @@ module.exports = {
         this.planPlantLocation(room, plans);
         // fill the plant with plans for the structures based on the plant location
         this.planPlant(room, plans);
+        // plan the roads between the base and the sources and minerals
+        this.planRoads(room, plans);
+        // plan the ramparts on top of all the structures planned
+        this.planRamparts(room, plans);
         // find a location that is not around anything to send the idle creeps in the room
         this.planIdleLocation(room, plans);
     },
@@ -73,6 +78,10 @@ module.exports = {
         this.planPlantLocation(room, plans);
         // fill the plant with plans for the structures based on the plant location
         this.planPlant(room, plans);
+        // plan the roads between the base and the sources and minerals
+        this.planRoads(room, plans);
+        // plan the ramparts on top of all the structures planned
+        this.planRamparts(room, plans);
         // find a location that is not around anything to send the idle creeps in the room
         this.planIdleLocation(room, plans);
     },
@@ -243,197 +252,64 @@ module.exports = {
             new ConstructionPlan(x + 5, y + 6, STRUCTURE_OBSERVER),
             new ConstructionPlan(x + 7, y + 10, STRUCTURE_TERMINAL),
         ]);
-        // add to the list of ramparts
-        plans.ramparts = plans.ramparts.concat([
-            // coordinates of ramparts
-            new Point(x + 1, y + 1),
-            new Point(x + 5, y),
-            new Point(x + 1, y),
-            new Point(x + 7, y),
-            new Point(x + 11, y),
-            new Point(x, y + 1),
-            new Point(x + 2, y + 1),
-            new Point(x + 3, y + 1),
-            new Point(x + 5, y + 1),
-            new Point(x + 7, y + 1),
-            new Point(x + 9, y + 1),
-            new Point(x + 10, y + 1),
-            new Point(x + 12, y + 1),
-            new Point(x + 1, y + 2),
-            new Point(x + 3, y + 2),
-            new Point(x + 4, y + 2),
-            new Point(x + 5, y + 2),
-            new Point(x + 7, y + 2),
-            new Point(x + 8, y + 2),
-            new Point(x + 9, y + 2),
-            new Point(x + 11, y + 2),
-            new Point(x + 1, y + 3),
-            new Point(x + 2, y + 3),
-            new Point(x + 4, y + 3),
-            new Point(x + 5, y + 3),
-            new Point(x + 7, y + 3),
-            new Point(x + 8, y + 3),
-            new Point(x + 10, y + 3),
-            new Point(x + 11, y + 3),
-            new Point(x + 2, y + 4),
-            new Point(x + 3, y + 4),
-            new Point(x + 9, y + 4),
-            new Point(x + 10, y + 4),
-            new Point(x, y + 5),
-            new Point(x + 1, y + 5),
-            new Point(x + 2, y + 5),
-            new Point(x + 3, y + 5),
-            new Point(x + 9, y + 5),
-            new Point(x + 10, y + 5),
-            new Point(x + 11, y + 5),
-            new Point(x + 12, y + 5),
-            new Point(x, y + 7),
-            new Point(x + 1, y + 7),
-            new Point(x + 2, y + 7),
-            new Point(x + 3, y + 7),
-            new Point(x + 9, y + 7),
-            new Point(x + 10, y + 7),
-            new Point(x + 11, y + 7),
-            new Point(x + 12, y + 7),
-            new Point(x + 2, y + 8),
-            new Point(x + 3, y + 8),
-            new Point(x + 9, y + 8),
-            new Point(x + 10, y + 8),
-            new Point(x + 1, y + 9),
-            new Point(x + 2, y + 9),
-            new Point(x + 4, y + 9),
-            new Point(x + 5, y + 9),
-            new Point(x + 7, y + 9),
-            new Point(x + 8, y + 9),
-            new Point(x + 10, y + 9),
-            new Point(x + 11, y + 9),
-            new Point(x + 1, y + 10),
-            new Point(x + 3, y + 10),
-            new Point(x + 4, y + 10),
-            new Point(x + 5, y + 10),
-            new Point(x + 7, y + 10),
-            new Point(x + 8, y + 10),
-            new Point(x + 9, y + 10),
-            new Point(x + 11, y + 10),
-            new Point(x, y + 11),
-            new Point(x + 2, y + 11),
-            new Point(x + 3, y + 11),
-            new Point(x + 5, y + 11),
-            new Point(x + 7, y + 11),
-            new Point(x + 9, y + 11),
-            new Point(x + 10, y + 11),
-            new Point(x + 12, y + 11),
-            new Point(x + 1, y + 12),
-            new Point(x + 5, y + 12),
-            new Point(x + 7, y + 12),
-            new Point(x + 11, y + 12),
-            new Point(x + 7, y + 6),
-            new Point(x + 4, y + 7),
-            new Point(x + 8, y + 7),
-            new Point(x + 4, y + 9),
-            new Point(x + 8, y + 9),
-            new Point(x + 5, y + 10),
-            new Point(x + 5, y + 8),
-            new Point(x + 7, y + 8),
-            new Point(x + 6, y + 9),
-            new Point(x + 6, y + 7),
-            new Point(x + 5, y + 6),
-            new Point(x + 7, y + 10),
+        // add in the roads inside the base
+        plans.roads[x][y] = true;
+        plans.roads[x + 6][y] = true;
+        plans.roads[x + 12][y] = true;
+        plans.roads[x + 1][y + 1] = true;
+        plans.roads[x + 6][y + 1] = true;
+        plans.roads[x + 11][y + 1] = true;
+        plans.roads[x + 2][y + 2] = true;
+        plans.roads[x + 6][y + 2] = true;
+        plans.roads[x + 10][y + 2] = true;
+        plans.roads[x + 3][y + 3] = true;
+        plans.roads[x + 6][y + 3] = true;
+        plans.roads[x + 9][y + 3] = true;
+        plans.roads[x + 4][y + 4] = true;
+        plans.roads[x + 6][y + 4] = true;
+        plans.roads[x + 8][y + 4] = true;
+        plans.roads[x + 5][y + 5] = true;
+        plans.roads[x + 7][y + 5] = true;
+        plans.roads[x][y + 6] = true;
+        plans.roads[x + 1][y + 6] = true;
+        plans.roads[x + 2][y + 6] = true;
+        plans.roads[x + 3][y + 6] = true;
+        plans.roads[x + 4][y + 6] = true;
+        plans.roads[x + 6][y + 6] = true;
+        plans.roads[x + 8][y + 6] = true;
+        plans.roads[x + 9][y + 6] = true;
+        plans.roads[x + 10][y + 6] = true;
+        plans.roads[x + 11][y + 6] = true;
+        plans.roads[x + 12][y + 6] = true;
+        plans.roads[x + 5][y + 7] = true;
+        plans.roads[x + 7][y + 7] = true;
+        plans.roads[x + 4][y + 8] = true;
+        plans.roads[x + 6][y + 8] = true;
+        plans.roads[x + 8][y + 8] = true;
+        plans.roads[x + 3][y + 9] = true;
+        plans.roads[x + 6][y + 9] = true;
+        plans.roads[x + 9][y + 9] = true;
+        plans.roads[x + 2][y + 10] = true;
+        plans.roads[x + 6][y + 10] = true;
+        plans.roads[x + 10][y + 10] = true;
+        plans.roads[x + 1][y + 11] = true;
+        plans.roads[x + 6][y + 11] = true;
+        plans.roads[x + 11][y + 11] = true;
+        plans.roads[x][y + 12] = true;
+        plans.roads[x + 6][y + 12] = true;
+        plans.roads[x + 12][y + 12] = true;
+
+        // store the road anchors for further road planning
+        plans.base_road_anchors = [
             new Point(x, y),
             new Point(x + 6, y),
             new Point(x + 12, y),
-            new Point(x + 1, y + 1),
-            new Point(x + 6, y + 1),
-            new Point(x + 11, y + 1),
-            new Point(x + 2, y + 2),
-            new Point(x + 6, y + 2),
-            new Point(x + 10, y + 2),
-            new Point(x + 3, y + 3),
-            new Point(x + 6, y + 3),
-            new Point(x + 9, y + 3),
-            new Point(x + 4, y + 4),
-            new Point(x + 6, y + 4),
-            new Point(x + 8, y + 4),
-            new Point(x + 5, y + 5),
-            new Point(x + 7, y + 5),
             new Point(x, y + 6),
-            new Point(x + 1, y + 6),
-            new Point(x + 2, y + 6),
-            new Point(x + 3, y + 6),
-            new Point(x + 4, y + 6),
-            new Point(x + 6, y + 6),
-            new Point(x + 8, y + 6),
-            new Point(x + 9, y + 6),
-            new Point(x + 10, y + 6),
-            new Point(x + 11, y + 6),
             new Point(x + 12, y + 6),
-            new Point(x + 5, y + 7),
-            new Point(x + 7, y + 7),
-            new Point(x + 4, y + 8),
-            new Point(x + 6, y + 8),
-            new Point(x + 8, y + 8),
-            new Point(x + 3, y + 9),
-            new Point(x + 6, y + 9),
-            new Point(x + 9, y + 9),
-            new Point(x + 2, y + 10),
-            new Point(x + 6, y + 10),
-            new Point(x + 10, y + 10),
-            new Point(x + 1, y + 11),
-            new Point(x + 6, y + 11),
-            new Point(x + 11, y + 11),
             new Point(x, y + 12),
             new Point(x + 6, y + 12),
             new Point(x + 12, y + 12),
-        ]);
-        // add to the list of roads
-        plans.roads = plans.roads.concat([
-            // coordinates of roads
-            new Point(x, y),
-            new Point(x + 6, y),
-            new Point(x + 12, y),
-            new Point(x + 1, y + 1),
-            new Point(x + 6, y + 1),
-            new Point(x + 11, y + 1),
-            new Point(x + 2, y + 2),
-            new Point(x + 6, y + 2),
-            new Point(x + 10, y + 2),
-            new Point(x + 3, y + 3),
-            new Point(x + 6, y + 3),
-            new Point(x + 9, y + 3),
-            new Point(x + 4, y + 4),
-            new Point(x + 6, y + 4),
-            new Point(x + 8, y + 4),
-            new Point(x + 5, y + 5),
-            new Point(x + 7, y + 5),
-            new Point(x, y + 6),
-            new Point(x + 1, y + 6),
-            new Point(x + 2, y + 6),
-            new Point(x + 3, y + 6),
-            new Point(x + 4, y + 6),
-            new Point(x + 6, y + 6),
-            new Point(x + 8, y + 6),
-            new Point(x + 9, y + 6),
-            new Point(x + 10, y + 6),
-            new Point(x + 11, y + 6),
-            new Point(x + 12, y + 6),
-            new Point(x + 5, y + 7),
-            new Point(x + 7, y + 7),
-            new Point(x + 4, y + 8),
-            new Point(x + 6, y + 8),
-            new Point(x + 8, y + 8),
-            new Point(x + 3, y + 9),
-            new Point(x + 6, y + 9),
-            new Point(x + 9, y + 9),
-            new Point(x + 2, y + 10),
-            new Point(x + 6, y + 10),
-            new Point(x + 10, y + 10),
-            new Point(x + 1, y + 11),
-            new Point(x + 6, y + 11),
-            new Point(x + 11, y + 11),
-            new Point(x, y + 12),
-            new Point(x + 6, y + 12),
-            new Point(x + 12, y + 12),
-        ]);
+        ];
     },
     /**
      * locate a suitable location to place a plant
@@ -481,33 +357,23 @@ module.exports = {
             new ConstructionPlan(x + 3, y + 1, STRUCTURE_LAB),
             new ConstructionPlan(x + 2, y + 2, STRUCTURE_LAB),
         ]);
-        // concat the rampart lists together
-        plans.ramparts = plans.ramparts.concat([
-            // coordinates and type of the structure
-            new Point(x, y),
-            new Point(x + 1, y),
-            new Point(x + 2, y),
-            new Point(x + 3, y),
-            new Point(x, y + 1),
-            new Point(x + 1, y + 1),
-            new Point(x + 2, y + 1),
-            new Point(x + 3, y + 1),
-            new Point(x, y + 2),
-            new Point(x + 1, y + 2),
-            new Point(x + 2, y + 2),
-            new Point(x + 3, y + 2),
-        ]);
-        // concat the road lists together
-        plans.roads = plans.roads.concat([
-            // coordinates and type of the structure
+        // add in the roads inside the plant
+        plans.roads[x + 1][y] = true;
+        plans.roads[x + 3][y] = true;
+        plans.roads[x][y + 1] = true;
+        plans.roads[x + 1][y + 1] = true;
+        plans.roads[x + 2][y + 1] = true;
+        plans.roads[x + 1][y + 2] = true;
+        plans.roads[x + 3][y + 2] = true;
+
+        // store the road anchors for further road planning
+        plans.plant_road_anchors = [
             new Point(x + 1, y),
             new Point(x + 3, y),
             new Point(x, y + 1),
-            new Point(x + 1, y + 1),
-            new Point(x + 2, y + 1),
             new Point(x + 1, y + 2),
             new Point(x + 3, y + 2),
-        ]);
+        ];
     },
     /**
      * find a location that is not around anything to send the idle creeps in the room
@@ -521,6 +387,136 @@ module.exports = {
         if (idle_location != null) {
             // save the coordinates of the idle location
             plans.idle_location = idle_location;
+        }
+    },
+    /**
+     * adds roads between the source and mineral containers and the road anchors
+     * @param {Room} room - The Room we are planning
+     * @param {RoomPlans} plans - The Plans for the room.
+     */
+    planRoads: function (room, plans) {
+        // if this room has a base
+        if (plans.base_location != null) {
+            // for each source plan
+            for (let source_plan of plans.sources) {
+                // draw roads between it and the closest anchor
+                this.planRoadsBetween(plans.base_road_anchors, [source_plan.container_location], room, plans);
+            }
+            // for each mineral plan
+            for (let mineral_plan of plans.minerals) {
+                // draw roads between it and the closest anchor
+                this.planRoadsBetween(plans.base_road_anchors, [mineral_plan.container_location], room, plans);
+            }
+            // if the room has a plant
+            if (plans.plant_location != null) {
+                // draw roads between an anchor on the plant and the base
+                this.planRoadsBetween(plans.base_road_anchors, plans.plant_road_anchors, room, plans);
+            }
+            // grab the left exits
+            let left_exits = room.find(FIND_EXIT_LEFT);
+
+            // if any were found
+            if (left_exits.length > 0) {
+                // draw roads between an anchor and one of the exits
+                this.planRoadsBetween(plans.base_road_anchors, left_exits, room, plans);
+            }
+
+            // grab the top exits
+            let top_exits = room.find(FIND_EXIT_TOP);
+
+            // if any were found
+            if (top_exits.length > 0) {
+                // draw roads between an anchor and one of the exits
+                this.planRoadsBetween(plans.base_road_anchors, top_exits, room, plans);
+            }
+
+            // grab the right exits
+            let right_exits = room.find(FIND_EXIT_RIGHT);
+
+            // if any were found
+            if (right_exits.length > 0) {
+                // draw roads between an anchor and one of the exits
+                this.planRoadsBetween(plans.base_road_anchors, right_exits, room, plans);
+            }
+
+            // grab the bottom exits
+            let bottom_exits = room.find(FIND_EXIT_BOTTOM);
+
+            // if any were found
+            if (bottom_exits.length > 0) {
+                // draw roads between an anchor and one of the exits
+                this.planRoadsBetween(plans.base_road_anchors, bottom_exits, room, plans);
+            }
+        }
+    },
+    /**
+     * adds ramparts on top of all structures in the plans
+     * @param {Room} room - The Room we are planning
+     * @param {RoomPlans} plans - The Plans for the room.
+     */
+    planRamparts: function (room, plans) {
+        // if the room has a base
+        if (plans.base_location != null) {
+            // loop through all the planned structures
+            for (let construction_plan of plans.structures) {
+                // mark that spot for a rampart
+                plans.ramparts[construction_plan.location.x][construction_plan.location.y] = true;
+            }
+
+            // loop through all the source plans
+            for (let source_plan of plans.sources) {
+                // mark that spot for a rampart
+                plans.ramparts[source_plan.container_location.x][source_plan.container_location.y] = true;
+            }
+
+            // loop through all the mineral plans
+            for (let mineral_plan of plans.minerals) {
+                // mark that spot for a rampart
+                plans.ramparts[mineral_plan.container_location.x][mineral_plan.container_location.y] = true;
+            }
+        }
+    },
+    /**
+     * adds roads on a path between two points chosen from the given arrays, using the closest two points in them
+     * @param {Point[] | RoomPosition[]} first_points - first array of points to choose from when drawing the roads
+     * @param {Point[] | RoomPosition[]} second_points - second array of points to choose from when drawing the roads
+     * @param {Room} room - The Room we are planning
+     * @param {RoomPlans} plans - The Plans for the room.
+     */
+    planRoadsBetween: function (first_points, second_points, room, plans) {
+        // default the closest first point to the first in the array
+        let closest_first_point = first_points[0];
+        // default the closest second point to the first in the array
+        let closest_second_point = second_points[0];
+        // record the closest distance between the points
+        let closest_distance = Util.distance(closest_first_point, closest_second_point);
+        // loop through all the first points
+        for (let first_point of first_points) {
+            // loop through all the second points
+            for (let second_point of second_points) {
+                // if the distance between the two points is lower than the closest
+                if (Util.distance(first_point, second_point) &lt; closest_distance) {
+                    // record the new closest first point
+                    closest_first_point = first_point;
+                    // record the new closest second point
+                    closest_second_point = second_point;
+                    // record the new closest distance
+                    closest_distance = Util.distance(first_point, second_point);
+                }
+            }
+        }
+
+        // create a position for pathfinding
+        let a_pos = new RoomPosition(closest_first_point.x, closest_first_point.y, room.name);
+        // create a second position for pathfinding
+        let b_pos = new RoomPosition(closest_second_point.x, closest_second_point.y, room.name);
+        // find the path between the points
+        let path = room.findPath(a_pos, b_pos);
+
+        // loop through all the positions of the path
+        for (let position of path) {
+            // mark that position as a road
+            plans.roads[position.x][position.y] = true;
         }
     },
 };</code></pre>
@@ -539,7 +535,7 @@ module.exports = {
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Mon Apr 07 2025 09:24:15 GMT-0500 (Central Daylight Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Mon Apr 07 2025 15:04:23 GMT-0500 (Central Daylight Time)
 </footer>
 
 <script> prettyPrint(); </script>

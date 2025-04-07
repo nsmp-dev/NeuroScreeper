@@ -35,10 +35,21 @@ Creep.prototype.runBuilder = function () {
                 // announce the new task
                 this.announceTask();
             }else{
-                // assign a new task
-                this.memory.task = Tasks.idle(this.memory.room_name, 10);
-                // announce the new task
-                this.announceTask();
+                // find a new repair target
+                let repair_target = this.getRepairTarget();
+                // if we found a target
+                if (repair_target != null) {
+                    // assign a new task
+                    this.memory.task = Tasks.repair(repair_target);
+                    // announce the new task
+                    this.announceTask();
+                }else{
+                    // assign a new task
+                    this.memory.task = Tasks.upgrade(this.memory.room_name);
+                    // announce the new task
+                    this.announceTask();
+                }
+
             }
         }
     }
