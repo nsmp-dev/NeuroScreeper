@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## [0.2.1] - 2025-04-07
+
 ### Added
 - plant for extra endgame buildings
 - operator role for doing plant operations

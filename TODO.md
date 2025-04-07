@@ -1,13 +1,5 @@
 # v0.2
 
-## JSDoc overhaul
-- add line comments to new code (in progress)
-- review jsdoc descriptions (in progress)
-- review line comments (in progress)
-
-### files to be verified
-runner.task.js
-
 ## flesh out road anchors
 finish up making road anchors and connecting them to containers
 connect lab anchors to the base anchors
