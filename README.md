@@ -10,7 +10,9 @@ Role-based, polished AI for the programming game Screeps.
 - fully mechanically complete: uses all mechanics and systems in the game
 - raw Javascript only, no typescript, no libraries, no compilation, no obfuscation, no syntactic sugar
 
-## Spawning
+## Documentation
+[Click here for documentation](https://nsmp-dev.github.io/screeps/)
+### Spawning
 Your first spawn must be placed with a clearance of 5 spaces to it's left, 6 to the top and bottom, and 7 to the right.
 This allows for ample room for a base to be built in the first room.
 

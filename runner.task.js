@@ -28,7 +28,7 @@ module.exports = {
                 creep.memory.task = null;
                 // if the target is a resource
             }else if (target instanceof Resource) {
-                // if attempting to pickup the resource results in not being in range
+                // if attempting to pick up the resource results in not being in range
                 if (creep.pickup(target) == ERR_NOT_IN_RANGE) {
                     // move to the resource
                     creep.moveTo(target);
