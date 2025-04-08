@@ -79,7 +79,7 @@ module.exports = {
             // grab the target
             let target = Game.getObjectById(task.target);
             // if the target is not valid or empty
-            if (target == null || target.getFreeCapacity(task.resource) == 0) {
+            if (target == null || target.store.getFreeCapacity(task.resource) == 0) {
                 // clear the task
                 creep.memory.task = null;
             }else {
@@ -240,7 +240,7 @@ module.exports = {
             // if we are at the location of the container
             if (creep.pos.isEqualTo(task.location.x, task.location.y)) {
                 // harvest from the assigned source
-                creep.harvest(Game.getObjectById(task.memory.source));
+                creep.harvest(target);
             } else {
                 // move to the location of the container
                 creep.moveTo(task.location.x, task.location.y);

@@ -1,6 +1,7 @@
 const RoomPlansFactory = require("factory.room_plans");
 const RoomPlans = require("data.room_plans");
 const PlantData = require("data.plant_data");
+const Timer = require("global.timer");
 
 /**
  * RoomData class, an object that contains all the memory for a room
@@ -14,6 +15,7 @@ class RoomData {
      */
     constructor(room, initial_spawn = null) {
         hlog("Creating a new RoomData Object...");
+        Timer.start("creating_room_data");
         /**
          * type of the room
          * @type {number|null}
@@ -120,6 +122,8 @@ class RoomData {
             // initialize the plant data
             this.plant_data = new PlantData(this.plans);
         }
+        
+        Timer.stop("creating_room_data");
     }
 }
 // export the RoomData class

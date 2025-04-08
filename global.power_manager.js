@@ -22,7 +22,6 @@ module.exports = {
      * Manages the operator and handles spawning/upgrading/renewing the operator
      */
     run: function () {
-        hlog("Running PowerManager...");
         // make a list for the power spawns
         let power_spawns = [];
         // loop through all the structures

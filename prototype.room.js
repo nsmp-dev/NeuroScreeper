@@ -236,6 +236,7 @@ Room.prototype.spawnRole = function (memory, is_global = false) {
                     // provide the given memory
                     memory: memory,
                 });
+                hlog("spawning a " + memory.role);
                 // mark this as a success
                 success = true;
             }

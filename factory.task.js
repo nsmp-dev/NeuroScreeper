@@ -57,6 +57,7 @@ module.exports = {
         task.target = target.id;
         // name of the room the target is in
         task.room_name = target.room.name;
+        task.resource = RESOURCE_ENERGY;
         // return the new task
         return task;
     },
@@ -72,6 +73,7 @@ module.exports = {
         task.target = target.id;
         // name of the room the target is in
         task.room_name = target.room.name;
+        task.resource = RESOURCE_ENERGY;
         // return the new task
         return task;
     },
@@ -85,6 +87,7 @@ module.exports = {
         let task = new Task(TASK_TYPES.UPGRADE);
         // name of the room the task is in
         task.room_name = room_name;
+        task.resource = RESOURCE_ENERGY;
         // return the new task
         return task;
     },

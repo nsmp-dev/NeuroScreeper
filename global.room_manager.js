@@ -79,7 +79,6 @@ module.exports = {
      * count up all the creeps in the game
      */
     countPopulation: function () {
-        hlog("counting the population...");
         // create our population object
         let pop = {};
 
@@ -167,7 +166,7 @@ module.exports = {
      */
     run: function () {
         // if the population timer has gone off
-        if (Memory.population_timer > this.POPULATION_TIMER_LENGTH) {
+        if (Memory.population_timer > COUNT_POPULATION_TIMER_LENGTH) {
             hlog("Recounting the population...");
             // recount the population
             this.countPopulation();
@@ -179,7 +178,7 @@ module.exports = {
         }
 
         // if the new room timer has gone off
-        if (Memory.new_room_timer > this.NEW_ROOM_TIMER_LENGTH) {
+        if (Memory.new_room_timer > NEW_ROOM_TIMER_LENGTH) {
             hlog("Checking if we can add a new room...");
             // default to satisfied
             let satisfied = true;

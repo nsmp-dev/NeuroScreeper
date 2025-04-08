@@ -1,5 +1,6 @@
 const Util = require('global.util');
 const PlantRunner = require('runner.plant');
+const Timer = require('global.timer');
 
 /**
  * this is a room runner: it contains logic for running each kind of room
@@ -34,8 +35,8 @@ module.exports = {
                 requested_creeps.push(new DRILLER.DrillerMemory(
                     room.name,
                     source_id,
-                    source_data.container_x,
-                    source_data.container_y
+                    source_data.container_location.x,
+                    source_data.container_location.y
                 ));
             }
             // check if a transporter is needed for this source
@@ -44,14 +45,14 @@ module.exports = {
                 requested_creeps.push(new TRANSPORTER.TransporterMemory(
                     room.name,
                     source_id,
-                    source_data.container_x,
-                    source_data.container_y
+                    source_data.container_location.x,
+                    source_data.container_location.y
                 ));
             }
         }
 
         // check if an upgrader is needed
-        if (room_data.type == COLONY && [UPGRADER.NAME] == undefined || pop[UPGRADER.NAME] < 1) {
+        if (room_data.type == COLONY && (pop[UPGRADER.NAME] == undefined || pop[UPGRADER.NAME] < 1)) {
             // request an upgrader
             requested_creeps.push(new UPGRADER.UpgraderMemory(room.name));
         }
@@ -91,8 +92,8 @@ module.exports = {
                 requested_creeps.push(new DRILLER.DrillerMemory(
                     room.name,
                     mineral_data,
-                    mineral_data.container_x,
-                    mineral_data.container_y
+                    mineral_data.container_location.x,
+                    mineral_data.container_location.y
                 ));
             }
             // check if a transporter is needed for this mineral
@@ -101,8 +102,8 @@ module.exports = {
                 requested_creeps.push(new TRANSPORTER.TransporterMemory(
                     room.name,
                     mineral_data,
-                    mineral_data.container_x,
-                    mineral_data.container_y
+                    mineral_data.container_location.x,
+                    mineral_data.container_location.y
                 ));
             }
         }
@@ -172,13 +173,13 @@ module.exports = {
         }
 
         // check if the satisfaction log is too big
-        if (room_data.satisfaction_log.length > this.SATISFACTION_LOG_SIZE) {
+        while (room_data.satisfaction_log.length > SATISFACTION_LOG_SIZE) {
             // remove the first element
             room_data.satisfaction_log.shift();
         }
 
         // calculate the average satisfaction and see if it meets the threshold of satisfaction
-        room_data.satisfied = (Util.getSatisfiedRatio(room_data) > this.SATISFACTION_THRESHOLD);
+        room_data.satisfied = (Util.getSatisfiedRatio(room_data) > SATISFACTION_THRESHOLD);
 
         /* TODO: uncomment this and setup detection for room death
         // check if we have lost control of the controller
@@ -196,10 +197,12 @@ module.exports = {
     run: function (room, room_data) {
         hlog("Running " + room_data.type + " room: '" + room.name + "'...");
         // if the population timer has gone off
-        if (room_data.population_timer > this.POPULATION_TIMER_LENGTH) {
+        if (room_data.population_timer > REQUEST_POPULATION_TIMER_LENGTH) {
             hlog("Requesting creeps...");
             // request a new set of creeps
+            Timer.start("requesting_creeps");
             this.requestCreeps(room, room_data);
+            Timer.stop("requesting_creeps");
             // reset the population timer
             room_data.population_timer = 0;
         } else {
@@ -218,10 +221,12 @@ module.exports = {
         }
 
         // check if the construction timer has gone off
-        if (room_data.construction_timer > this.CONSTRUCTION_TIMER_LENGTH) {
+        if (room_data.construction_timer > CONSTRUCTION_TIMER_LENGTH) {
             hlog("Building construction sites...");
+            Timer.start("constructing_plans");
             // try to create new construction sites
             room.createConstructionSites(room_data.plans);
+            Timer.stop("constructing_plans");
             // reset the construction timer
             room_data.construction_timer = 0;
         } else {
@@ -232,7 +237,9 @@ module.exports = {
         // if the room has a plant
         if (room_data.plans.plant_location != null) {
             // run the plant
+            Timer.start("running_plant");
             PlantRunner.run(room, room_data.plant_data);
+            Timer.stop("running_plant");
         }
     },
 };

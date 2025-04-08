@@ -1,4 +1,5 @@
 const Point = require("data.point");
+const Timer = require("global.timer");
 
 /**
  * RoomPlans class, an object containing all the construction plans for a room data object
@@ -11,6 +12,7 @@ class RoomPlans {
      */
     constructor() {
         hlog("Creating a new RoomPlans Object...");
+        Timer.start("creating_room_plans");
         /**
          * coordinates of the idle location
          * @type {Point|null}
@@ -55,10 +57,10 @@ class RoomPlans {
         for (let x = 0; x < 50; x++) {
             // push a new row onto the road grid
             // noinspection JSCheckFunctionSignatures
-            this.roads[x].push([]);
+            this.roads.push([]);
             // push a new row onto the rampart grid
             // noinspection JSCheckFunctionSignatures
-            this.ramparts[x].push([]);
+            this.ramparts.push([]);
             // loop through all positions on the row
             for (let y = 0; y < 50; y++) {
                 // push a false onto the roads grid
@@ -102,6 +104,7 @@ class RoomPlans {
          * @type {Point|null}
          */
         this.power_spawn_location = null;
+        Timer.stop("creating_room_plans");
     }
 }
 

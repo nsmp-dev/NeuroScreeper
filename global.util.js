@@ -219,7 +219,7 @@ module.exports = {
         // loop through all the timers
         for (let id in Memory.timers) {
             // print the id and average of this timer
-            console.log(id + ": " + Memory.timers[id].average);
+            console.log(id + ": " + Memory.timers[id].average_time);
         }
     },
     /**

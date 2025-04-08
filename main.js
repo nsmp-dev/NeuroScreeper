@@ -13,6 +13,9 @@ const PowerManager = require('global.power_manager');
 
 // the main loop that gets run every tick
 module.exports.loop = function () {
+    hlog("-------------------------------------");
+    hlog("-------------------------------------");
+    hlog("-------------------------------------");
     // wipe the memory if the build has changed
     if (Memory.build != BUILD) {
         hlog("Build has changed, clearing memory...");

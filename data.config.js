@@ -15,7 +15,7 @@ global.DEBUG_MODE = true;
  * change the build number to trigger a memory wipe
  * @constant {number} BUILD
  */
-global.BUILD = 6;
+global.BUILD = 4;
 /**
  * how many previous ticks to maintain for average cpu time
  * @constant {number} LOG_SIZE
@@ -267,8 +267,7 @@ global.DRILLER = {
         constructor(room_name, source_id, container_x, container_y){
             super(DRILLER.NAME, room_name);
             this.source = source_id;
-            this.container_x = container_x;
-            this.container_y = container_y;
+            this.container_location = new Point(container_x, container_y);
         }
     },
 };
@@ -361,8 +360,8 @@ global.SCOUT = {
     ScoutMemory: class ScoutMemory extends CreepMemory{
         constructor(room){
             super(SCOUT.NAME, room.name);
-            this.room_queue = room.getAdjacentRooms();
-            this.room_log = [room.name];
+            this.room_queue = [room.name];
+            this.room_log = [];
         }
     },
 };
@@ -390,10 +389,14 @@ global.TRANSPORTER = {
             let nearest_colony_room_name = null;
             let lowest_distance = null;
 
-            for (let test_room_name of Memory.room_data) {
+            for (let test_room_name in Memory.room_data) {
                 let test_room_data = Memory.room_data[test_room_name];
                 if (test_room_data.type == COLONY) {
-                    let distance = Game.map.getRoomLinearDistance(room_name, test_room_data);
+                    let distance = 0;
+                    if (room_name != test_room_name) {
+                        distance = Game.map.getRoomLinearDistance(room_name, test_room_data);
+                    }
+                    
 
                     if (nearest_colony_room_name == null || distance < lowest_distance) {
                         nearest_colony_room_name = test_room_name;

@@ -41,7 +41,7 @@ module.exports = {
                 // the log of the past times
                 log: [],
                 // the average of the times
-                average: 0,
+                average_time: 0,
             };
         }
         // push the total time onto the timer log
@@ -61,6 +61,6 @@ module.exports = {
             total += time;
         });
         // calculate and store the average time
-        Memory.timers[id].average_time = total / Memory.timer_logs[id].log.length;
+        Memory.timers[id].average_time = total / Memory.timers[id].log.length;
     },
 };
