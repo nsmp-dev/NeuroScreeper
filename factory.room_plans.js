@@ -95,7 +95,7 @@ module.exports = {
             // add the plans to the plans list
             if (container_location != null) {
                 // create the MineralPlan and push it onto the plans
-                plans.minerals.push(new MineralPlan(mineral.id, mineral.pos.x, mineral.pos.y, container_location.x, container_location.y));
+                plans.minerals.push(new MineralPlan(mineral.id, mineral.pos.x, mineral.pos.y, container_location.x, container_location.y, mineral.mineralType));
             }
         }
     },

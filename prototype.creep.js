@@ -3,6 +3,8 @@ require('role.builder');
 require('role.claimer');
 require('role.driller');
 require('role.healer');
+require('role.mineral_driller');
+require('role.mineral_transporter');
 require('role.queen');
 require('role.repairer');
 require('role.scout');
@@ -164,6 +166,12 @@ Creep.prototype.run = function () {
             break;
         case HEALER.NAME:
             this.runHealer();
+            break;
+        case MINERAL_DRILLER.NAME:
+            this.runMineralDriller();
+            break;
+        case MINERAL_TRANSPORTER.NAME:
+            this.runMineralTransporter();
             break;
         case QUEEN.NAME:
             this.runQueen();

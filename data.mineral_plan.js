@@ -12,8 +12,10 @@ class MineralPlan {
      * @param {number} mineral_y - y coordinate of the mineral
      * @param {number} container_x - x coordinate of the container
      * @param {number} container_y - y coordinate of the container
+     * @param {string} resource_type - type of resource this mineral has
+     *
      */
-    constructor(mineral_id, mineral_x, mineral_y, container_x, container_y) {
+    constructor(mineral_id, mineral_x, mineral_y, container_x, container_y, resource_type) {
         /**
          * id of the Mineral object
          * @type {string}
@@ -29,6 +31,11 @@ class MineralPlan {
          * @type {Point}
          */
         this.container_location = new Point(container_x, container_y);
+        /**
+         * type of resource this mineral contains
+         * @type {string}
+         */
+        this.resource_type = resource_type;
     }
 }
 

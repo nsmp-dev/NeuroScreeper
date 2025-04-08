@@ -2,11 +2,25 @@
 
 ## [Unreleased]
 
+## [0.2.4] - 2025-04-08
+
+## Added
+- RoomPopulation class for standardizing population operations
+- MineralDriller and MineralTransporter roles
+- new resource type property on mineral plans
+- new architecture documentation on file structure and task system
+
+## Changed
+- mineral plans adjusted to hold locations
+- modified population counting to use the new class
+- visualizer updated to use the RoomPopulation class
+- simplified population requesting by not having to check for undefined roles
+
 ## [0.2.3] - 2025-04-07
 
 ## Changed
-Builders now fallback to repairing and then upgrading
-Repairers now fallback to building and then upgrading
+- Builders now fallback to repairing and then upgrading
+- Repairers now fallback to building and then upgrading
 
 ## [0.2.2] - 2025-04-07
 

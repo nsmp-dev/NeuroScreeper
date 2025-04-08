@@ -1,4 +1,5 @@
 require('data.config');
+require('data.roles');
 require('prototype.room');
 require('prototype.creep');
 require('prototype.tower');

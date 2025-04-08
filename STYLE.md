@@ -31,7 +31,7 @@ from variable/class/function names alone.
 - functions
 - methods
 ### filenames
-files get name in the format: `scope.name.js`, where `scope` is one of: global, prototype, data, or role.
+files get name in the format: `scope.name.js`, where `scope` is one of: data, runner, factory, global, prototype, data, or role.
 `main.js` is an exception to this rule as it is main and it's special
 
 ## example code
@@ -130,9 +130,7 @@ var TRI_STATE = {
 - @returns - Document the return value of a function.
 - @static - Document a static member.
 
-
 # CHANGELOG.md formatting
-
 
 ## Types of changes
 - Added: for new features.

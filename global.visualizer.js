@@ -34,13 +34,17 @@ module.exports = {
         let offset_y = 0;
 
         // for each role in the population
-        for (let role in pop) {
-            if (ROLES[role] != undefined) {
+        for (let role in pop.roles) {
+            // if the role has any creeps
+            if (pop.roles[role] > 0) {
                 // draw the role and the population of it
-                room.visual.text(ROLES[role].EMOJI + ": " + pop[role], 1, 1 + offset_y, {font: 0.8});
+                room.visual.text(ROLES[role].EMOJI + ": " + pop.roles[role], 1, 1 + offset_y, {font: 0.8});
                 // increment the offset
                 offset_y++;
             }
         }
+
+        // draw total population of the room
+        room.visual.text("total : " + pop.total, 1, 1 + offset_y, {font: 0.8});
     },
 };

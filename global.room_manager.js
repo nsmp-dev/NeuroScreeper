@@ -1,5 +1,6 @@
 const Util = require("global.util");
 const RoomData = require("data.room_data");
+const RoomPopulation = require("data.room_population");
 
 /**
  * handles scanning/adding new rooms
@@ -13,7 +14,7 @@ module.exports = {
         // create the room data object
         Memory.room_data = {};
         // set the population timer to 2 ticks from now
-        Memory.population_timer = this.POPULATION_TIMER_LENGTH - 2;
+        Memory.population_timer = COUNT_POPULATION_TIMER_LENGTH - 2;
         // start the new room timer
         Memory.new_room_timer = 0;
         // create the population
@@ -89,39 +90,7 @@ module.exports = {
                 Memory.room_data[name].type == EXPANSION) {
 
                 // create the room's population object
-                pop[name] = {};
-                // create the sources array for counting drillers and transporters
-                pop[name].sources = {};
-                // create the minerals array for counting drillers and transporters
-                pop[name].minerals = {};
-                // create the total amount of creeps
-                pop[name].total = 0;
-
-                // loop through the source plans
-                for (let source_plan of Memory.room_data[name].plans.sources) {
-                    // create the source entry on the population object
-                    pop[name].sources[source_plan.source_id] = {
-                        // empty slot to record a driller if found
-                        driller: null,
-                        // empty slot to record a transporter if found
-                        transporter: null,
-                        // x coordinate of the container assigned to this source
-                        container_location: source_plan.container_location,
-                    };
-                }
-
-                // loop through the mineral plans
-                for (let mineral_plan of Memory.room_data[name].plans.minerals) {
-                    // create the source entry on the population object
-                    pop[name].sources[mineral_plan.mineral_id] = {
-                        // empty slot to record a driller if found
-                        driller: null,
-                        // empty slot to record a transporter if found
-                        transporter: null,
-                        // x coordinate of the container assigned to this source
-                        container_location: mineral_plan.container_location,
-                    };
-                }
+                pop[name] = new RoomPopulation(Memory.room_data[name].plans);
             }
         }
 
@@ -130,20 +99,8 @@ module.exports = {
             // grab the creep
             let creep = Game.creeps[name];
 
-            // if this room is not initialized yet
-            if (pop[creep.memory.room_name] == undefined) {
-                // initialize it
-                pop[creep.memory.room_name] = {};
-            }
-
-            // if the count for this role is not set
-            if (pop[creep.memory.room_name][creep.memory.role] == undefined) {
-                // set it to 0
-                pop[creep.memory.room_name][creep.memory.role] = 0;
-            }
-
             // increment the count of the creep's role
-            pop[creep.memory.room_name][creep.memory.role]++;
+            pop[creep.memory.room_name].roles[creep.memory.role]++;
             // increment the total
             pop[creep.memory.room_name].total++;
 
@@ -156,6 +113,16 @@ module.exports = {
             if (creep.memory.role == TRANSPORTER.NAME) {
                 // set the entry for the transporter to the id of the creep
                 pop[creep.memory.room_name].sources[creep.memory.source].transporter = creep.id;
+            }
+            // if this creep is a mineral driller
+            if (creep.memory.role == MINERAL_DRILLER.NAME) {
+                // set the entry for the driller to the id of the creep
+                pop[creep.memory.room_name].minerals[creep.memory.mineral].mineral_driller = creep.id;
+            }
+            // if this creep is a transporter
+            if (creep.memory.role == MINERAL_TRANSPORTER.NAME) {
+                // set the entry for the transporter to the id of the creep
+                pop[creep.memory.room_name].minerals[creep.memory.source].mineral_transporter = creep.id;
             }
         }
         // store the populations

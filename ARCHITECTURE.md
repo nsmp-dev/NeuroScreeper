@@ -27,78 +27,81 @@ Nearly every single line of code is commented and explained.
 The code should be self-explaining, with documentation being optional to understand it.
 Documentation is optional but extensive, containing design notes as well as usage guides.
 
-# Roles
+# file structure
+files are labeled in a `scope.name.js` format.
+The scope specifies the type of file, and is one of the following:
+- data - Class file that is serializable and storable in memory
+- factory - Module that has methods for creating complex data objects
+- runner - Module with methods to run a data object, effectively holding its logic
+- global - Module that is globally available and consistent, providing high-level and common operations
+- role - Creep role logic for assigning and running their tasks
+- prototype - extra functions that get added to game classes, cutting down on bloat
 
+# Task system
+Low level actions such as "get this resource from here" or "idle here" or "build this" are stored as Tasks on the Creep.
+Tasks can detect when the task is done and delete themselves or restore an old task.
+Decision trees are only utilized if the task is empty, this cuts down on CPU time heavily.
+This also cuts down on duplicated code, reducing footprint and improving stability
+
+# JSDoc usage
+All systems have JSDoc type hints to utilize IDE features for debugging.
+Also helps with autocomplete and forcing documentation standards.
+You can re-generate the documentation site using `npm run generate`.
+
+# Roles
 This is a list of the creep roles that are utilized.
 Each one gets some initial data in memory and then from there work independently and do not require oversight.
 These are all implemented as prototypes onto the built-in Creep type to allow for native use like `creep.run()`
 
 ## attacker
-
 Defends whatever room they are assigned to
 
 ## builder
-
 Builds any construction sites in the room
 
 ## claimer
-
 Claims or reserves the room it is assigned to, depending on the room's type
 
 ## commodity collector
-
 Finds commodities and returns them to the capitol
 
 ## driller
-
 Harvests a given energy source, standing over it's assigned container
 
 ## healer
-
 Heals any creeps in the assigned room
 
 ## mineral driller
-
 Harvests the mineral in the room, standing over it's assigned container
 
 ## mineral transporter
-
 Transports the mined minerals to the capitol
 
 ## operator power creep
-
 Able to operate factory to enable it
 Transports reagents to labs and products back to storage
 Transports commodities into and from the factory
 
 ## power attacker
-
 Attacks a power bank
 
 ## power healer
-
 Heals the attacker it is assigned to
 
 ## power transporter
-
 Follows the assigned attacker and picks up power, taking it back to the capitol
 
 ## queen
-
 Takes energy from the storage and puts it into the tower, extensions, or the terminal
 
 ## repairer
-
 Repairs any structures in the room, used before towers are unlocked
 
 ## scout
-
 Scouts out new rooms using simple search algorithm
 
 ## transporter
-
 Moves energy from assigned container back to the spawn/extensions/storage
 
 ## upgrader
-
 Upgrades the room's controller to level it up and maintain ownership
