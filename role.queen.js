@@ -1,4 +1,37 @@
 /**
+ * Queen name, body, and initializers
+ * @constant {Object} QUEEN
+ */
+global.QUEEN = {
+    // identifying string
+    NAME: "queen",
+    // emoji for shorthand visuals
+    EMOJI: "👑",
+    // standard body build, can be multiplied arbitrarily to build larger creeps
+    BODY: [CARRY, MOVE],
+    // energy cost of the body
+    ENERGY_COST: 150,
+    // max times the body can be multiplied
+    MAX_BODY_MULTIPLIER: 25,
+};
+global.ROLES[QUEEN.NAME] = QUEEN;
+
+/**
+ * QueenMemory class, storing data for an attacker
+ * @class QueenMemory
+ */
+class QueenMemory extends CreepMemory{
+    /**
+     * creates an QueenMemory object
+     * @param {string} room_name - The name of the room this creep is assigned to
+     */
+    constructor(room_name){
+        super(QUEEN.NAME, room_name);
+    }
+}
+global.QueenMemory = QueenMemory;
+
+/**
  * queen that takes energy from the storage and dumps it into the towers, terminal, and extensions
  */
 Creep.prototype.runQueen = function () {

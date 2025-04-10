@@ -1,4 +1,59 @@
 /**
+ * Transporter name, body, and initializers
+ * @constant {Object} TRANSPORTER
+ */
+global.TRANSPORTER = {
+    // identifying string
+    NAME: "transporter",
+    // emoji for shorthand visuals
+    EMOJI: "🚛",
+    // standard body build, can be multiplied arbitrarily to build larger creeps
+    BODY: [CARRY, MOVE],
+    // energy cost of the body
+    ENERGY_COST: 100,
+    // max times the body can be multiplied
+    MAX_BODY_MULTIPLIER: 25,
+};
+global.ROLES[TRANSPORTER.NAME] = TRANSPORTER;
+
+/**
+ * TransporterMemory class, storing data for an attacker
+ * @class TransporterMemory
+ */
+class TransporterMemory extends CreepMemory{
+    /**
+     * creates an TransporterMemory object
+     * @param {string} room_name - The name of the room this creep is assigned to
+     * @param {string} source_id - The name of the room this creep is assigned to
+     * @param {Point} container_location - The name of the room this creep is assigned to
+     */
+    constructor(room_name, source_id, container_location){
+        super(TRANSPORTER.NAME, room_name);
+        /**
+         * type of task being created
+         * @type {string}
+         */
+        this.nearest_colony_room_name = Util.getNearestColony(room_name);
+        /**
+         * type of task being created
+         * @type {string}
+         */
+        this.source = source_id;
+        /**
+         * type of task being created
+         * @type {Point}
+         */
+        this.container_location = container_location;
+        /**
+         * type of task being created
+         * @type {string|null}
+         */
+        this.container_id = null;
+    }
+}
+global.TransporterMemory = TransporterMemory;
+
+/**
  * transporter that takes energy from the containers under drillers and dumps the energy into the base
  */
 Creep.prototype.runTransporter = function () {

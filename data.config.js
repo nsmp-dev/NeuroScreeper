@@ -174,3 +174,9 @@ global.TASK_TYPES = {
     /** renewing the operator at the power spawn */
     RENEW_OPERATOR: 12,
 };
+
+/**
+ * hash table for grabbing role constants using their id strings
+ * @constant {Object} ROLES
+ */
+global.ROLES = {};

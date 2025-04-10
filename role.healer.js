@@ -1,4 +1,37 @@
 /**
+ * Healer name, body, and initializers
+ * @constant {Object} HEALER
+ */
+global.HEALER = {
+    // identifying string
+    NAME: "healer",
+    // emoji for shorthand visuals
+    EMOJI: "⚕️",
+    // standard body build, can be multiplied arbitrarily to build larger creeps
+    BODY: [HEAL, TOUGH, MOVE, MOVE],
+    // energy cost of the body
+    ENERGY_COST: 360,
+    // max times the body can be multiplied
+    MAX_BODY_MULTIPLIER: 12,
+};
+global.ROLES[HEALER.NAME] = HEALER;
+
+/**
+ * HealerMemory class, storing data for a healer
+ * @class HealerMemory
+ */
+class HealerMemory extends CreepMemory{
+    /**
+     * creates an HealerMemory object
+     * @param {string} room_name - The name of the room this creep is assigned to
+     */
+    constructor(room_name){
+        super(HEALER.NAME, room_name);
+    }
+}
+global.HealerMemory = HealerMemory;
+
+/**
  * healer that heals any damaged creeps in the room
  */
 Creep.prototype.runHealer = function () {

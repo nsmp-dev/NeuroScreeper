@@ -1,4 +1,47 @@
 /**
+ * Scout name, body, and initializers
+ * @constant {Object} SCOUT
+ */
+global.SCOUT = {
+    // identifying string
+    NAME: "scout",
+    // emoji for shorthand visuals
+    EMOJI: "🔭",
+    // standard body build, can be multiplied arbitrarily to build larger creeps
+    BODY: [MOVE],
+    // energy cost of the body
+    ENERGY_COST: 50,
+    // max times the body can be multiplied
+    MAX_BODY_MULTIPLIER: 1,
+};
+global.ROLES[SCOUT.NAME] = SCOUT;
+
+/**
+ * ScoutMemory class, storing data for an attacker
+ * @class ScoutMemory
+ */
+class ScoutMemory extends CreepMemory{
+    /**
+     * creates an ScoutMemory object
+     * @param {string} room_name - The name of the room this creep is assigned to
+     */
+    constructor(room_name){
+        super(SCOUT.NAME, room_name);
+        /**
+         * type of task being created
+         * @type {string[]}
+         */
+        this.room_queue = [room_name];
+        /**
+         * type of task being created
+         * @type {string[]}
+         */
+        this.room_log = [];
+    }
+}
+global.ScoutMemory = ScoutMemory;
+
+/**
  * scout that explores rooms via a BFS search algorithm
  */
 Creep.prototype.runScout = function () {

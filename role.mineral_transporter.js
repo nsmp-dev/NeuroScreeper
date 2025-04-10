@@ -1,4 +1,65 @@
 /**
+ * Mineral Transporter name, body, and initializers
+ * @constant {Object} MINERAL_TRANSPORTER
+ */
+global.MINERAL_TRANSPORTER = {
+    // identifying string
+    NAME: "mineral_transporter",
+    // emoji for shorthand visuals
+    EMOJI: "🚛",
+    // standard body build, can be multiplied arbitrarily to build larger creeps
+    BODY: [CARRY, MOVE],
+    // energy cost of the body
+    ENERGY_COST: 100,
+    // max times the body can be multiplied
+    MAX_BODY_MULTIPLIER: 25,
+};
+global.ROLES[MINERAL_TRANSPORTER.NAME] = MINERAL_TRANSPORTER;
+
+/**
+ * MineralTransporterMemory class, storing data for a mineral transporter
+ * @class MineralTransporterMemory
+ */
+class MineralTransporterMemory extends CreepMemory{
+    /**
+     * creates an MineralTransporterMemory object
+     * @param {string} room_name - The name of the room this creep is assigned to
+     * @param {string} mineral_id - The id of the assigned mineral
+     * @param {Point} container_location - The location of the assigned container
+     * @param {string} resource_type - The type of resource this mineral produces
+     */
+    constructor(room_name, mineral_id, container_location, resource_type){
+        super(MINERAL_TRANSPORTER.NAME, room_name);
+        /**
+         * type of task being created
+         * @type {string}
+         */
+        this.nearest_colony_room_name = Util.getNearestColony(room_name);
+        /**
+         * type of task being created
+         * @type {string}
+         */
+        this.mineral = mineral_id;
+        /**
+         * type of task being created
+         * @type {Point}
+         */
+        this.container_location = container_location;
+        /**
+         * type of task being created
+         * @type {string}
+         */
+        this.resource_type = resource_type;
+        /**
+         * type of task being created
+         * @type {string|null}
+         */
+        this.container_id = null;
+    }
+}
+global.MineralTransporterMemory = MineralTransporterMemory;
+
+/**
  * mineral transporter that moves minerals from the assigned container to storage
  */
 Creep.prototype.runMineralTransporter = function () {

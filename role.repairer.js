@@ -1,4 +1,37 @@
 /**
+ * Repairer name, body, and initializers
+ * @constant {Object} REPAIRER
+ */
+global.REPAIRER = {
+    // identifying string
+    NAME: "repairer",
+    // emoji for shorthand visuals
+    EMOJI: "🪛",
+    // standard body build, can be multiplied arbitrarily to build larger creeps
+    BODY: [WORK, CARRY, MOVE, MOVE],
+    // energy cost of the body
+    ENERGY_COST: 250,
+    // max times the body can be multiplied
+    MAX_BODY_MULTIPLIER: 12,
+};
+global.ROLES[REPAIRER.NAME] = REPAIRER;
+
+/**
+ * RepairerMemory class, storing data for an attacker
+ * @class RepairerMemory
+ */
+class RepairerMemory extends CreepMemory{
+    /**
+     * creates an RepairerMemory object
+     * @param {string} room_name - The name of the room this creep is assigned to
+     */
+    constructor(room_name){
+        super(REPAIRER.NAME, room_name);
+    }
+}
+global.RepairerMemory = RepairerMemory;
+
+/**
  * repairer that repairs any damaged structures in the room
  */
 Creep.prototype.runRepairer = function () {

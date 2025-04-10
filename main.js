@@ -7,14 +7,13 @@ require('data.plant_data');
 require('data.point');
 require('data.production');
 require('data.reaction');
-require('data.roles');
 require('data.room_data');
 require('data.room_plans');
 require('data.room_population');
 require('data.source_plan');
 require('data.source_population');
 require('data.tasks');
-require('factory.room_plans')
+require('factory.room_plans');
 require('global.power_manager');
 require('global.room_manager');
 require('global.timer');

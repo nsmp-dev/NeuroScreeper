@@ -1,4 +1,37 @@
 /**
+ * Builder name, body, and initializer
+ * @constant {Object} BUILDER
+ */
+global.BUILDER = {
+    // identifying string
+    NAME: "builder",
+    // emoji for shorthand visuals
+    EMOJI: "🔨",
+    // standard body build, can be multiplied arbitrarily to build larger creeps
+    BODY: [WORK, CARRY, MOVE, MOVE],
+    // energy cost of the body
+    ENERGY_COST: 250,
+    // max times the body can be multiplied
+    MAX_BODY_MULTIPLIER: 12,
+};
+global.ROLES[BUILDER.NAME] = BUILDER;
+
+/**
+ * BuilderMemory class, storing data for a builder
+ * @class BuilderMemory
+ */
+class BuilderMemory extends CreepMemory{
+    /**
+     * creates an BuilderMemory object
+     * @param {string} room_name - The name of the room this creep is assigned to
+     */
+    constructor(room_name){
+        super(BUILDER.NAME, room_name);
+    }
+}
+global.BuilderMemory = BuilderMemory;
+
+/**
  * builder that builds any construction sites that are found
  */
 Creep.prototype.runBuilder = function () {
