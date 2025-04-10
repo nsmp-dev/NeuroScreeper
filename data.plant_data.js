@@ -1,5 +1,3 @@
-const Point = require("data.point");
-
 /**
  * PlantData class, an object that contains all the memory for a plant
  * @class PlantData
@@ -105,4 +103,4 @@ class PlantData {
 }
 
 // exports the PlantData class
-module.exports = PlantData;
+global.PlantData = PlantData;

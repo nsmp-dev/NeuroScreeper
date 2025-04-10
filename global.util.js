@@ -1,10 +1,8 @@
-const Point = require("data.point");
-
 /**
  * utility module, contains creep role constants and commonly used methods
- * @module Util
+ * @constant {Object} Util
  * */
-module.exports = {
+global.Util = {
     /**
      * converts an x/y room coordinate to a string name
      * @param {number} x - x coordinate of the room in the world space
@@ -259,5 +257,31 @@ module.exports = {
         let y = b.y - b.y;
         // return the hypotenuse of the two points
         return Math.sqrt( (x * x) + (y * y) );
+    },
+    /**
+     * distance between 2 Points
+     * @param {string} room_name - the name of the room we are searching from
+     * @return {string|null} the name of the nearest room
+     */
+    getNearestColony: function (room_name) {
+        let nearest_colony_room_name = null;
+        let lowest_distance = null;
+
+        for (let test_room_name in Memory.room_data) {
+            let test_room_data = Memory.room_data[test_room_name];
+            if (test_room_data.type == COLONY) {
+                let distance = 0;
+                if (room_name != test_room_name) {
+                    distance = Game.map.getRoomLinearDistance(room_name, test_room_data);
+                }
+
+                if (nearest_colony_room_name == null || distance < lowest_distance) {
+                    nearest_colony_room_name = test_room_name;
+                    lowest_distance = distance;
+                }
+            }
+        }
+
+        return nearest_colony_room_name;
     },
 };

@@ -1,8 +1,3 @@
-const RoomPlansFactory = require("factory.room_plans");
-const RoomPlans = require("data.room_plans");
-const PlantData = require("data.plant_data");
-const Timer = require("global.timer");
-
 /**
  * RoomData class, an object that contains all the memory for a room
  * @class RoomData
@@ -127,4 +122,4 @@ class RoomData {
     }
 }
 // export the RoomData class
-module.exports = RoomData;
+global.RoomData = RoomData;

@@ -1,8 +1,3 @@
-const Tasks = require("factory.task");
-const TaskRunner = require("runner.task");
-
-hlog("Creating queen role...");
-
 /**
  * queen that takes energy from the storage and dumps it into the towers, terminal, and extensions
  */
@@ -22,12 +17,12 @@ Creep.prototype.runQueen = function () {
             // if the storage isn't built or is empty
             if (target == undefined || target.store[RESOURCE_ENERGY] == 0) {
                 // assign a new task
-                this.memory.task = Tasks.idle(this.memory.room_name, 10);
+                this.memory.task = new IdleTask(this.memory.room_name, 10);
                 // announce the new task
                 this.announceTask();
             }else{
                 // assign a new task
-                this.memory.task = Tasks.gather(target, RESOURCE_ENERGY);
+                this.memory.task = new GatherTask(target, RESOURCE_ENERGY);
                 // announce the new task
                 this.announceTask();
             }
@@ -43,12 +38,12 @@ Creep.prototype.runQueen = function () {
             // if a new target was found
             if (target != null) {
                 // assign a new task
-                this.memory.task = Tasks.deposit(target, RESOURCE_ENERGY);
+                this.memory.task = new DepositTask(target, RESOURCE_ENERGY);
                 // announce the new task
                 this.announceTask();
             }else{
                 // assign a new task
-                this.memory.task = Tasks.idle(this.memory.room_name, 10);
+                this.memory.task = new IdleTask(this.memory.room_name, 10);
                 // announce the new task
                 this.announceTask();
             }

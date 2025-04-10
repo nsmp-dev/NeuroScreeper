@@ -1,5 +1,3 @@
-const Point = require("data.point");
-
 /**
  * ConstructionPlan class, an object that contains data for planning a structure
  * @class ConstructionPlan
@@ -26,4 +24,4 @@ class ConstructionPlan {
 }
 
 // export the ConstructionPlan class
-module.exports = ConstructionPlan;
+global.ConstructionPlan = ConstructionPlan;

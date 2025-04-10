@@ -1,8 +1,3 @@
-const Tasks = require("factory.task");
-const TaskRunner = require("runner.task");
-
-hlog("Creating operator role...");
-
 /**
  * run the observer, keeping a log of rooms to be scanned and scanning the next one
  */
@@ -14,14 +9,14 @@ PowerCreep.prototype.runOperator = function (plant_data) {
         // if a power spawn was found
         if (power_spawn != null) {
             // assign a new task
-            this.memory.task = Tasks.renewOperator(power_spawn, this.memory.task);
+            this.memory.task = new RenewOperatorTask(power_spawn, this.memory.task);
         }
     }
 
     // if we don't have a task currently assigned
     if (this.memory.task == null) {
         // assign a new task
-        this.memory.task = Tasks.idle(this.room.name);
+        this.memory.task = new IdleTask(this.room.name);
     }
     // run the task
     TaskRunner.run(this);

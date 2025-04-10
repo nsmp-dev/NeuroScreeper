@@ -35,4 +35,4 @@ class Reaction {
 }
 
 // exports the Reaction class
-module.exports = Reaction;
+global.Reaction = Reaction;

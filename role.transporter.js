@@ -1,8 +1,3 @@
-const Tasks = require("factory.task");
-const TaskRunner = require("runner.task");
-
-hlog("Creating transporter role...");
-
 /**
  * transporter that takes energy from the containers under drillers and dumps the energy into the base
  */
@@ -41,12 +36,12 @@ Creep.prototype.runTransporter = function () {
             // if the target is still null or empty
             if (target == null || (target.store != undefined && target.store[RESOURCE_ENERGY] == 0)) {
                 // assign a new task
-                this.memory.task = Tasks.idle(this.memory.room_name, 10);
+                this.memory.task = new IdleTask(this.memory.room_name, 10);
                 // announce the new task
                 this.announceTask();
             }else{
                 // assign a new task
-                this.memory.task = Tasks.gather(target, RESOURCE_ENERGY);
+                this.memory.task = new GatherTask(target, RESOURCE_ENERGY);
                 // announce the new task
                 this.announceTask();
             }
@@ -58,18 +53,18 @@ Creep.prototype.runTransporter = function () {
                 // if a new target was found
                 if (target != null) {
                     // assign a new task
-                    this.memory.task = Tasks.deposit(target, RESOURCE_ENERGY);
+                    this.memory.task = new DepositTask(target, RESOURCE_ENERGY);
                     // announce the new task
                     this.announceTask();
                 }else{
                     // assign a new task
-                    this.memory.task = Tasks.idle(this.memory.room_name, 10);
+                    this.memory.task = new IdleTask(this.memory.room_name, 10);
                     // announce the new task
                     this.announceTask();
                 }
             }else{
                 // assign a new task
-                this.memory.task = Tasks.moveRoom(this.memory.nearest_colony_room_name);
+                this.memory.task = new MoveRoomTask(this.memory.nearest_colony_room_name);
                 // announce the new task
                 this.announceTask();
             }

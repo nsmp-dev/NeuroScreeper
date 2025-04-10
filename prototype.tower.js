@@ -1,5 +1,3 @@
-hlog("Creating tower prototype...");
-
 /**
  * run the tower, shooting enemies, repairing structures and healing creeps
  */

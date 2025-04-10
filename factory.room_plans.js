@@ -1,11 +1,5 @@
-const Point = require("data.point");
-const SourcePlan = require("data.source_plan");
-const MineralPlan = require("data.mineral_plan");
-const ConstructionPlan = require("data.construction_plan");
-const Util = require("global.util");
-
-/** @module RoomPlansFactory */
-module.exports = {
+/** @constant {Object} RoomPlansFactory */
+global.RoomPlansFactory = {
     /**
      * Plans the initial room, placing the base off the initial spawn's position
      * @param {Room} room - The Room we are planning
@@ -74,7 +68,7 @@ module.exports = {
             // if a place was found
             if (container_location != null) {
                 // make the plans and add them to the source list
-                plans.sources.push(new SourcePlan(source.id, container_location.x, container_location.y));
+                plans.sources.push(new SourcePlan(source.id, container_location));
             }
         }
     },
@@ -95,7 +89,7 @@ module.exports = {
             // add the plans to the plans list
             if (container_location != null) {
                 // create the MineralPlan and push it onto the plans
-                plans.minerals.push(new MineralPlan(mineral.id, mineral.pos.x, mineral.pos.y, container_location.x, container_location.y, mineral.mineralType));
+                plans.minerals.push(new MineralPlan(mineral.id, new Point(mineral.pos.x, mineral.pos.y), container_location, mineral.mineralType));
             }
         }
     },

@@ -28,4 +28,4 @@ class CreepMemory {
 }
 
 // export the CreepMemory class
-module.exports = CreepMemory;
+global.CreepMemory = CreepMemory;

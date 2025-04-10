@@ -1,12 +1,8 @@
-const Point = require("data.point");
-const Timer = require("global.timer");
-
 /**
  * RoomPlans class, an object containing all the construction plans for a room data object
  * @class RoomPlans
  */
 class RoomPlans {
-
     /**
      * creates a RoomPlans object
      */
@@ -108,5 +104,4 @@ class RoomPlans {
     }
 }
 
-// export the RoomPlans class
-module.exports = RoomPlans;
+global.RoomPlans = RoomPlans;

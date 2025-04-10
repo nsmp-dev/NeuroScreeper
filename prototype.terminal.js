@@ -1,5 +1,3 @@
-hlog("Creating terminal prototypes...");
-
 /**
  * sell any excess energy and commodities
  */

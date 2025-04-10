@@ -1,8 +1,3 @@
-const Tasks = require("factory.task");
-const TaskRunner = require("runner.task");
-
-hlog("Creating attacker role...");
-
 /**
  * attacker that attacks hostile creeps in the room
  */
@@ -16,12 +11,12 @@ Creep.prototype.runAttacker = function () {
             // find the closest hostile creep
             let target = this.pos.findClosestByPath(creeps);
             // assign a new task
-            this.memory.task = Tasks.attack(target);
+            this.memory.task = new AttackTask(target);
             // announce the new task
             this.announceTask();
         }else{
             // assign a new task
-            this.memory.task = Tasks.idle(this.memory.room_name, 10);
+            this.memory.task = new IdleTask(this.memory.room_name, 10);
             // announce the new task
             this.announceTask();
         }

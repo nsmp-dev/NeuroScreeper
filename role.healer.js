@@ -1,8 +1,3 @@
-const Tasks = require("factory.task");
-const TaskRunner = require("runner.task");
-
-hlog("Creating healer role...");
-
 /**
  * healer that heals any damaged creeps in the room
  */
@@ -19,12 +14,12 @@ Creep.prototype.runHealer = function () {
             // find the closest one
             let target = this.pos.findClosestByPath(creeps);
             // assign a new task
-            this.memory.task = Tasks.heal(target);
+            this.memory.task = new HealTask(target);
             // announce the new task
             this.announceTask();
         }else{
             // assign a new task
-            this.memory.task = Tasks.idle(this.memory.room_name, 10);
+            this.memory.task = new IdleTask(this.memory.room_name, 10);
             // announce the new task
             this.announceTask();
         }

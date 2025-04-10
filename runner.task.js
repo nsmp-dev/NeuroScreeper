@@ -1,15 +1,15 @@
-
 /**
  * runs a task that is attached to the provided creep
- * @module TaskRunner
+ * @constant {Object} TaskRunner
  * */
-module.exports = {
+global.TaskRunner = {
     /**
-     * recalculate the population needs and save the requested creeps to room_data
+     * run the gather task on the creep
      * @param {Creep|PowerCreep} creep - The Creep doing the task
      */
     runGather: function (creep) {
         // grab the task from the creep
+        /** @type {GatherTask} */
         let task = creep.memory.task;
         // if the creep is not in the room for the task
         if (creep.room.name != task.room_name) {
@@ -61,11 +61,12 @@ module.exports = {
         }
     },
     /**
-     * recalculate the population needs and save the requested creeps to room_data
+     * run the gather task on the creep
      * @param {Creep|PowerCreep} creep - The Creep doing the task
      */
     runDeposit: function (creep) {
         // grab the task from the creep
+        /** @type {DepositTask} */
         let task = creep.memory.task;
         // if the creep is not in the room for the task
         if (creep.room.name != task.room_name) {
@@ -101,23 +102,24 @@ module.exports = {
         }
     },
     /**
-     * recalculate the population needs and save the requested creeps to room_data
+     * run the gather task on the creep
      * @param {Creep|PowerCreep} creep - The Creep doing the task
      */
     runRepair: function (creep) {
         // grab the task from the creep
+        /** @type {RepairTask} */
         let task = creep.memory.task;
         // if the creep is not in the room for the task
         if (creep.room.name != task.room_name) {
             // move to the room for the task
             creep.moveTo(new RoomPosition(25, 25, task.room_name));
             // if the creep is empty
-        }else if (creep.store[task.resource] == 0) {
+        }else if (creep.store[RESOURCE_ENERGY] == 0) {
             // clear the task
             creep.memory.task = null;
         }else{
             // grab the target
-            let target = Game.getObjectById(task.target);
+            let target = Game.getObjectById(task.structure);
             // if the target is invalid or at max health
             if (target == null || target.hits == target.hitsMax) {
                 // clear the task
@@ -132,23 +134,24 @@ module.exports = {
         }
     },
     /**
-     * recalculate the population needs and save the requested creeps to room_data
+     * run the gather task on the creep
      * @param {Creep|PowerCreep} creep - The Creep doing the task
      */
     runBuild: function (creep) {
         // grab the task from the creep
+        /** @type {BuildTask} */
         let task = creep.memory.task;
         // if the creep is not in the room for the task
         if (creep.room.name != task.room_name) {
             // move to the room for the task
             creep.moveTo(new RoomPosition(25, 25, task.room_name));
             // if the creep is empty
-        }else if (creep.store[task.resource] == 0) {
+        }else if (creep.store[RESOURCE_ENERGY] == 0) {
             // clear the task
             creep.memory.task = null;
         }else{
             // grab the target
-            let target = Game.getObjectById(task.target);
+            let target = Game.getObjectById(task.construction_site);
             // if the target is invalid
             if (target == null) {
                 // clear the task
@@ -163,18 +166,19 @@ module.exports = {
         }
     },
     /**
-     * recalculate the population needs and save the requested creeps to room_data
+     * run the gather task on the creep
      * @param {Creep|PowerCreep} creep - The Creep doing the task
      */
     runUpgrade: function (creep) {
         // grab the task from the creep
+        /** @type {UpgradeTask} */
         let task = creep.memory.task;
         // if the creep is not in the room for the task
         if (creep.room.name != task.room_name) {
             // move to the room for the task
             creep.moveTo(new RoomPosition(25, 25, task.room_name));
             // if the creep is empty
-        }else if (creep.store[task.resource] == 0) {
+        }else if (creep.store[RESOURCE_ENERGY] == 0) {
             // clear the task
             creep.memory.task = null;
         }else{
@@ -186,11 +190,12 @@ module.exports = {
         }
     },
     /**
-     * recalculate the population needs and save the requested creeps to room_data
+     * run the gather task on the creep
      * @param {Creep|PowerCreep} creep - The Creep doing the task
      */
     runClaim: function (creep) {
         // grab the task from the creep
+        /** @type {ClaimTask} */
         let task = creep.memory.task;
         // if the creep is not in the room for the task
         if (creep.room.name != task.room_name) {
@@ -205,11 +210,12 @@ module.exports = {
         }
     },
     /**
-     * recalculate the population needs and save the requested creeps to room_data
+     * run the gather task on the creep
      * @param {Creep|PowerCreep} creep - The Creep doing the task
      */
     runReserve: function (creep) {
         // grab the task from the creep
+        /** @type {ReserveTask} */
         let task = creep.memory.task;
         // if the creep is not in the room for the task
         if (creep.room.name != task.room_name) {
@@ -224,11 +230,12 @@ module.exports = {
         }
     },
     /**
-     * recalculate the population needs and save the requested creeps to room_data
+     * run the gather task on the creep
      * @param {Creep|PowerCreep} creep - The Creep doing the task
      */
     runDrill: function (creep) {
         // grab the task from the creep
+        /** @type {DrillTask} */
         let task = creep.memory.task;
         // if the creep is not in the room for the task
         if (creep.room.name != task.room_name) {
@@ -236,23 +243,24 @@ module.exports = {
             creep.moveTo(new RoomPosition(25, 25, task.room_name));
         }else{
             // grab the target
-            let target = Game.getObjectById(task.target);
+            let target = Game.getObjectById(task.source_id);
             // if we are at the location of the container
-            if (creep.pos.isEqualTo(task.location.x, task.location.y)) {
+            if (creep.pos.isEqualTo(task.container_location.x, task.container_location.y)) {
                 // harvest from the assigned source
                 creep.harvest(target);
             } else {
                 // move to the location of the container
-                creep.moveTo(task.location.x, task.location.y);
+                creep.moveTo(task.container_location.x, task.container_location.y);
             }
         }
     },
     /**
-     * recalculate the population needs and save the requested creeps to room_data
+     * run the gather task on the creep
      * @param {Creep|PowerCreep} creep - The Creep doing the task
      */
     runAttack: function (creep) {
         // grab the task from the creep
+        /** @type {AttackTask} */
         let task = creep.memory.task;
         // if the creep is not in the room for the task
         if (creep.room.name != task.room_name) {
@@ -260,7 +268,7 @@ module.exports = {
             creep.moveTo(new RoomPosition(25, 25, task.room_name));
         }else{
             // grab the target
-            let target = Game.getObjectById(task.target);
+            let target = Game.getObjectById(task.creep);
             // if the target is null
             if (target == null) {
                 // clear the task
@@ -275,11 +283,12 @@ module.exports = {
         }
     },
     /**
-     * recalculate the population needs and save the requested creeps to room_data
+     * run the gather task on the creep
      * @param {Creep|PowerCreep} creep - The Creep doing the task
      */
     runHeal: function (creep) {
         // grab the task from the creep
+        /** @type {HealTask} */
         let task = creep.memory.task;
         // if the creep is not in the room for the task
         if (creep.room.name != task.room_name) {
@@ -287,7 +296,7 @@ module.exports = {
             creep.moveTo(new RoomPosition(25, 25, task.room_name));
         }else{
             // grab the target
-            let target = Game.getObjectById(task.target);
+            let target = Game.getObjectById(task.creep);
             // if the target is invalid or at max health
             if (target == null || target.hits == target.hitsMax) {
                 // clear the task
@@ -302,11 +311,12 @@ module.exports = {
         }
     },
     /**
-     * recalculate the population needs and save the requested creeps to room_data
+     * run the gather task on the creep
      * @param {Creep|PowerCreep} creep - The Creep doing the task
      */
     runMoveRoom: function (creep) {
         // grab the task from the creep
+        /** @type {MoveRoomTask} */
         let task = creep.memory.task;
         // if the creep is not in the room for the task
         if (creep.room.name != task.room_name) {
@@ -318,11 +328,12 @@ module.exports = {
         }
     },
     /**
-     * recalculate the population needs and save the requested creeps to room_data
+     * run the gather task on the creep
      * @param {Creep|PowerCreep} creep - The Creep doing the task
      */
     runIdle: function (creep) {
         // grab the task from the creep
+        /** @type {IdleTask} */
         let task = creep.memory.task;
         // if the creep is not in the room for the task
         if (creep.room.name != task.room_name) {
@@ -342,11 +353,12 @@ module.exports = {
         }
     },
     /**
-     * recalculate the population needs and save the requested creeps to room_data
+     * run the gather task on the creep
      * @param {Creep|PowerCreep} creep - The Creep doing the task
      */
     runRenewOperator: function (creep) {
         // grab the task from the creep
+        /** @type {RenewOperatorTask} */
         let task = creep.memory.task;
         // if the creep is not in the room for the task
         if (creep.room.name != task.room_name) {
@@ -354,7 +366,7 @@ module.exports = {
             creep.moveTo(new RoomPosition(25, 25, task.room_name));
         }else{
             // grab the power spawn
-            let power_spawn = Game.getObjectById(task.target);
+            let power_spawn = Game.getObjectById(task.power_spawn);
             // if the power spawn is invalid
             if (power_spawn == null) {
                 // clear the task
@@ -376,11 +388,12 @@ module.exports = {
         }
     },
     /**
-     * recalculate the population needs and save the requested creeps to room_data
+     * run the task on the creep
      * @param {Creep|PowerCreep} creep - The Creep doing the task
      */
     run: function (creep) {
         // grab the task from the creep
+        /** @type {Task} */
         let task = creep.memory.task;
 
         // if the task matches
@@ -442,6 +455,11 @@ module.exports = {
         if (task.type == TASK_TYPES.IDLE) {
             // run the appropriate function
             this.runIdle(creep);
+        }
+        // if the task matches
+        if (task.type == TASK_TYPES.RENEW_OPERATOR) {
+            // run the appropriate function
+            this.runRenewOperator(creep);
         }
     },
 };

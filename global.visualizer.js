@@ -1,10 +1,8 @@
-const Util = require("global.util");
-
 /**
  * visualizer module that displays various stats and populations in the relevant rooms
- * @module Visualizer
+ * @constant {Object} Visualizer
  * */
-module.exports = {
+global.Visualizer = {
     /**
      * renders the stats in the given room
      * @param {Room} room - The room we are rendering on

@@ -1,16 +1,46 @@
 require('data.config');
+require('data.construction_plan');
+require('data.creep_memory');
+require('data.mineral_plan');
+require('data.mineral_population');
+require('data.plant_data');
+require('data.point');
+require('data.production');
+require('data.reaction');
 require('data.roles');
-require('prototype.room');
+require('data.room_data');
+require('data.room_plans');
+require('data.room_population');
+require('data.source_plan');
+require('data.source_population');
+require('data.tasks');
+require('factory.room_plans')
+require('global.power_manager');
+require('global.room_manager');
+require('global.timer');
+require('global.util');
+require('global.visualizer');
 require('prototype.creep');
-require('prototype.tower');
-require('prototype.terminal');
 require('prototype.observer');
-const Timer = require('global.timer');
-const Util = require('global.util');
-const RoomManager = require('global.room_manager');
-const RoomRunner = require('runner.room');
-const Visualizer = require('global.visualizer');
-const PowerManager = require('global.power_manager');
+require('prototype.room');
+require('prototype.terminal');
+require('prototype.tower');
+require('role.attacker');
+require('role.builder');
+require('role.claimer');
+require('role.driller');
+require('role.healer');
+require('role.mineral_driller');
+require('role.mineral_transporter');
+require('role.operator');
+require('role.queen');
+require('role.repairer');
+require('role.scout');
+require('role.transporter');
+require('role.upgrader');
+require('runner.plant');
+require('runner.room');
+require('runner.task');
 
 // the main loop that gets run every tick
 module.exports.loop = function () {

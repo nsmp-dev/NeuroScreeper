@@ -1,18 +1,3 @@
-require('role.attacker');
-require('role.builder');
-require('role.claimer');
-require('role.driller');
-require('role.healer');
-require('role.mineral_driller');
-require('role.mineral_transporter');
-require('role.queen');
-require('role.repairer');
-require('role.scout');
-require('role.transporter');
-require('role.upgrader');
-
-hlog("Creating base creep prototypes...");
-
 /**
  * get a building target
  * @return {ConstructionSite} The closest construction site
@@ -141,6 +126,25 @@ Creep.prototype.idle = function () {
     if (!this.pos.inRangeTo(room_data.plans.idle_location.x, room_data.plans.idle_location.y, 3)) {
         // move toward the idle location
         this.moveTo(room_data.plans.idle_location.x, room_data.plans.idle_location.y);
+    }
+};
+/**
+ * assign a standard gather task to just grab energy for various needs
+ */
+Creep.prototype.gatherEnergy = function () {
+    // find a new fill target
+    let target = this.getFillTarget();
+    // if a new target was found
+    if (target != null) {
+        // assign a new task
+        this.memory.task = new GatherTask(target, RESOURCE_ENERGY);
+        // announce the new task
+        this.announceTask();
+    }else{
+        // assign a new task
+        this.memory.task = new IdleTask(this.memory.room_name, 10);
+        // announce the new task
+        this.announceTask();
     }
 };
 /**

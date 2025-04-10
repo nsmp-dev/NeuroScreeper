@@ -2,6 +2,15 @@
 
 ## [Unreleased]
 
+## Added
+- type hints to the creep memory classes
+- SourcePopulation and MineralPopulation classes that log population of sources and minerals
+
+## Changed
+- all functions now use Points instead of individual name_x and name_y style parameters
+- tasks now use classes to handle different types of tasks
+- moved all globals, classes, etc. into the global scope to make the type hints more consistent
+
 ## [0.2.4] - 2025-04-08
 
 ## Added

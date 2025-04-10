@@ -1,13 +1,9 @@
-const Util = require('global.util');
-const PlantRunner = require('runner.plant');
-const Timer = require('global.timer');
-
 /**
  * this is a room runner: it contains logic for running each kind of room
  * manages its own data by passing its memory via a RoomData object
- * @module RoomRunner
+ * @constant {Object} RoomRunner
  * */
-module.exports = {
+global.RoomRunner = {
     /**
      * recalculate the population needs and save the requested creeps to room_data
      * @param {Room} room - The Room we are running
@@ -15,6 +11,7 @@ module.exports = {
      */
     requestCreeps: function (room, room_data) {
         // grab the population for this room
+        /** @type {RoomPopulation} */
         let pop = Memory.populations[room.name];
         // create a list of requested creeps
         let requested_creeps = [];
@@ -26,25 +23,23 @@ module.exports = {
         }
 
         // loop through the sources
-        for (let source_id in pop.sources) {
-            // grab the source data
-            let source_data = pop.sources[source_id];
+        for (let source_pop of pop.sources) {
             // check if a driller is needed for this source
-            if (source_data.driller == null) {
+            if (source_pop.driller == null) {
                 // request a driller
                 requested_creeps.push(new DRILLER.DrillerMemory(
                     room.name,
-                    source_id,
-                    source_data.container_location
+                    source_pop.source_id,
+                    source_pop.container_location
                 ));
             }
             // check if a transporter is needed for this source
-            if (source_data.transporter == null) {
+            if (source_pop.transporter == null) {
                 // request a transporter
                 requested_creeps.push(new TRANSPORTER.TransporterMemory(
                     room.name,
-                    source_id,
-                    source_data.container_location
+                    source_pop.source_id,
+                    source_pop.container_location
                 ));
             }
         }
@@ -81,28 +76,24 @@ module.exports = {
         }
 
         // loop through the minerals
-        for (let mineral_id in pop.minerals) {
-            // grab the mineral data
-            let mineral_data = pop.minerals[mineral_id];
+        for (let mineral_pop of pop.minerals) {
             // check if a driller is needed for this mineral
-            if (mineral_data.mineral_driller == null) {
+            if (mineral_pop.mineral_driller == null) {
                 // request a driller
                 requested_creeps.push(new MINERAL_DRILLER.MineralDrillerMemory(
                     room.name,
-                    mineral_data,
-                    mineral_data.container_location,
-                    mineral_data.mineral_location,
+                    mineral_pop.mineral_id,
+                    mineral_pop.container_location
                 ));
             }
             // check if a transporter is needed for this mineral
-            if (mineral_data.mineral_transporter == null) {
+            if (mineral_pop.mineral_transporter == null) {
                 // request a transporter
                 requested_creeps.push(new MINERAL_TRANSPORTER.MineralTransporterMemory(
                     room.name,
-                    mineral_data,
-                    mineral_data.container_location,
-                    mineral_data.mineral_location,
-                    mineral_data.resource_type,
+                    mineral_pop.mineral_id,
+                    mineral_pop.container_location,
+                    mineral_pop.resource_type,
                 ));
             }
         }
@@ -115,7 +106,7 @@ module.exports = {
         // check if a scout is needed
         if (room_data.type == COLONY && observer_count == 0 && pop[SCOUT.NAME] < 1) {
             // request a scout
-            requested_creeps.push(new SCOUT.ScoutMemory(room));
+            requested_creeps.push(new SCOUT.ScoutMemory(room.name));
         }
 
         // check if an attacker is needed

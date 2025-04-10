@@ -1,8 +1,3 @@
-const Util = require('global.util');
-const Point = require("data.point");
-
-hlog("Creating room prototypes...");
-
 /**
  * renders the stats in the given room
  * @param {RoomPlans} plans - The plans of the room
@@ -198,7 +193,7 @@ Room.prototype.spawnRole = function (memory, is_global = false) {
     // loop through the spawns we own
     for (let name in Game.spawns) {
         // if this spawn is in the room,
-        if ((Game.spawns[name].room.name == this.name || global) &&
+        if ((Game.spawns[name].room.name == this.name || is_global) &&
             // not spawning anything
             Game.spawns[name].spawning == null &&
             // and has the minimum energy needed
@@ -216,7 +211,7 @@ Room.prototype.spawnRole = function (memory, is_global = false) {
             let room_name = this.name;
             // sort the spawns by distance to this room, ascending
             spawns.sort(function (a, b) {
-                return (Game.map.getRoomLinearDistance(room_name, a.room.name) - Game.map.getRoomLinearDistance(room_name, a.room.name));
+                return (Game.map.getRoomLinearDistance(room_name, a.room.name) - Game.map.getRoomLinearDistance(room_name, b.room.name));
             });
         }
         // loop down from the max size to the min size
@@ -287,6 +282,21 @@ Room.prototype.createConstructionSites = function (plans) {
         if (!this.checkFor(STRUCTURE_CONTAINER, mineral_plan.container_location.x, mineral_plan.container_location.y)) {
             // try to place the container
             let result = this.createConstructionSite(mineral_plan.container_location.x, mineral_plan.container_location.y, STRUCTURE_CONTAINER);
+            // if creating the site was successful
+            if (result == OK) {
+                // increment the site_count
+                site_count++;
+                // if we have reached 5 or more sites
+                if (site_count >= ROOM_CONSTRUCTION_SITE_LIMIT) {
+                    // break the loop
+                    break;
+                }
+            }
+        }
+        // if the container is not built
+        if (!this.checkFor(STRUCTURE_EXTRACTOR, mineral_plan.mineral_location.x, mineral_plan.mineral_location.y)) {
+            // try to place the container
+            let result = this.createConstructionSite(mineral_plan.mineral_location.x, mineral_plan.mineral_location.y, STRUCTURE_EXTRACTOR);
             // if creating the site was successful
             if (result == OK) {
                 // increment the site_count

@@ -20,14 +20,14 @@ class RoomPopulation {
         this.roles = {};
         /**
          * hash of the sources in the room
-         * @type {Object}
+         * @type {SourcePopulation[]}
          */
-        this.sources = {};
+        this.sources = [];
         /**
          * hash of the minerals in the room
-         * @type {Object}
+         * @type {MineralPopulation[]}
          */
-        this.minerals = {};
+        this.minerals = [];
 
         // loop through each role
         for (let role in ROLES) {
@@ -38,33 +38,15 @@ class RoomPopulation {
         // loop through all the source plans in the room
         for (let source_plan of plans.sources) {
             // create a population entry for this source plan
-            this.sources[source_plan.source_id] = {
-                // location of the container to drop energy in
-                container_location: source_plan.container_location,
-                // null spot to record a driller
-                driller: null,
-                // null spot to record a transporter
-                transporter: null,
-            };
+            this.sources.push(new SourcePopulation(source_plan));
         }
 
         // loop through all the mineral plans in the room
         for (let mineral_plan of plans.minerals) {
             // create a population entry for this mineral plan
-            this.minerals[mineral_plan.mineral_id] = {
-                // location of the container to drop resources in
-                container_location: mineral_plan.container_location,
-                // location of the mineral itself
-                mineral_location: mineral_plan.mineral_location,
-                // type of resource the mineral produces
-                resource_type: mineral_plan.resource_type,
-                // null spot to record a mineral driller
-                mineral_driller: null,
-                // null spot to record a mineral transporter
-                mineral_transporter: null,
-            };
+            this.minerals.push(new MineralPopulation(mineral_plan));
         }
     }
 }
 // export the RoomPopulation class
-module.exports = RoomPopulation;
+global.RoomPopulation = RoomPopulation;

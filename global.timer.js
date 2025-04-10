@@ -1,9 +1,9 @@
 /**
  * this is the timer module, it is able to time arbitrary things
  * it also maintains a log of previous tick lengths to calculate average cpu usage
- * @module Timer
+ * @constant {Object} Timer
  * */
-module.exports = {
+global.Timer = {
     // where we store the timers we are working with
     timers: {},
     /**

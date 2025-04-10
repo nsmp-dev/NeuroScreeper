@@ -1,8 +1,3 @@
-const Util = require('global.util');
-const Point = require("data.point");
-
-hlog("Creating observer prototype...");
-
 /**
  * run the observer, keeping a log of rooms to be scanned and scanning the next one
  */

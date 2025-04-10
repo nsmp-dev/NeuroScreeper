@@ -1,8 +1,5 @@
-const Reaction = require("data.reaction");
-const Production = require("data.production");
-
-/** @module PlantRunner */
-module.exports = {
+/** @constant {Object} PlantRunner */
+global.PlantRunner = {
     /**
      * Checks if the required resources for a reaction are present and sets the requested reaction or cleanup reaction flag
      * @param {Room} room - The Room the plant is in

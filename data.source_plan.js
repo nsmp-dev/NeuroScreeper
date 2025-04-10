@@ -1,5 +1,3 @@
-const Point = require("data.point");
-
 /**
  * SourcePlan class, an object that contains data for planning a source
  * @class SourcePlan
@@ -8,10 +6,9 @@ class SourcePlan {
     /**
      * Creates a SourcePlan Object
      * @param {string} source_id - id of the Source object
-     * @param {number} container_x - x coordinate of the container
-     * @param {number} container_y - y coordinate of the container
+     * @param {Point} container_location - location of the container
      */
-    constructor(source_id, container_x, container_y) {
+    constructor(source_id, container_location) {
         /**
          * id of the Source object
          * @type {string}
@@ -21,9 +18,9 @@ class SourcePlan {
          * x coordinate of the container
          * @type {Point}
          */
-        this.container_location = new Point(container_x, container_y);
+        this.container_location = container_location;
     }
 }
 
 // export the SourcePlan class
-module.exports = SourcePlan;
+global.SourcePlan = SourcePlan;

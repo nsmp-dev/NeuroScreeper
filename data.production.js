@@ -29,4 +29,4 @@ class Production {
 }
 
 // exports the Production class
-module.exports = Production;
+global.Production = Production;

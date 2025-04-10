@@ -23,4 +23,4 @@ class Point {
 }
 
 // export the Point class
-module.exports = Point;
+global.Point = Point;

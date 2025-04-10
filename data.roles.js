@@ -1,6 +1,3 @@
-const CreepMemory = require("data.creep_memory");
-const Point = require("data.point");
-
 /**
  * Attacker name, body, and initializer
  * @constant {Object} ATTACKER
@@ -16,8 +13,15 @@ global.ATTACKER = {
     ENERGY_COST: 100,
     // max times the body can be multiplied
     MAX_BODY_MULTIPLIER: 12,
-    // memory class used for this creep
+    /**
+     * AttackerMemory class, storing data for an attacker
+     * @class AttackerMemory
+     */
     AttackerMemory: class AttackerMemory extends CreepMemory{
+        /**
+         * creates an AttackerMemory object
+         * @param {string} room_name - The name of the room this creep is assigned to
+         */
         constructor(room_name){
             super(ATTACKER.NAME, room_name);
         }
@@ -39,8 +43,15 @@ global.BUILDER = {
     ENERGY_COST: 250,
     // max times the body can be multiplied
     MAX_BODY_MULTIPLIER: 12,
-    // memory class used for this creep
+    /**
+     * BuilderMemory class, storing data for a builder
+     * @class BuilderMemory
+     */
     BuilderMemory: class BuilderMemory extends CreepMemory{
+        /**
+         * creates an BuilderMemory object
+         * @param {string} room_name - The name of the room this creep is assigned to
+         */
         constructor(room_name){
             super(BUILDER.NAME, room_name);
         }
@@ -62,8 +73,15 @@ global.CLAIMER = {
     ENERGY_COST: 650,
     // max times the body can be multiplied
     MAX_BODY_MULTIPLIER: 25,
-    // memory class used for this creep
+    /**
+     * ClaimerMemory class, storing data for a claimer
+     * @class ClaimerMemory
+     */
     ClaimerMemory: class ClaimerMemory extends CreepMemory{
+        /**
+         * creates an ClaimerMemory object
+         * @param {string} room_name - The name of the room this creep is assigned to
+         */
         constructor(room_name){
             super(CLAIMER.NAME, room_name);
         }
@@ -85,11 +103,28 @@ global.DRILLER = {
     ENERGY_COST: 150,
     // max times the body can be multiplied
     MAX_BODY_MULTIPLIER: 25,
-    // memory class used for this creep
+    /**
+     * DrillerMemory class, storing data for a driller
+     * @class DrillerMemory
+     */
     DrillerMemory: class DrillerMemory extends CreepMemory{
+        /**
+         * creates an DrillerMemory object
+         * @param {string} room_name - The name of the room this creep is assigned to
+         * @param {string} source_id - The id of the assigned source
+         * @param {Point} container_location - The location of the assigned container
+         */
         constructor(room_name, source_id, container_location){
             super(DRILLER.NAME, room_name);
+            /**
+             * The id of the assigned source
+             * @type {string}
+             */
             this.source = source_id;
+            /**
+             * The location of the assigned container
+             * @type {Point}
+             */
             this.container_location = container_location;
         }
     },
@@ -110,8 +145,15 @@ global.HEALER = {
     ENERGY_COST: 360,
     // max times the body can be multiplied
     MAX_BODY_MULTIPLIER: 12,
-    // memory class used for this creep
+    /**
+     * HealerMemory class, storing data for a healer
+     * @class HealerMemory
+     */
     HealerMemory: class HealerMemory extends CreepMemory{
+        /**
+         * creates an HealerMemory object
+         * @param {string} room_name - The name of the room this creep is assigned to
+         */
         constructor(room_name){
             super(HEALER.NAME, room_name);
         }
@@ -133,13 +175,29 @@ global.MINERAL_DRILLER = {
     ENERGY_COST: 150,
     // max times the body can be multiplied
     MAX_BODY_MULTIPLIER: 25,
-    // memory class used for this creep
+    /**
+     * MineralDrillerMemory class, storing data for a mineral driller
+     * @class MineralDrillerMemory
+     */
     MineralDrillerMemory: class MineralDrillerMemory extends CreepMemory{
-        constructor(room_name, mineral_id, container_location, mineral_location){
+        /**
+         * creates an MineralDrillerMemory object
+         * @param {string} room_name - The name of the room this creep is assigned to
+         * @param {string} mineral_id - The id of the assigned mineral
+         * @param {Point} container_location - The location of the assigned container
+         */
+        constructor(room_name, mineral_id, container_location){
             super(DRILLER.NAME, room_name);
+            /**
+             * The id of the assigned mineral
+             * @type {string}
+             */
             this.mineral = mineral_id;
+            /**
+             * The location of the assigned container
+             * @type {Point}
+             */
             this.container_location = container_location;
-            this.mineral_location = mineral_location;
         }
     },
 };
@@ -159,35 +217,44 @@ global.MINERAL_TRANSPORTER = {
     ENERGY_COST: 100,
     // max times the body can be multiplied
     MAX_BODY_MULTIPLIER: 25,
-    // memory class used for this creep
+    /**
+     * MineralTransporterMemory class, storing data for a mineral transporter
+     * @class MineralTransporterMemory
+     */
     MineralTransporterMemory: class MineralTransporterMemory extends CreepMemory{
-        constructor(room_name, source_id, container_location, mineral_location, resource_type){
-            super(TRANSPORTER.NAME, room_name);
-
-            let nearest_colony_room_name = null;
-            let lowest_distance = null;
-
-            for (let test_room_name in Memory.room_data) {
-                let test_room_data = Memory.room_data[test_room_name];
-                if (test_room_data.type == COLONY) {
-                    let distance = 0;
-                    if (room_name != test_room_name) {
-                        distance = Game.map.getRoomLinearDistance(room_name, test_room_data);
-                    }
-
-
-                    if (nearest_colony_room_name == null || distance < lowest_distance) {
-                        nearest_colony_room_name = test_room_name;
-                        lowest_distance = distance;
-                    }
-                }
-            }
-
-            this.nearest_colony_room_name = nearest_colony_room_name;
-            this.source = source_id;
+        /**
+         * creates an MineralTransporterMemory object
+         * @param {string} room_name - The name of the room this creep is assigned to
+         * @param {string} mineral_id - The id of the assigned mineral
+         * @param {Point} container_location - The location of the assigned container
+         * @param {string} resource_type - The type of resource this mineral produces
+         */
+        constructor(room_name, mineral_id, container_location, resource_type){
+            super(MINERAL_TRANSPORTER.NAME, room_name);
+            /**
+             * type of task being created
+             * @type {string}
+             */
+            this.nearest_colony_room_name = Util.getNearestColony(room_name);
+            /**
+             * type of task being created
+             * @type {string}
+             */
+            this.mineral = mineral_id;
+            /**
+             * type of task being created
+             * @type {Point}
+             */
             this.container_location = container_location;
-            this.mineral_location = mineral_location;
+            /**
+             * type of task being created
+             * @type {string}
+             */
             this.resource_type = resource_type;
+            /**
+             * type of task being created
+             * @type {string|null}
+             */
             this.container_id = null;
         }
     },
@@ -208,8 +275,15 @@ global.QUEEN = {
     ENERGY_COST: 150,
     // max times the body can be multiplied
     MAX_BODY_MULTIPLIER: 25,
-    // memory class used for this creep
+    /**
+     * QueenMemory class, storing data for an attacker
+     * @class QueenMemory
+     */
     QueenMemory: class QueenMemory extends CreepMemory{
+        /**
+         * creates an QueenMemory object
+         * @param {string} room_name - The name of the room this creep is assigned to
+         */
         constructor(room_name){
             super(QUEEN.NAME, room_name);
         }
@@ -231,8 +305,15 @@ global.REPAIRER = {
     ENERGY_COST: 250,
     // max times the body can be multiplied
     MAX_BODY_MULTIPLIER: 12,
-    // memory class used for this creep
+    /**
+     * RepairerMemory class, storing data for an attacker
+     * @class RepairerMemory
+     */
     RepairerMemory: class RepairerMemory extends CreepMemory{
+        /**
+         * creates an RepairerMemory object
+         * @param {string} room_name - The name of the room this creep is assigned to
+         */
         constructor(room_name){
             super(REPAIRER.NAME, room_name);
         }
@@ -254,11 +335,26 @@ global.SCOUT = {
     ENERGY_COST: 50,
     // max times the body can be multiplied
     MAX_BODY_MULTIPLIER: 1,
-    // memory class used for this creep
+    /**
+     * ScoutMemory class, storing data for an attacker
+     * @class ScoutMemory
+     */
     ScoutMemory: class ScoutMemory extends CreepMemory{
-        constructor(room){
-            super(SCOUT.NAME, room.name);
-            this.room_queue = [room.name];
+        /**
+         * creates an ScoutMemory object
+         * @param {string} room_name - The name of the room this creep is assigned to
+         */
+        constructor(room_name){
+            super(SCOUT.NAME, room_name);
+            /**
+             * type of task being created
+             * @type {string[]}
+             */
+            this.room_queue = [room_name];
+            /**
+             * type of task being created
+             * @type {string[]}
+             */
             this.room_log = [];
         }
     },
@@ -279,33 +375,38 @@ global.TRANSPORTER = {
     ENERGY_COST: 100,
     // max times the body can be multiplied
     MAX_BODY_MULTIPLIER: 25,
-    // memory class used for this creep
+    /**
+     * TransporterMemory class, storing data for an attacker
+     * @class TransporterMemory
+     */
     TransporterMemory: class TransporterMemory extends CreepMemory{
-        constructor(room_name, source_id, container_x, container_y){
+        /**
+         * creates an TransporterMemory object
+         * @param {string} room_name - The name of the room this creep is assigned to
+         * @param {string} source_id - The name of the room this creep is assigned to
+         * @param {Point} container_location - The name of the room this creep is assigned to
+         */
+        constructor(room_name, source_id, container_location){
             super(TRANSPORTER.NAME, room_name);
-
-            let nearest_colony_room_name = null;
-            let lowest_distance = null;
-
-            for (let test_room_name in Memory.room_data) {
-                let test_room_data = Memory.room_data[test_room_name];
-                if (test_room_data.type == COLONY) {
-                    let distance = 0;
-                    if (room_name != test_room_name) {
-                        distance = Game.map.getRoomLinearDistance(room_name, test_room_data);
-                    }
-
-
-                    if (nearest_colony_room_name == null || distance < lowest_distance) {
-                        nearest_colony_room_name = test_room_name;
-                        lowest_distance = distance;
-                    }
-                }
-            }
-
-            this.nearest_colony_room_name = nearest_colony_room_name;
+            /**
+             * type of task being created
+             * @type {string}
+             */
+            this.nearest_colony_room_name = Util.getNearestColony(room_name);
+            /**
+             * type of task being created
+             * @type {string}
+             */
             this.source = source_id;
-            this.container_location = new Point(container_x, container_y);
+            /**
+             * type of task being created
+             * @type {Point}
+             */
+            this.container_location = container_location;
+            /**
+             * type of task being created
+             * @type {string|null}
+             */
             this.container_id = null;
         }
     },
@@ -326,8 +427,15 @@ global.UPGRADER = {
     ENERGY_COST: 250,
     // max times the body can be multiplied
     MAX_BODY_MULTIPLIER: 25,
-    // memory class used for this creep
+    /**
+     * UpgraderMemory class, storing data for an attacker
+     * @class UpgraderMemory
+     */
     UpgraderMemory: class UpgraderMemory extends CreepMemory{
+        /**
+         * creates an UpgraderMemory object
+         * @param {string} room_name - The name of the room this creep is assigned to
+         */
         constructor(room_name){
             super(UPGRADER.NAME, room_name);
         }

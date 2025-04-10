@@ -1,5 +1,5 @@
-/** @module PowerManager */
-module.exports = {
+/** @constant {Object} PowerManager */
+global.PowerManager = {
     /**
      * upgrades the operator's lowest level power
      * @param {PowerCreep} operator - The operator we are upgrading
@@ -88,7 +88,7 @@ module.exports = {
             }
             hlog("Running PowerCreep...");
             // run the operator, passing the appropriate plant data
-            operator.run(Memory.room_data[operator.room.name].plant_data);
+            operator.runOperator(Memory.room_data[operator.room.name].plant_data);
         }
     },
 };
