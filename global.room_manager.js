@@ -1,7 +1,7 @@
 /**
- * handles scanning/adding new rooms
+ * Handles scanning and adding new rooms
  * @constant {Object} RoomManager
- * */
+ */
 global.RoomManager = {
     /**
      * create all the starter data needed to run the system

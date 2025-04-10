@@ -1,4 +1,7 @@
-/** @constant {Object} PlantRunner */
+/**
+ * handles logic for production and reactions
+ * @module PlantRunner
+ */
 global.PlantRunner = {
     /**
      * Checks if the required resources for a reaction are present and sets the requested reaction or cleanup reaction flag

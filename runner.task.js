@@ -1,16 +1,14 @@
 /**
  * runs a task that is attached to the provided creep
- * @constant {Object} TaskRunner
- * */
+ * @module TaskRunner
+ */
 global.TaskRunner = {
     /**
      * run the gather task on the creep
      * @param {Creep|PowerCreep} creep - The Creep doing the task
+     * @param {GatherTask} task - the task being run
      */
-    runGather: function (creep) {
-        // grab the task from the creep
-        /** @type {GatherTask} */
-        let task = creep.memory.task;
+    runGather: function (creep, task) {
         // if the creep is not in the room for the task
         if (creep.room.name != task.room_name) {
             // move to the room for the task
@@ -63,11 +61,9 @@ global.TaskRunner = {
     /**
      * run the gather task on the creep
      * @param {Creep|PowerCreep} creep - The Creep doing the task
+     * @param {DepositTask} task - the task being run
      */
-    runDeposit: function (creep) {
-        // grab the task from the creep
-        /** @type {DepositTask} */
-        let task = creep.memory.task;
+    runDeposit: function (creep, task) {
         // if the creep is not in the room for the task
         if (creep.room.name != task.room_name) {
             // move to the room for the task
@@ -104,11 +100,9 @@ global.TaskRunner = {
     /**
      * run the gather task on the creep
      * @param {Creep|PowerCreep} creep - The Creep doing the task
+     * @param {RepairTask} task - the task being run
      */
-    runRepair: function (creep) {
-        // grab the task from the creep
-        /** @type {RepairTask} */
-        let task = creep.memory.task;
+    runRepair: function (creep, task) {
         // if the creep is not in the room for the task
         if (creep.room.name != task.room_name) {
             // move to the room for the task
@@ -136,11 +130,9 @@ global.TaskRunner = {
     /**
      * run the gather task on the creep
      * @param {Creep|PowerCreep} creep - The Creep doing the task
+     * @param {BuildTask} task - the task being run
      */
-    runBuild: function (creep) {
-        // grab the task from the creep
-        /** @type {BuildTask} */
-        let task = creep.memory.task;
+    runBuild: function (creep, task) {
         // if the creep is not in the room for the task
         if (creep.room.name != task.room_name) {
             // move to the room for the task
@@ -168,11 +160,9 @@ global.TaskRunner = {
     /**
      * run the gather task on the creep
      * @param {Creep|PowerCreep} creep - The Creep doing the task
+     * @param {UpgradeTask} task - the task being run
      */
-    runUpgrade: function (creep) {
-        // grab the task from the creep
-        /** @type {UpgradeTask} */
-        let task = creep.memory.task;
+    runUpgrade: function (creep, task) {
         // if the creep is not in the room for the task
         if (creep.room.name != task.room_name) {
             // move to the room for the task
@@ -192,11 +182,9 @@ global.TaskRunner = {
     /**
      * run the gather task on the creep
      * @param {Creep|PowerCreep} creep - The Creep doing the task
+     * @param {ClaimTask} task - the task being run
      */
-    runClaim: function (creep) {
-        // grab the task from the creep
-        /** @type {ClaimTask} */
-        let task = creep.memory.task;
+    runClaim: function (creep, task) {
         // if the creep is not in the room for the task
         if (creep.room.name != task.room_name) {
             // move to the room for the task
@@ -212,11 +200,9 @@ global.TaskRunner = {
     /**
      * run the gather task on the creep
      * @param {Creep|PowerCreep} creep - The Creep doing the task
+     * @param {ReserveTask} task - the task being run
      */
-    runReserve: function (creep) {
-        // grab the task from the creep
-        /** @type {ReserveTask} */
-        let task = creep.memory.task;
+    runReserve: function (creep, task) {
         // if the creep is not in the room for the task
         if (creep.room.name != task.room_name) {
             // move to the room for the task
@@ -232,11 +218,9 @@ global.TaskRunner = {
     /**
      * run the gather task on the creep
      * @param {Creep|PowerCreep} creep - The Creep doing the task
+     * @param {DrillTask} task - the task being run
      */
-    runDrill: function (creep) {
-        // grab the task from the creep
-        /** @type {DrillTask} */
-        let task = creep.memory.task;
+    runDrill: function (creep, task) {
         // if the creep is not in the room for the task
         if (creep.room.name != task.room_name) {
             // move to the room for the task
@@ -257,11 +241,9 @@ global.TaskRunner = {
     /**
      * run the gather task on the creep
      * @param {Creep|PowerCreep} creep - The Creep doing the task
+     * @param {AttackTask} task - the task being run
      */
-    runAttack: function (creep) {
-        // grab the task from the creep
-        /** @type {AttackTask} */
-        let task = creep.memory.task;
+    runAttack: function (creep, task) {
         // if the creep is not in the room for the task
         if (creep.room.name != task.room_name) {
             // move to the room for the task
@@ -285,11 +267,9 @@ global.TaskRunner = {
     /**
      * run the gather task on the creep
      * @param {Creep|PowerCreep} creep - The Creep doing the task
+     * @param {HealTask} task - the task being run
      */
-    runHeal: function (creep) {
-        // grab the task from the creep
-        /** @type {HealTask} */
-        let task = creep.memory.task;
+    runHeal: function (creep, task) {
         // if the creep is not in the room for the task
         if (creep.room.name != task.room_name) {
             // move to the room for the task
@@ -313,11 +293,9 @@ global.TaskRunner = {
     /**
      * run the gather task on the creep
      * @param {Creep|PowerCreep} creep - The Creep doing the task
+     * @param {MoveRoomTask} task - the task being run
      */
-    runMoveRoom: function (creep) {
-        // grab the task from the creep
-        /** @type {MoveRoomTask} */
-        let task = creep.memory.task;
+    runMoveRoom: function (creep, task) {
         // if the creep is not in the room for the task
         if (creep.room.name != task.room_name) {
             // move to the room for the task
@@ -330,11 +308,9 @@ global.TaskRunner = {
     /**
      * run the gather task on the creep
      * @param {Creep|PowerCreep} creep - The Creep doing the task
+     * @param {IdleTask} task - the task being run
      */
-    runIdle: function (creep) {
-        // grab the task from the creep
-        /** @type {IdleTask} */
-        let task = creep.memory.task;
+    runIdle: function (creep, task) {
         // if the creep is not in the room for the task
         if (creep.room.name != task.room_name) {
             // move to the room for the task
@@ -355,11 +331,9 @@ global.TaskRunner = {
     /**
      * run the gather task on the creep
      * @param {Creep|PowerCreep} creep - The Creep doing the task
+     * @param {RenewOperatorTask} task - the task being run
      */
-    runRenewOperator: function (creep) {
-        // grab the task from the creep
-        /** @type {RenewOperatorTask} */
-        let task = creep.memory.task;
+    runRenewOperator: function (creep, task) {
         // if the creep is not in the room for the task
         if (creep.room.name != task.room_name) {
             // move to the room for the task
@@ -399,67 +373,67 @@ global.TaskRunner = {
         // if the task matches
         if (task.type == TASK_TYPES.GATHER) {
             // run the appropriate function
-            this.runGather(creep);
+            this.runGather(creep, creep.memory.task);
         }
         // if the task matches
         if (task.type == TASK_TYPES.DEPOSIT) {
             // run the appropriate function
-            this.runDeposit(creep);
+            this.runDeposit(creep, creep.memory.task);
         }
         // if the task matches
         if (task.type == TASK_TYPES.REPAIR) {
             // run the appropriate function
-            this.runRepair(creep);
+            this.runRepair(creep, creep.memory.task);
         }
         // if the task matches
         if (task.type == TASK_TYPES.BUILD) {
             // run the appropriate function
-            this.runBuild(creep);
+            this.runBuild(creep, creep.memory.task);
         }
         // if the task matches
         if (task.type == TASK_TYPES.UPGRADE) {
             // run the appropriate function
-            this.runUpgrade(creep);
+            this.runUpgrade(creep, creep.memory.task);
         }
         // if the task matches
         if (task.type == TASK_TYPES.CLAIM) {
             // run the appropriate function
-            this.runClaim(creep);
+            this.runClaim(creep, creep.memory.task);
         }
         // if the task matches
         if (task.type == TASK_TYPES.RESERVE) {
             // run the appropriate function
-            this.runReserve(creep);
+            this.runReserve(creep, creep.memory.task);
         }
         // if the task matches
         if (task.type == TASK_TYPES.DRILL) {
             // run the appropriate function
-            this.runDrill(creep);
+            this.runDrill(creep, creep.memory.task);
         }
         // if the task matches
         if (task.type == TASK_TYPES.ATTACK) {
             // run the appropriate function
-            this.runAttack(creep);
+            this.runAttack(creep, creep.memory.task);
         }
         // if the task matches
         if (task.type == TASK_TYPES.HEAL) {
             // run the appropriate function
-            this.runHeal(creep);
+            this.runHeal(creep, creep.memory.task);
         }
         // if the task matches
         if (task.type == TASK_TYPES.MOVE_ROOM) {
             // run the appropriate function
-            this.runMoveRoom(creep);
+            this.runMoveRoom(creep, creep.memory.task);
         }
         // if the task matches
         if (task.type == TASK_TYPES.IDLE) {
             // run the appropriate function
-            this.runIdle(creep);
+            this.runIdle(creep, creep.memory.task);
         }
         // if the task matches
         if (task.type == TASK_TYPES.RENEW_OPERATOR) {
             // run the appropriate function
-            this.runRenewOperator(creep);
+            this.runRenewOperator(creep, creep.memory.task);
         }
     },
 };

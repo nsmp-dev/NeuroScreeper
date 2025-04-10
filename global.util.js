@@ -1,7 +1,7 @@
 /**
- * utility module, contains creep role constants and commonly used methods
- * @constant {Object} Util
- * */
+ * commonly used helper functions
+ * @module Util
+ */
 global.Util = {
     /**
      * converts an x/y room coordinate to a string name

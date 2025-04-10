@@ -94,6 +94,12 @@ global.SATISFACTION_THRESHOLD = 0.9;
  */
 global.SATISFACTION_LOG_SIZE = 100;
 /**
+ * hash table for grabbing role constants using their id strings
+ * @constant {Object} ROLES
+ */
+global.ROLES = {};
+
+/**
  * logger function for debugging
  * @global
  * @function hlog
@@ -174,9 +180,3 @@ global.TASK_TYPES = {
     /** renewing the operator at the power spawn */
     RENEW_OPERATOR: 12,
 };
-
-/**
- * hash table for grabbing role constants using their id strings
- * @constant {Object} ROLES
- */
-global.ROLES = {};

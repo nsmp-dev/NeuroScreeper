@@ -1,4 +1,7 @@
-/** @constant {Object} PowerManager */
+/**
+ * Takes care of running power spawns and spawning, upgrading, and running the operator
+ * @module PowerManager
+ */
 global.PowerManager = {
     /**
      * upgrades the operator's lowest level power

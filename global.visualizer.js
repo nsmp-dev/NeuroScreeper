@@ -1,7 +1,7 @@
 /**
  * visualizer module that displays various stats and populations in the relevant rooms
- * @constant {Object} Visualizer
- * */
+ * @module Visualizer
+ */
 global.Visualizer = {
     /**
      * renders the stats in the given room

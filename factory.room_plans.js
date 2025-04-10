@@ -1,4 +1,7 @@
-/** @constant {Object} RoomPlansFactory */
+/**
+ * Factory that assists in filling out room plans
+ * @module RoomPlansFactory
+ */
 global.RoomPlansFactory = {
     /**
      * Plans the initial room, placing the base off the initial spawn's position

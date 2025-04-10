@@ -10,6 +10,8 @@
 - all functions now use Points instead of individual name_x and name_y style parameters
 - tasks now use classes to handle different types of tasks
 - moved all globals, classes, etc. into the global scope to make the type hints more consistent
+- moved role configs into the role files
+- moved creep memory classes onto global scope
 
 ## [0.2.4] - 2025-04-08
 

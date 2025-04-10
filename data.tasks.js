@@ -58,7 +58,6 @@ global.GatherTask = GatherTask;
 /**
  * DepositTask class, an object that contains data for running a task
  * @class DepositTask
- * @extends Task
  */
 class DepositTask extends Task {
     /**
@@ -91,7 +90,6 @@ global.DepositTask = DepositTask;
 /**
  * BuildTask class, an object that contains data for running a task
  * @class BuildTask
- * @extends Task
  */
 class BuildTask extends Task {
     /**
@@ -112,7 +110,6 @@ global.BuildTask = BuildTask;
 /**
  * RepairTask class, an object that contains data for running a task
  * @class RepairTask
- * @extends Task
  */
 class RepairTask extends Task {
     /**
@@ -133,7 +130,6 @@ global.RepairTask = RepairTask;
 /**
  * UpgradeTask class, an object that contains data for running a task
  * @class UpgradeTask
- * @extends Task
  */
 class UpgradeTask extends Task {
     /**
@@ -149,7 +145,6 @@ global.UpgradeTask = UpgradeTask;
 /**
  * ClaimTask class, an object that contains data for running a task
  * @class ClaimTask
- * @extends Task
  */
 class ClaimTask extends Task {
     /**
@@ -165,7 +160,6 @@ global.ClaimTask = ClaimTask;
 /**
  * ReserveTask class, an object that contains data for running a task
  * @class ReserveTask
- * @extends Task
  */
 class ReserveTask extends Task {
     /**
@@ -181,7 +175,6 @@ global.ReserveTask = ReserveTask;
 /**
  * DrillTask class, an object that contains data for running a task
  * @class DrillTask
- * @extends Task
  */
 class DrillTask extends Task {
     /**
@@ -209,7 +202,6 @@ global.DrillTask = DrillTask;
 /**
  * AttackTask class, an object that contains data for running a task
  * @class AttackTask
- * @extends Task
  */
 class AttackTask extends Task {
     /**
@@ -230,7 +222,6 @@ global.AttackTask = AttackTask;
 /**
  * HealTask class, an object that contains data for running a task
  * @class HealTask
- * @extends Task
  */
 class HealTask extends Task {
     /**
@@ -251,7 +242,6 @@ global.HealTask = HealTask;
 /**
  * MoveRoomTask class, an object that contains data for running a task
  * @class MoveRoomTask
- * @extends Task
  */
 class MoveRoomTask extends Task {
     /**
@@ -267,7 +257,6 @@ global.MoveRoomTask = MoveRoomTask;
 /**
  * RenewOperatorTask class, an object that contains data for running a task
  * @class RenewOperatorTask
- * @extends Task
  */
 class RenewOperatorTask extends Task {
     /**
@@ -294,7 +283,6 @@ global.RenewOperatorTask = RenewOperatorTask;
 /**
  * IdleTask class, an object that contains data for running a task
  * @class IdleTask
- * @extends Task
  */
 class IdleTask extends Task {
     /**

@@ -1,8 +1,7 @@
 /**
- * this is a room runner: it contains logic for running each kind of room
- * manages its own data by passing its memory via a RoomData object
- * @constant {Object} RoomRunner
- * */
+ * contains logic for running a room, using a room data object for storage
+ * @module RoomRunner
+ */
 global.RoomRunner = {
     /**
      * recalculate the population needs and save the requested creeps to room_data
