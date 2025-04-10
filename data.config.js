@@ -130,24 +130,6 @@ let hlog = function (value, label = null) {
 global.hlog = hlog;
 
 /**
- * Enum of states that can be used for state machines
- * @constant {Object} STATES
- * @enum {number}
- */
-global.STATES = {
-    /** idle state for defaulting to, usually means doing nothing */
-    IDLE: 0,
-    /** means acquiring a resource, the first step in most processes */
-    FILLING: 1,
-    /** means using or dropping off a resource, the second half of most processes */
-    DUMPING: 2,
-    /** signifies a plant is in the middle of producing */
-    PRODUCING: 3,
-    /** signifies a plant is in the middle of reacting */
-    REACTING: 4,
-};
-
-/**
  * List of task types that are used to identify tasks
  * @constant {Object} TASK_TYPES
  * @enum {number}

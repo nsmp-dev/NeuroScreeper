@@ -95,11 +95,6 @@ class RoomPlans {
          * @type {Point|null}
          */
         this.factory_location = null;
-        /**
-         * coordinates for power spawn
-         * @type {Point|null}
-         */
-        this.power_spawn_location = null;
         Timer.stop("creating_room_plans");
     }
 }

@@ -7,9 +7,8 @@ class Production {
      * creates a production object
      * @param {Object} inputs - The input resources
      * @param {String} output - The output resource
-     * @param {number} output_amount - The amount of resource the production will make
      */
-    constructor(inputs, output, output_amount) {
+    constructor(inputs, output) {
         /**
          * the input resources
          * @type {Object}
@@ -20,11 +19,6 @@ class Production {
          * @type {string}
          */
         this.output = output;
-        /**
-         * The amount of resource the production will make
-         * @type {number}
-         */
-        this.output_amount = output_amount;
     }
 }
 

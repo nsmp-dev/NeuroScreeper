@@ -1,7 +1,7 @@
 /**
  * run the observer, keeping a log of rooms to be scanned and scanning the next one
  */
-PowerCreep.prototype.runOperator = function (plant_data) {
+PowerCreep.prototype.runOperator = function () {
     // if the operator is close to death and not already renewing
     if (this.ticksToLive < 50 && this.memory.task.type != TASK_TYPES.RENEW_OPERATOR) {
         // grab the power spawn in the room

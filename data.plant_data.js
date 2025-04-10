@@ -65,11 +65,6 @@ class PlantData {
          */
         this.factory_location = plans.factory_location;
         /**
-         * power spawn location from the plans
-         * @type {Point}
-         */
-        this.power_spawn_location = plans.power_spawn_location;
-        /**
          * input lab 1 id
          * @type {string|null}
          */
@@ -89,16 +84,6 @@ class PlantData {
          * @type {string|null}
          */
         this.factory_id = null;
-        /**
-         * power spawn id
-         * @type {string|null}
-         */
-        this.power_spawn_id = null;
-        /**
-         * state of the plant
-         * @type {number}
-         */
-        this.plant_state = STATES.IDLE;
     }
 }
 

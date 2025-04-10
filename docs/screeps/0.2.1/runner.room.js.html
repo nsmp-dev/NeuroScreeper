@@ -1,4 +1,32 @@
-/**
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: runner.room.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: runner.room.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
  * contains logic for running a room, using a room data object for storage
  * @module RoomRunner
  */
@@ -16,7 +44,7 @@ global.RoomRunner = {
         room_data.requested_creeps = [];
 
         // check if a claimer is needed
-        if (!room.controller.my && pop[CLAIMER.NAME] < 1) {
+        if (!room.controller.my &amp;&amp; pop[CLAIMER.NAME] &lt; 1) {
             // request a claimer
             room_data.requested_creeps.push(new ClaimerMemory(room.name));
         }
@@ -44,7 +72,7 @@ global.RoomRunner = {
         }
 
         // check if an upgrader is needed
-        if (room_data.type == COLONY && pop[UPGRADER.NAME] < 1) {
+        if (room_data.type == COLONY &amp;&amp; pop[UPGRADER.NAME] &lt; 1) {
             // request an upgrader
             room_data.requested_creeps.push(new UpgraderMemory(room.name));
         }
@@ -52,7 +80,7 @@ global.RoomRunner = {
         // count the construction sites
         let site_count = room.find(FIND_MY_CONSTRUCTION_SITES).length;
         // check if a builder is needed
-        if (site_count > 0 && pop[BUILDER.NAME] < 2) {
+        if (site_count > 0 &amp;&amp; pop[BUILDER.NAME] &lt; 2) {
             // request a builder
             room_data.requested_creeps.push(new BuilderMemory(room.name));
         }
@@ -60,16 +88,16 @@ global.RoomRunner = {
         // find all the structures
         let structure_count = room.find(FIND_STRUCTURES, {
             // that are damaged
-            filter: structure => structure.hits < structure.hitsMax,
+            filter: structure => structure.hits &lt; structure.hitsMax,
         }).length;
         // check if a repairer is needed
-        if (structure_count > 0 && pop[REPAIRER.NAME] < 1) {
+        if (structure_count > 0 &amp;&amp; pop[REPAIRER.NAME] &lt; 1) {
             // request a repairer
             room_data.requested_creeps.push(new RepairerMemory(room.name));
         }
 
         // check if a queen is needed
-        if (room.storage != undefined && pop[QUEEN.NAME] < 1) {
+        if (room.storage != undefined &amp;&amp; pop[QUEEN.NAME] &lt; 1) {
             // request a queen
             room_data.requested_creeps.push(new QueenMemory(room.name));
         }
@@ -103,19 +131,19 @@ global.RoomRunner = {
             filter: structure => structure.structureType == STRUCTURE_OBSERVER,
         }).length;
         // check if a scout is needed
-        if (room_data.type == COLONY && observer_count == 0 && pop[SCOUT.NAME] < 1) {
+        if (room_data.type == COLONY &amp;&amp; observer_count == 0 &amp;&amp; pop[SCOUT.NAME] &lt; 1) {
             // request a scout
             room_data.requested_creeps.push(new ScoutMemory(room.name));
         }
 
         // check if an attacker is needed
-        if (pop[ATTACKER.NAME] < 1) {
+        if (pop[ATTACKER.NAME] &lt; 1) {
             // request an attacker
             room_data.requested_creeps.push(new AttackerMemory(room.name));
         }
 
         // check if a healer is needed
-        if (pop[HEALER.NAME] < 1) {
+        if (pop[HEALER.NAME] &lt; 1) {
             // request a healer
             room_data.requested_creeps.push(new HealerMemory(room.name));
         }
@@ -228,4 +256,26 @@ global.RoomRunner = {
             Timer.stop("running_plant");
         }
     },
-};
+};</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-PlantRunner.html">PlantRunner</a></li><li><a href="module-PowerManager.html">PowerManager</a></li><li><a href="module-RoomPlansFactory.html">RoomPlansFactory</a></li><li><a href="module-RoomRunner.html">RoomRunner</a></li><li><a href="module-TaskRunner.html">TaskRunner</a></li><li><a href="module-Timer.html">Timer</a></li><li><a href="module-Util.html">Util</a></li><li><a href="module-Visualizer.html">Visualizer</a></li></ul><h3>Classes</h3><ul><li><a href="AttackTask.html">AttackTask</a></li><li><a href="AttackerMemory.html">AttackerMemory</a></li><li><a href="BuildTask.html">BuildTask</a></li><li><a href="BuilderMemory.html">BuilderMemory</a></li><li><a href="ClaimTask.html">ClaimTask</a></li><li><a href="ClaimerMemory.html">ClaimerMemory</a></li><li><a href="ConstructionPlan.html">ConstructionPlan</a></li><li><a href="CreepMemory.html">CreepMemory</a></li><li><a href="DepositTask.html">DepositTask</a></li><li><a href="DrillTask.html">DrillTask</a></li><li><a href="DrillerMemory.html">DrillerMemory</a></li><li><a href="GatherTask.html">GatherTask</a></li><li><a href="HealTask.html">HealTask</a></li><li><a href="HealerMemory.html">HealerMemory</a></li><li><a href="IdleTask.html">IdleTask</a></li><li><a href="MineralDrillerMemory.html">MineralDrillerMemory</a></li><li><a href="MineralPlan.html">MineralPlan</a></li><li><a href="MineralPopulation.html">MineralPopulation</a></li><li><a href="MineralTransporterMemory.html">MineralTransporterMemory</a></li><li><a href="MoveRoomTask.html">MoveRoomTask</a></li><li><a href="PlantData.html">PlantData</a></li><li><a href="Point.html">Point</a></li><li><a href="Production.html">Production</a></li><li><a href="QueenMemory.html">QueenMemory</a></li><li><a href="Reaction.html">Reaction</a></li><li><a href="RenewOperatorTask.html">RenewOperatorTask</a></li><li><a href="RepairTask.html">RepairTask</a></li><li><a href="RepairerMemory.html">RepairerMemory</a></li><li><a href="ReserveTask.html">ReserveTask</a></li><li><a href="RoomData.html">RoomData</a></li><li><a href="RoomPlans.html">RoomPlans</a></li><li><a href="RoomPopulation.html">RoomPopulation</a></li><li><a href="ScoutMemory.html">ScoutMemory</a></li><li><a href="SourcePlan.html">SourcePlan</a></li><li><a href="SourcePopulation.html">SourcePopulation</a></li><li><a href="Task.html">Task</a></li><li><a href="TransporterMemory.html">TransporterMemory</a></li><li><a href="UpgradeTask.html">UpgradeTask</a></li><li><a href="UpgraderMemory.html">UpgraderMemory</a></li></ul><h3>Global</h3><ul><li><a href="global.html#ATTACKER">ATTACKER</a></li><li><a href="global.html#BUILD">BUILD</a></li><li><a href="global.html#BUILDER">BUILDER</a></li><li><a href="global.html#CLAIMER">CLAIMER</a></li><li><a href="global.html#COLONY">COLONY</a></li><li><a href="global.html#CONSTRUCTION_TIMER_LENGTH">CONSTRUCTION_TIMER_LENGTH</a></li><li><a href="global.html#COUNT_POPULATION_TIMER_LENGTH">COUNT_POPULATION_TIMER_LENGTH</a></li><li><a href="global.html#DEBUG_MODE">DEBUG_MODE</a></li><li><a href="global.html#DRILLER">DRILLER</a></li><li><a href="global.html#EXPANSION">EXPANSION</a></li><li><a href="global.html#HEALER">HEALER</a></li><li><a href="global.html#HIGHWAY">HIGHWAY</a></li><li><a href="global.html#KEEPER_LAIR">KEEPER_LAIR</a></li><li><a href="global.html#LOG_SIZE">LOG_SIZE</a></li><li><a href="global.html#MINERAL_DRILLER">MINERAL_DRILLER</a></li><li><a href="global.html#MINERAL_TRANSPORTER">MINERAL_TRANSPORTER</a></li><li><a href="global.html#NEW_ROOM_TIMER_LENGTH">NEW_ROOM_TIMER_LENGTH</a></li><li><a href="global.html#PLANT_STRUCTURES_TIMER_LENGTH">PLANT_STRUCTURES_TIMER_LENGTH</a></li><li><a href="global.html#PRODUCTION_TIMER_LENGTH">PRODUCTION_TIMER_LENGTH</a></li><li><a href="global.html#QUEEN">QUEEN</a></li><li><a href="global.html#REACTION_TIMER_LENGTH">REACTION_TIMER_LENGTH</a></li><li><a href="global.html#REPAIRER">REPAIRER</a></li><li><a href="global.html#REQUEST_POPULATION_TIMER_LENGTH">REQUEST_POPULATION_TIMER_LENGTH</a></li><li><a href="global.html#ROLES">ROLES</a></li><li><a href="global.html#ROOM_CONSTRUCTION_SITE_LIMIT">ROOM_CONSTRUCTION_SITE_LIMIT</a></li><li><a href="global.html#RoomManager">RoomManager</a></li><li><a href="global.html#SATISFACTION_LOG_SIZE">SATISFACTION_LOG_SIZE</a></li><li><a href="global.html#SATISFACTION_THRESHOLD">SATISFACTION_THRESHOLD</a></li><li><a href="global.html#SCOUT">SCOUT</a></li><li><a href="global.html#TASK_TYPES">TASK_TYPES</a></li><li><a href="global.html#TERMINAL_TIMER_LENGTH">TERMINAL_TIMER_LENGTH</a></li><li><a href="global.html#TRANSPORTER">TRANSPORTER</a></li><li><a href="global.html#UPGRADER">UPGRADER</a></li><li><a href="global.html#USERNAME">USERNAME</a></li><li><a href="global.html#hlog">hlog</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Thu Apr 10 2025 15:54:37 GMT-0500 (Central Daylight Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
