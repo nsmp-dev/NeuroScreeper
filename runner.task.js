@@ -362,6 +362,15 @@ global.TaskRunner = {
         }
     },
     /**
+     * run the gather task on the creep
+     * @param {Creep|PowerCreep} creep - The Creep doing the task
+     * @param {MoveResourceTask} task - the task being run
+     */
+    runMoveResource: function (creep, task) {
+        // TODO: add logic for moving arbitrary resources
+        
+    },
+    /**
      * run the task on the creep
      * @param {Creep|PowerCreep} creep - The Creep doing the task
      */

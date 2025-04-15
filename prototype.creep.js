@@ -325,5 +325,11 @@ Creep.prototype.announceTask = function () {
             this.say("Renewing...");
             // break the switch
             break;
+        // if the task type matches
+        case TASK_TYPES.MOVE_RESOURCE:
+            // announce the task
+            this.say("Moving Resource...");
+            // break the switch
+            break;
     }
 };

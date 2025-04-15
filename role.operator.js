@@ -17,14 +17,11 @@ PowerCreep.prototype.runOperator = function () {
     if (this.memory.task == null) {
         //let requested_ingredient = null;
 
+        // loop through the output building for results
+
         // loop through the ingredients for the requested reaction/production
             // if the reaction doesn't have the requested ingredients
-                // set the requested ingredient and amount
-
-        // if requested ingredient is not null
-            // create a gather request
-        // else
-            // idle
+                // set task to move resources
 
 
 

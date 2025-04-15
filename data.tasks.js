@@ -305,3 +305,42 @@ class IdleTask extends Task {
     }
 }
 global.IdleTask = IdleTask;
+
+/**
+ * MoveResourceTask class, an object that contains data for running a task
+ * @class MoveResourceTask
+ */
+class MoveResourceTask extends Task {
+    /**
+     * creates a move resource task
+     * @param {string} room_name - name of the room in which the task is in
+     * @param {Structure} source_structure - the structure to withdraw from
+     * @param {Structure} target_structure - the structure to deposit in
+     * @param {string} resource - The resource to deposit
+     * @param {number} amount - The amount of resource to gather
+     */
+    constructor(room_name, source_structure, target_structure, resource, amount) {
+        super(TASK_TYPES.MOVE_RESOURCE, room_name);
+        /**
+         * the structure to withdraw from
+         * @type {string}
+         */
+        this.source_structure = source_structure.id;
+        /**
+         * the structure to deposit in
+         * @type {string}
+         */
+        this.target_structure = target_structure.id;
+        /**
+         * the type of resource to be moved
+         * @type {string}
+         */
+        this.resource = resource;
+        /**
+         * the amount of resource to be moved
+         * @type {number}
+         */
+        this.amount = amount;
+    }
+}
+global.MoveResourceTask = MoveResourceTask;

@@ -161,6 +161,8 @@ global.TASK_TYPES = {
     MOVE_ROOM: 11,
     /** renewing the operator at the power spawn */
     RENEW_OPERATOR: 12,
+    /** moving a resource from one structure to another */
+    MOVE_RESOURCE: 13,
 };
 
 /**
@@ -173,4 +175,8 @@ global.STATES = {
     SEARCHING: 1,
     COLLECTING: 2,
     RETURNING: 3,
+    LOADING: 4,
+    RUNNING: 5,
+    FINISHED: 6,
+    CLEANING: 7,
 };

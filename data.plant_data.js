@@ -84,6 +84,16 @@ class PlantData {
          * @type {string|null}
          */
         this.factory_id = null;
+        /**
+         * state of the labs
+         * @type {number}
+         */
+        this.labs_state = STATES.IDLE;
+        /**
+         * state of the factory
+         * @type {number}
+         */
+        this.factory_state = STATES.IDLE;
     }
 }
 

@@ -29,6 +29,16 @@ pick 2 emojis to illustrate each role
 
 # v0.3
 
+## plant operations
+the plant maintains a state for the factory and the labs
+it also holds the current reaction/production for each
+also it has cleanup detection
+states:
+loading
+running
+finished
+cleanup
+
 ## flesh out operator
 add in logic to fill the currently requested reaction/production
 account for cleanup commands as well

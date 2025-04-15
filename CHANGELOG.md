@@ -10,6 +10,7 @@
 - pixel generating on a full bucket
 - planning for future role additions
 - getTransporterTarget, which grabs a target for a transporter style creep, combining some duplicated code
+- move resource task that handles moving an amount of resource from one structure to another
 
 ## Changed
 - all functions now use Points instead of individual name_x and name_y style parameters
@@ -17,6 +18,7 @@
 - moved all globals, classes, etc. into the global scope to make the type hints more consistent
 - moved role configs into the role files
 - moved creep memory classes onto global scope
+- plant runner now uses state machines to manage the labs and factory
 
 ## [0.2.4] - 2025-04-08
 

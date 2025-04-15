@@ -8,13 +8,7 @@ global.PlantRunner = {
      * @param {Room} room - The Room the plant is in
      * @param {PlantData} plant_data - The plant data for storing in memory
      */
-    getReactionRequest: function (room, plant_data) {
-        // if we are still cleaning up
-        if (plant_data.cleanup_reaction) {
-            // exit the function early
-            return
-        }
-
+    runLabs: function (room, plant_data) {
         // grab the input lab 1
         let input_lab_1 = Game.getObjectById(plant_data.input_lab_1_id);
         // grab the input lab 2
@@ -32,7 +26,9 @@ global.PlantRunner = {
             // if any of the labs have anything in them
             if ((input_lab_1 != null && input_lab_1.store.getUsedCapacity() > 0) || (input_lab_2 != null && input_lab_2.store.getUsedCapacity() > 0) || (output_lab != null && output_lab.store.getUsedCapacity() > 0)) {
                 // set the plant to clean up the reaction
-                plant_data.cleanup_reaction = true;
+                plant_data.labs_state = STATES.CLEANING;
+            }else{
+                plant_data.labs_state = STATES.IDLE;
             }
             // exit the function early
             return;
@@ -48,13 +44,12 @@ global.PlantRunner = {
                 // clear the current reaction
                 plant_data.current_reaction = null;
                 // set the plant to clean up the reaction
-                plant_data.cleanup_reaction = true;
+                plant_data.labs_state = STATES.CLEANING;
                 return;
             }
         }
 
-        // if there is no current reaction
-        if (plant_data.current_reaction == null) {
+        if (plant_data.labs_state == STATES.IDLE) {
             // loop through all the reagents in all the reactions in the game
             for (let reagent_1 in REACTIONS) {
                 // loop through all the other reagents for the current reagent
@@ -67,10 +62,37 @@ global.PlantRunner = {
                         amount = Math.floor(amount / 5) * 5;
                         // create and store the enw reaction
                         plant_data.current_reaction = new Reaction(reagent_1, reagent_2, REACTIONS[reagent_1][reagent_2], amount);
-                        // exit the function
-                        return;
+                        plant_data.labs_state = STATES.LOADING;
                     }
                 }
+            }
+        }
+        if (plant_data.labs_state == STATES.LOADING) {
+            let reaction = plant_data.current_reaction;
+
+            if (input_lab_1.store[reaction.input_1] == reaction.amount && input_lab_2.store[reaction.input_2] == reaction.amount) {
+                plant_data.labs_state = STATES.RUNNING;
+                output_lab.runReaction(input_lab_1, input_lab_2);
+            }
+        }
+        if (plant_data.labs_state == STATES.RUNNING) {
+            let reaction = plant_data.current_reaction;
+            if (output_lab.cooldown == 0) {
+                if (output_lab.store[reaction.output] == reaction.amount) {
+                    plant_data.labs_state = STATES.FINISHED;
+                }else{
+                    output_lab.runReaction(input_lab_1, input_lab_2);
+                }
+            }
+        }
+        if (plant_data.labs_state == STATES.FINISHED) {
+            if (output_lab.store.getUsedCapacity() == 0) {
+                plant_data.labs_state = STATES.IDLE;
+            }
+        }
+        if (plant_data.labs_state == STATES.CLEANING) {
+            if (input_lab_1.store.getUsedCapacity() == 0 && input_lab_2.store.getUsedCapacity() == 0 && output_lab.store.getUsedCapacity() == 0) {
+                plant_data.labs_state = STATES.IDLE;
             }
         }
     },
@@ -79,13 +101,7 @@ global.PlantRunner = {
      * @param {Room} room - The Room the plant is in
      * @param {PlantData} plant_data - The plant data for storing in memory
      */
-    getProductionRequest: function (room, plant_data) {
-        // if we are still cleaning up
-        if (plant_data.cleanup_production) {
-            // exit the function early
-            return
-        }
-
+    runFactory: function (room, plant_data) {
         // grab the factory
         let factory = Game.getObjectById(plant_data.factory_id);
         // grab the storage
@@ -98,10 +114,10 @@ global.PlantRunner = {
             // if the factory is built, and it has resources in it
             if (factory != null && factory.store.getUsedCapacity() > 0) {
                 // set the plant to clean up the production
-                plant_data.cleanup_production = true;
+                plant_data.factory_state = STATES.CLEANING;
+            }else{
+                plant_data.factory_state = STATES.IDLE;
             }
-            // exit the function early
-            return;
         }
 
         // if there is not a production currently running
@@ -127,12 +143,12 @@ global.PlantRunner = {
                 // clear the current production
                 plant_data.current_production = null;
                 // set the plant to clean up the production
-                plant_data.cleanup_production = true;
+                plant_data.factory_state = STATES.CLEANING;
             }
         }
 
         // if there is no current production
-        if (plant_data.current_production == null) {
+        if (plant_data.factory_state == STATES.IDLE) {
             // grab the store of the storage
             let store = storage.store;
             // loop through all the producible commodities
@@ -155,11 +171,20 @@ global.PlantRunner = {
                 if (has_components) {
                     // create and store the new production
                     plant_data.current_production = new Production(recipe.components, commodity);
-                    // exit the function
-                    return;
+                    plant_data.factory_state = STATES.LOADING;
+                    // exit the loop
+                    break;
                 }
             }
         }
+
+        if (plant_data.factory_state == STATES.LOADING) {}
+
+        if (plant_data.factory_state == STATES.RUNNING) {}
+
+        if (plant_data.factory_state == STATES.FINISHED) {}
+
+        if (plant_data.factory_state == STATES.CLEANING) {}
     },
     /**
      * caches the ids of the structures in the plant
@@ -230,7 +255,7 @@ global.PlantRunner = {
             plant_data.reaction_timer = 0;
             hlog("Recalculating Reaction...");
             // request a reaction
-            this.getReactionRequest(room, plant_data);
+            this.runLabs(room, plant_data);
         }else{
             // increment the reaction timer
             plant_data.reaction_timer++;
@@ -242,7 +267,7 @@ global.PlantRunner = {
             plant_data.production_timer = 0;
             hlog("Recalculating Production...");
             // request a production
-            this.getProductionRequest(room, plant_data);
+            this.runFactory(room, plant_data);
         }else{
             // increment the production timer
             plant_data.production_timer++;
