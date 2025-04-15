@@ -34,5 +34,14 @@ global.PowerAttackerMemory = PowerAttackerMemory;
 Creep.prototype.runPowerAttacker = function () {
     // if the squad is not full, idle at home room
     // if the squad is full
-        // go to the squad's next room
+        // if we are in the next room
+            // advance the queue
+            // if the room has a power bank
+                // attack the power bank
+            // else
+                // move to the next room
+        // else
+            // go to the squad's next room
+    // else
+        // idle
 };

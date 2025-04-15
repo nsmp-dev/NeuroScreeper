@@ -5,8 +5,8 @@
 class CreepMemory {
     /**
      * Creates a CreepMemory Object
-     * @param {string} role - The room's plans object
-     * @param {string} room_name - The room's plans object
+     * @param {string} role - The role of the creep being created
+     * @param {string} room_name - The name of the room this creep is assigned to
      */
     constructor(role, room_name) {
         /**

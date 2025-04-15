@@ -1,4 +1,8 @@
-
+/**
+ * @constant
+ * @type {number}
+ */
+global.PIXEL_CPU_COST = 1000;
 
 /**
  * @constant

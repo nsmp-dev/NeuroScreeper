@@ -4,13 +4,13 @@
  */
 global.POWER_HEALER = {
     // identifying string
-    NAME: "commodity_collector",
+    NAME: "power_healer",
     // emoji for shorthand visuals
     EMOJI: "⚖️",
     // standard body build, can be multiplied arbitrarily to build larger creeps
-    BODY: [WORK, CARRY, MOVE, MOVE],
+    BODY: [HEAL, TOUGH, MOVE, MOVE],
     // energy cost of the body
-    ENERGY_COST: 250,
+    ENERGY_COST: 360,
     // max times the body can be multiplied
     MAX_BODY_MULTIPLIER: 12,
 };
@@ -32,5 +32,9 @@ class PowerHealerMemory extends CreepMemory{
 global.PowerHealerMemory = PowerHealerMemory;
 
 Creep.prototype.runPowerHealer = function () {
-
+    // if the squad is full
+        // follow the squad's power attacker
+        // heal the attacker
+    // else
+        // idle
 };

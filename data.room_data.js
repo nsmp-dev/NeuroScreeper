@@ -66,6 +66,11 @@ class RoomData {
          * @type {PlantData|null}
          */
         this.plant_data = null;
+        /**
+         * data for running a squad that collects power
+         * @type {PowerSquad}
+         */
+        this.power_squad = new PowerSquad(room.name);
         
         // if the initial spawn was provided
         if (initial_spawn != null) {

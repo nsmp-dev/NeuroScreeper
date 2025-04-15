@@ -15,7 +15,19 @@ PowerCreep.prototype.runOperator = function () {
 
     // if we don't have a task currently assigned
     if (this.memory.task == null) {
-        // assign a new task
+        //let requested_ingredient = null;
+
+        // loop through the ingredients for the requested reaction/production
+            // if the reaction doesn't have the requested ingredients
+                // set the requested ingredient and amount
+
+        // if requested ingredient is not null
+            // create a gather request
+        // else
+            // idle
+
+
+
         this.memory.task = new IdleTask(this.room.name);
     }
     // run the task

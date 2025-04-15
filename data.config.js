@@ -162,3 +162,15 @@ global.TASK_TYPES = {
     /** renewing the operator at the power spawn */
     RENEW_OPERATOR: 12,
 };
+
+/**
+ * states enum for state machines
+ * @constant {Object} STATES
+ * @enum {number}
+ */
+global.STATES = {
+    IDLE: 0,
+    SEARCHING: 1,
+    COLLECTING: 2,
+    RETURNING: 3,
+};

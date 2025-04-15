@@ -1,4 +1,42 @@
 /**
+ * get a transporter target
+ * @return {StructureContainer|Resource|null} The target, accounting for a not-yet-built container
+ */
+Creep.prototype.getTransporterTarget = function () {
+    // grab the container from memory
+    let target = Game.getObjectById(this.memory.container_id);
+    // if the container is null
+    if (target == null) {
+        // grab all the structures at the container's location
+        target = this.room.getStructureAt(STRUCTURE_CONTAINER, this.memory.container_location.x, this.memory.container_location.y);
+        // if a container is found there
+        if (target != null) {
+            // save the container id in memory
+            this.memory.container_id = target.id;
+        }else{
+            // remove the container id from memory
+            this.memory.container_id = null;
+        }
+    }
+
+    // if the target is still null
+    if (target == null) {
+        let look_type = LOOK_ENERGY;
+        if (this.memory.role == MINERAL_TRANSPORTER.NAME) {
+            look_type = LOOK_RESOURCES;
+        }
+        // look for dropped energy at the container location
+        let resources = this.room.lookForAt(look_type, this.memory.container_location.x, this.memory.container_location.y);
+        // if any resources are found
+        if (resources.length > 0) {
+            // set the resource as the target
+            target = resources[0];
+        }
+    }
+    // return the target
+    return target;
+};
+/**
  * get a building target
  * @return {ConstructionSite} The closest construction site
  */

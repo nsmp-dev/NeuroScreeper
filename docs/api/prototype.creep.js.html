@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: prototype.creep.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: prototype.creep.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * get a transporter target
+ * @return {StructureContainer|Resource|null} The target, accounting for a not-yet-built container
+ */
+Creep.prototype.getTransporterTarget = function () {
+    // grab the container from memory
+    let target = Game.getObjectById(this.memory.container_id);
+    // if the container is null
+    if (target == null) {
+        // grab all the structures at the container's location
+        target = this.room.getStructureAt(STRUCTURE_CONTAINER, this.memory.container_location.x, this.memory.container_location.y);
+        // if a container is found there
+        if (target != null) {
+            // save the container id in memory
+            this.memory.container_id = target.id;
+        }else{
+            // remove the container id from memory
+            this.memory.container_id = null;
+        }
+    }
+
+    // if the target is still null
+    if (target == null) {
+        let look_type = LOOK_ENERGY;
+        if (this.memory.role == MINERAL_TRANSPORTER.NAME) {
+            look_type = LOOK_RESOURCES;
+        }
+        // look for dropped energy at the container location
+        let resources = this.room.lookForAt(look_type, this.memory.container_location.x, this.memory.container_location.y);
+        // if any resources are found
+        if (resources.length > 0) {
+            // set the resource as the target
+            target = resources[0];
+        }
+    }
+    // return the target
+    return target;
+};
+/**
+ * get a building target
+ * @return {ConstructionSite} The closest construction site
+ */
+Creep.prototype.getBuildTarget = function () {
+    // find and return the closest construction site
+    return this.pos.findClosestByPath(FIND_MY_CONSTRUCTION_SITES);
+};
+/**
+ * gets a general dumping target
+ * @return {Structure} The closest dumping target
+ */
+Creep.prototype.getDumpTarget = function () {
+    // find any extensions that are not full
+    let targets = this.room.findLowExtensions();
+
+    // if no extensions are found
+    if (targets.length == 0) {
+        // find all the spawns that are not full
+        targets = this.room.findLowSpawns();
+    }
+
+    // if no spawns are found
+    if (targets.length == 0 &amp;&amp;
+        // and there is a terminal in the room
+        this.room.terminal != undefined &amp;&amp;
+        // and the terminal is not full
+        this.room.terminal.store.getFreeCapacity(RESOURCE_ENERGY) > 0) {
+        // return the terminal
+        return this.room.terminal;
+    }
+
+    // return the closest one by path
+    return this.pos.findClosestByPath(targets);
+};
+/**
+ * gets a general filling target
+ * @return {Structure|Resource} The closest target to get energy from
+ */
+Creep.prototype.getFillTarget = function () {
+    // find any dropped energy
+    let targets = this.room.find(FIND_DROPPED_RESOURCES, {filter: {resourceType: RESOURCE_ENERGY}});
+
+    // if no dropped energy is found
+    if (targets.length == 0) {
+        // find any non-empty containers
+        targets = this.room.findFilledContainers();
+    }
+
+    // if no non-empty containers are found
+    if (targets.length == 0 &amp;&amp;
+        // and there is a storage in the room
+        this.room.storage != undefined &amp;&amp;
+        // and the storage is not empty
+        this.room.storage.store[RESOURCE_ENERGY] > 0) {
+        // return the storage
+        return this.room.storage;
+    }
+
+    // return the closest one by path
+    return this.pos.findClosestByPath(targets);
+};
+/**
+ * get a repairing target
+ * @return {Structure} the nearest damaged structure
+ */
+Creep.prototype.getRepairTarget = function () {
+    // return the closest structure
+    return this.pos.findClosestByPath(FIND_STRUCTURES, {
+        // if the structure is damaged
+        filter: structure => structure.hits &lt; structure.hitsMax,
+    });
+};
+/**
+ * gets a dumping target for a queen
+ * @return {Structure} The nearest target for dumping energy
+ */
+Creep.prototype.getQueenDumpTarget = function () {
+    // find all the towers that are not full
+    let targets = this.room.findLowTowers();
+
+    // if no towers are found
+    if (targets.length == 0) {
+        // find any extensions that are not full
+        targets = this.room.findLowExtensions();
+    }
+
+    // if no extensions are found
+    if (targets.length == 0) {
+        // find all the spawns that are not full
+        targets = this.room.findLowSpawns();
+    }
+
+    // if no spawns were found
+    if (targets.length == 0) {
+        // get the power spawn
+        let power_spawn = this.room.getPowerSpawn();
+        // if a power spawn is found, and it's energy is low
+        if (power_spawn != null &amp;&amp; power_spawn.store.getFreeCapacity(RESOURCE_ENERGY) > 0) {
+            // return the power spawn
+            return power_spawn;
+        }
+    }
+
+    // if no spawns are found
+    if (targets.length == 0 &amp;&amp;
+        // and there is a terminal in the room
+        this.room.terminal != undefined &amp;&amp;
+        // and the terminal is not full
+        this.room.terminal.store.getFreeCapacity(RESOURCE_ENERGY) > 0) {
+        // return the terminal
+        return this.room.terminal;
+    }
+
+    // return the closest one by path
+    return this.pos.findClosestByPath(targets);
+};
+/**
+ * move toward the idle location for the current room to get out of the way
+ */
+Creep.prototype.idle = function () {
+    // grab the room data
+    let room_data = Memory.room_data[this.room.name];
+
+    // if we are more than 3 tiles away
+    if (!this.pos.inRangeTo(room_data.plans.idle_location.x, room_data.plans.idle_location.y, 3)) {
+        // move toward the idle location
+        this.moveTo(room_data.plans.idle_location.x, room_data.plans.idle_location.y);
+    }
+};
+/**
+ * assign a standard gather task to just grab energy for various needs
+ */
+Creep.prototype.gatherEnergy = function () {
+    // find a new fill target
+    let target = this.getFillTarget();
+    // if a new target was found
+    if (target != null) {
+        // assign a new task
+        this.memory.task = new GatherTask(target, RESOURCE_ENERGY);
+        // announce the new task
+        this.announceTask();
+    }else{
+        // assign a new task
+        this.memory.task = new IdleTask(this.memory.room_name, 10);
+        // announce the new task
+        this.announceTask();
+    }
+};
+/**
+ * run the relevant function for the role that this creep has
+ */
+Creep.prototype.run = function () {
+    // switch based on the creep's role
+    switch (this.memory.role) {
+        // if the role matches
+        case ATTACKER.NAME:
+            // call the function for this role
+            this.runAttacker();
+            // break the switch
+            break;
+        case BUILDER.NAME:
+            this.runBuilder();
+            break;
+        case CLAIMER.NAME:
+            this.runClaimer();
+            break;
+        case DRILLER.NAME:
+            this.runDriller();
+            break;
+        case HEALER.NAME:
+            this.runHealer();
+            break;
+        case MINERAL_DRILLER.NAME:
+            this.runMineralDriller();
+            break;
+        case MINERAL_TRANSPORTER.NAME:
+            this.runMineralTransporter();
+            break;
+        case QUEEN.NAME:
+            this.runQueen();
+            break;
+        case REPAIRER.NAME:
+            this.runRepairer();
+            break;
+        case SCOUT.NAME:
+            this.runScout();
+            break;
+        case TRANSPORTER.NAME:
+            this.runTransporter();
+            break;
+        case UPGRADER.NAME:
+            this.runUpgrader();
+            break;
+    }
+};
+/**
+ * announce the task that the creep is currently assigned
+ */
+Creep.prototype.announceTask = function () {
+    // grab the task
+    let task = this.memory.task;
+
+    // if the task is not set
+    if (task == null) {
+        // exit the function early
+        return;
+    }
+
+    // switch based on the task's type
+    switch (task.type) {
+        // if the task type matches
+        case TASK_TYPES.IDLE:
+            // announce the task
+            this.say("Idling...");
+            // break the switch
+            break;
+        // if the task type matches
+        case TASK_TYPES.GATHER:
+            // announce the task
+            this.say("Gathering...");
+            // break the switch
+            break;
+        // if the task type matches
+        case TASK_TYPES.DEPOSIT:
+            // announce the task
+            this.say("Depositing...");
+            // break the switch
+            break;
+        // if the task type matches
+        case TASK_TYPES.REPAIR:
+            // announce the task
+            this.say("Repairing...");
+            // break the switch
+            break;
+        // if the task type matches
+        case TASK_TYPES.BUILD:
+            // announce the task
+            this.say("Building...");
+            // break the switch
+            break;
+        // if the task type matches
+        case TASK_TYPES.UPGRADE:
+            // announce the task
+            this.say("Upgrading...");
+            // break the switch
+            break;
+        // if the task type matches
+        case TASK_TYPES.CLAIM:
+            // announce the task
+            this.say("Claiming...");
+            // break the switch
+            break;
+        // if the task type matches
+        case TASK_TYPES.RESERVE:
+            // announce the task
+            this.say("Reserving...");
+            // break the switch
+            break;
+        // if the task type matches
+        case TASK_TYPES.DRILL:
+            // announce the task
+            this.say("Drilling...");
+            // break the switch
+            break;
+        // if the task type matches
+        case TASK_TYPES.ATTACK:
+            // announce the task
+            this.say("Attacking...");
+            // break the switch
+            break;
+        // if the task type matches
+        case TASK_TYPES.HEAL:
+            // announce the task
+            this.say("Healing...");
+            // break the switch
+            break;
+        // if the task type matches
+        case TASK_TYPES.MOVE_ROOM:
+            // announce the task
+            this.say("Moving...");
+            // break the switch
+            break;
+        // if the task type matches
+        case TASK_TYPES.RENEW_OPERATOR:
+            // announce the task
+            this.say("Renewing...");
+            // break the switch
+            break;
+    }
+};</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-PlantRunner.html">PlantRunner</a></li><li><a href="module-PowerManager.html">PowerManager</a></li><li><a href="module-RoomPlansFactory.html">RoomPlansFactory</a></li><li><a href="module-RoomRunner.html">RoomRunner</a></li><li><a href="module-TaskRunner.html">TaskRunner</a></li><li><a href="module-Timer.html">Timer</a></li><li><a href="module-Util.html">Util</a></li><li><a href="module-Visualizer.html">Visualizer</a></li></ul><h3>Classes</h3><ul><li><a href="AttackTask.html">AttackTask</a></li><li><a href="AttackerMemory.html">AttackerMemory</a></li><li><a href="BuildTask.html">BuildTask</a></li><li><a href="BuilderMemory.html">BuilderMemory</a></li><li><a href="ClaimTask.html">ClaimTask</a></li><li><a href="ClaimerMemory.html">ClaimerMemory</a></li><li><a href="ConstructionPlan.html">ConstructionPlan</a></li><li><a href="CreepMemory.html">CreepMemory</a></li><li><a href="DepositTask.html">DepositTask</a></li><li><a href="DrillTask.html">DrillTask</a></li><li><a href="DrillerMemory.html">DrillerMemory</a></li><li><a href="GatherTask.html">GatherTask</a></li><li><a href="HealTask.html">HealTask</a></li><li><a href="HealerMemory.html">HealerMemory</a></li><li><a href="IdleTask.html">IdleTask</a></li><li><a href="MineralDrillerMemory.html">MineralDrillerMemory</a></li><li><a href="MineralPlan.html">MineralPlan</a></li><li><a href="MineralPopulation.html">MineralPopulation</a></li><li><a href="MineralTransporterMemory.html">MineralTransporterMemory</a></li><li><a href="MoveRoomTask.html">MoveRoomTask</a></li><li><a href="PlantData.html">PlantData</a></li><li><a href="Point.html">Point</a></li><li><a href="PowerSquad.html">PowerSquad</a></li><li><a href="Production.html">Production</a></li><li><a href="QueenMemory.html">QueenMemory</a></li><li><a href="Reaction.html">Reaction</a></li><li><a href="RenewOperatorTask.html">RenewOperatorTask</a></li><li><a href="RepairTask.html">RepairTask</a></li><li><a href="RepairerMemory.html">RepairerMemory</a></li><li><a href="ReserveTask.html">ReserveTask</a></li><li><a href="RoomData.html">RoomData</a></li><li><a href="RoomPlans.html">RoomPlans</a></li><li><a href="RoomPopulation.html">RoomPopulation</a></li><li><a href="ScoutMemory.html">ScoutMemory</a></li><li><a href="SourcePlan.html">SourcePlan</a></li><li><a href="SourcePopulation.html">SourcePopulation</a></li><li><a href="Task.html">Task</a></li><li><a href="TransporterMemory.html">TransporterMemory</a></li><li><a href="UpgradeTask.html">UpgradeTask</a></li><li><a href="UpgraderMemory.html">UpgraderMemory</a></li></ul><h3>Tutorials</h3><ul><li><a href="tutorial-ARCHITECTURE.html">ARCHITECTURE</a></li><li><a href="tutorial-CHANGELOG.html">CHANGELOG</a></li><li><a href="tutorial-STYLE.html">STYLE</a></li><li><a href="tutorial-TODO.html">TODO</a></li></ul><h3>Global</h3><ul><li><a href="global.html#ATTACKER">ATTACKER</a></li><li><a href="global.html#BUILD">BUILD</a></li><li><a href="global.html#BUILDER">BUILDER</a></li><li><a href="global.html#CLAIMER">CLAIMER</a></li><li><a href="global.html#COLONY">COLONY</a></li><li><a href="global.html#CONSTRUCTION_TIMER_LENGTH">CONSTRUCTION_TIMER_LENGTH</a></li><li><a href="global.html#COUNT_POPULATION_TIMER_LENGTH">COUNT_POPULATION_TIMER_LENGTH</a></li><li><a href="global.html#DEBUG_MODE">DEBUG_MODE</a></li><li><a href="global.html#DRILLER">DRILLER</a></li><li><a href="global.html#EXPANSION">EXPANSION</a></li><li><a href="global.html#HEALER">HEALER</a></li><li><a href="global.html#HIGHWAY">HIGHWAY</a></li><li><a href="global.html#KEEPER_LAIR">KEEPER_LAIR</a></li><li><a href="global.html#LOG_SIZE">LOG_SIZE</a></li><li><a href="global.html#MINERAL_DRILLER">MINERAL_DRILLER</a></li><li><a href="global.html#MINERAL_TRANSPORTER">MINERAL_TRANSPORTER</a></li><li><a href="global.html#NEW_ROOM_TIMER_LENGTH">NEW_ROOM_TIMER_LENGTH</a></li><li><a href="global.html#PLANT_STRUCTURES_TIMER_LENGTH">PLANT_STRUCTURES_TIMER_LENGTH</a></li><li><a href="global.html#PRODUCTION_TIMER_LENGTH">PRODUCTION_TIMER_LENGTH</a></li><li><a href="global.html#QUEEN">QUEEN</a></li><li><a href="global.html#REACTION_TIMER_LENGTH">REACTION_TIMER_LENGTH</a></li><li><a href="global.html#REPAIRER">REPAIRER</a></li><li><a href="global.html#REQUEST_POPULATION_TIMER_LENGTH">REQUEST_POPULATION_TIMER_LENGTH</a></li><li><a href="global.html#ROLES">ROLES</a></li><li><a href="global.html#ROOM_CONSTRUCTION_SITE_LIMIT">ROOM_CONSTRUCTION_SITE_LIMIT</a></li><li><a href="global.html#RoomManager">RoomManager</a></li><li><a href="global.html#SATISFACTION_LOG_SIZE">SATISFACTION_LOG_SIZE</a></li><li><a href="global.html#SATISFACTION_THRESHOLD">SATISFACTION_THRESHOLD</a></li><li><a href="global.html#SCOUT">SCOUT</a></li><li><a href="global.html#STATES">STATES</a></li><li><a href="global.html#TASK_TYPES">TASK_TYPES</a></li><li><a href="global.html#TERMINAL_TIMER_LENGTH">TERMINAL_TIMER_LENGTH</a></li><li><a href="global.html#TRANSPORTER">TRANSPORTER</a></li><li><a href="global.html#UPGRADER">UPGRADER</a></li><li><a href="global.html#USERNAME">USERNAME</a></li><li><a href="global.html#hlog">hlog</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Tue Apr 15 2025 08:35:43 GMT-0500 (Central Daylight Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

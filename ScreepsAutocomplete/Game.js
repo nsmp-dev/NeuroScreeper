@@ -73,6 +73,12 @@ Game = {
         },
 
         /**
+         * Generate a pixel if the bucket has 1000 cpu
+         */
+        generatePixel: function () {
+        },
+
+        /**
          * Get amount of CPU time used from the beginning of the current game tick. Always returns 0 in the Simulation mode.
          *
          * @return {number} Returns the currently used CPU time as a float number

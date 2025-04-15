@@ -8,11 +8,11 @@ global.POWER_TRANSPORTER = {
     // emoji for shorthand visuals
     EMOJI: "⚖️",
     // standard body build, can be multiplied arbitrarily to build larger creeps
-    BODY: [WORK, CARRY, MOVE, MOVE],
+    BODY: [CARRY, MOVE],
     // energy cost of the body
-    ENERGY_COST: 250,
+    ENERGY_COST: 100,
     // max times the body can be multiplied
-    MAX_BODY_MULTIPLIER: 12,
+    MAX_BODY_MULTIPLIER: 25,
 };
 global.ROLES[POWER_TRANSPORTER.NAME] = POWER_TRANSPORTER;
 
@@ -32,5 +32,5 @@ class PowerTransporterMemory extends CreepMemory{
 global.PowerTransporterMemory = PowerTransporterMemory;
 
 Creep.prototype.runPowerTransporter = function () {
-
+    // if the squad is full
 };

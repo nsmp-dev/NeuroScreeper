@@ -137,6 +137,12 @@ global.Util = {
                 delete Memory.creeps[name];
             }
         }
+
+        // if the bucket meets the pixel cost threshold
+        if (Game.cpu.bucket == PIXEL_CPU_COST) {
+            // generate a pixel
+            Game.cpu.generatePixel();
+        }
     },
     /**
      * calculates what percentage of the satisfaction log in the given room data is true
