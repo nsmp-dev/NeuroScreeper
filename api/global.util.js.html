@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: global.util.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: global.util.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * commonly used helper functions
+ * @module Util
+ */
+global.Util = {
+    /**
+     * converts an x/y room coordinate to a string name
+     * @param {number} x - x coordinate of the room in the world space
+     * @param {number} y - y coordinate of the room in the world space
+     * @return {string} the string name for the room
+     */
+    worldXYToRoomName: function (x, y) {
+        // get the size of the world
+        let size = Game.map.getWorldSize();
+        // calculate the max number the string name uses
+        let max = (size - 2) / 2;
+        // the string name we are building
+        let str = "";
+
+        // if we are on the west side of the map
+        if (x &lt; (size / 2)) {
+            // add the coordinate to the string name
+            str += (max - x) + "W";
+        } else {
+            // add the coordinate to the string name
+            str += (x + 1 + max - size) + "E";
+        }
+
+        // if we are on the east side of the map
+        if (y &lt; (size / 2)) {
+            // add the coordinate to the string name
+            str += (max - y) + "N";
+        } else {
+            // add the coordinate to the string name
+            str += (y + 1 + max - size) + "S";
+        }
+
+        // return the string name
+        return str;
+    },
+    /**
+     * converts a string room name to x/y room coordinates
+     * @param {string} name - The name of the room
+     * @return {Point} the location of the room in world space
+     */
+    roomNameToWorldXY: function (name) {
+        // get the size of the world
+        let size = Game.map.getWorldSize();
+        // calculate the max number the string name uses
+        let max = (size - 2) / 2;
+        // the coordinates we are finding
+        let coordinates = new Point(-1, -1);
+
+        // if the string contains a W
+        if (name.includes("W")) {
+            // split up the string
+            let arr = name.split("W");
+            // calculate the x coordinate
+            coordinates.x = max - Number(arr[0]);
+            // store the rest of the string
+            name = arr[1];
+        }
+        // if the string contains an E
+        if (name.includes("E")) {
+            // split up the string
+            let arr = name.split("E");
+            // calculate the x coordinate
+            coordinates.x = max + 1 + Number(arr[0]);
+            // store the rest of the string
+            name = arr[1];
+        }
+        // if the string contains an N
+        if (name.includes("N")) {
+            // split up the string
+            let arr = name.split("N");
+            // calculate the y coordinate
+            coordinates.y = max - Number(arr[0]);
+            // store the rest of the string
+            name = arr[1];
+        }
+        // if the string contains an S
+        if (name.includes("S")) {
+            // split up the string
+            let arr = name.split("S");
+            // calculate the y coordinate
+            coordinates.y = max + 1 + Number(arr[0]);
+        }
+
+        // return the coordinates
+        return coordinates;
+    },
+    /**
+     * multiplies an array by num times
+     * @param {Array} arr - The array that will be duplicated
+     * @param {number} num - The number of times to repeat the array
+     * @return {Array} the new resultant array
+     */
+    multiArray: function (arr, num) {
+        // create the array we are building
+        let result = [];
+        // loop num amount of times
+        for (let i = 0; i &lt; num; i++) {
+            // add the array to the result
+            result = result.concat(arr);
+        }
+        // return the new array
+        return result;
+    },
+    /**
+     * generates an id, using a memory entry to ensure no collisions
+     * @return {string} the guaranteed unique id
+     */
+    generateId: function () {
+        // if the id counter has not been set before
+        if (Memory.id_counter == undefined) {
+            // set the id counter to 0
+            Memory.id_counter = 0;
+        }
+        // the id we are building
+        let id = "";
+        // store the id
+        id += Memory.id_counter;
+        // increment the id counter
+        Memory.id_counter++;
+        // return the id
+        return id;
+    },
+    /**
+     * delete old creep memories to free up memory and prevent leaks
+     */
+    collectGarbage: function () {
+        // loop through all the creep's memories
+        for (let name in Memory.creeps) {
+            // if the creep is dead
+            if (Game.creeps[name] == undefined) {
+                // delete the creep's memory
+                delete Memory.creeps[name];
+            }
+        }
+
+        // if the bucket meets the pixel cost threshold
+        if (Game.cpu.bucket == PIXEL_CPU_COST) {
+            // generate a pixel
+            Game.cpu.generatePixel();
+        }
+    },
+    /**
+     * calculates what percentage of the satisfaction log in the given room data is true
+     * @param {RoomData} room_data - The room data that holds the satisfaction log
+     * @return {number} the calculated ratio
+     */
+    getSatisfiedRatio: function (room_data) {
+        // the total number of 1s in the room satisfaction log
+        let total = 0;
+        // loop through the satisfaction log
+        room_data.satisfaction_log.forEach(function (satisfied) {
+            // if satisfied on that tick
+            if (satisfied) {
+                // increment the total
+                total++;
+            }
+        });
+
+        // calculate the average and return it
+        return (total / room_data.satisfaction_log.length);
+    },
+    /**
+     * see if a room is available
+     * @param {string} room_name - The name of the room to test
+     * @return {Boolean} true if the room is available
+     */
+    isRoomAvailable: function (room_name) {
+        // grab the room
+        let room = Game.rooms[room_name];
+
+        // if we don't have vision of the room
+        if (room == undefined) {
+            // mark room as unavailable
+            return false;
+        }
+
+        // grab the status of the room
+        let status = Game.map.getRoomStatus(room.name);
+        // if the room is not normal
+        if (status.status != "normal") {
+            // mark room as unavailable
+            return false;
+        }
+
+        // if the owner of the room is not the player
+        if (room.controller.owner != undefined &amp;&amp; room.controller.owner != USERNAME) {
+            // mark room as unavailable
+            return false;
+        }
+
+        // find all the hostile creeps in the room
+        let hostile_creeps = room.find(FIND_HOSTILE_CREEPS).length;
+
+        // return true if there are no hostile creeps in the room
+        return hostile_creeps &lt;= 0;
+    },
+    /**
+     * print a summary of some stats
+     */
+    printSummary: function () {
+        // start a new string
+        let str = "";
+        // the current tick
+        str += "tick: " + Game.time;
+        // the amount of cpu used this tick
+        str += " | cpu used: " + Game.cpu.getUsed();
+        // the current bucket size
+        str += " | bucket: " + Game.cpu.bucket;
+        // print the summary
+        console.log(str);
+    },
+    /**
+     * print all the timers we have
+     */
+    printTimers: function () {
+        // draw a separator
+        console.log("-----Average Times-----");
+        // loop through all the timers
+        for (let id in Memory.timers) {
+            // print the id and average of this timer
+            console.log(id + ": " + Memory.timers[id].average_time);
+        }
+    },
+    /**
+     * clear all memory except for the id counter
+     */
+    clearMemory: function () {
+        // loop through all the entries in memory
+        for (let name in Memory) {
+            // if this field is not the id_counter
+            if (name != "id_counter") {
+                // delete the entry
+                delete Memory[name];
+            }
+        }
+    },
+    /**
+     * converts RGB values to a hex code for drawing
+     * @param {number} r - the red value
+     * @param {number} g - the green value
+     * @param {number} b - the blue value
+     * @return {string} the resulting hex code, including the #
+     */
+    rgbToHex: function (r, g, b) {
+        // return the string version of the rgb value
+        return "#" + (1 &lt;&lt; 24 | r &lt;&lt; 16 | g &lt;&lt; 8 | b).toString(16).slice(1);
+    },
+    /**
+     * distance between 2 Points
+     * @param {Point} a - the first point
+     * @param {Point} b - the second point
+     * @return {number} the distance between the points
+     */
+    distance: function (a, b) {
+        // get the distance between the x coordinates
+        let x = a.x - b.x;
+        // get the distance between the y coordinates
+        let y = b.y - b.y;
+        // return the hypotenuse of the two points
+        return Math.sqrt( (x * x) + (y * y) );
+    },
+    /**
+     * distance between 2 Points
+     * @param {string} room_name - the name of the room we are searching from
+     * @return {string|null} the name of the nearest room
+     */
+    getNearestColony: function (room_name) {
+        let nearest_colony_room_name = null;
+        let lowest_distance = null;
+
+        for (let test_room_name in Memory.room_data) {
+            let test_room_data = Memory.room_data[test_room_name];
+            if (test_room_data.type == COLONY) {
+                let distance = 0;
+                if (room_name != test_room_name) {
+                    distance = Game.map.getRoomLinearDistance(room_name, test_room_data);
+                }
+
+                if (nearest_colony_room_name == null || distance &lt; lowest_distance) {
+                    nearest_colony_room_name = test_room_name;
+                    lowest_distance = distance;
+                }
+            }
+        }
+
+        return nearest_colony_room_name;
+    },
+};</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-PlantRunner.html">PlantRunner</a></li><li><a href="module-PowerManager.html">PowerManager</a></li><li><a href="module-RoomPlansFactory.html">RoomPlansFactory</a></li><li><a href="module-RoomRunner.html">RoomRunner</a></li><li><a href="module-TaskRunner.html">TaskRunner</a></li><li><a href="module-Timer.html">Timer</a></li><li><a href="module-Util.html">Util</a></li><li><a href="module-Visualizer.html">Visualizer</a></li></ul><h3>Classes</h3><ul><li><a href="AttackTask.html">AttackTask</a></li><li><a href="AttackerMemory.html">AttackerMemory</a></li><li><a href="BuildTask.html">BuildTask</a></li><li><a href="BuilderMemory.html">BuilderMemory</a></li><li><a href="ClaimTask.html">ClaimTask</a></li><li><a href="ClaimerMemory.html">ClaimerMemory</a></li><li><a href="ConstructionPlan.html">ConstructionPlan</a></li><li><a href="CreepMemory.html">CreepMemory</a></li><li><a href="DepositTask.html">DepositTask</a></li><li><a href="DrillTask.html">DrillTask</a></li><li><a href="DrillerMemory.html">DrillerMemory</a></li><li><a href="GatherTask.html">GatherTask</a></li><li><a href="HealTask.html">HealTask</a></li><li><a href="HealerMemory.html">HealerMemory</a></li><li><a href="IdleTask.html">IdleTask</a></li><li><a href="MineralDrillerMemory.html">MineralDrillerMemory</a></li><li><a href="MineralPlan.html">MineralPlan</a></li><li><a href="MineralPopulation.html">MineralPopulation</a></li><li><a href="MineralTransporterMemory.html">MineralTransporterMemory</a></li><li><a href="MoveRoomTask.html">MoveRoomTask</a></li><li><a href="PlantData.html">PlantData</a></li><li><a href="Point.html">Point</a></li><li><a href="PowerSquad.html">PowerSquad</a></li><li><a href="Production.html">Production</a></li><li><a href="QueenMemory.html">QueenMemory</a></li><li><a href="Reaction.html">Reaction</a></li><li><a href="RenewOperatorTask.html">RenewOperatorTask</a></li><li><a href="RepairTask.html">RepairTask</a></li><li><a href="RepairerMemory.html">RepairerMemory</a></li><li><a href="ReserveTask.html">ReserveTask</a></li><li><a href="RoomData.html">RoomData</a></li><li><a href="RoomPlans.html">RoomPlans</a></li><li><a href="RoomPopulation.html">RoomPopulation</a></li><li><a href="ScoutMemory.html">ScoutMemory</a></li><li><a href="SourcePlan.html">SourcePlan</a></li><li><a href="SourcePopulation.html">SourcePopulation</a></li><li><a href="Task.html">Task</a></li><li><a href="TransporterMemory.html">TransporterMemory</a></li><li><a href="UpgradeTask.html">UpgradeTask</a></li><li><a href="UpgraderMemory.html">UpgraderMemory</a></li></ul><h3>Tutorials</h3><ul><li><a href="tutorial-ARCHITECTURE.html">ARCHITECTURE</a></li><li><a href="tutorial-CHANGELOG.html">CHANGELOG</a></li><li><a href="tutorial-STYLE.html">STYLE</a></li><li><a href="tutorial-TODO.html">TODO</a></li></ul><h3>Global</h3><ul><li><a href="global.html#ATTACKER">ATTACKER</a></li><li><a href="global.html#BUILD">BUILD</a></li><li><a href="global.html#BUILDER">BUILDER</a></li><li><a href="global.html#CLAIMER">CLAIMER</a></li><li><a href="global.html#COLONY">COLONY</a></li><li><a href="global.html#CONSTRUCTION_TIMER_LENGTH">CONSTRUCTION_TIMER_LENGTH</a></li><li><a href="global.html#COUNT_POPULATION_TIMER_LENGTH">COUNT_POPULATION_TIMER_LENGTH</a></li><li><a href="global.html#DEBUG_MODE">DEBUG_MODE</a></li><li><a href="global.html#DRILLER">DRILLER</a></li><li><a href="global.html#EXPANSION">EXPANSION</a></li><li><a href="global.html#HEALER">HEALER</a></li><li><a href="global.html#HIGHWAY">HIGHWAY</a></li><li><a href="global.html#KEEPER_LAIR">KEEPER_LAIR</a></li><li><a href="global.html#LOG_SIZE">LOG_SIZE</a></li><li><a href="global.html#MINERAL_DRILLER">MINERAL_DRILLER</a></li><li><a href="global.html#MINERAL_TRANSPORTER">MINERAL_TRANSPORTER</a></li><li><a href="global.html#NEW_ROOM_TIMER_LENGTH">NEW_ROOM_TIMER_LENGTH</a></li><li><a href="global.html#PLANT_STRUCTURES_TIMER_LENGTH">PLANT_STRUCTURES_TIMER_LENGTH</a></li><li><a href="global.html#PRODUCTION_TIMER_LENGTH">PRODUCTION_TIMER_LENGTH</a></li><li><a href="global.html#QUEEN">QUEEN</a></li><li><a href="global.html#REACTION_TIMER_LENGTH">REACTION_TIMER_LENGTH</a></li><li><a href="global.html#REPAIRER">REPAIRER</a></li><li><a href="global.html#REQUEST_POPULATION_TIMER_LENGTH">REQUEST_POPULATION_TIMER_LENGTH</a></li><li><a href="global.html#ROLES">ROLES</a></li><li><a href="global.html#ROOM_CONSTRUCTION_SITE_LIMIT">ROOM_CONSTRUCTION_SITE_LIMIT</a></li><li><a href="global.html#RoomManager">RoomManager</a></li><li><a href="global.html#SATISFACTION_LOG_SIZE">SATISFACTION_LOG_SIZE</a></li><li><a href="global.html#SATISFACTION_THRESHOLD">SATISFACTION_THRESHOLD</a></li><li><a href="global.html#SCOUT">SCOUT</a></li><li><a href="global.html#STATES">STATES</a></li><li><a href="global.html#TASK_TYPES">TASK_TYPES</a></li><li><a href="global.html#TERMINAL_TIMER_LENGTH">TERMINAL_TIMER_LENGTH</a></li><li><a href="global.html#TRANSPORTER">TRANSPORTER</a></li><li><a href="global.html#UPGRADER">UPGRADER</a></li><li><a href="global.html#USERNAME">USERNAME</a></li><li><a href="global.html#hlog">hlog</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Tue Apr 15 2025 08:41:35 GMT-0500 (Central Daylight Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
