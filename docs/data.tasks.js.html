@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: data.tasks.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: data.tasks.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * Task class, an object containing data for executing simple creep actions
+ * @class Task
+ */
+class Task {
+    /**
+     * creates a Task object
+     * @param {number} type - The type of task
+     * @param {string} room_name - The room of the task
+     */
+    constructor(type, room_name) {
+        /**
+         * type of task being created
+         * @type {number}
+         */
+        this.type = type;
+        /**
+         * name of the room the target is in
+         * @type {string}
+         */
+        this.room_name = room_name;
+    }
+}
+global.Task = Task;
+
+/**
+ * GatherTask class, an object that contains data for running a task
+ * @class GatherTask
+ */
+class GatherTask extends Task {
+    /**
+     * creates a gather task
+     * @param {Structure|Resource} target - The target to gather from
+     * @param {string} resource - The resource to gather
+     * @param {number|null} amount - The amount of resource to gather
+     */
+    constructor(target, resource, amount = null) {
+        super(TASK_TYPES.GATHER, target.room.name);
+        /**
+         * target of the task
+         * @type {string}
+         */
+        this.target = target.id;
+        /**
+         * the type of resource to be gathered
+         * @type {string}
+         */
+        this.resource = resource;
+        /**
+         * the amount of resource to be gathered
+         * @type {number|null}
+         */
+        this.amount = amount;
+    }
+}
+global.GatherTask = GatherTask;
+
+/**
+ * DepositTask class, an object that contains data for running a task
+ * @class DepositTask
+ */
+class DepositTask extends Task {
+    /**
+     * creates a deposit task
+     * @param {Structure} target - The target to deposit in
+     * @param {string} resource - The resource to deposit
+     * @param {number|null} amount - The amount of resource to deposit
+     */
+    constructor(target, resource, amount = null) {
+        super(TASK_TYPES.DEPOSIT, target.room.name);
+        /**
+         * target of the task
+         * @type {string}
+         */
+        this.target = target.id;
+        /**
+         * the type of resource to be gathered
+         * @type {string}
+         */
+        this.resource = resource;
+        /**
+         * the amount of resource to be gathered
+         * @type {number|null}
+         */
+        this.amount = amount;
+    }
+}
+global.DepositTask = DepositTask;
+
+/**
+ * BuildTask class, an object that contains data for running a task
+ * @class BuildTask
+ */
+class BuildTask extends Task {
+    /**
+     * creates a deposit task
+     * @param {ConstructionSite} construction_site - The target to build
+     */
+    constructor(construction_site) {
+        super(TASK_TYPES.BUILD, construction_site.room.name);
+        /**
+         * construction site to build
+         * @type {string}
+         */
+        this.construction_site = construction_site.id;
+    }
+}
+global.BuildTask = BuildTask;
+
+/**
+ * RepairTask class, an object that contains data for running a task
+ * @class RepairTask
+ */
+class RepairTask extends Task {
+    /**
+     * creates a repair task
+     * @param {Structure} structure - The target to repair
+     */
+    constructor(structure) {
+        super(TASK_TYPES.REPAIR, structure.room.name);
+        /**
+         * target of the task
+         * @type {string}
+         */
+        this.structure = structure.id;
+    }
+}
+global.RepairTask = RepairTask;
+
+/**
+ * UpgradeTask class, an object that contains data for running a task
+ * @class UpgradeTask
+ */
+class UpgradeTask extends Task {
+    /**
+     * creates an upgrade task
+     * @param {string} room_name - name of the room to upgrade
+     */
+    constructor(room_name) {
+        super(TASK_TYPES.UPGRADE, room_name);
+    }
+}
+global.UpgradeTask = UpgradeTask;
+
+/**
+ * ClaimTask class, an object that contains data for running a task
+ * @class ClaimTask
+ */
+class ClaimTask extends Task {
+    /**
+     * creates a claim task
+     * @param {string} room_name - name of the room to claim
+     */
+    constructor(room_name) {
+        super(TASK_TYPES.CLAIM, room_name);
+    }
+}
+global.ClaimTask = ClaimTask;
+
+/**
+ * ReserveTask class, an object that contains data for running a task
+ * @class ReserveTask
+ */
+class ReserveTask extends Task {
+    /**
+     * creates a reserve task
+     * @param {string} room_name - name of the room to reserve
+     */
+    constructor(room_name) {
+        super(TASK_TYPES.RESERVE, room_name);
+    }
+}
+global.ReserveTask = ReserveTask;
+
+/**
+ * DrillTask class, an object that contains data for running a task
+ * @class DrillTask
+ */
+class DrillTask extends Task {
+    /**
+     * creates a drill task
+     * @param {string} source_id - The id of the source to drill
+     * @param {Point} container_location - location of the container
+     * @param {string} room_name - location of the container
+     */
+    constructor(source_id, container_location, room_name) {
+        super(TASK_TYPES.DRILL, room_name);
+        /**
+         * The id of the source to drill
+         * @type {string}
+         */
+        this.source_id = source_id;
+        /**
+         * location of the container
+         * @type {Point}
+         */
+        this.container_location = container_location;
+    }
+}
+global.DrillTask = DrillTask;
+
+/**
+ * AttackTask class, an object that contains data for running a task
+ * @class AttackTask
+ */
+class AttackTask extends Task {
+    /**
+     * creates an attack task
+     * @param {Creep} creep - The target to attack
+     */
+    constructor(creep) {
+        super(TASK_TYPES.ATTACK, creep.room.name);
+        /**
+         * target of the task
+         * @type {string}
+         */
+        this.creep = creep.id;
+    }
+}
+global.AttackTask = AttackTask;
+
+/**
+ * HealTask class, an object that contains data for running a task
+ * @class HealTask
+ */
+class HealTask extends Task {
+    /**
+     * creates a heal task
+     * @param {Creep} creep - The target to heal
+     */
+    constructor(creep) {
+        super(TASK_TYPES.HEAL, creep.room.name);
+        /**
+         * The target to heal
+         * @type {string}
+         */
+        this.creep = creep.id;
+    }
+}
+global.HealTask = HealTask;
+
+/**
+ * MoveRoomTask class, an object that contains data for running a task
+ * @class MoveRoomTask
+ */
+class MoveRoomTask extends Task {
+    /**
+     * creates a move room task
+     * @param {string} room_name - name of the room to move to
+     */
+    constructor(room_name) {
+        super(TASK_TYPES.MOVE_ROOM, room_name);
+    }
+}
+global.MoveRoomTask = MoveRoomTask;
+
+/**
+ * RenewOperatorTask class, an object that contains data for running a task
+ * @class RenewOperatorTask
+ */
+class RenewOperatorTask extends Task {
+    /**
+     * creates a new task to renew an operator
+     * @param {StructurePowerSpawn} power_spawn - The power spawn to renew at
+     * @param {Task} previous_task - The previous task so we can restore it
+     */
+    constructor(power_spawn, previous_task) {
+        super(TASK_TYPES.RENEW_OPERATOR, power_spawn.room.name);
+        /**
+         * The target to renew at
+         * @type {string}
+         */
+        this.power_spawn = power_spawn.id;
+        /**
+         * The previous task so we can restore it
+         * @type {Task}
+         */
+        this.previous_task = previous_task;
+    }
+}
+global.RenewOperatorTask = RenewOperatorTask;
+
+/**
+ * IdleTask class, an object that contains data for running a task
+ * @class IdleTask
+ */
+class IdleTask extends Task {
+    /**
+     * creates an idle task
+     * @param {string} room_name - name of the room to idle in
+     * @param {number} tick_limit - time limit for idling
+     */
+    constructor(room_name, tick_limit = 0) {
+        super(TASK_TYPES.IDLE, room_name);
+        /**
+         * time limit for idling
+         * @type {number}
+         */
+        this.tick_limit = tick_limit;
+        /**
+         * counter for ticks
+         * @type {number}
+         */
+        this.tick_counter = 0;
+    }
+}
+global.IdleTask = IdleTask;</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-PlantRunner.html">PlantRunner</a></li><li><a href="module-PowerManager.html">PowerManager</a></li><li><a href="module-RoomPlansFactory.html">RoomPlansFactory</a></li><li><a href="module-RoomRunner.html">RoomRunner</a></li><li><a href="module-TaskRunner.html">TaskRunner</a></li><li><a href="module-Timer.html">Timer</a></li><li><a href="module-Util.html">Util</a></li><li><a href="module-Visualizer.html">Visualizer</a></li></ul><h3>Classes</h3><ul><li><a href="AttackTask.html">AttackTask</a></li><li><a href="AttackerMemory.html">AttackerMemory</a></li><li><a href="BuildTask.html">BuildTask</a></li><li><a href="BuilderMemory.html">BuilderMemory</a></li><li><a href="ClaimTask.html">ClaimTask</a></li><li><a href="ClaimerMemory.html">ClaimerMemory</a></li><li><a href="ConstructionPlan.html">ConstructionPlan</a></li><li><a href="CreepMemory.html">CreepMemory</a></li><li><a href="DepositTask.html">DepositTask</a></li><li><a href="DrillTask.html">DrillTask</a></li><li><a href="DrillerMemory.html">DrillerMemory</a></li><li><a href="GatherTask.html">GatherTask</a></li><li><a href="HealTask.html">HealTask</a></li><li><a href="HealerMemory.html">HealerMemory</a></li><li><a href="IdleTask.html">IdleTask</a></li><li><a href="MineralDrillerMemory.html">MineralDrillerMemory</a></li><li><a href="MineralPlan.html">MineralPlan</a></li><li><a href="MineralPopulation.html">MineralPopulation</a></li><li><a href="MineralTransporterMemory.html">MineralTransporterMemory</a></li><li><a href="MoveRoomTask.html">MoveRoomTask</a></li><li><a href="PlantData.html">PlantData</a></li><li><a href="Point.html">Point</a></li><li><a href="PowerSquad.html">PowerSquad</a></li><li><a href="Production.html">Production</a></li><li><a href="QueenMemory.html">QueenMemory</a></li><li><a href="Reaction.html">Reaction</a></li><li><a href="RenewOperatorTask.html">RenewOperatorTask</a></li><li><a href="RepairTask.html">RepairTask</a></li><li><a href="RepairerMemory.html">RepairerMemory</a></li><li><a href="ReserveTask.html">ReserveTask</a></li><li><a href="RoomData.html">RoomData</a></li><li><a href="RoomPlans.html">RoomPlans</a></li><li><a href="RoomPopulation.html">RoomPopulation</a></li><li><a href="ScoutMemory.html">ScoutMemory</a></li><li><a href="SourcePlan.html">SourcePlan</a></li><li><a href="SourcePopulation.html">SourcePopulation</a></li><li><a href="Task.html">Task</a></li><li><a href="TransporterMemory.html">TransporterMemory</a></li><li><a href="UpgradeTask.html">UpgradeTask</a></li><li><a href="UpgraderMemory.html">UpgraderMemory</a></li></ul><h3>Global</h3><ul><li><a href="global.html#ATTACKER">ATTACKER</a></li><li><a href="global.html#BUILD">BUILD</a></li><li><a href="global.html#BUILDER">BUILDER</a></li><li><a href="global.html#CLAIMER">CLAIMER</a></li><li><a href="global.html#COLONY">COLONY</a></li><li><a href="global.html#CONSTRUCTION_TIMER_LENGTH">CONSTRUCTION_TIMER_LENGTH</a></li><li><a href="global.html#COUNT_POPULATION_TIMER_LENGTH">COUNT_POPULATION_TIMER_LENGTH</a></li><li><a href="global.html#DEBUG_MODE">DEBUG_MODE</a></li><li><a href="global.html#DRILLER">DRILLER</a></li><li><a href="global.html#EXPANSION">EXPANSION</a></li><li><a href="global.html#HEALER">HEALER</a></li><li><a href="global.html#HIGHWAY">HIGHWAY</a></li><li><a href="global.html#KEEPER_LAIR">KEEPER_LAIR</a></li><li><a href="global.html#LOG_SIZE">LOG_SIZE</a></li><li><a href="global.html#MINERAL_DRILLER">MINERAL_DRILLER</a></li><li><a href="global.html#MINERAL_TRANSPORTER">MINERAL_TRANSPORTER</a></li><li><a href="global.html#NEW_ROOM_TIMER_LENGTH">NEW_ROOM_TIMER_LENGTH</a></li><li><a href="global.html#PLANT_STRUCTURES_TIMER_LENGTH">PLANT_STRUCTURES_TIMER_LENGTH</a></li><li><a href="global.html#PRODUCTION_TIMER_LENGTH">PRODUCTION_TIMER_LENGTH</a></li><li><a href="global.html#QUEEN">QUEEN</a></li><li><a href="global.html#REACTION_TIMER_LENGTH">REACTION_TIMER_LENGTH</a></li><li><a href="global.html#REPAIRER">REPAIRER</a></li><li><a href="global.html#REQUEST_POPULATION_TIMER_LENGTH">REQUEST_POPULATION_TIMER_LENGTH</a></li><li><a href="global.html#ROLES">ROLES</a></li><li><a href="global.html#ROOM_CONSTRUCTION_SITE_LIMIT">ROOM_CONSTRUCTION_SITE_LIMIT</a></li><li><a href="global.html#RoomManager">RoomManager</a></li><li><a href="global.html#SATISFACTION_LOG_SIZE">SATISFACTION_LOG_SIZE</a></li><li><a href="global.html#SATISFACTION_THRESHOLD">SATISFACTION_THRESHOLD</a></li><li><a href="global.html#SCOUT">SCOUT</a></li><li><a href="global.html#STATES">STATES</a></li><li><a href="global.html#TASK_TYPES">TASK_TYPES</a></li><li><a href="global.html#TERMINAL_TIMER_LENGTH">TERMINAL_TIMER_LENGTH</a></li><li><a href="global.html#TRANSPORTER">TRANSPORTER</a></li><li><a href="global.html#UPGRADER">UPGRADER</a></li><li><a href="global.html#USERNAME">USERNAME</a></li><li><a href="global.html#hlog">hlog</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Tue Apr 15 2025 08:51:00 GMT-0500 (Central Daylight Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
