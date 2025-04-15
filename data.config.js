@@ -65,14 +65,14 @@ global.NEW_ROOM_TIMER_LENGTH = 100;
 global.PLANT_STRUCTURES_TIMER_LENGTH = 10;
 /**
  * ticks between getting reaction requests
- * @constant {number} REACTION_TIMER_LENGTH
+ * @constant {number} LABS_TIMER_LENGTH
  */
-global.REACTION_TIMER_LENGTH = 10;
+global.LABS_TIMER_LENGTH = 10;
 /**
  * ticks between getting production requests
- * @constant {number} PRODUCTION_TIMER_LENGTH
+ * @constant {number} FACTORY_TIMER_LENGTH
  */
-global.PRODUCTION_TIMER_LENGTH = 10;
+global.FACTORY_TIMER_LENGTH = 10;
 /**
  * ticks between running the terminal
  * @constant {number} TERMINAL_TIMER_LENGTH

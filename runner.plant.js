@@ -170,7 +170,7 @@ global.PlantRunner = {
                 // if we have enough components for this recipe
                 if (has_components) {
                     // create and store the new production
-                    plant_data.current_production = new Production(recipe.components, commodity);
+                    plant_data.current_production = new Production(recipe.components, commodity, recipe.amount);
                     plant_data.factory_state = STATES.LOADING;
                     // exit the loop
                     break;
@@ -178,13 +178,32 @@ global.PlantRunner = {
             }
         }
 
-        if (plant_data.factory_state == STATES.LOADING) {}
+        if (plant_data.factory_state == STATES.LOADING) {
+            let production = plant_data.current_production;
+            let ready = true;
+            for (let ingredient in production.inputs) {
+                if (factory.store[ingredient] == undefined || factory.store[ingredient] < production.inputs[ingredient]) {
+                    ready = false;
+                }
+            }
 
-        if (plant_data.factory_state == STATES.RUNNING) {}
+            if (ready) {
+                plant_data.factory_state = STATES.RUNNING;
+                factory.produce(production.output);
+            }
+        }
 
-        if (plant_data.factory_state == STATES.FINISHED) {}
+        if (plant_data.factory_state == STATES.RUNNING) {
+            if (factory.cooldown == 0) {
+                plant_data.factory_state = STATES.FINISHED;
+            }
+        }
 
-        if (plant_data.factory_state == STATES.CLEANING) {}
+        if (plant_data.factory_state == STATES.FINISHED || plant_data.factory_state == STATES.CLEANING) {
+            if (factory.store.getUsedCapacity() == 0) {
+                plant_data.labs_state = STATES.IDLE;
+            }
+        }
     },
     /**
      * caches the ids of the structures in the plant
@@ -250,27 +269,27 @@ global.PlantRunner = {
         }
 
         // if the reaction timer has gone off
-        if (plant_data.reaction_timer > this.REACTION_TIMER_LENGTH) {
+        if (plant_data.labs_timer > LABS_TIMER_LENGTH) {
             // reset the reaction timer
-            plant_data.reaction_timer = 0;
+            plant_data.labs_timer = 0;
             hlog("Recalculating Reaction...");
             // request a reaction
             this.runLabs(room, plant_data);
         }else{
             // increment the reaction timer
-            plant_data.reaction_timer++;
+            plant_data.labs_timer++;
         }
 
         // if the production timer has gone off
-        if (plant_data.production_timer > this.PRODUCTION_TIMER_LENGTH) {
+        if (plant_data.factory_timer > FACTORY_TIMER_LENGTH) {
             // reset the production timer
-            plant_data.production_timer = 0;
+            plant_data.factory_timer = 0;
             hlog("Recalculating Production...");
             // request a production
             this.runFactory(room, plant_data);
         }else{
             // increment the production timer
-            plant_data.production_timer++;
+            plant_data.factory_timer++;
         }
     },
 };

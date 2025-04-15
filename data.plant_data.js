@@ -38,12 +38,12 @@ class PlantData {
          * the timer for doing reactions
          * @type {number}
          */
-        this.reaction_timer = 2;
+        this.labs_timer = 2;
         /**
          * the timer for doing productions
          * @type {number}
          */
-        this.production_timer = Math.floor(PRODUCTION_TIMER_LENGTH / 2);
+        this.factory_timer = Math.floor(FACTORY_TIMER_LENGTH / 2);
         /**
          * input lab 1 location from the plans
          * @type {Point}
