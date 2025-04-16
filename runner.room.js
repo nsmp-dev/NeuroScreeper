@@ -119,6 +119,10 @@ global.RoomRunner = {
             // request a healer
             room_data.requested_creeps.push(new HealerMemory(room.name));
         }
+
+        // TODO: add in populating the power squad
+
+        // TODO: add in populating the commodity collector
     },
     /**
      * attempt to spawn any creeps that are requested
@@ -227,5 +231,7 @@ global.RoomRunner = {
             PlantRunner.run(room, room_data.plant_data);
             Timer.stop("running_plant");
         }
+
+        // TODO: add in running the power squad
     },
 };

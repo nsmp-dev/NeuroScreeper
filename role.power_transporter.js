@@ -32,5 +32,5 @@ class PowerTransporterMemory extends CreepMemory{
 global.PowerTransporterMemory = PowerTransporterMemory;
 
 Creep.prototype.runPowerTransporter = function () {
-    // if the squad is full
+    // TODO: if the squad is full
 };

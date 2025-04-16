@@ -32,7 +32,7 @@ class PowerHealerMemory extends CreepMemory{
 global.PowerHealerMemory = PowerHealerMemory;
 
 Creep.prototype.runPowerHealer = function () {
-    // if the squad is full
+    // TODO: if the squad is full
         // follow the squad's power attacker
         // heal the attacker
     // else

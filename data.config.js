@@ -163,6 +163,8 @@ global.TASK_TYPES = {
     RENEW_OPERATOR: 12,
     /** moving a resource from one structure to another */
     MOVE_RESOURCE: 13,
+    /** harvesting from a source or deposit until full */
+    HARVEST: 14,
 };
 
 /**

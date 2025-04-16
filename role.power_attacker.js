@@ -32,7 +32,7 @@ class PowerAttackerMemory extends CreepMemory{
 global.PowerAttackerMemory = PowerAttackerMemory;
 
 Creep.prototype.runPowerAttacker = function () {
-    // if the squad is not full, idle at home room
+    // TODO: if the squad is not full, idle at home room
     // if the squad is full
         // if we are in the next room
             // advance the queue

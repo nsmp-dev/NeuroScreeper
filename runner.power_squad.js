@@ -8,7 +8,7 @@ global.PowerSquadRunner = {
      * @param {PowerSquad} power_squad - The power squad we are running
      */
     run: function (power_squad) {
-        // if the creeps are not cached
+        // TODO: if the creeps are not cached
             // search for them
             // if found
                 // cache the ids
@@ -16,28 +16,28 @@ global.PowerSquadRunner = {
             // else
                 // return
 
-        // grab the cached creeps
+        // TODO: grab the cached creeps
 
-        // if any of the creeps were not found
+        // TODO: if any of the creeps were not found
             // invalidate the cached ids
             // set the state to IDLE
 
-        // if state is SEARCHING
+        // TODO: if state is SEARCHING
             // if all creeps are in the next room
                 // advance the queue
                 // if the room has a power bank
                     // change state to COLLECTING
-        // if state is COLLECTING
+        // TODO: if state is COLLECTING
             // if power transporter is full
                 // find nearest colony
                 // set state to RETURNING
             // else
                 // if power bank is empty
                     // set state to SEARCHING
-        // if state is RETURNING
+        // TODO: if state is RETURNING
             // if the power transporter is empty
                 // set state to SEARCHING
 
-        // occasionally check for new highway rooms
+        // TODO: occasionally check for new highway rooms
     },
 };

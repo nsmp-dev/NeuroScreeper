@@ -29,16 +29,6 @@ pick 2 emojis to illustrate each role
 
 # v0.3
 
-## plant operations
-the plant maintains a state for the factory and the labs
-it also holds the current reaction/production for each
-also it has cleanup detection
-states:
-loading
-running
-finished
-cleanup
-
 ## flesh out operator
 add in logic to fill the currently requested reaction/production
 account for cleanup commands as well
@@ -52,10 +42,6 @@ when in a capitol room, move reaction and production ingredients from terminal t
 ## update terminal
 add logic to sell end-game commodities/resources
 add logic to move reaction and production ingredients to capitol room
-
-## add follow task
-add in a follow task that accepts a target to follow
-utilize this with task interrupts (like for a dying operator) to create squads of creeps
 
 ## add squads
 squads get stored on the room_data object, similar to drillers and transporters
@@ -82,3 +68,22 @@ transports the mined minerals to the nearest terminal
 
 ### commodity collector
 goes out to find commodities and returns them to nearest terminal
+
+# v0.4
+
+## Bug testing
+make sure to observe every single mechanic in the game
+watch each role for a while, making sure they spawn and behave properly
+
+## Documentation and comments
+polish all the comments and JSDoc descriptions/types
+regenerate the JSDoc site
+look at themes for JSDoc
+flesh out the documentation markdown files
+
+## Visualizer overhaul
+add in tons to the visualizer
+
+## Logger additions
+add in logs in many places
+add in timers in many places that are CPU intensive

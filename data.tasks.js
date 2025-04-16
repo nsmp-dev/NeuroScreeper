@@ -344,3 +344,24 @@ class MoveResourceTask extends Task {
     }
 }
 global.MoveResourceTask = MoveResourceTask;
+
+/**
+ * HarvestTask class, an object that contains data for running a task
+ * @class HarvestTask
+ */
+class HarvestTask extends Task {
+    /**
+     * creates a harvest task
+     * @param {string} room_name - name of the room in which the task is in
+     * @param {Source|Deposit} target - the source or deposit
+     */
+    constructor(room_name, target) {
+        super(TASK_TYPES.HARVEST, room_name);
+        /**
+         * the source or deposit to harvest from
+         * @type {string}
+         */
+        this.target = target.id;
+    }
+}
+global.HarvestTask = HarvestTask;

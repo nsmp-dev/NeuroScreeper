@@ -371,6 +371,15 @@ global.TaskRunner = {
         
     },
     /**
+     * run the gather task on the creep
+     * @param {Creep|PowerCreep} creep - The Creep doing the task
+     * @param {HarvestTask} task - the task being run
+     */
+    runHarvest: function (creep, task) {
+        // TODO: add logic for harvesting
+
+    },
+    /**
      * run the task on the creep
      * @param {Creep|PowerCreep} creep - The Creep doing the task
      */
@@ -443,6 +452,16 @@ global.TaskRunner = {
         if (task.type == TASK_TYPES.RENEW_OPERATOR) {
             // run the appropriate function
             this.runRenewOperator(creep, creep.memory.task);
+        }
+        // if the task matches
+        if (task.type == TASK_TYPES.MOVE_RESOURCE) {
+            // run the appropriate function
+            this.runMoveResource(creep, creep.memory.task);
+        }
+        // if the task matches
+        if (task.type == TASK_TYPES.MOVE_RESOURCE) {
+            // run the appropriate function
+            this.runMoveResource(creep, creep.memory.task);
         }
     },
 };

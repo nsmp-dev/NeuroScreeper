@@ -32,15 +32,21 @@ class CommodityCollectorMemory extends CreepMemory{
 global.CommodityCollectorMemory = CommodityCollectorMemory;
 
 Creep.prototype.runCommodityCollector = function () {
-    // if we are full
-        // find nearest storage
-        // deposit at the nearest storage
-    // else we are low
-        // pick a highway room
-        // move to that room
-        // look for any commodities
-        // if there are any
-            // grab them
-        // else
-            // pick another highway room to move to
+    if (this.memory.task == null) {
+        // if we are full
+        if (this.store.getFreeCapacity() == 0) {
+            // TODO: find nearest storage
+            // TODO: deposit at the nearest storage
+        }else{
+            // TODO: look for any deposits
+            // TODO: if there are any
+                // TODO: harvest them
+            // else
+                // TODO: pick a highway room
+                // TODO: move to that room
+        }
+    }
+    // run the task
+    TaskRunner.run(this);
+
 };

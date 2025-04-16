@@ -1,7 +1,8 @@
 /**
- * run the observer, keeping a log of rooms to be scanned and scanning the next one
+ * run the operator
+ * @param {PlantData} plant_data - The name of the room this creep is assigned to
  */
-PowerCreep.prototype.runOperator = function () {
+PowerCreep.prototype.runOperator = function (plant_data) {
     // if the operator is close to death and not already renewing
     if (this.ticksToLive < 50 && this.memory.task.type != TASK_TYPES.RENEW_OPERATOR) {
         // grab the power spawn in the room
@@ -15,18 +16,21 @@ PowerCreep.prototype.runOperator = function () {
 
     // if we don't have a task currently assigned
     if (this.memory.task == null) {
-        // if the factory needs cleaned
-            // assign a move resource task
-        // if the labs need cleaned
-            // assign a move resource task
-
-        // if the factory has a requested production
-            // assign a move resource task
-
-        // if the labs have a requested reaction
-            // assign a move resource task
-
-        this.memory.task = new IdleTask(this.room.name);
+        if (plant_data.factory_state == STATES.CLEANING) {
+            // TODO: assign a move resource task
+        }else if (plant_data.labs_state == STATES.CLEANING){
+            // TODO: assign a move resource task
+        }else if (plant_data.factory_state == STATES.FINISHED){
+            // TODO: assign a move resource task
+        }else if (plant_data.labs_state == STATES.FINISHED){
+            // TODO: assign a move resource task
+        }else if (plant_data.factory_state == STATES.LOADING){
+            // TODO: assign a move resource task
+        }else if (plant_data.labs_state == STATES.LOADING){
+            // TODO: assign a move resource task
+        }else{
+            this.memory.task = new IdleTask(this.room.name);
+        }
     }
     // run the task
     TaskRunner.run(this);
