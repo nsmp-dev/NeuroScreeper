@@ -15,15 +15,16 @@ PowerCreep.prototype.runOperator = function () {
 
     // if we don't have a task currently assigned
     if (this.memory.task == null) {
-        //let requested_ingredient = null;
+        // if the factory needs cleaned
+            // assign a move resource task
+        // if the labs need cleaned
+            // assign a move resource task
 
-        // loop through the output building for results
+        // if the factory has a requested production
+            // assign a move resource task
 
-        // loop through the ingredients for the requested reaction/production
-            // if the reaction doesn't have the requested ingredients
-                // set task to move resources
-
-
+        // if the labs have a requested reaction
+            // assign a move resource task
 
         this.memory.task = new IdleTask(this.room.name);
     }

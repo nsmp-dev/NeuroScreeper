@@ -60,6 +60,10 @@ global.PlantRunner = {
                         let amount = storage.store[reagent_1] > storage.store[reagent_2] ? storage.store[reagent_2] : storage.store[reagent_1];
                         // round the amount down to nearest 5
                         amount = Math.floor(amount / 5) * 5;
+
+                        if (amount > (LAB_MINERAL_CAPACITY / 2)) {
+                            amount = (LAB_MINERAL_CAPACITY / 2);
+                        }
                         // create and store the enw reaction
                         plant_data.current_reaction = new Reaction(reagent_1, reagent_2, REACTIONS[reagent_1][reagent_2], amount);
                         plant_data.labs_state = STATES.LOADING;

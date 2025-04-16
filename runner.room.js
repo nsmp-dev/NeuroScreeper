@@ -221,7 +221,7 @@ global.RoomRunner = {
         }
 
         // if the room has a plant
-        if (room_data.plans.plant_location != null) {
+        if (room_data.plans.plant_location != null && room.name == Memory.capitol_room_name) {
             // run the plant
             Timer.start("running_plant");
             PlantRunner.run(room, room_data.plant_data);
