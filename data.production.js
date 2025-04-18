@@ -21,7 +21,7 @@ class Production {
          */
         this.output = output;
         /**
-         * The amount of output resources
+         * The number of output resources
          * @type {number}
          */
         this.amount = amount;

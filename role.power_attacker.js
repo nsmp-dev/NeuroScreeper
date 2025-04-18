@@ -7,7 +7,7 @@ global.POWER_ATTACKER = {
     NAME: "power_attacker",
     // emoji for shorthand visuals
     EMOJI: "⚖️",
-    // standard body build, can be multiplied arbitrarily to build larger creeps
+    // standard body build that can be multiplied arbitrarily to build larger creeps
     BODY: [ATTACK, TOUGH, MOVE, MOVE],
     // energy cost of the body
     ENERGY_COST: 100,
@@ -33,15 +33,15 @@ global.PowerAttackerMemory = PowerAttackerMemory;
 
 Creep.prototype.runPowerAttacker = function () {
     // TODO: if the squad is not full, idle at home room
-    // if the squad is full
-        // if we are in the next room
-            // advance the queue
-            // if the room has a power bank
-                // attack the power bank
+    // TODO: if the squad is full
+        // TODO: if we are in the next room
+            // TODO: advance the queue
+            // TODO: if the room has a power bank
+                // TODO: attack the power bank
             // else
-                // move to the next room
+                // TODO: move to the next room
         // else
-            // go to the squad's next room
+            // TODO: go to the squad's next room
     // else
-        // idle
+        // TODO: idle
 };

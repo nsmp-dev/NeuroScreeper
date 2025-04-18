@@ -4,7 +4,7 @@
  */
 class RoomData {
     /**
-     * creates a room data object, with an optional starter spawn for the first room
+     * creates a room data object, with an optional starter Spawn for the first room
      * @param {Room} room - The room this data is for
      * @param {StructureSpawn|null} initial_spawn - The initial spawn, if this is the first room
      */

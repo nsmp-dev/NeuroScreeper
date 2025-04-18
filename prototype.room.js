@@ -84,7 +84,7 @@ Room.prototype.getClearArea = function (width, height, plans) {
                     x: x,
                     // the Y coordinate of the area
                     y: y,
-                    // the distance from center of room to center of base
+                    // the distance from the center of the room to the center of the base
                     dist: Math.sqrt((tx * tx) + (ty * ty)),
                 });
             }

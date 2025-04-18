@@ -59,9 +59,9 @@ class RoomPlans {
             this.ramparts.push([]);
             // loop through all positions on the row
             for (let y = 0; y < 50; y++) {
-                // push a false onto the roads grid
+                // push a false onto the road grid
                 this.roads[x].push(false);
-                // push a false onto the ramparts grid
+                // push a false onto the rampart grid
                 this.ramparts[x].push(false);
             }
         }
@@ -86,7 +86,7 @@ class RoomPlans {
          */
         this.input_lab_2_location = null;
         /**
-         * coordinates for output lab
+         * coordinates for the output lab
          * @type {Point|null}
          */
         this.output_lab_location = null;

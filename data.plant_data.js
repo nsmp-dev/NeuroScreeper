@@ -5,7 +5,7 @@
 class PlantData {
     /**
      * Creates a PlantData Object
-     * @param {RoomPlans} plans - The room's plans object
+     * @param {RoomPlans} plans - The RoomPlans object for this room
      */
     constructor(plans) {
         hlog("Creating a new PlantData Object...");
@@ -19,16 +19,6 @@ class PlantData {
          * @type {Production|null}
          */
         this.current_production = null;
-        /**
-         * flag for cleaning up a screwed up reaction
-         * @type {Boolean}
-         */
-        this.cleanup_reaction = false;
-        /**
-         * flag for cleaning up a screwed up production
-         * @type {Boolean}
-         */
-        this.cleanup_production = false;
         /**
          * the timer for re-checking cached structure ids
          * @type {number}

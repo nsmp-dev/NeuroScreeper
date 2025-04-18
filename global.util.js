@@ -150,7 +150,7 @@ global.Util = {
      * @return {number} the calculated ratio
      */
     getSatisfiedRatio: function (room_data) {
-        // the total number of 1s in the room satisfaction log
+        // the total number of true values in the room satisfaction log
         let total = 0;
         // loop through the satisfaction log
         room_data.satisfaction_log.forEach(function (satisfied) {
@@ -227,6 +227,20 @@ global.Util = {
         }
     },
     /**
+     * finds all highway rooms found so far
+     * @return {string[]} array of all the highway room names
+     */
+    getHighwayRooms: function () {
+        let highways = [];
+
+        for (let room_name in Memory.room_data) {
+            if (Memory.room_data[room_name] == HIGHWAY) {
+                highways.push(room_name);
+            }
+        }
+        return highways;
+    },
+    /**
      * clear all memory except for the id counter
      */
     clearMemory: function () {
@@ -263,31 +277,5 @@ global.Util = {
         let y = b.y - b.y;
         // return the hypotenuse of the two points
         return Math.sqrt( (x * x) + (y * y) );
-    },
-    /**
-     * distance between 2 Points
-     * @param {string} room_name - the name of the room we are searching from
-     * @return {string|null} the name of the nearest room
-     */
-    getNearestColony: function (room_name) {
-        let nearest_colony_room_name = null;
-        let lowest_distance = null;
-
-        for (let test_room_name in Memory.room_data) {
-            let test_room_data = Memory.room_data[test_room_name];
-            if (test_room_data.type == COLONY) {
-                let distance = 0;
-                if (room_name != test_room_name) {
-                    distance = Game.map.getRoomLinearDistance(room_name, test_room_data);
-                }
-
-                if (nearest_colony_room_name == null || distance < lowest_distance) {
-                    nearest_colony_room_name = test_room_name;
-                    lowest_distance = distance;
-                }
-            }
-        }
-
-        return nearest_colony_room_name;
     },
 };

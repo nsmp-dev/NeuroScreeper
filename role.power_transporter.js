@@ -7,7 +7,7 @@ global.POWER_TRANSPORTER = {
     NAME: "power_transporter",
     // emoji for shorthand visuals
     EMOJI: "⚖️",
-    // standard body build, can be multiplied arbitrarily to build larger creeps
+    // standard body build that can be multiplied arbitrarily to build larger creeps
     BODY: [CARRY, MOVE],
     // energy cost of the body
     ENERGY_COST: 100,
@@ -33,4 +33,15 @@ global.PowerTransporterMemory = PowerTransporterMemory;
 
 Creep.prototype.runPowerTransporter = function () {
     // TODO: if the squad is full
+        // TODO: if the creep is full
+            // TODO: set the power squad to returning
+            // TODO: deposit at the nearest storage
+        // else
+            // TODO: if we see any dropped power
+                // TODO: assign a gather task to grab it
+            // else
+                // TODO: follow the power attacker
+    // else
+        // TODO: idle
+
 };

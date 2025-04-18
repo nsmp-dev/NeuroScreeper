@@ -341,6 +341,11 @@ class MoveResourceTask extends Task {
          * @type {number}
          */
         this.amount = amount;
+        /**
+         * the amount of resource to be moved
+         * @type {number}
+         */
+        this.state = STATES.FILLING;
     }
 }
 global.MoveResourceTask = MoveResourceTask;

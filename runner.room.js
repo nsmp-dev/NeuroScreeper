@@ -155,10 +155,10 @@ global.RoomRunner = {
     calculateSatisfaction: function (room, room_data) {
         // if no creeps are needed
         if (room_data.requested_creeps.length == 0) {
-            // push true to the satisfaction log to show we were satisfied for this tick
+            // push true to the satisfaction log to show we were satisfied on this tick
             room_data.satisfaction_log.push(true);
         } else {
-            // push false to the satisfaction log to show we were unsatisfied for this tick
+            // push false to the satisfaction log to show we were unsatisfied on this tick
             room_data.satisfaction_log.push(false);
         }
 

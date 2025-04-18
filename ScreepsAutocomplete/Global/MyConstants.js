@@ -6,6 +6,12 @@ global.PIXEL_CPU_COST = 1000;
 
 /**
  * @constant
+ * @type {number}
+ */
+global.FIND_DEPOSITS = 122;
+
+/**
+ * @constant
  * @type {object}
  */
 global.COMMODITIES = {

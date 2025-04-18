@@ -7,7 +7,7 @@ global.QUEEN = {
     NAME: "queen",
     // emoji for shorthand visuals
     EMOJI: "👑",
-    // standard body build, can be multiplied arbitrarily to build larger creeps
+    // standard body build that can be multiplied arbitrarily to build larger creeps
     BODY: [CARRY, MOVE],
     // energy cost of the body
     ENERGY_COST: 150,
@@ -43,9 +43,9 @@ Creep.prototype.runQueen = function () {
             let target = this.room.storage;
 
             // TODO: if the storage has any ingredients in it and this isn't a capitol
-                // assign a task to gather the ingredient from the storage
+                // TODO: assign a task to move ingredients from the storage to the terminal
             // TODO: if the terminal has any ingredients in it and this is a capitol
-                // assign a task to gather the ingredient from the terminal
+                // TODO: assign a task to move ingredients from the terminal to the storage
 
             // if the storage isn't built or is empty
             if (target == undefined || target.store[RESOURCE_ENERGY] == 0) {
@@ -60,12 +60,6 @@ Creep.prototype.runQueen = function () {
                 this.announceTask();
             }
         }else{
-
-            // TODO: if the creep has non-energy and the room is not a capitol
-                // assign a task to drop it off at the terminal
-            // TODO: if the creep has non-energy and the room is a capitol
-                // assign a task to drop it off at the storage
-
             // find a new dump target fit for a queen
             let target = this.getQueenDumpTarget();
             // if a new target was found

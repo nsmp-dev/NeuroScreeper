@@ -133,7 +133,7 @@ Creep.prototype.getQueenDumpTarget = function () {
     if (targets.length == 0) {
         // get the power spawn
         let power_spawn = this.room.getPowerSpawn();
-        // if a power spawn is found, and it's energy is low
+        // if a PowerSpawn is found, and it's energy is low
         if (power_spawn != null && power_spawn.store.getFreeCapacity(RESOURCE_ENERGY) > 0) {
             // return the power spawn
             return power_spawn;
@@ -165,6 +165,50 @@ Creep.prototype.idle = function () {
         // move toward the idle location
         this.moveTo(room_data.plans.idle_location.x, room_data.plans.idle_location.y);
     }
+};
+/**
+ * returns the nearest storage or null
+ * @return {StructureStorage|null} The nearest storage or null
+ */
+Creep.prototype.getNearestStorage = function () {
+    let storages = [];
+    for (let room_name in Memory.room_data) {
+        if (Game.rooms[room_name] != undefined && Game.rooms[room_name].storage != undefined) {
+            if (room_name == this.room.name) {
+                return Game.rooms[room_name].storage;
+            }else{
+                storages.push(Game.rooms[room_name].storage);
+            }
+        }
+    }
+    if (storages.length == 0) {
+        return null;
+    }
+
+    let nearest_storage = storages[0];
+    let lowest_distance = Game.map.getRoomLinearDistance(this.room.name, storages[0].room.name);
+    for (let storage of storages) {
+        if (Game.map.getRoomLinearDistance(this.room.name, storage.room.name) < lowest_distance) {
+            nearest_storage = storage;
+            lowest_distance = Game.map.getRoomLinearDistance(this.room.name, storage.room.name);
+        }
+    }
+    return nearest_storage;
+};
+/**
+ * returns the nearest room's name
+ * @return {string|null} The nearest room's name
+ */
+Creep.prototype.getNearestColony = function () {
+    let nearest_room_name = null;
+    let lowest_distance = null;
+    for (let room_name in Memory.room_data) {
+        if (Memory.room_data[room_name].type == COLONY && (nearest_room_name == null || Game.map.getRoomLinearDistance(this.room.name, room_name) < lowest_distance)) {
+            nearest_room_name = room_name;
+            lowest_distance = Game.map.getRoomLinearDistance(this.room.name, room_name);
+        }
+    }
+    return nearest_room_name;
 };
 /**
  * assign a standard gather task to just grab energy for various needs

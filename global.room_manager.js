@@ -143,7 +143,7 @@ global.RoomManager = {
         Memory.populations = pop;
     },
     /**
-     * rescan the population occasionally, add colonies/expansions if stable, and scan nrw rooms
+     * rescan the population occasionally add colonies/expansions if stable, and scan nrw rooms
      */
     run: function () {
         // if the population timer has gone off

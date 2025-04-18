@@ -60,7 +60,7 @@ module.exports.loop = function () {
         // grab the room data
         let room_data = Memory.room_data[name];
 
-        // if room is a colony or expansion, run it
+        // if the room is a colony or expansion, run it
         if (room_data.type == COLONY || room_data.type == EXPANSION) {
             // run the room
             RoomRunner.run(room, room_data);

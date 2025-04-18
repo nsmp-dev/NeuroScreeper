@@ -10,7 +10,7 @@ class CreepMemory {
      */
     constructor(role, room_name) {
         /**
-         * stores the role that is assigned to this creep
+         * stores the role assigned to this creep
          * @type {string}
          */
         this.role = role;

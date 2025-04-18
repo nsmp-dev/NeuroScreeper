@@ -23,7 +23,7 @@ global.PlantRunner = {
             // clear the current reaction
             plant_data.current_reaction = null;
 
-            // if any of the labs have anything in them
+            // if any of the labs have anything in them,
             if ((input_lab_1 != null && input_lab_1.store.getUsedCapacity() > 0) || (input_lab_2 != null && input_lab_2.store.getUsedCapacity() > 0) || (output_lab != null && output_lab.store.getUsedCapacity() > 0)) {
                 // set the plant to clean up the reaction
                 plant_data.labs_state = STATES.CLEANING;
@@ -58,7 +58,7 @@ global.PlantRunner = {
                     if (storage.store[reagent_1] != undefined && storage.store[reagent_1] > 5 && storage.store[reagent_2] != undefined && storage.store[reagent_2] > 5) {
                         // find which amount is lower to use it for the amount
                         let amount = storage.store[reagent_1] > storage.store[reagent_2] ? storage.store[reagent_2] : storage.store[reagent_1];
-                        // round the amount down to nearest 5
+                        // round the amount down to the nearest 5
                         amount = Math.floor(amount / 5) * 5;
 
                         if (amount > (LAB_MINERAL_CAPACITY / 2)) {
@@ -215,9 +215,9 @@ global.PlantRunner = {
      * @param {PlantData} plant_data - The plant data for storing in memory
      */
     getStructures: function (room, plant_data) {
-        // attempt to grab the input lab 1
+        // attempt to grab the first input lab
         let input_lab_1 = room.getStructureAt(STRUCTURE_LAB, plant_data.input_lab_1_location.x, plant_data.input_lab_1_location.y);
-        // attempt to grab the input lab 2
+        // attempt to grab the second input lab
         let input_lab_2 = room.getStructureAt(STRUCTURE_LAB, plant_data.input_lab_2_location.x, plant_data.input_lab_2_location.y);
         // attempt to grab the output lab
         let output_lab = room.getStructureAt(STRUCTURE_LAB, plant_data.output_lab_location.x, plant_data.output_lab_location.y);
@@ -235,9 +235,9 @@ global.PlantRunner = {
             // clear the output lab id cache
             plant_data.output_lab_id = null;
         }else{
-            // store the input lab 1 id
+            // store the first input lab id
             plant_data.input_lab_1_id = input_lab_1.id;
-            // store the input lab 2 id
+            // store the second input lab id
             plant_data.input_lab_2_id = input_lab_2.id;
             // store the output lab id
             plant_data.output_lab_id = output_lab.id;

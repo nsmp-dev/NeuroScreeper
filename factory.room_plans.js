@@ -91,7 +91,7 @@ global.RoomPlansFactory = {
             // find an adjacent space to put the container
             let container_location = room.getClearAdjacentLocation(mineral.pos.x, mineral.pos.y, plans);
 
-            // add the plans to the plans list
+            // add the mineral plan to the mineral plans list
             if (container_location != null) {
                 // create the MineralPlan and push it onto the plans
                 plans.minerals.push(new MineralPlan(mineral.id, new Point(mineral.pos.x, mineral.pos.y), container_location, mineral.mineralType));
@@ -454,9 +454,9 @@ global.RoomPlansFactory = {
      * @param {RoomPlans} plans - The Plans for the room.
      */
     planRoadsBetween: function (first_points, second_points, room, plans) {
-        // default the closest first point to the first in the array
+        // by default, the closest first point is the first in the array
         let closest_first_point = first_points[0];
-        // default the closest second point to the first in the array
+        // by default, the closest second point is the first in the array
         let closest_second_point = second_points[0];
         // record the closest distance between the points
         let closest_distance = Util.distance(closest_first_point, closest_second_point);

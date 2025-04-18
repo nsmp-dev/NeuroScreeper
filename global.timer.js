@@ -9,7 +9,7 @@ global.Timer = {
      * initialize this global object, setting up memory
      */
     initialize: function () {
-        // create the timers object where we store the buffers and averages
+        // create the "timers" object where we store the buffers and averages
         Memory.timers = {};
     },
     /**
@@ -33,9 +33,9 @@ global.Timer = {
     stop: function (id = "main") {
         // set the end time of the timer
         this.timers[id].end = Game.cpu.getUsed();
-        // if we have not initialized this id's log and average
+        // if we have not initialized the id's log and average
         if (Memory.timers[id] == undefined) {
-            // initialize this id's buffer
+            // initialize the id's buffer
             Memory.timers[id] = {
                 // the log of the past times
                 log: [],

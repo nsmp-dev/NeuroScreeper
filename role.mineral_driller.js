@@ -7,7 +7,7 @@ global.MINERAL_DRILLER = {
     NAME: "mineral_driller",
     // emoji for shorthand visuals
     EMOJI: "⛏️",
-    // standard body build, can be multiplied arbitrarily to build larger creeps
+    // standard body build that can be multiplied arbitrarily to build larger creeps
     BODY: [WORK, MOVE],
     // energy cost of the body
     ENERGY_COST: 150,

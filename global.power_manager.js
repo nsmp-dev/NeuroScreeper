@@ -29,15 +29,15 @@ global.PowerManager = {
         let power_spawns = [];
         // loop through all the structures
         for (let id in Game.structures) {
-            // if this structure is a power spawn
+            // if this structure is a PowerSpawn
             if (Game.structures[id].structureType == STRUCTURE_POWER_SPAWN) {
-                // grab the power spawn
+                // grab the PowerSpawn
                 let power_spawn = Game.structures[id];
-                // add it to the list of power spawns
+                // add it to the list of PowerSpawns
                 power_spawns.push(power_spawn);
-                // if the power spawn has enough power and energy to process it
+                // if the PowerSpawn has enough power and energy to process it
                 if (power_spawn.store[RESOURCE_POWER] > 0 && power_spawn.store[RESOURCE_ENERGY] >= 50) {
-                    // process the power in the power spawn
+                    // process the power in the PowerSpawn
                     power_spawn.processPower();
                 }
             }
@@ -70,7 +70,7 @@ global.PowerManager = {
                     }
                 }
 
-                // if we found a power spawn in the capitol
+                // if we found a PowerSpawn in the capitol
                 if (capitol_power_spawn != null) {
                     hlog("Spawning power creep...");
                     // spawn the power creep

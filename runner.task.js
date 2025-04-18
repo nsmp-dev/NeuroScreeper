@@ -1,5 +1,5 @@
 /**
- * runs a task that is attached to the provided creep
+ * runs a task attached to the provided creep
  * @module TaskRunner
  */
 global.TaskRunner = {
@@ -190,7 +190,7 @@ global.TaskRunner = {
             // move to the room for the task
             creep.moveTo(new RoomPosition(25, 25, task.room_name));
         }else{
-            // if claiming the controller results in not being in range
+            // if when trying to claim the controller results in being "not in range"
             if (creep.claimController(creep.room.controller) == ERR_NOT_IN_RANGE) {
                 // move to the controller
                 creep.moveTo(creep.room.controller);
@@ -367,8 +367,34 @@ global.TaskRunner = {
      * @param {MoveResourceTask} task - the task being run
      */
     runMoveResource: function (creep, task) {
-        // TODO: add logic for moving arbitrary resources
-        
+        if (task.state == STATES.FILLING) {
+            if (creep.store[task.resource] == task.amount) {
+                task.state = STATES.DUMPING;
+            }else{
+                let source_structure = Game.getObjectById(task.source_structure);
+                if (source_structure != null) {
+                    if (creep.withdraw(source_structure, task.resource, task.amount) == ERR_NOT_IN_RANGE) {
+                        creep.moveTo(source_structure);
+                    }
+                }else{
+                    creep.memory.task = null;
+                }
+            }
+        }
+        if (task.state == STATES.DUMPING) {
+            if (creep.store.getUsedCapacity() == 0) {
+                creep.memory.task = null;
+            }else{
+                let target_structure = Game.getObjectById(task.target_structure);
+                if (target_structure != null) {
+                    if (creep.transfer(target_structure, task.resource, task.amount) == ERR_NOT_IN_RANGE) {
+                        creep.moveTo(target_structure);
+                    }
+                }else{
+                    creep.memory.task = null;
+                }
+            }
+        }
     },
     /**
      * run the gather task on the creep
@@ -376,8 +402,23 @@ global.TaskRunner = {
      * @param {HarvestTask} task - the task being run
      */
     runHarvest: function (creep, task) {
-        // TODO: add logic for harvesting
-
+        // if the creep is not in the room for the task
+        if (creep.room.name != task.room_name) {
+            // move to the room for the task
+            creep.moveTo(new RoomPosition(25, 25, task.room_name));
+        }else{
+            if (creep.store.getFreeCapacity() == 0) {
+                creep.memory.task = null;
+            }else{
+                // grab the target
+                let target = Game.getObjectById(task.target);
+                // if we are at the location of the container
+                if (creep.harvest(target) == ERR_NOT_IN_RANGE) {
+                    // harvest from the assigned source
+                    creep.moveTo(target);
+                }
+            }
+        }
     },
     /**
      * run the task on the creep

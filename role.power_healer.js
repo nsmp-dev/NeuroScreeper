@@ -7,7 +7,7 @@ global.POWER_HEALER = {
     NAME: "power_healer",
     // emoji for shorthand visuals
     EMOJI: "⚖️",
-    // standard body build, can be multiplied arbitrarily to build larger creeps
+    // standard body build that can be multiplied arbitrarily to build larger creeps
     BODY: [HEAL, TOUGH, MOVE, MOVE],
     // energy cost of the body
     ENERGY_COST: 360,
@@ -33,8 +33,8 @@ global.PowerHealerMemory = PowerHealerMemory;
 
 Creep.prototype.runPowerHealer = function () {
     // TODO: if the squad is full
-        // follow the squad's power attacker
-        // heal the attacker
+        // TODO: follow the squad's power attacker
+        // TODO: heal the attacker
     // else
-        // idle
+        // TODO: idle
 };

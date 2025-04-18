@@ -7,7 +7,7 @@ global.MINERAL_TRANSPORTER = {
     NAME: "mineral_transporter",
     // emoji for shorthand visuals
     EMOJI: "🚛",
-    // standard body build, can be multiplied arbitrarily to build larger creeps
+    // standard body build that can be multiplied arbitrarily to build larger creeps
     BODY: [CARRY, MOVE],
     // energy cost of the body
     ENERGY_COST: 100,
@@ -30,11 +30,6 @@ class MineralTransporterMemory extends CreepMemory{
      */
     constructor(room_name, mineral_id, container_location, resource_type){
         super(MINERAL_TRANSPORTER.NAME, room_name);
-        /**
-         * type of task being created
-         * @type {string}
-         */
-        this.nearest_colony_room_name = Util.getNearestColony(room_name);
         /**
          * type of task being created
          * @type {string}
@@ -84,7 +79,7 @@ Creep.prototype.runMineralTransporter = function () {
             }
         }else{
             // if we are in the room of the nearest colony
-            if (this.room.name == this.memory.nearest_colony_room_name) {
+            if (this.room.name == this.getNearestColony()) {
                 // find a new dump target
                 let storage = this.room.storage;
                 // if a new target was found
@@ -101,7 +96,7 @@ Creep.prototype.runMineralTransporter = function () {
                 }
             }else{
                 // assign a new task
-                this.memory.task = new MoveRoomTask(this.memory.nearest_colony_room_name);
+                this.memory.task = new MoveRoomTask(this.getNearestColony());
                 // announce the new task
                 this.announceTask();
             }

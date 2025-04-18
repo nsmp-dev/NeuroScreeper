@@ -2,8 +2,8 @@
  * run the tower, shooting enemies, repairing structures and healing creeps
  */
 StructureTower.prototype.run = function () {
-    // if the tower has less than 100 energy
-    if (this.store[RESOURCE_ENERGY] < 100) {
+    // if the tower has less than 100 energy resources
+    if (this.store[RESOURCE_ENERGY] < TOWER_MINIMUM_ENERGY) {
         // return and wait for more energy
         return;
     }

@@ -14,9 +14,9 @@ StructureObserver.prototype.run = function () {
         let room_coords = Util.roomNameToWorldXY(this.room.name);
         // initialize the log data
         Memory.observer_log[this.room.name] = {
-            // the top left bounds of the observers range
+            // the top left bounds of the observer's range
             top_left: new Point(room_coords.x - 10, room_coords.y - 10),
-            // the bottom right bounds of the observers range
+            // the bottom right bounds of the observer's range
             bottom_right: new Point(room_coords.x + 10, room_coords.y + 10),
             // the current room coordinate
             current_location: new Point(room_coords.x - 10, room_coords.y - 10),
