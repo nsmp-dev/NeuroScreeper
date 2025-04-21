@@ -120,9 +120,19 @@ global.RoomRunner = {
             room_data.requested_creeps.push(new HealerMemory(room.name));
         }
 
-        // TODO: add in populating the power squad
+        if (pop.power_squad.power_attacker == null) {
+            room_data.requested_creeps.push(new PowerAttackerMemory(room.name));
+        }
+        if (pop.power_squad.power_healer == null) {
+            room_data.requested_creeps.push(new PowerHealerMemory(room.name));
+        }
+        if (pop.power_squad.power_transporter == null) {
+            room_data.requested_creeps.push(new PowerTransporterMemory(room.name));
+        }
 
-        // TODO: add in populating the commodity collector
+        if (pop[COMMODITY_COLLECTOR.NAME] < 1) {
+            room_data.requested_creeps.push(new CommodityCollectorMemory(room.name));
+        }
     },
     /**
      * attempt to spawn any creeps that are requested
@@ -171,13 +181,15 @@ global.RoomRunner = {
         // calculate the average satisfaction and see if it meets the threshold of satisfaction
         room_data.satisfied = (Util.getSatisfiedRatio(room_data) > SATISFACTION_THRESHOLD);
 
-        /* TODO: uncomment this and setup detection for room death
-        // check if we have lost control of the controller
-        if (!room.controller.my) {
-            // mark ths room as dead
-            room_data.dead = true;
+        if (room_data.has_been_owned) {
+            if (!room.controller.my) {
+                room_data.dead = true;
+            }
+        }else{
+            if (room.controller.my) {
+                room_data.has_been_owned = true;
+            }
         }
-         */
     },
     /**
      * run the colony, kicking off sub-functions for specific activities
@@ -232,6 +244,11 @@ global.RoomRunner = {
             Timer.stop("running_plant");
         }
 
-        // TODO: add in running the power squad
+        if (room_data.power_squad_timer > POWER_SQUAD_TIMER) {
+            PowerSquadRunner.run(room_data.power_squad);
+            room_data.power_squad_timer = 0;
+        } else {
+            room_data.power_squad_timer++;
+        }
     },
 };

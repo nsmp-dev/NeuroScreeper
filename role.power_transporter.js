@@ -32,16 +32,33 @@ class PowerTransporterMemory extends CreepMemory{
 global.PowerTransporterMemory = PowerTransporterMemory;
 
 Creep.prototype.runPowerTransporter = function () {
-    // TODO: if the squad is full
-        // TODO: if the creep is full
-            // TODO: set the power squad to returning
-            // TODO: deposit at the nearest storage
-        // else
-            // TODO: if we see any dropped power
-                // TODO: assign a gather task to grab it
-            // else
-                // TODO: follow the power attacker
-    // else
-        // TODO: idle
-
+    if (this.memory.task == null) {
+        let squad = this.getPowerSquad();
+        if (squad.state == STATES.IDLE) {
+            this.memory.task = new IdleTask(this.memory.room_name);
+        }else{
+            if (squad.state == STATES.SEARCHING) {
+                if (this.room.name == squad.highway_queue[0]) {
+                    this.memory.task = new IdleTask(this.room.name);
+                }else{
+                    this.memory.task = new MoveRoomTask(squad.highway_queue[0]);
+                }
+            }else if (squad.state == STATES.COLLECTING) {
+                let power_piles = this.room.find(FIND_DROPPED_RESOURCES, { filter: { resourceType: RESOURCE_POWER } });
+                if (power_piles.length > 0) {
+                    let target = this.pos.findClosestByPath(power_piles);
+                    this.memory.task = new GatherTask(target, RESOURCE_POWER);
+                }else{
+                    this.memory.task = new IdleTask(this.room.name)
+                }
+            }if (squad.state == STATES.RETURNING) {
+                if (this.room.name == squad.return_room_name) {
+                    this.memory.task = new DepositTask(this.room.storage, RESOURCE_POWER);
+                }else{
+                    this.memory.task = new MoveRoomTask(squad.return_room_name);
+                }
+            }
+        }
+    }
+    TaskRunner.run(this);
 };

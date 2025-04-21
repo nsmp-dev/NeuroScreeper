@@ -118,7 +118,7 @@ global.Util = {
         }
         // the id we are building
         let id = "";
-        // store the id
+        // store the id counter
         id += Memory.id_counter;
         // increment the id counter
         Memory.id_counter++;

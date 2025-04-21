@@ -27,6 +27,11 @@ class RoomData {
          */
         this.population_timer = REQUEST_POPULATION_TIMER_LENGTH;
         /**
+         * timer for when to run the power squad
+         * @type {number}
+         */
+        this.power_squad_timer = 0;
+        /**
          * log of how satisfied the colony is
          * @type {Boolean[]}
          */
@@ -71,6 +76,11 @@ class RoomData {
          * @type {PowerSquad}
          */
         this.power_squad = new PowerSquad(room.name);
+        /**
+         * holds whether the room has been owned before for detecting room death
+         * @type {Boolean}
+         */
+        this.has_been_owned = false;
         
         // if the initial spawn was provided
         if (initial_spawn != null) {

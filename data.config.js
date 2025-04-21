@@ -49,6 +49,11 @@ global.CONSTRUCTION_TIMER_LENGTH = 50;
  */
 global.REQUEST_POPULATION_TIMER_LENGTH = 10;
 /**
+ * ticks between running the power squad
+ * @constant {number} POWER_SQUAD_TIMER
+ */
+global.POWER_SQUAD_TIMER = 10;
+/**
  * ticks between recounting the populations
  * @constant {number} COUNT_POPULATION_TIMER_LENGTH
  */

@@ -9,7 +9,7 @@ class PowerSquad {
      */
     constructor(room_name) {
         /**
-         * stores the assigned power attacker creep
+         * stores the assigned Power Attacker creep
          * @type {string|null}
          */
         this.power_attacker = null;
@@ -28,6 +28,11 @@ class PowerSquad {
          * @type {string}
          */
         this.room_name = room_name;
+        /**
+         * stores the room that we return to
+         * @type {string|null}
+         */
+        this.return_room_name = null;
         /**
          * stores the room that owns this squad
          * @type {number}

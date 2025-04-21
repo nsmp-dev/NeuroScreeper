@@ -28,7 +28,7 @@ class MineralPlan {
          */
         this.container_location = container_location;
         /**
-         * type of resource this mineral contains
+         * the type of resource this mineral contains
          * @type {string}
          */
         this.resource_type = resource_type;

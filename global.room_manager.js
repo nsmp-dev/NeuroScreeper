@@ -138,12 +138,21 @@ global.RoomManager = {
                     }
                 }
             }
+            if (creep.memory.role == POWER_ATTACKER.NAME) {
+                room_pop.power_squad.power_attacker = creep.id;
+            }
+            if (creep.memory.role == POWER_HEALER.NAME) {
+                room_pop.power_squad.power_healer = creep.id;
+            }
+            if (creep.memory.role == POWER_TRANSPORTER.NAME) {
+                room_pop.power_squad.power_transporter = creep.id;
+            }
         }
         // store the populations
         Memory.populations = pop;
     },
     /**
-     * rescan the population occasionally add colonies/expansions if stable, and scan nrw rooms
+     * rescan the population occasionally and adds colonies/expansions if stable, and scans new rooms
      */
     run: function () {
         // if the population timer has gone off

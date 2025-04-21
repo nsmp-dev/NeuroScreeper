@@ -190,7 +190,7 @@ global.TaskRunner = {
             // move to the room for the task
             creep.moveTo(new RoomPosition(25, 25, task.room_name));
         }else{
-            // if when trying to claim the controller results in being "not in range"
+            // if claiming the controller results in being "not in range"
             if (creep.claimController(creep.room.controller) == ERR_NOT_IN_RANGE) {
                 // move to the controller
                 creep.moveTo(creep.room.controller);
@@ -250,7 +250,7 @@ global.TaskRunner = {
             creep.moveTo(new RoomPosition(25, 25, task.room_name));
         }else{
             // grab the target
-            let target = Game.getObjectById(task.creep);
+            let target = Game.getObjectById(task.target);
             // if the target is null
             if (target == null) {
                 // clear the task

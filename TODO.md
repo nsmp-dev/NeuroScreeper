@@ -1,6 +1,60 @@
-# v0.2
+# v0.3
 
-## final review
+## comments and documentation
+check all line comments and JSDoc signatures
+
+### files left
+data.config.js
+data.construction_plan.js
+data.creep_memory.js
+data.mineral_plan.js
+data.mineral_population.js
+data.plant_data.js
+data.point.js
+data.power_squad.js
+data.power_squad_population.js
+data.production.js
+data.reaction.js
+data.room_data.js
+data.room_plans.js
+data.room_population.js
+data.source_plan.js
+data.source_population.js
+data.tasks.js
+factory.room_plans.js
+global.bootloader.js
+global.power_manager.js
+global.room_manager.js
+global.timer.js
+global.util.js
+global.visualizer.js
+main.js
+prototype.creep.js
+prototype.observer.js
+prototype.room.js
+prototype.terminal.js
+prototype.tower.js
+role.attacker.js
+role.builder.js
+role.claimer.js
+role.commodity_collector.js
+role.driller.js
+role.healer.js
+role.mineral_driller.js
+role.mineral_transporter.js
+role.operator.js
+role.power_attacker.js
+role.power_healer.js
+role.power_transporter.js
+role.queen.js
+role.repairer.js
+role.scout.js
+role.transporter.js
+role.upgrader.js
+runner.plant.js
+runner.power_squad.js
+runner.room.js
+runner.task.js
 
 ## name possibilities
 NeuroScreeper
@@ -8,7 +62,7 @@ SongCrawl
 CyberCreeps
 
 ## emoji choices
-pick 2 emojis to illustrate each role
+pick two emojis to illustrate each role
  - attacker
  - builder
  - claimer
@@ -27,48 +81,6 @@ pick 2 emojis to illustrate each role
  - transporter
  - upgrader
 
-# v0.3
-
-## flesh out operator
-add in logic to fill the currently requested reaction/production
-account for cleanup commands as well
-double-check the reaction/production assignment logic in plant runner
-double-check the cleanup detection
-
-## update queen logic
-when in a non-capitol room, move reaction and production ingredients from storage to terminal
-when in a capitol room, move reaction and production ingredients from terminal to storage
-
-## update terminal
-add logic to sell end-game commodities/resources
-add logic to move reaction and production ingredients to capitol room
-
-## add squads
-squads get stored on the room_data object, similar to drillers and transporters
-population requester knows how to spawn members of the squad
-if the squad is not full, the members idle until it is full
-
-## new roles
-these roles fill out the operations of end game resource collection
-
-### power attacker
-attacks power bank
-
-### power healer
-heals the attacker
-
-### power transporter
-picks up power and takes it back to the nearest terminal
-
-### mineral driller
-drills the mineral in the room if it exists
-
-### mineral transporter
-transports the mined minerals to the nearest terminal
-
-### commodity collector
-goes out to find commodities and returns them to nearest terminal
-
 # v0.4
 
 ## Bug testing
@@ -79,11 +91,11 @@ watch each role for a while, making sure they spawn and behave properly
 polish all the comments and JSDoc descriptions/types
 regenerate the JSDoc site
 look at themes for JSDoc
-flesh out the documentation markdown files
+flesh out the documentation Markdown files
 
 ## Visualizer overhaul
 add in tons to the visualizer
 
 ## Logger additions
-add in logs in many places
+add in logs for more comprehensive status messaging
 add in timers in many places that are CPU intensive

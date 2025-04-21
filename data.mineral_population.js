@@ -5,7 +5,7 @@
 class MineralPopulation {
     /**
      * Creates a MineralPopulation Object
-     * @param {MineralPlan} mineral_plan - id of the Mineral object
+     * @param {MineralPlan} mineral_plan - the mineral plans this mineral population is for
      *
      */
     constructor(mineral_plan) {
@@ -20,17 +20,17 @@ class MineralPopulation {
          */
         this.container_location = mineral_plan.container_location;
         /**
-         * type of resource this mineral contains
+         * the type of resource this mineral contains
          * @type {string}
          */
         this.resource_type = mineral_plan.resource_type;
         /**
-         * type of resource this mineral contains
+         * the id of the mineral driller assigned to this mineral
          * @type {string|null}
          */
         this.mineral_driller = null;
         /**
-         * type of resource this mineral contains
+         * the id of the mineral transporter assigned to this mineral
          * @type {string|null}
          */
         this.mineral_transporter = null;

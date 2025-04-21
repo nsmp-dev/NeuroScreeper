@@ -187,7 +187,7 @@ Room.prototype.spawnRole = function (memory, is_global = false) {
     let success = false;
     // list of spawns that might work
     let spawns = [];
-    // role object fetched from the given memory
+    // grab the role object based on the name of the role
     let role = ROLES[memory.role];
 
     // loop through the spawns we own

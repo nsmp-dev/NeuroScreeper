@@ -206,15 +206,15 @@ global.DrillTask = DrillTask;
 class AttackTask extends Task {
     /**
      * creates an attack task
-     * @param {Creep} creep - The target to attack
+     * @param {Creep} target - The target to attack
      */
-    constructor(creep) {
-        super(TASK_TYPES.ATTACK, creep.room.name);
+    constructor(target) {
+        super(TASK_TYPES.ATTACK, target.room.name);
         /**
          * target of the task
          * @type {string}
          */
-        this.creep = creep.id;
+        this.target = target.id;
     }
 }
 global.AttackTask = AttackTask;

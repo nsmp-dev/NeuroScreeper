@@ -9,9 +9,9 @@ global.PlantRunner = {
      * @param {PlantData} plant_data - The plant data for storing in memory
      */
     runLabs: function (room, plant_data) {
-        // grab the input lab 1
+        // grab input lab 1
         let input_lab_1 = Game.getObjectById(plant_data.input_lab_1_id);
-        // grab the input lab 2
+        // grab input lab 2
         let input_lab_2 = Game.getObjectById(plant_data.input_lab_2_id);
         // grab the output lab
         let output_lab = Game.getObjectById(plant_data.output_lab_id);

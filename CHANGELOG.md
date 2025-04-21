@@ -2,6 +2,25 @@
 
 ## [Unreleased]
 
+## [0.2.6] - 2025-04-21
+
+## Added
+- role logic for commodity collector
+- role logic for power attacker
+- role logic for power healer
+- role logic for power transporter
+- role logic for operator
+- power squad logic for swapping between states
+- room runner logic for spawning new roles
+- room manager logic for counting new roles
+- room death calculation
+- power squad population class for counting the population of power squads
+- power squad timer for occasionally running the power squad
+
+## Changed
+- terminals now sell final products and send ingredients to other rooms
+- queen now also moves ingredients and final products between the terminal and the storage
+
 ## [0.2.5] - 2025-04-15
 
 ## Added

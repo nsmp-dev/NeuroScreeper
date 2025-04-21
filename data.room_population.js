@@ -28,6 +28,11 @@ class RoomPopulation {
          * @type {MineralPopulation[]}
          */
         this.minerals = [];
+        /**
+         * hash of the minerals in the room
+         * @type {PowerSquadPopulation}
+         */
+        this.power_squad = new PowerSquadPopulation();
 
         // loop through each role
         for (let role in ROLES) {

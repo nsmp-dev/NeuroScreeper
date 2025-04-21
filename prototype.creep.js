@@ -211,6 +211,13 @@ Creep.prototype.getNearestColony = function () {
     return nearest_room_name;
 };
 /**
+ * returns the squad this creep is assigned to
+ * @return {PowerSquad} The nearest room's name
+ */
+Creep.prototype.getPowerSquad = function () {
+    return Memory.room_data[this.memory.room_name].power_squad;
+};
+/**
  * assign a standard gather task to just grab energy for various needs
  */
 Creep.prototype.gatherEnergy = function () {

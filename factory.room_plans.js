@@ -26,7 +26,7 @@ global.RoomPlansFactory = {
         this.planRoads(room, plans);
         // plan the ramparts on top of all the structures planned
         this.planRamparts(room, plans);
-        // find a location that is not around anything to send the idle creeps in the room
+        // find a location not around anything to send the idle creeps in the room
         this.planIdleLocation(room, plans);
     },
     /**
@@ -51,7 +51,7 @@ global.RoomPlansFactory = {
         this.planRoads(room, plans);
         // plan the ramparts on top of all the structures planned
         this.planRamparts(room, plans);
-        // find a location that is not around anything to send the idle creeps in the room
+        // find a location not around anything to send the idle creeps in the room
         this.planIdleLocation(room, plans);
     },
     /**
@@ -346,7 +346,7 @@ global.RoomPlansFactory = {
         ];
     },
     /**
-     * find a location that is not around anything to send the idle creeps in the room
+     * find a location not around anything to send the idle creeps in the room
      * @param {Room} room - The Room we are planning
      * @param {RoomPlans} plans - The Plans for the room.
      */
@@ -420,7 +420,7 @@ global.RoomPlansFactory = {
         }
     },
     /**
-     * adds ramparts on top of all structures in the plans
+     * add ramparts on top of all structures in the plans
      * @param {Room} room - The Room we are planning
      * @param {RoomPlans} plans - The Plans for the room.
      */

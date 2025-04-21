@@ -32,16 +32,32 @@ class PowerAttackerMemory extends CreepMemory{
 global.PowerAttackerMemory = PowerAttackerMemory;
 
 Creep.prototype.runPowerAttacker = function () {
-    // TODO: if the squad is not full, idle at home room
-    // TODO: if the squad is full
-        // TODO: if we are in the next room
-            // TODO: advance the queue
-            // TODO: if the room has a power bank
-                // TODO: attack the power bank
-            // else
-                // TODO: move to the next room
-        // else
-            // TODO: go to the squad's next room
-    // else
-        // TODO: idle
+    if (this.memory.task == null) {
+        let squad = this.getPowerSquad();
+        if (squad.state == STATES.IDLE) {
+            this.memory.task = new IdleTask(this.memory.room_name);
+        }else{
+            if (squad.state == STATES.SEARCHING) {
+                if (this.room.name == squad.highway_queue[0]) {
+                    this.memory.task = new IdleTask(this.room.name);
+                }else{
+                    this.memory.task = new MoveRoomTask(squad.highway_queue[0]);
+                }
+            }else if (squad.state == STATES.COLLECTING) {
+                let power_banks = this.room.find(FIND_STRUCTURES, { filter: { structureType: STRUCTURE_POWER_BANK } });
+                if (power_banks.length > 0) {
+                    this.memory.task = new AttackTask(power_banks[0]);
+                }else{
+                    this.memory.task = new IdleTask(this.room.name);
+                }
+            }if (squad.state == STATES.RETURNING) {
+                if (this.room.name == squad.return_room_name) {
+                    this.memory.task = new IdleTask(this.room.name);
+                }else{
+                    this.memory.task = new MoveRoomTask(squad.return_room_name);
+                }
+            }
+        }
+    }
+    TaskRunner.run(this);
 };

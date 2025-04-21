@@ -7,6 +7,7 @@ require('data.mineral_population');
 require('data.plant_data');
 require('data.point');
 require('data.power_squad');
+require('data.power_squad_population');
 require('data.production');
 require('data.reaction');
 require('data.room_data');
