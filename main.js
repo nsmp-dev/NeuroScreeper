@@ -6,28 +6,27 @@ module.exports.loop = function () {
     hlog("-------------------------------------");
     hlog("-------------------------------------");
     hlog("-------------------------------------");
+
+    // grab the MainMemory object
+    let main_memory = Util.getMainMemory();
+
     // wipe the memory if the build has changed
-    if (Memory.build != BUILD) {
+    if (main_memory == undefined || main_memory.build != BUILD) {
         hlog("Build has changed, clearing memory...");
         // clear the old memory
         Util.clearMemory();
-        // set the build to the new one
-        Memory.build = BUILD;
-        hlog("initializing RoomManager...");
-        // initialize the room manager
-        RoomManager.initialize();
-        hlog("initializing Timer...");
-        // initialize the timer
-        Timer.initialize();
-    }
 
+        hlog("initializing MainMemory...");
+        // initialize the MainMemory object
+        Memory.main_memory = new MainMemory();
+    }
 
     // start the main timer
     Timer.start();
 
     hlog("Running RoomManager...");
     // run the room manager
-    RoomManager.run();
+    RoomManager.run(main_memory);
 
     hlog("Running creeps...");
     // loop through all the creeps
@@ -54,11 +53,11 @@ module.exports.loop = function () {
 
     hlog("Running rooms...");
     // loop through every room we have data on
-    for (let name in Memory.room_data) {
+    for (let name in main_memory.room_data) {
         // grab the room reference
         let room = Game.rooms[name];
         // grab the room data
-        let room_data = Memory.room_data[name];
+        let room_data = main_memory.room_data[name];
 
         // if the room is a colony or expansion, run it
         if (room_data.type == COLONY || room_data.type == EXPANSION) {
@@ -69,14 +68,14 @@ module.exports.loop = function () {
         }
 
         // if the room died
-        if (Memory.room_data[name].dead) {
+        if (main_memory.room_data[name].dead) {
             hlog("Room '" + name + "' died!");
             // delete the room data
-            delete Memory.room_data[name];
+            delete main_memory.room_data[name];
             // if the room was the capitol
-            if (Memory.capitol_room_name == name) {
+            if (main_memory.capitol_room_name == name) {
                 // clear the capitol
-                Memory.capitol_room_name = null;
+                main_memory.capitol_room_name = null;
             }
         }
     }

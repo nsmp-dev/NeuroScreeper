@@ -19,17 +19,17 @@ class RoomPopulation {
          */
         this.roles = {};
         /**
-         * hash of the sources in the room
+         * list of the source populations in the room
          * @type {SourcePopulation[]}
          */
-        this.sources = [];
+        this.source_populations = [];
         /**
-         * hash of the minerals in the room
+         * list of the mineral populations in the room
          * @type {MineralPopulation[]}
          */
-        this.minerals = [];
+        this.mineral_populations = [];
         /**
-         * hash of the minerals in the room
+         * power squad population for counting the power spawn creeps
          * @type {PowerSquadPopulation}
          */
         this.power_squad = new PowerSquadPopulation();
@@ -41,15 +41,15 @@ class RoomPopulation {
         }
 
         // loop through all the source plans in the room
-        for (let source_plan of plans.sources) {
+        for (let source_plan of plans.source_plans) {
             // create a population entry for this source plan
-            this.sources.push(new SourcePopulation(source_plan));
+            this.source_populations.push(new SourcePopulation(source_plan));
         }
 
         // loop through all the mineral plans in the room
-        for (let mineral_plan of plans.minerals) {
+        for (let mineral_plan of plans.mineral_plans) {
             // create a population entry for this mineral plan
-            this.minerals.push(new MineralPopulation(mineral_plan));
+            this.mineral_populations.push(new MineralPopulation(mineral_plan));
         }
     }
 }

@@ -6,13 +6,6 @@ global.Timer = {
     // where we store the timers we are working with
     timers: {},
     /**
-     * initialize this global object, setting up memory
-     */
-    initialize: function () {
-        // create the "timers" object where we store the buffers and averages
-        Memory.timers = {};
-    },
-    /**
      * start a timer, defaults to the main timer
      * @param {string} id - the id of the timer
      */
@@ -31,12 +24,13 @@ global.Timer = {
      * @param {string} id - the id of the timer
      */
     stop: function (id = "main") {
+        let main_memory = Util.getMainMemory();
         // set the end time of the timer
         this.timers[id].end = Game.cpu.getUsed();
         // if we have not initialized the id's log and average
-        if (Memory.timers[id] == undefined) {
+        if (main_memory.timers[id] == undefined) {
             // initialize the id's buffer
-            Memory.timers[id] = {
+            main_memory.timers[id] = {
                 // the log of the past times
                 log: [],
                 // the average of the times
@@ -44,22 +38,22 @@ global.Timer = {
             };
         }
         // push the total time onto the timer log
-        Memory.timers[id].log.push(this.timers[id].end - this.timers[id].start);
+        main_memory.timers[id].log.push(this.timers[id].end - this.timers[id].start);
         // if the timer log is too long
-        if (Memory.timers[id].log.length > LOG_SIZE) {
+        if (main_memory.timers[id].log.length > LOG_SIZE) {
             // remove the first element
-            Memory.timers[id].log.shift();
+            main_memory.timers[id].log.shift();
         }
 
         // total time for the whole timer log
         let total = 0;
 
         // loop through each time in the timer log
-        Memory.timers[id].log.forEach(function (time) {
+        main_memory.timers[id].log.forEach(function (time) {
             // increment the total time
             total += time;
         });
         // calculate and store the average time
-        Memory.timers[id].average_time = total / Memory.timers[id].log.length;
+        main_memory.timers[id].average_time = total / main_memory.timers[id].log.length;
     },
 };

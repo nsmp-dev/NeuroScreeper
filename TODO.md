@@ -3,16 +3,7 @@
 ## comments and documentation
 check all line comments and JSDoc signatures
 
-### files left
-data.room_data.js
-data.room_plans.js
-data.room_population.js
-data.source_plan.js
-data.source_population.js
-data.tasks.js
-factory.room_plans.js
-global.bootloader.js
-global.power_manager.js
+### files left (19/51)
 global.room_manager.js
 global.timer.js
 global.util.js

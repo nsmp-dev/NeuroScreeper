@@ -25,6 +25,7 @@ global.PowerManager = {
      * Manages the operator and handles spawning/upgrading/renewing the operator
      */
     run: function () {
+        let main_memory = Util.getMainMemory();
         // make a list for the power spawns
         let power_spawns = [];
         // loop through all the structures
@@ -58,13 +59,13 @@ global.PowerManager = {
         // if the operator is created but not spawned
         if (operator.ticksToLive == undefined) {
             // if we have a capitol room
-            if (Memory.capitol_room_name != null) {
+            if (main_memory.capitol_room_name != null) {
                 // variable for the capitol's power spawn
                 let capitol_power_spawn = null;
                 // loop through the power spawns
                 for (let power_spawn of power_spawns) {
                     // if the power spawn is in the capitol room
-                    if (power_spawn.room.name == Memory.capitol_room_name) {
+                    if (power_spawn.room.name == main_memory.capitol_room_name) {
                         // store the power spawn
                         capitol_power_spawn = power_spawn;
                     }
@@ -91,7 +92,7 @@ global.PowerManager = {
             }
             hlog("Running PowerCreep...");
             // run the operator, passing the appropriate plant data
-            operator.runOperator(Memory.room_data[operator.room.name].plant_data);
+            operator.runOperator(main_memory.room_data[operator.room.name].plant_data);
         }
     },
 };

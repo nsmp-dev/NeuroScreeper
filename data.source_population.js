@@ -6,7 +6,6 @@ class SourcePopulation {
     /**
      * Creates a SourcePopulation Object
      * @param {SourcePlan} source_plan - plans for the source
-     *
      */
     constructor(source_plan) {
         /**
@@ -20,12 +19,12 @@ class SourcePopulation {
          */
         this.container_location = source_plan.container_location;
         /**
-         * type of resource this source contains
+         * slot for counting the driller
          * @type {string|null}
          */
         this.driller = null;
         /**
-         * type of resource this source contains
+         * slot for counting the transporter
          * @type {string|null}
          */
         this.transporter = null;

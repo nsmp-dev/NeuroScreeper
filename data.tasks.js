@@ -24,7 +24,7 @@ class Task {
 global.Task = Task;
 
 /**
- * GatherTask class, an object that contains data for running a task
+ * GatherTask class, an object that contains data for running a gather task
  * @class GatherTask
  */
 class GatherTask extends Task {
@@ -56,7 +56,7 @@ class GatherTask extends Task {
 global.GatherTask = GatherTask;
 
 /**
- * DepositTask class, an object that contains data for running a task
+ * DepositTask class, an object that contains data for running a deposit task
  * @class DepositTask
  */
 class DepositTask extends Task {
@@ -88,7 +88,7 @@ class DepositTask extends Task {
 global.DepositTask = DepositTask;
 
 /**
- * BuildTask class, an object that contains data for running a task
+ * BuildTask class, an object that contains data for running a build task
  * @class BuildTask
  */
 class BuildTask extends Task {
@@ -108,7 +108,7 @@ class BuildTask extends Task {
 global.BuildTask = BuildTask;
 
 /**
- * RepairTask class, an object that contains data for running a task
+ * RepairTask class, an object that contains data for running a repair task
  * @class RepairTask
  */
 class RepairTask extends Task {
@@ -128,7 +128,7 @@ class RepairTask extends Task {
 global.RepairTask = RepairTask;
 
 /**
- * UpgradeTask class, an object that contains data for running a task
+ * UpgradeTask class, an object that contains data for running an upgrade task
  * @class UpgradeTask
  */
 class UpgradeTask extends Task {
@@ -143,7 +143,7 @@ class UpgradeTask extends Task {
 global.UpgradeTask = UpgradeTask;
 
 /**
- * ClaimTask class, an object that contains data for running a task
+ * ClaimTask class, an object that contains data for running a claim task
  * @class ClaimTask
  */
 class ClaimTask extends Task {
@@ -158,7 +158,7 @@ class ClaimTask extends Task {
 global.ClaimTask = ClaimTask;
 
 /**
- * ReserveTask class, an object that contains data for running a task
+ * ReserveTask class, an object that contains data for running a reserve task
  * @class ReserveTask
  */
 class ReserveTask extends Task {
@@ -173,7 +173,7 @@ class ReserveTask extends Task {
 global.ReserveTask = ReserveTask;
 
 /**
- * DrillTask class, an object that contains data for running a task
+ * DrillTask class, an object that contains data for running a drill task
  * @class DrillTask
  */
 class DrillTask extends Task {
@@ -200,13 +200,13 @@ class DrillTask extends Task {
 global.DrillTask = DrillTask;
 
 /**
- * AttackTask class, an object that contains data for running a task
+ * AttackTask class, an object that contains data for running an attack task
  * @class AttackTask
  */
 class AttackTask extends Task {
     /**
      * creates an attack task
-     * @param {Creep} target - The target to attack
+     * @param {Creep|Structure} target - The target to attack
      */
     constructor(target) {
         super(TASK_TYPES.ATTACK, target.room.name);
@@ -220,7 +220,7 @@ class AttackTask extends Task {
 global.AttackTask = AttackTask;
 
 /**
- * HealTask class, an object that contains data for running a task
+ * HealTask class, an object that contains data for running a heal task
  * @class HealTask
  */
 class HealTask extends Task {
@@ -240,7 +240,7 @@ class HealTask extends Task {
 global.HealTask = HealTask;
 
 /**
- * MoveRoomTask class, an object that contains data for running a task
+ * MoveRoomTask class, an object that contains data for running a move room task
  * @class MoveRoomTask
  */
 class MoveRoomTask extends Task {
@@ -255,7 +255,7 @@ class MoveRoomTask extends Task {
 global.MoveRoomTask = MoveRoomTask;
 
 /**
- * RenewOperatorTask class, an object that contains data for running a task
+ * RenewOperatorTask class, an object that contains data for running a renew operator task
  * @class RenewOperatorTask
  */
 class RenewOperatorTask extends Task {
@@ -281,16 +281,16 @@ class RenewOperatorTask extends Task {
 global.RenewOperatorTask = RenewOperatorTask;
 
 /**
- * IdleTask class, an object that contains data for running a task
+ * IdleTask class, an object that contains data for running an idle task
  * @class IdleTask
  */
 class IdleTask extends Task {
     /**
      * creates an idle task
      * @param {string} room_name - name of the room to idle in
-     * @param {number} tick_limit - time limit for idling
+     * @param {number} tick_limit - time limit for idling, defaults to 10 ticks
      */
-    constructor(room_name, tick_limit = 0) {
+    constructor(room_name, tick_limit = 10) {
         super(TASK_TYPES.IDLE, room_name);
         /**
          * time limit for idling
@@ -307,7 +307,7 @@ class IdleTask extends Task {
 global.IdleTask = IdleTask;
 
 /**
- * MoveResourceTask class, an object that contains data for running a task
+ * MoveResourceTask class, an object that contains data for running a move resource task
  * @class MoveResourceTask
  */
 class MoveResourceTask extends Task {
@@ -351,7 +351,7 @@ class MoveResourceTask extends Task {
 global.MoveResourceTask = MoveResourceTask;
 
 /**
- * HarvestTask class, an object that contains data for running a task
+ * HarvestTask class, an object that contains data for running a harvest task
  * @class HarvestTask
  */
 class HarvestTask extends Task {

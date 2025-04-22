@@ -24,13 +24,13 @@ Room.prototype.getStructureGrid = function (plans) {
     }
 
     // loop through the source plans
-    for (let source_plan of plans.sources) {
+    for (let source_plan of plans.source_plans) {
         // set this spot to taken
         structure_grid[source_plan.container_location.x][source_plan.container_location.y] = true;
     }
 
     // loop through the mineral plans
-    for (let mineral_plan of plans.minerals) {
+    for (let mineral_plan of plans.mineral_plans) {
         // set this spot to taken
         structure_grid[mineral_plan.container_location.x][mineral_plan.container_location.y] = true;
     }
@@ -254,7 +254,7 @@ Room.prototype.createConstructionSites = function (plans) {
         return;
     }
     // loop through the source plans for this room
-    for (let source_plan of plans.sources) {
+    for (let source_plan of plans.source_plans) {
         // if the container is not built
         if (!this.checkFor(STRUCTURE_CONTAINER, source_plan.container_location.x, source_plan.container_location.y)) {
             // try to place the container
@@ -277,7 +277,7 @@ Room.prototype.createConstructionSites = function (plans) {
         return;
     }
     // loop through the mineral plans for this room
-    for (let mineral_plan of plans.minerals) {
+    for (let mineral_plan of plans.mineral_plans) {
         // if the container is not built
         if (!this.checkFor(STRUCTURE_CONTAINER, mineral_plan.container_location.x, mineral_plan.container_location.y)) {
             // try to place the container

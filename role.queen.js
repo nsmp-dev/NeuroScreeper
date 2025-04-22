@@ -35,6 +35,7 @@ global.QueenMemory = QueenMemory;
  * queen that takes energy from the storage and dumps it into the towers, terminal, and extensions
  */
 Creep.prototype.runQueen = function () {
+    let main_memory = Util.getMainMemory();
     // if we don't have a task currently assigned
     if (this.memory.task == null) {
         // if we are out of energy
@@ -49,7 +50,7 @@ Creep.prototype.runQueen = function () {
                 // announce the new task
                 this.announceTask();
             }else{
-                if (this.room.name == Memory.capitol_room_name) {
+                if (this.room.name == main_memory.capitol_room_name) {
                     for (let resource in storage.store) {
                         if (storage.store[resource] > 0 && FINAL_PRODUCTS.includes(resource) && terminal != undefined) {
                             this.memory.task = new MoveResourceTask(this.room.name, storage, terminal, resource, storage.store[resource]);
@@ -78,39 +79,34 @@ Creep.prototype.runQueen = function () {
                 }
 
                 if (this.memory.task != null) {
-                    this.memory.task = new GatherTask(storage,  RESOURCE_ENERGY);
+                    let target = this.getQueenDumpTarget();
+                    if (target != null) {
+                        let amount = this.store.getFreeCapacity();
+                        if (target.store.getFreeCapacity() < amount) {
+                            amount = target.store.getFreeCapacity();
+                        }
+                        if (storage.store[RESOURCE_ENERGY] < amount) {
+                            amount = storage.store[RESOURCE_ENERGY];
+                        }
+                        this.memory.task = new MoveResourceTask(this.room.name, storage, target, RESOURCE_ENERGY, amount);
+                    }else{
+                        this.memory.task = new IdleTask(this.room.name, 10);
+                    }
                 }
             }
         }else{
-            if (this.store.getUsedCapacity() == this.store[RESOURCE_ENERGY]) {
-                // find a new dump target fit for a queen
-                let target = this.getQueenDumpTarget();
-                // if a new target was found
-                if (target != null) {
-                    // assign a new task
-                    this.memory.task = new DepositTask(target, RESOURCE_ENERGY);
-                    // announce the new task
-                    this.announceTask();
-                }else{
-                    // assign a new task
-                    this.memory.task = new IdleTask(this.memory.room_name, 10);
-                    // announce the new task
-                    this.announceTask();
+            let storage = this.room.storage;
+            if (storage != undefined) {
+                for (let resource in this.store) {
+                    if (this.store[resource] > 0) {
+                        this.memory.task = new DepositTask(storage, resource);
+                    }
+                }
+                if (this.memory.task == null) {
+                    this.memory.task = new IdleTask(this.room.name, 10);
                 }
             }else{
-                let storage = this.room.storage;
-                if (storage != undefined) {
-                    for (let resource in this.store) {
-                        if (this.store[resource] > 0) {
-                            this.memory.task = new DepositTask(this.room.storage, resource);
-                        }
-                    }
-                    if (this.memory.task != null) {
-                        this.memory.task = new IdleTask(this.memory.room_name, 10);
-                    }
-                }else{
-                    this.memory.task = new IdleTask(this.memory.room_name, 10);
-                }
+                this.memory.task = new IdleTask(this.room.name, 10);
             }
         }
     }

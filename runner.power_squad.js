@@ -8,8 +8,9 @@ global.PowerSquadRunner = {
      * @param {PowerSquad} power_squad - The power squad we are running
      */
     run: function (power_squad) {
-        for (let room_name in Memory.room_data) {
-            if (Memory.room_data[room_name].type == HIGHWAY && !power_squad.highway_queue.includes(room_name) && !power_squad.highway_log.includes(room_name)) {
+        let main_memory = Util.getMainMemory();
+        for (let room_name in main_memory.room_data) {
+            if (main_memory.room_data[room_name].type == HIGHWAY && !power_squad.highway_queue.includes(room_name) && !power_squad.highway_log.includes(room_name)) {
                 power_squad.highway_queue.push(room_name);
             }
         }

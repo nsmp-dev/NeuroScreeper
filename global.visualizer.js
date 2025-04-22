@@ -8,9 +8,10 @@ global.Visualizer = {
      * @param {Room} room - The room we are rendering on
      */
     render: function (room) {
-        if (Memory.timers["main"] != undefined) {
+        let main_memory = Util.getMainMemory();
+        if (main_memory.timers["main"] != undefined) {
             // grab the times from the timer log
-            let times = Memory.timers["main"].log;
+            let times = main_memory.timers["main"].log;
     
             // loop through all the times
             for (let i = 0; i < times.length; i++) {
@@ -27,7 +28,7 @@ global.Visualizer = {
         
 
         // grab the local population
-        let pop = Memory.populations[room.name];
+        let pop = main_memory.populations[room.name];
         // keep track of the offset as we loop through the population
         let offset_y = 0;
 

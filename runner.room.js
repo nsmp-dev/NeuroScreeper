@@ -9,9 +9,10 @@ global.RoomRunner = {
      * @param {RoomData} room_data - The room data for the room.
      */
     requestCreeps: function (room, room_data) {
+        let main_memory = Util.getMainMemory();
         // grab the population for this room
         /** @type {RoomPopulation} */
-        let pop = Memory.populations[room.name];
+        let pop = main_memory.populations[room.name];
         // create a list of requested creeps
         room_data.requested_creeps = [];
 
@@ -21,8 +22,8 @@ global.RoomRunner = {
             room_data.requested_creeps.push(new ClaimerMemory(room.name));
         }
 
-        // loop through the sources
-        for (let source_pop of pop.sources) {
+        // loop through the source_plans
+        for (let source_pop of pop.source_populations) {
             // check if a driller is needed for this source
             if (source_pop.driller == null) {
                 // request a driller
@@ -75,7 +76,7 @@ global.RoomRunner = {
         }
 
         // loop through the minerals
-        for (let mineral_pop of pop.minerals) {
+        for (let mineral_pop of pop.mineral_populations) {
             // check if a driller is needed for this mineral
             if (mineral_pop.mineral_driller == null) {
                 // request a driller
@@ -197,6 +198,7 @@ global.RoomRunner = {
      * @param {RoomData} room_data - The room data for the room.
      */
     run: function (room, room_data) {
+        let main_memory = Util.getMainMemory();
         hlog("Running " + room_data.type + " room: '" + room.name + "'...");
         // if the population timer has gone off
         if (room_data.population_timer > REQUEST_POPULATION_TIMER_LENGTH) {
@@ -237,7 +239,7 @@ global.RoomRunner = {
         }
 
         // if the room has a plant
-        if (room_data.plans.plant_location != null && room.name == Memory.capitol_room_name) {
+        if (room_data.plans.plant_location != null && room.name == main_memory.capitol_room_name) {
             // run the plant
             Timer.start("running_plant");
             PlantRunner.run(room, room_data.plant_data);

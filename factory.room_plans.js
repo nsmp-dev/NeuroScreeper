@@ -10,7 +10,7 @@ global.RoomPlansFactory = {
      * @param {StructureSpawn} initial_spawn - The initial spawn in the room.
      */
     planFirstRoom: function (room, plans, initial_spawn) {
-        // plan the sources in the room and their containers
+        // plan the sources in the room, if any, and their containers
         this.planSources(room, plans);
         // plan the minerals in the room, if any, and their containers
         this.planMinerals(room, plans);
@@ -35,7 +35,7 @@ global.RoomPlansFactory = {
      * @param {RoomPlans} plans - The RoomPlans for the room.
      */
     planRoom: function (room, plans) {
-        // plan the sources in the room and their containers
+        // plan the sources in the room, if any, and their containers
         this.planSources(room, plans);
         // plan the minerals in the room, if any, and their containers
         this.planMinerals(room, plans);
@@ -47,7 +47,7 @@ global.RoomPlansFactory = {
         this.planPlantLocation(room, plans);
         // fill the plant with plans for the structures based on the plant location
         this.planPlant(room, plans);
-        // plan the roads between the base and the sources and minerals
+        // plan the roads between the base and the source_plans and minerals
         this.planRoads(room, plans);
         // plan the ramparts on top of all the structures planned
         this.planRamparts(room, plans);
@@ -55,7 +55,7 @@ global.RoomPlansFactory = {
         this.planIdleLocation(room, plans);
     },
     /**
-     * plan the sources in the room and their containers
+     * plan the sources in the room, if any, and their containers
      * @param {Room} room - The Room we are planning
      * @param {RoomPlans} plans - The Plans for the room.
      */
@@ -72,7 +72,7 @@ global.RoomPlansFactory = {
             // if a place was found
             if (container_location != null) {
                 // make the plans and add them to the source list
-                plans.sources.push(new SourcePlan(source.id, container_location));
+                plans.source_plans.push(new SourcePlan(source.id, container_location));
             }
         }
     },
@@ -82,11 +82,11 @@ global.RoomPlansFactory = {
      * @param {RoomPlans} plans - The Plans for the room.
      */
     planMinerals: function (room, plans) {
-        // find all the sources in the room
+        // find all the minerals in the room
         /** @type {Mineral[]} */
         let minerals = room.find(FIND_MINERALS);
 
-        // loop through the sources
+        // loop through the minerals
         for (let mineral of minerals) {
             // find an adjacent space to put the container
             let container_location = room.getClearAdjacentLocation(mineral.pos.x, mineral.pos.y, plans);
@@ -94,7 +94,7 @@ global.RoomPlansFactory = {
             // add the mineral plan to the mineral plans list
             if (container_location != null) {
                 // create the MineralPlan and push it onto the plans
-                plans.minerals.push(new MineralPlan(mineral.id, new Point(mineral.pos.x, mineral.pos.y), container_location, mineral.mineralType));
+                plans.mineral_plans.push(new MineralPlan(mineral.id, new Point(mineral.pos.x, mineral.pos.y), container_location, mineral.mineralType));
             }
         }
     },
@@ -368,12 +368,12 @@ global.RoomPlansFactory = {
         // if this room has a base
         if (plans.base_location != null) {
             // for each source plan
-            for (let source_plan of plans.sources) {
+            for (let source_plan of plans.source_plans) {
                 // draw roads between it and the closest anchor
                 this.planRoadsBetween(plans.base_road_anchors, [source_plan.container_location], room, plans);
             }
             // for each mineral plan
-            for (let mineral_plan of plans.minerals) {
+            for (let mineral_plan of plans.mineral_plans) {
                 // draw roads between it and the closest anchor
                 this.planRoadsBetween(plans.base_road_anchors, [mineral_plan.container_location], room, plans);
             }
@@ -434,13 +434,13 @@ global.RoomPlansFactory = {
             }
 
             // loop through all the source plans
-            for (let source_plan of plans.sources) {
+            for (let source_plan of plans.source_plans) {
                 // mark that spot for a rampart
                 plans.ramparts[source_plan.container_location.x][source_plan.container_location.y] = true;
             }
 
             // loop through all the mineral plans
-            for (let mineral_plan of plans.minerals) {
+            for (let mineral_plan of plans.mineral_plans) {
                 // mark that spot for a rampart
                 plans.ramparts[mineral_plan.container_location.x][mineral_plan.container_location.y] = true;
             }

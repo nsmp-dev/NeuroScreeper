@@ -35,9 +35,10 @@ global.ClaimerMemory = ClaimerMemory;
  * claimer that moves toward the assigned room and either reserves or claims the controller
  */
 Creep.prototype.runClaimer = function () {
+    let main_memory = Util.getMainMemory();
     // if we don't have a task currently assigned
     if (this.memory.task == null) {
-        if (Memory.room_data[this.memory.room_name].type == COLONY) {
+        if (main_memory.room_data[this.memory.room_name].type == COLONY) {
             // assign a new task
             this.memory.task = new ClaimTask(this.memory.room_name);
             // announce the new task

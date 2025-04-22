@@ -4,37 +4,17 @@
  */
 global.RoomManager = {
     /**
-     * create all the starter data needed to run the system
-     */
-    initialize: function () {
-        // create the room data object
-        Memory.room_data = {};
-        // set the population timer to 2 ticks from now
-        Memory.population_timer = COUNT_POPULATION_TIMER_LENGTH - 2;
-        // start the new room timer
-        Memory.new_room_timer = 0;
-        // create the population
-        Memory.populations = {};
-        // grab one of the names of the spawns
-        let spawn_name = Object.keys(Game.spawns)[0];
-        // grab the room that spawn is in
-        let room = Game.spawns[spawn_name].room;
-        // initialize the room data entry
-        Memory.room_data[room.name] = new RoomData(room, Game.spawns[spawn_name]);
-        // save the capitol room name
-        Memory.capitol_room_name = null;
-    },
-    /**
      * scan for any new rooms and add their data if found
      */
     scanNewRooms: function () {
+        let main_memory = Util.getMainMemory();
         // loop through all the rooms
         for (let name in Game.rooms) {
             // if we have not scanned this room yet
-            if (Memory.room_data[name] == undefined) {
+            if (main_memory.room_data[name] == undefined) {
                 hlog("Found a new room!");
                 // create a new RoomData object for the new room
-                Memory.room_data[name] = new RoomData(Game.rooms[name]);
+                main_memory.room_data[name] = new RoomData(Game.rooms[name]);
             }
         }
     },
@@ -42,12 +22,13 @@ global.RoomManager = {
      * attempt to spawn a new colony
      */
     spawnNewColony: function () {
+        let main_memory = Util.getMainMemory();
         // loop through all the room data
-        for (let name in Memory.room_data) {
+        for (let name in main_memory.room_data) {
             // if this room is not used and is a possible colony
-            if (Memory.room_data[name].type == null && Memory.room_data[name].possible_colony && Util.isRoomAvailable(name)) {
+            if (main_memory.room_data[name].type == null && main_memory.room_data[name].possible_colony && Util.isRoomAvailable(name)) {
                 // set the room type to a colony
-                Memory.room_data[name].type = COLONY;
+                main_memory.room_data[name].type = COLONY;
                 // return true for success
                 return true;
             }
@@ -59,12 +40,13 @@ global.RoomManager = {
      * attempt to spawn a new expansion
      */
     spawnNewExpansion: function () {
+        let main_memory = Util.getMainMemory();
         // loop through all the room data
-        for (let name in Memory.room_data) {
+        for (let name in main_memory.room_data) {
             // if this room is not used and is a possible expansion
-            if (Memory.room_data[name].type == null && Memory.room_data[name].possible_expansion && Util.isRoomAvailable(name)) {
+            if (main_memory.room_data[name].type == null && main_memory.room_data[name].possible_expansion && Util.isRoomAvailable(name)) {
                 // set the room type to a colony
-                Memory.room_data[name].type = EXPANSION;
+                main_memory.room_data[name].type = EXPANSION;
                 // return true for success
                 return true;
             }
@@ -76,17 +58,18 @@ global.RoomManager = {
      * count up all the creeps in the game
      */
     countPopulation: function () {
+        let main_memory = Util.getMainMemory();
         // create our population object
         let pop = {};
 
         // loop through each room in the room data
-        for (let name in Memory.room_data) {
+        for (let name in main_memory.room_data) {
             // if this room is a colony or expansion
-            if (Memory.room_data[name].type == COLONY ||
-                Memory.room_data[name].type == EXPANSION) {
+            if (main_memory.room_data[name].type == COLONY ||
+                main_memory.room_data[name].type == EXPANSION) {
 
                 // create the room's population object
-                pop[name] = new RoomPopulation(Memory.room_data[name].plans);
+                pop[name] = new RoomPopulation(main_memory.room_data[name].plans);
             }
         }
 
@@ -105,7 +88,7 @@ global.RoomManager = {
             // if this creep is a driller
             if (creep.memory.role == DRILLER.NAME) {
                 // set the entry for the driller to the id of the creep
-                for (let source_pop of room_pop.sources) {
+                for (let source_pop of room_pop.source_populations) {
                     if (source_pop.source_id == creep.memory.source) {
                         source_pop.driller = creep.id;
                     }
@@ -114,7 +97,7 @@ global.RoomManager = {
             // if this creep is a transporter
             if (creep.memory.role == TRANSPORTER.NAME) {
                 // set the entry for the transporter to the id of the creep
-                for (let source_pop of room_pop.sources) {
+                for (let source_pop of room_pop.source_populations) {
                     if (source_pop.source_id == creep.memory.source) {
                         source_pop.transporter = creep.id;
                     }
@@ -123,7 +106,7 @@ global.RoomManager = {
             // if this creep is a mineral driller
             if (creep.memory.role == MINERAL_DRILLER.NAME) {
                 // set the entry for the driller to the id of the creep
-                for (let mineral_pop of room_pop.minerals) {
+                for (let mineral_pop of room_pop.mineral_populations) {
                     if (mineral_pop.mineral_id == creep.memory.mineral) {
                         mineral_pop.mineral_driller = creep.id;
                     }
@@ -132,7 +115,7 @@ global.RoomManager = {
             // if this creep is a transporter
             if (creep.memory.role == MINERAL_TRANSPORTER.NAME) {
                 // set the entry for the transporter to the id of the creep
-                for (let mineral_pop of room_pop.minerals) {
+                for (let mineral_pop of room_pop.mineral_populations) {
                     if (mineral_pop.mineral_id == creep.memory.mineral) {
                         mineral_pop.mineral_transporter = creep.id;
                     }
@@ -149,26 +132,27 @@ global.RoomManager = {
             }
         }
         // store the populations
-        Memory.populations = pop;
+        main_memory.populations = pop;
     },
     /**
      * rescan the population occasionally and adds colonies/expansions if stable, and scans new rooms
+     * @param {MainMemory} main_memory - The plans of the room
      */
-    run: function () {
+    run: function (main_memory) {
         // if the population timer has gone off
-        if (Memory.population_timer > COUNT_POPULATION_TIMER_LENGTH) {
+        if (main_memory.population_timer > COUNT_POPULATION_TIMER_LENGTH) {
             hlog("Recounting the population...");
             // recount the population
             this.countPopulation();
             // reset the population timer
-            Memory.population_timer = 0;
+            main_memory.population_timer = 0;
         } else {
             // increment the population timer
-            Memory.population_timer++;
+            main_memory.population_timer++;
         }
 
         // if the new room timer has gone off
-        if (Memory.new_room_timer > NEW_ROOM_TIMER_LENGTH) {
+        if (main_memory.new_room_timer > NEW_ROOM_TIMER_LENGTH) {
             hlog("Checking if we can add a new room...");
             // default to satisfied
             let satisfied = true;
@@ -178,19 +162,19 @@ global.RoomManager = {
             let expansion_count = 0;
 
             // loop through all the room data
-            for (let name in Memory.room_data) {
+            for (let name in main_memory.room_data) {
                 // if the room is a colony or expansion and is not satisfied
-                if ((Memory.room_data[name].type == COLONY || Memory.room_data[name].type == EXPANSION) && !Memory.room_data[name].satisfied) {
+                if ((main_memory.room_data[name].type == COLONY || main_memory.room_data[name].type == EXPANSION) && !main_memory.room_data[name].satisfied) {
                     // set satisfied to false since one of the rooms is not satisfied
                     satisfied = false;
                 }
                 // if the room is a colony
-                if (Memory.room_data[name].type == COLONY) {
+                if (main_memory.room_data[name].type == COLONY) {
                     // increment the colony count
                     colony_count++;
                 }
                 // if the room is an expansion
-                if (Memory.room_data[name].type == EXPANSION) {
+                if (main_memory.room_data[name].type == EXPANSION) {
                     // increment the expansion count
                     expansion_count++;
                 }
@@ -214,14 +198,14 @@ global.RoomManager = {
             }
 
             // if we currently don't have a capitol
-            if (Memory.capitol_room_name == null) {
+            if (main_memory.capitol_room_name == null) {
                 // loop through all the rooms
-                for (let name in Memory.room_data) {
+                for (let name in main_memory.room_data) {
                     // if the room is a colony and has a plant
-                    if (Memory.room_data[name].type == COLONY && Memory.room_data[name].plans.plant_location != null) {
+                    if (main_memory.room_data[name].type == COLONY && main_memory.room_data[name].plans.plant_location != null) {
                         hlog("Designating a new Capitol...");
                         // store the new capitol room name
-                        Memory.capitol_room_name = name;
+                        main_memory.capitol_room_name = name;
                         // break out of the loop
                         break;
                     }
@@ -229,10 +213,10 @@ global.RoomManager = {
             }
 
             // reset the new room timer
-            Memory.new_room_timer = 0;
+            main_memory.new_room_timer = 0;
         } else {
             // increment the new room timer
-            Memory.new_room_timer++;
+            main_memory.new_room_timer++;
         }
 
         // scan for new rooms

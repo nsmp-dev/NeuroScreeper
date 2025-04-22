@@ -113,18 +113,13 @@ class RoomData {
                 this.type = HIGHWAY;
             }
         }else{
-            // check whether this room can be an expansion
+            // if there's more than one source, the room can be an expansion
             this.possible_expansion = (
                 // if there's more than one source
-                this.plans.sources.length > 1
+                this.plans.source_plans.length > 1
             );
-            // check whether this room can be a colony
-            this.possible_colony = (
-                // if there's more than one source
-                this.plans.sources.length > 1 &&
-                // and it has a base
-                this.plans.base_location != null
-            );
+            // if there's more than one source, and it has a base, the room can be a colony
+            this.possible_colony = (this.plans.source_plans.length > 1 && this.plans.base_location != null);
         }
 
         // if the plans include a plant

@@ -2,6 +2,7 @@
  * move any ingredients to the capitol
  */
 StructureTerminal.prototype.moveIngredients = function () {
+    let main_memory = Util.getMainMemory();
     let ingredients = {};
     let energy = this.store[RESOURCE_ENERGY];
 
@@ -13,12 +14,12 @@ StructureTerminal.prototype.moveIngredients = function () {
 
     for (let resource in ingredients) {
         let amount = ingredients[resource];
-        while (amount > 1 && energy < Game.market.calcTransactionCost(amount, this.room.name, Memory.capitol_room_name)) {
+        while (amount > 1 && energy < Game.market.calcTransactionCost(amount, this.room.name, main_memory.capitol_room_name)) {
             amount--;
         }
 
         if (amount > 0) {
-            this.send(resource, amount, Memory.capitol_room_name, 'Resources for the capitol');
+            this.send(resource, amount, main_memory.capitol_room_name, 'Resources for the capitol');
             return;
         }
     }
@@ -119,33 +120,29 @@ StructureTerminal.prototype.buySubToken = function () {
  * run the terminal
  */
 StructureTerminal.prototype.run = function () {
-    // if the terminal timers have not been initiated
-    if (Memory.terminal_timers == undefined) {
-        // initialize them
-        Memory.terminal_timers = {};
-    }
+    let main_memory = Util.getMainMemory();
     // if this room's terminal timer has not been initialized
-    if (Memory.terminal_timers[this.room.name] == undefined) {
+    if (main_memory.terminal_timers[this.room.name] == undefined) {
         // initialize it
-        Memory.terminal_timers[this.room.name] = 0;
+        main_memory.terminal_timers[this.room.name] = 0;
     }
 
     // if the sell timer has gone off
-    if (Memory.terminal_timers[this.room.name] >= TERMINAL_TIMER_LENGTH &&
+    if (main_memory.terminal_timers[this.room.name] >= TERMINAL_TIMER_LENGTH &&
         // and the terminal has a minimal amount of energy
         this.store[RESOURCE_ENERGY] > TERMINAL_ENERGY_CAP &&
         // and the terminal is not on cooldown
         this.cooldown == 0) {
         // reset the sell timer
-        Memory.terminal_timers[this.room.name] = 0;
+        main_memory.terminal_timers[this.room.name] = 0;
         // sell any sellable resources
         this.sellFinalProducts();
         this.buySubToken();
-        if (Memory.capitol_room_name != null && Memory.capitol_room_name != this.room.name) {
+        if (main_memory.capitol_room_name != null && Memory.capitol_room_name != this.room.name) {
             this.moveIngredients();
         }
     } else {
         // increment the sell timer
-        Memory.terminal_timers[this.room.name]++;
+        main_memory.terminal_timers[this.room.name]++;
     }
 }

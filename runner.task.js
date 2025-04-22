@@ -190,7 +190,7 @@ global.TaskRunner = {
             // move to the room for the task
             creep.moveTo(new RoomPosition(25, 25, task.room_name));
         }else{
-            // if claiming the controller results in being "not in range"
+            // if claiming the controller results in being "not in range",
             if (creep.claimController(creep.room.controller) == ERR_NOT_IN_RANGE) {
                 // move to the controller
                 creep.moveTo(creep.room.controller);

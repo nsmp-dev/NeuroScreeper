@@ -52,10 +52,8 @@ class RoomPlans {
         // loop through all the room positions
         for (let x = 0; x < 50; x++) {
             // push a new row onto the road grid
-            // noinspection JSCheckFunctionSignatures
             this.roads.push([]);
             // push a new row onto the rampart grid
-            // noinspection JSCheckFunctionSignatures
             this.ramparts.push([]);
             // loop through all positions on the row
             for (let y = 0; y < 50; y++) {
@@ -66,15 +64,15 @@ class RoomPlans {
             }
         }
         /**
-         * list of sources and their containers
+         * list of source_plans and their containers
          * @type {SourcePlan[]}
          */
-        this.sources = [];
+        this.source_plans = [];
         /**
          * list of minerals and their containers
          * @type {MineralPlan[]}
          */
-        this.minerals = [];
+        this.mineral_plans = [];
         /**
          * coordinates for input lab 1
          * @type {Point|null}
@@ -99,4 +97,5 @@ class RoomPlans {
     }
 }
 
+// export the RoomPlans class
 global.RoomPlans = RoomPlans;

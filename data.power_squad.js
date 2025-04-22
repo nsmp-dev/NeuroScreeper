@@ -49,10 +49,11 @@ class PowerSquad {
          */
         this.highway_queue = [];
 
+        let main_memory = Util.getMainMemory();
         // loop through the rooms we have discovered so far
-        for (let room_name of Memory.room_data) {
+        for (let room_name in main_memory.room_data) {
             // if the room is a highway
-            if (Memory.room_data[room_name].type == HIGHWAY) {
+            if (main_memory.room_data[room_name].type == HIGHWAY) {
                 // add the room name to the highway queue
                 this.highway_queue.push(room_name);
             }

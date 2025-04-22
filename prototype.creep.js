@@ -111,7 +111,7 @@ Creep.prototype.getRepairTarget = function () {
 };
 /**
  * gets a dumping target for a queen
- * @return {Structure} The nearest target for dumping energy
+ * @return {StructureTower|StructureExtension|StructureSpawn|StructurePowerSpawn|StructureTerminal} The nearest target for dumping energy
  */
 Creep.prototype.getQueenDumpTarget = function () {
     // find all the towers that are not full
@@ -157,8 +157,9 @@ Creep.prototype.getQueenDumpTarget = function () {
  * move toward the idle location for the current room to get out of the way
  */
 Creep.prototype.idle = function () {
+    let main_memory = Util.getMainMemory();
     // grab the room data
-    let room_data = Memory.room_data[this.room.name];
+    let room_data = main_memory.room_data[this.room.name];
 
     // if we are more than 3 tiles away
     if (!this.pos.inRangeTo(room_data.plans.idle_location.x, room_data.plans.idle_location.y, 3)) {
@@ -171,8 +172,9 @@ Creep.prototype.idle = function () {
  * @return {StructureStorage|null} The nearest storage or null
  */
 Creep.prototype.getNearestStorage = function () {
+    let main_memory = Util.getMainMemory();
     let storages = [];
-    for (let room_name in Memory.room_data) {
+    for (let room_name in main_memory.room_data) {
         if (Game.rooms[room_name] != undefined && Game.rooms[room_name].storage != undefined) {
             if (room_name == this.room.name) {
                 return Game.rooms[room_name].storage;
@@ -200,10 +202,11 @@ Creep.prototype.getNearestStorage = function () {
  * @return {string|null} The nearest room's name
  */
 Creep.prototype.getNearestColony = function () {
+    let main_memory = Util.getMainMemory();
     let nearest_room_name = null;
     let lowest_distance = null;
-    for (let room_name in Memory.room_data) {
-        if (Memory.room_data[room_name].type == COLONY && (nearest_room_name == null || Game.map.getRoomLinearDistance(this.room.name, room_name) < lowest_distance)) {
+    for (let room_name in main_memory.room_data) {
+        if (main_memory.room_data[room_name].type == COLONY && (nearest_room_name == null || Game.map.getRoomLinearDistance(this.room.name, room_name) < lowest_distance)) {
             nearest_room_name = room_name;
             lowest_distance = Game.map.getRoomLinearDistance(this.room.name, room_name);
         }
@@ -215,7 +218,8 @@ Creep.prototype.getNearestColony = function () {
  * @return {PowerSquad} The nearest room's name
  */
 Creep.prototype.getPowerSquad = function () {
-    return Memory.room_data[this.memory.room_name].power_squad;
+    let main_memory = Util.getMainMemory();
+    return main_memory.room_data[this.memory.room_name].power_squad;
 };
 /**
  * assign a standard gather task to just grab energy for various needs

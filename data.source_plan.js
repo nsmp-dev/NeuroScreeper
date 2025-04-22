@@ -15,7 +15,7 @@ class SourcePlan {
          */
         this.source_id = source_id;
         /**
-         * x coordinate of the container
+         * coordinates of the container
          * @type {Point}
          */
         this.container_location = container_location;

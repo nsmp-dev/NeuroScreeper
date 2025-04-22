@@ -5,6 +5,13 @@
 global.Util = {
     /**
      * converts an x/y room coordinate to a string name
+     * @return {MainMemory} the string name for the room
+     */
+    getMainMemory: function () {
+        return Memory.main_memory;
+    },
+    /**
+     * converts an x/y room coordinate to a string name
      * @param {number} x - x coordinate of the room in the world space
      * @param {number} y - y coordinate of the room in the world space
      * @return {string} the string name for the room
@@ -111,17 +118,13 @@ global.Util = {
      * @return {string} the guaranteed unique id
      */
     generateId: function () {
-        // if the id counter has not been set before
-        if (Memory.id_counter == undefined) {
-            // set the id counter to 0
-            Memory.id_counter = 0;
-        }
+        let main_memory = Util.getMainMemory();
         // the id we are building
         let id = "";
         // store the id counter
-        id += Memory.id_counter;
+        id += main_memory.id_counter;
         // increment the id counter
-        Memory.id_counter++;
+        main_memory.id_counter++;
         // return the id
         return id;
     },
@@ -218,12 +221,13 @@ global.Util = {
      * print all the timers we have
      */
     printTimers: function () {
+        let main_memory = Util.getMainMemory();
         // draw a separator
         console.log("-----Average Times-----");
         // loop through all the timers
-        for (let id in Memory.timers) {
+        for (let id in main_memory.timers) {
             // print the id and average of this timer
-            console.log(id + ": " + Memory.timers[id].average_time);
+            console.log(id + ": " + main_memory.timers[id].average_time);
         }
     },
     /**
@@ -231,10 +235,11 @@ global.Util = {
      * @return {string[]} array of all the highway room names
      */
     getHighwayRooms: function () {
+        let main_memory = Util.getMainMemory();
         let highways = [];
 
-        for (let room_name in Memory.room_data) {
-            if (Memory.room_data[room_name] == HIGHWAY) {
+        for (let room_name in main_memory.room_data) {
+            if (main_memory.room_data[room_name] == HIGHWAY) {
                 highways.push(room_name);
             }
         }

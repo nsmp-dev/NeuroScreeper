@@ -2,8 +2,10 @@
 require('data.config');
 require('data.construction_plan');
 require('data.creep_memory');
+require('data.main_memory');
 require('data.mineral_plan');
 require('data.mineral_population');
+require('data.observer_log');
 require('data.plant_data');
 require('data.point');
 require('data.power_squad');
