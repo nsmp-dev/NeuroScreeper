@@ -6,7 +6,7 @@ global.MINERAL_TRANSPORTER = {
     // identifying string
     NAME: "mineral_transporter",
     // emoji for shorthand visuals
-    EMOJI: "🚛",
+    EMOJI: "💎🚛",
     // standard body build that can be multiplied arbitrarily to build larger creeps
     BODY: [CARRY, MOVE],
     // energy cost of the body

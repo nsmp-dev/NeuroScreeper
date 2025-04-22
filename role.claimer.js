@@ -6,7 +6,7 @@ global.CLAIMER = {
     // identifying string
     NAME: "claimer",
     // emoji for shorthand visuals
-    EMOJI: "🏰",
+    EMOJI: "🚩🏰",
     // standard body build that can be multiplied arbitrarily to build larger creeps
     BODY: [CLAIM, MOVE],
     // energy cost of the body

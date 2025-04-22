@@ -6,7 +6,7 @@ global.ATTACKER = {
     // identifying string
     NAME: "attacker",
     // emoji for shorthand visuals
-    EMOJI: "⚔️",
+    EMOJI: "🗡️⚔️",
     // standard body build that can be multiplied arbitrarily to build larger creeps
     BODY: [ATTACK, TOUGH, MOVE, MOVE],
     // energy cost of the body

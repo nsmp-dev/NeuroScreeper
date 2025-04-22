@@ -6,7 +6,7 @@ global.COMMODITY_COLLECTOR = {
     // identifying string
     NAME: "commodity_collector",
     // emoji for shorthand visuals
-    EMOJI: "⚖️",
+    EMOJI: "💰⚖️",
     // standard body build that can be multiplied arbitrarily to build larger creeps
     BODY: [WORK, CARRY, MOVE, MOVE],
     // energy cost of the body

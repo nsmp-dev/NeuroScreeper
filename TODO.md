@@ -61,26 +61,6 @@ NeuroScreeper
 SongCrawl
 CyberCreeps
 
-## emoji choices
-pick two emojis to illustrate each role
- - attacker
- - builder
- - claimer
- - commodity_collector
- - driller
- - healer
- - mineral_driller
- - mineral_transporter
- - operator
- - power_attacker
- - power_healer
- - power_transporter
- - queen
- - repairer
- - scout
- - transporter
- - upgrader
-
 # v0.4
 
 ## Bug testing

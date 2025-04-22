@@ -6,7 +6,7 @@ global.POWER_HEALER = {
     // identifying string
     NAME: "power_healer",
     // emoji for shorthand visuals
-    EMOJI: "⚖️",
+    EMOJI: "🔴⚕️",
     // standard body build that can be multiplied arbitrarily to build larger creeps
     BODY: [HEAL, TOUGH, MOVE, MOVE],
     // energy cost of the body
