@@ -4,17 +4,6 @@
 check all line comments and JSDoc signatures
 
 ### files left
-data.config.js
-data.construction_plan.js
-data.creep_memory.js
-data.mineral_plan.js
-data.mineral_population.js
-data.plant_data.js
-data.point.js
-data.power_squad.js
-data.power_squad_population.js
-data.production.js
-data.reaction.js
 data.room_data.js
 data.room_plans.js
 data.room_population.js

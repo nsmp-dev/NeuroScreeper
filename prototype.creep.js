@@ -145,7 +145,7 @@ Creep.prototype.getQueenDumpTarget = function () {
         // and there is a terminal in the room
         this.room.terminal != undefined &&
         // and the terminal is not full
-        this.room.terminal.store.getFreeCapacity(RESOURCE_ENERGY) > 0) {
+        this.room.terminal.store[RESOURCE_ENERGY] < TERMINAL_ENERGY_CAP) {
         // return the terminal
         return this.room.terminal;
     }

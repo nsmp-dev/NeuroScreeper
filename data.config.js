@@ -64,7 +64,7 @@ global.COUNT_POPULATION_TIMER_LENGTH = 10;
  */
 global.NEW_ROOM_TIMER_LENGTH = 100;
 /**
- * ticks between getting plant structures
+ * ticks between caching plant structures
  * @constant {number} PLANT_STRUCTURES_TIMER_LENGTH
  */
 global.PLANT_STRUCTURES_TIMER_LENGTH = 10;
