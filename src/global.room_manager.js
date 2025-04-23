@@ -1,0 +1,225 @@
+/**
+ * Handles scanning and adding new rooms
+ * @constant {Object} RoomManager
+ */
+global.RoomManager = {
+    /**
+     * scan for any new rooms and add their data if found
+     */
+    scanNewRooms: function () {
+        let main_memory = Util.getMainMemory();
+        // loop through all the rooms
+        for (let name in Game.rooms) {
+            // if we have not scanned this room yet
+            if (main_memory.room_data[name] == undefined) {
+                hlog("Found a new room!");
+                // create a new RoomData object for the new room
+                main_memory.room_data[name] = new RoomData(Game.rooms[name]);
+            }
+        }
+    },
+    /**
+     * attempt to spawn a new colony
+     */
+    spawnNewColony: function () {
+        let main_memory = Util.getMainMemory();
+        // loop through all the room data
+        for (let name in main_memory.room_data) {
+            // if this room is not used and is a possible colony
+            if (main_memory.room_data[name].type == null && main_memory.room_data[name].possible_colony && Util.isRoomAvailable(name)) {
+                // set the room type to a colony
+                main_memory.room_data[name].type = COLONY;
+                // return true for success
+                return true;
+            }
+        }
+        // no rooms were found, return false for failure
+        return false;
+    },
+    /**
+     * attempt to spawn a new expansion
+     */
+    spawnNewExpansion: function () {
+        let main_memory = Util.getMainMemory();
+        // loop through all the room data
+        for (let name in main_memory.room_data) {
+            // if this room is not used and is a possible expansion
+            if (main_memory.room_data[name].type == null && main_memory.room_data[name].possible_expansion && Util.isRoomAvailable(name)) {
+                // set the room type to a colony
+                main_memory.room_data[name].type = EXPANSION;
+                // return true for success
+                return true;
+            }
+        }
+        // no rooms were found, return false for failure
+        return false;
+    },
+    /**
+     * count up all the creeps in the game
+     */
+    countPopulation: function () {
+        let main_memory = Util.getMainMemory();
+        // create our population object
+        let pop = {};
+
+        // loop through each room in the room data
+        for (let name in main_memory.room_data) {
+            // if this room is a colony or expansion
+            if (main_memory.room_data[name].type == COLONY ||
+                main_memory.room_data[name].type == EXPANSION) {
+
+                // create the room's population object
+                pop[name] = new RoomPopulation(main_memory.room_data[name].plans);
+            }
+        }
+
+        // loop through all the creeps
+        for (let name in Game.creeps) {
+            // grab the creep
+            let creep = Game.creeps[name];
+            /** @type {RoomPopulation} */
+            let room_pop = pop[creep.memory.room_name];
+
+            // increment the count of the creep's role
+            room_pop.roles[creep.memory.role]++;
+            // increment the total
+            room_pop.total++;
+
+            // if this creep is a driller
+            if (creep.memory.role == DrillerRole.name) {
+                // set the entry for the driller to the id of the creep
+                for (let source_pop of room_pop.source_populations) {
+                    if (source_pop.source_id == creep.memory.source) {
+                        source_pop.driller = creep.id;
+                    }
+                }
+            }
+            // if this creep is a transporter
+            if (creep.memory.role == TransporterRole.name) {
+                // set the entry for the transporter to the id of the creep
+                for (let source_pop of room_pop.source_populations) {
+                    if (source_pop.source_id == creep.memory.source) {
+                        source_pop.transporter = creep.id;
+                    }
+                }
+            }
+            // if this creep is a mineral driller
+            if (creep.memory.role == MineralDrillerRole.name) {
+                // set the entry for the driller to the id of the creep
+                for (let mineral_pop of room_pop.mineral_populations) {
+                    if (mineral_pop.mineral_id == creep.memory.mineral) {
+                        mineral_pop.mineral_driller = creep.id;
+                    }
+                }
+            }
+            // if this creep is a transporter
+            if (creep.memory.role == MineralTransporterRole.name) {
+                // set the entry for the transporter to the id of the creep
+                for (let mineral_pop of room_pop.mineral_populations) {
+                    if (mineral_pop.mineral_id == creep.memory.mineral) {
+                        mineral_pop.mineral_transporter = creep.id;
+                    }
+                }
+            }
+            if (creep.memory.role == PowerAttackerRole.name) {
+                room_pop.power_squad.power_attacker = creep.id;
+            }
+            if (creep.memory.role == PowerHealerRole.name) {
+                room_pop.power_squad.power_healer = creep.id;
+            }
+            if (creep.memory.role == PowerTransporterRole.name) {
+                room_pop.power_squad.power_transporter = creep.id;
+            }
+        }
+        // store the populations
+        main_memory.populations = pop;
+    },
+    /**
+     * rescan the population occasionally and adds colonies/expansions if stable, and scans new rooms
+     * @param {MainMemory} main_memory - The plans of the room
+     */
+    run: function (main_memory) {
+        // if the population timer has gone off
+        if (main_memory.population_timer > COUNT_POPULATION_TIMER_LENGTH) {
+            hlog("Recounting the population...");
+            // recount the population
+            this.countPopulation();
+            // reset the population timer
+            main_memory.population_timer = 0;
+        } else {
+            // increment the population timer
+            main_memory.population_timer++;
+        }
+
+        // if the new room timer has gone off
+        if (main_memory.new_room_timer > NEW_ROOM_TIMER_LENGTH) {
+            hlog("Checking if we can add a new room...");
+            // default to satisfied
+            let satisfied = true;
+            // current count of colonies
+            let colony_count = 0;
+            // current count of expansions
+            let expansion_count = 0;
+
+            // loop through all the room data
+            for (let name in main_memory.room_data) {
+                // if the room is a colony or expansion and is not satisfied
+                if ((main_memory.room_data[name].type == COLONY || main_memory.room_data[name].type == EXPANSION) && !main_memory.room_data[name].satisfied) {
+                    // set satisfied to false since one of the rooms is not satisfied
+                    satisfied = false;
+                }
+                // if the room is a colony
+                if (main_memory.room_data[name].type == COLONY) {
+                    // increment the colony count
+                    colony_count++;
+                }
+                // if the room is an expansion
+                if (main_memory.room_data[name].type == EXPANSION) {
+                    // increment the expansion count
+                    expansion_count++;
+                }
+            }
+
+            // if all the rooms are satisfied
+            if (satisfied) {
+                // if we have more expansions than colonies
+                if (expansion_count > colony_count) {
+                    // if we can control more rooms
+                    if (colony_count < Game.gcl.level) {
+                        hlog("Attempting to add a colony...");
+                        // spawn a new colony
+                        this.spawnNewColony();
+                    }
+                } else {
+                    hlog("Attempting to add an expansion...");
+                    // spawn a new expansion
+                    this.spawnNewExpansion();
+                }
+            }
+
+            // if we currently don't have a capitol
+            if (main_memory.capitol_room_name == null) {
+                // loop through all the rooms
+                for (let name in main_memory.room_data) {
+                    // if the room is a colony and has a plant
+                    if (main_memory.room_data[name].type == COLONY && main_memory.room_data[name].plans.plant_location != null) {
+                        hlog("Designating a new Capitol...");
+                        // store the new capitol room name
+                        main_memory.capitol_room_name = name;
+                        // break out of the loop
+                        break;
+                    }
+                }
+            }
+
+            // reset the new room timer
+            main_memory.new_room_timer = 0;
+        } else {
+            // increment the new room timer
+            main_memory.new_room_timer++;
+        }
+
+        // scan for new rooms
+        this.scanNewRooms();
+    },
+};

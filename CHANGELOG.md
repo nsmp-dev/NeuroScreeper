@@ -2,6 +2,19 @@
 
 ## [Unreleased]
 
+## [0.3.0] - 2025-04-23
+
+## Added
+- controller-based tasks now attempt to sign the controller using the SIGNATURE constant
+- example Gruntfile for uploading to the server
+
+## Changed
+- bug fixes
+- Roles now have classes to improve type safety
+- RoomRunner now accounts for rooms that are not currently visible
+- Moved the spawn function to the room runner from the Room game object to improve stability
+- moved source files to the `src/` folder
+
 ## [0.2.6] - 2025-04-21
 
 ## Added
@@ -25,11 +38,11 @@
 
 ## Added
 - type hints to the creep memory classes
-- SourcePopulation and MineralPopulation classes that log population of sources and minerals
+- SourcePopulation and MineralPopulation classes that log the population of sources and minerals
 - pixel generating on a full bucket
 - planning for future role additions
 - getTransporterTarget, which grabs a target for a transporter style creep, combining some duplicated code
-- move resource task that handles moving an amount of resource from one structure to another
+- MoveResourceTask that handles moving an amount of resource from one structure to another
 
 ## Changed
 - all functions now use Points instead of individual name_x and name_y style parameters
@@ -69,7 +82,7 @@
 
 ### Changed
 - changed road and rampart arrays to road and rampart grids with booleans
-- construction function on room prototype now uses the new road and rampart grids
+- the construction function on the room prototype now uses the new road and rampart grids
 
 ## [0.2.1] - 2025-04-07
 
@@ -88,7 +101,7 @@
 
 ### Added
 - comments to every line
-- new roles to fill out needed actions
+- new roles to fill out actions that are needed
 - combined capitol/expansion/colony logic
 - added many prototypes to expand room and creep functionality
 
@@ -102,7 +115,7 @@
 
 ### Added
 - added global objects that handle major logic
-- added many roles that handle creep behaviour
+- added many roles that handle creep behavior
 - added population calculations and requesting
 - added spawning of creeps with certain roles
 - added room manager to handle adding rooms

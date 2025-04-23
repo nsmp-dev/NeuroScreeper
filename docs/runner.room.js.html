@@ -33,29 +33,100 @@
 global.RoomRunner = {
     /**
      * recalculate the population needs and save the requested creeps to room_data
-     * @param {Room} room - The Room we are running
-     * @param {RoomData} room_data - The room data for the room.
+     * @param {string} room_name - The Room we are running
+     * @param {CreepMemory} creep_memory - The room data for the room.
+     * @param {Boolean} is_global - The room data for the room.
      */
-    requestCreeps: function (room, room_data) {
+    spawnRole: function(room_name, creep_memory, is_global = false){
+        // default success to false
+        let success = false;
+        // list of spawns that might work
+        let spawns = [];
+        // grab the role object based on the name of the role
+        let role = ROLES[creep_memory.role];
+    
+        // loop through the spawns we own
+        for (let name in Game.spawns) {
+            // if this spawn is in the room,
+            if ((Game.spawns[name].room.name == room_name || is_global) &amp;&amp;
+                // not spawning anything
+                Game.spawns[name].spawning == null &amp;&amp;
+                // and has the minimum energy needed
+                Game.spawns[name].room.energyAvailable > role.energy_cost) {
+                // add the spawn to the list of spawns
+                spawns.push(Game.spawns[name]);
+            }
+        }
+    
+        // if there are any usable spawns
+        if (spawns.length > 0) {
+            // if we are spawning globally
+            if (global) {
+                // sort the spawns by distance to this room, ascending
+                spawns.sort(function (a, b) {
+                    return (Game.map.getRoomLinearDistance(room_name, a.room.name) - Game.map.getRoomLinearDistance(room_name, b.room.name));
+                });
+            }
+            // loop down from the max size to the min size
+            for (let i = role.max_body_multiplier; i > 0; i--) {
+                // do a test spawning
+                let result = spawns[0].spawnCreep(Util.multiArray(role.body, i), "test", {
+                    // provide the given memory
+                    memory: creep_memory,
+                    // flag the spawn as a test run
+                    dryRun: true,
+                });
+    
+                // if the test run was a success
+                if (result == OK) {
+                    // actually spawn the creep
+                    spawns[0].spawnCreep(Util.multiArray(role.body, i), role.emoji + Util.generateId(), {
+                        // provide the given memory
+                        memory: creep_memory,
+                    });
+                    hlog("spawning a " + creep_memory.role);
+                    // mark this as a success
+                    success = true;
+                }
+            }
+        }
+    
+        // return the result
+        return success;
+    },
+    /**
+     * recalculate the population needs and save the requested creeps to room_data
+     * @param {RoomData} room_data - The room data for the room.
+     * @param {Room|null} room - The Room we are running
+     */
+    requestCreeps: function (room_data, room) {
+        let main_memory = Util.getMainMemory();
+
         // grab the population for this room
         /** @type {RoomPopulation} */
-        let pop = Memory.populations[room.name];
+        let pop = main_memory.populations[room_data.room_name];
+
+        if (pop == undefined) {
+            return;
+        }
         // create a list of requested creeps
         room_data.requested_creeps = [];
+        if (room != null) {
 
+        }
         // check if a claimer is needed
-        if (!room.controller.my &amp;&amp; pop[CLAIMER.NAME] &lt; 1) {
+        if ((room == null || !room.controller.my) &amp;&amp; pop.roles[ClaimerRole.name] &lt; 1) {
             // request a claimer
-            room_data.requested_creeps.push(new ClaimerMemory(room.name));
+            room_data.requested_creeps.push(new ClaimerMemory(room_data.room_name));
         }
 
-        // loop through the sources
-        for (let source_pop of pop.sources) {
+        // loop through the source_plans
+        for (let source_pop of pop.source_populations) {
             // check if a driller is needed for this source
             if (source_pop.driller == null) {
                 // request a driller
                 room_data.requested_creeps.push(new DrillerMemory(
-                    room.name,
+                    room_data.room_name,
                     source_pop.source_id,
                     source_pop.container_location
                 ));
@@ -64,7 +135,7 @@ global.RoomRunner = {
             if (source_pop.transporter == null) {
                 // request a transporter
                 room_data.requested_creeps.push(new TransporterMemory(
-                    room.name,
+                    room_data.room_name,
                     source_pop.source_id,
                     source_pop.container_location
                 ));
@@ -72,98 +143,125 @@ global.RoomRunner = {
         }
 
         // check if an upgrader is needed
-        if (room_data.type == COLONY &amp;&amp; pop[UPGRADER.NAME] &lt; 1) {
+        if (room_data.type == COLONY &amp;&amp; pop.roles[UpgraderRole.name] &lt; 1) {
             // request an upgrader
-            room_data.requested_creeps.push(new UpgraderMemory(room.name));
+            room_data.requested_creeps.push(new UpgraderMemory(room_data.room_name));
         }
 
         // count the construction sites
-        let site_count = room.find(FIND_MY_CONSTRUCTION_SITES).length;
+        let site_count = 0;
+        
+        if (room != null){
+            site_count = room.find(FIND_MY_CONSTRUCTION_SITES).length;
+        }
         // check if a builder is needed
-        if (site_count > 0 &amp;&amp; pop[BUILDER.NAME] &lt; 2) {
+        if (site_count > 0 &amp;&amp; pop.roles[BuilderRole.name] &lt; 2) {
             // request a builder
-            room_data.requested_creeps.push(new BuilderMemory(room.name));
+            room_data.requested_creeps.push(new BuilderMemory(room_data.room_name));
         }
 
         // find all the structures
-        let structure_count = room.find(FIND_STRUCTURES, {
-            // that are damaged
-            filter: structure => structure.hits &lt; structure.hitsMax,
-        }).length;
+        let structure_count = 0;
+        if (room != null) {
+            structure_count = room.find(FIND_STRUCTURES, {
+                // that are damaged
+                filter: structure => structure.hits &lt; structure.hitsMax,
+            }).length;
+        }
+        
         // check if a repairer is needed
-        if (structure_count > 0 &amp;&amp; pop[REPAIRER.NAME] &lt; 1) {
+        if (structure_count > 0 &amp;&amp; pop.roles[RepairerRole.name] &lt; 1) {
             // request a repairer
-            room_data.requested_creeps.push(new RepairerMemory(room.name));
+            room_data.requested_creeps.push(new RepairerMemory(room_data.room_name));
         }
 
         // check if a queen is needed
-        if (room.storage != undefined &amp;&amp; pop[QUEEN.NAME] &lt; 1) {
+        if (room != null &amp;&amp; room.storage != undefined &amp;&amp; pop.roles[QueenRole.name] &lt; 1) {
             // request a queen
-            room_data.requested_creeps.push(new QueenMemory(room.name));
+            room_data.requested_creeps.push(new QueenMemory(room_data.room_name));
         }
 
         // loop through the minerals
-        for (let mineral_pop of pop.minerals) {
-            // check if a driller is needed for this mineral
-            if (mineral_pop.mineral_driller == null) {
-                // request a driller
-                room_data.requested_creeps.push(new MineralDrillerMemory(
-                    room.name,
-                    mineral_pop.mineral_id,
-                    mineral_pop.container_location
-                ));
+        if (room != null) {
+            for (let mineral_pop of pop.mineral_populations) {
+                if (!room.checkFor(STRUCTURE_EXTRACTOR, mineral_pop.mineral_location.x, mineral_pop.mineral_location.y)) {
+                    break;
+                }
+                // check if a driller is needed for this mineral
+                if (mineral_pop.mineral_driller == null) {
+                    // request a driller
+                    room_data.requested_creeps.push(new MineralDrillerMemory(
+                        room.name,
+                        mineral_pop.mineral_id,
+                        mineral_pop.container_location
+                    ));
+                }
+                // check if a transporter is needed for this mineral
+                if (mineral_pop.mineral_transporter == null) {
+                    // request a transporter
+                    room_data.requested_creeps.push(new MineralTransporterMemory(
+                        room.name,
+                        mineral_pop.mineral_id,
+                        mineral_pop.container_location,
+                        mineral_pop.resource_type,
+                    ));
+                }
             }
-            // check if a transporter is needed for this mineral
-            if (mineral_pop.mineral_transporter == null) {
-                // request a transporter
-                room_data.requested_creeps.push(new MineralTransporterMemory(
-                    room.name,
-                    mineral_pop.mineral_id,
-                    mineral_pop.container_location,
-                    mineral_pop.resource_type,
-                ));
+            
+            // find all the structures
+            let observer_count = room.find(FIND_STRUCTURES, {
+                // that are observers
+                filter: structure => structure.structureType == STRUCTURE_OBSERVER,
+            }).length;
+            // check if a scout is needed
+            if (room_data.type == COLONY &amp;&amp; observer_count == 0 &amp;&amp; pop.roles[ScoutRole.name] &lt; 1) {
+                // request a scout
+                room_data.requested_creeps.push(new ScoutMemory(room_data.room_name));
             }
         }
-
-        // find all the structures
-        let observer_count = room.find(FIND_STRUCTURES, {
-            // that are observers
-            filter: structure => structure.structureType == STRUCTURE_OBSERVER,
-        }).length;
-        // check if a scout is needed
-        if (room_data.type == COLONY &amp;&amp; observer_count == 0 &amp;&amp; pop[SCOUT.NAME] &lt; 1) {
-            // request a scout
-            room_data.requested_creeps.push(new ScoutMemory(room.name));
-        }
+        
 
         // check if an attacker is needed
-        if (pop[ATTACKER.NAME] &lt; 1) {
+        if (pop.roles[AttackerRole.name] &lt; 1) {
             // request an attacker
-            room_data.requested_creeps.push(new AttackerMemory(room.name));
+            room_data.requested_creeps.push(new AttackerMemory(room_data.room_name));
         }
 
         // check if a healer is needed
-        if (pop[HEALER.NAME] &lt; 1) {
+        if (pop.roles[HealerRole.name] &lt; 1) {
             // request a healer
-            room_data.requested_creeps.push(new HealerMemory(room.name));
+            room_data.requested_creeps.push(new HealerMemory(room_data.room_name));
+        }
+
+        if (pop.power_squad.power_attacker == null) {
+            room_data.requested_creeps.push(new PowerAttackerMemory(room_data.room_name));
+        }
+        if (pop.power_squad.power_healer == null) {
+            room_data.requested_creeps.push(new PowerHealerMemory(room_data.room_name));
+        }
+        if (pop.power_squad.power_transporter == null) {
+            room_data.requested_creeps.push(new PowerTransporterMemory(room_data.room_name));
+        }
+
+        if (pop.roles[CommodityCollectorRole.name] &lt; 1) {
+            room_data.requested_creeps.push(new CommodityCollectorMemory(room_data.room_name));
         }
     },
     /**
      * attempt to spawn any creeps that are requested
-     * @param {Room} room - The Room we are running
      * @param {RoomData} room_data - The room data for the room.
      */
-    spawnRequestedCreeps: function (room, room_data) {
+    spawnRequestedCreeps: function (room_data) {
         // declare a success variable
         let success;
 
         // if this room is a colony
         if (room_data.type == COLONY) {
             // attempt to spawn a creep locally
-            success = room.spawnRole(room_data.requested_creeps[0]);
+            success = this.spawnRole(room_data.room_name, room_data.requested_creeps[0]);
         }else{
             // attempt to spawn a creep globally
-            success = room.spawnRole(room_data.requested_creeps[0], true);
+            success = this.spawnRole(room_data.room_name, room_data.requested_creeps[0], true);
         }
         // check if we successfully spawned the creep
         if (success) {
@@ -173,16 +271,16 @@ global.RoomRunner = {
     },
     /**
      * calculate to see if the room is satisfied
-     * @param {Room} room - The Room we are running
      * @param {RoomData} room_data - The room data for the room.
+     * @param {Room|null} room - The Room we are running
      */
-    calculateSatisfaction: function (room, room_data) {
+    calculateSatisfaction: function (room_data, room) {
         // if no creeps are needed
         if (room_data.requested_creeps.length == 0) {
-            // push true to the satisfaction log to show we were satisfied for this tick
+            // push true to the satisfaction log to show we were satisfied on this tick
             room_data.satisfaction_log.push(true);
         } else {
-            // push false to the satisfaction log to show we were unsatisfied for this tick
+            // push false to the satisfaction log to show we were unsatisfied on this tick
             room_data.satisfaction_log.push(false);
         }
 
@@ -195,27 +293,30 @@ global.RoomRunner = {
         // calculate the average satisfaction and see if it meets the threshold of satisfaction
         room_data.satisfied = (Util.getSatisfiedRatio(room_data) > SATISFACTION_THRESHOLD);
 
-        /* TODO: uncomment this and setup detection for room death
-        // check if we have lost control of the controller
-        if (!room.controller.my) {
-            // mark ths room as dead
-            room_data.dead = true;
+        if (room_data.has_been_owned) {
+            if (room == null || !room.controller.my) {
+                room_data.dead = true;
+            }
+        }else{
+            if (room != null &amp;&amp; room.controller.my) {
+                room_data.has_been_owned = true;
+            }
         }
-         */
     },
     /**
      * run the colony, kicking off sub-functions for specific activities
-     * @param {Room} room - The Room we are running
      * @param {RoomData} room_data - The room data for the room.
+     * @param {Room|null} room - The Room we are running
      */
-    run: function (room, room_data) {
-        hlog("Running " + room_data.type + " room: '" + room.name + "'...");
+    run: function (room_data, room = null) {
+        let main_memory = Util.getMainMemory();
+        hlog("Running " + room_data.type + " room: '" + room_data.room_name + "'...");
         // if the population timer has gone off
         if (room_data.population_timer > REQUEST_POPULATION_TIMER_LENGTH) {
             hlog("Requesting creeps...");
             // request a new set of creeps
             Timer.start("requesting_creeps");
-            this.requestCreeps(room, room_data);
+            this.requestCreeps(room_data, room);
             Timer.stop("requesting_creeps");
             // reset the population timer
             room_data.population_timer = 0;
@@ -225,17 +326,17 @@ global.RoomRunner = {
         }
 
         // refresh the satisfaction calculation
-        this.calculateSatisfaction(room, room_data);
+        this.calculateSatisfaction(room_data, room);
 
         // if there are any creeps still requested
         if (room_data.requested_creeps.length > 0) {
             hlog("Trying to spawn creeps...");
             // attempt to spawn another creep
-            this.spawnRequestedCreeps(room, room_data);
+            this.spawnRequestedCreeps(room_data);
         }
 
         // check if the construction timer has gone off
-        if (room_data.construction_timer > CONSTRUCTION_TIMER_LENGTH) {
+        if (room_data.construction_timer > CONSTRUCTION_TIMER_LENGTH &amp;&amp; room != null) {
             hlog("Building construction sites...");
             Timer.start("constructing_plans");
             // try to create new construction sites
@@ -249,11 +350,18 @@ global.RoomRunner = {
         }
 
         // if the room has a plant
-        if (room_data.plans.plant_location != null) {
+        if (room != null &amp;&amp; room_data.plans.plant_location != null &amp;&amp; room_data.room_name == main_memory.capitol_room_name) {
             // run the plant
             Timer.start("running_plant");
-            PlantRunner.run(room, room_data.plant_data);
+            PlantRunner.run(room_data.plant_data, room);
             Timer.stop("running_plant");
+        }
+
+        if (room_data.power_squad_timer > POWER_SQUAD_TIMER) {
+            PowerSquadRunner.run(room_data.power_squad);
+            room_data.power_squad_timer = 0;
+        } else {
+            room_data.power_squad_timer++;
         }
     },
 };</code></pre>
@@ -266,13 +374,13 @@ global.RoomRunner = {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-PlantRunner.html">PlantRunner</a></li><li><a href="module-PowerManager.html">PowerManager</a></li><li><a href="module-RoomPlansFactory.html">RoomPlansFactory</a></li><li><a href="module-RoomRunner.html">RoomRunner</a></li><li><a href="module-TaskRunner.html">TaskRunner</a></li><li><a href="module-Timer.html">Timer</a></li><li><a href="module-Util.html">Util</a></li><li><a href="module-Visualizer.html">Visualizer</a></li></ul><h3>Classes</h3><ul><li><a href="AttackTask.html">AttackTask</a></li><li><a href="AttackerMemory.html">AttackerMemory</a></li><li><a href="BuildTask.html">BuildTask</a></li><li><a href="BuilderMemory.html">BuilderMemory</a></li><li><a href="ClaimTask.html">ClaimTask</a></li><li><a href="ClaimerMemory.html">ClaimerMemory</a></li><li><a href="ConstructionPlan.html">ConstructionPlan</a></li><li><a href="CreepMemory.html">CreepMemory</a></li><li><a href="DepositTask.html">DepositTask</a></li><li><a href="DrillTask.html">DrillTask</a></li><li><a href="DrillerMemory.html">DrillerMemory</a></li><li><a href="GatherTask.html">GatherTask</a></li><li><a href="HealTask.html">HealTask</a></li><li><a href="HealerMemory.html">HealerMemory</a></li><li><a href="IdleTask.html">IdleTask</a></li><li><a href="MineralDrillerMemory.html">MineralDrillerMemory</a></li><li><a href="MineralPlan.html">MineralPlan</a></li><li><a href="MineralPopulation.html">MineralPopulation</a></li><li><a href="MineralTransporterMemory.html">MineralTransporterMemory</a></li><li><a href="MoveRoomTask.html">MoveRoomTask</a></li><li><a href="PlantData.html">PlantData</a></li><li><a href="Point.html">Point</a></li><li><a href="PowerSquad.html">PowerSquad</a></li><li><a href="Production.html">Production</a></li><li><a href="QueenMemory.html">QueenMemory</a></li><li><a href="Reaction.html">Reaction</a></li><li><a href="RenewOperatorTask.html">RenewOperatorTask</a></li><li><a href="RepairTask.html">RepairTask</a></li><li><a href="RepairerMemory.html">RepairerMemory</a></li><li><a href="ReserveTask.html">ReserveTask</a></li><li><a href="RoomData.html">RoomData</a></li><li><a href="RoomPlans.html">RoomPlans</a></li><li><a href="RoomPopulation.html">RoomPopulation</a></li><li><a href="ScoutMemory.html">ScoutMemory</a></li><li><a href="SourcePlan.html">SourcePlan</a></li><li><a href="SourcePopulation.html">SourcePopulation</a></li><li><a href="Task.html">Task</a></li><li><a href="TransporterMemory.html">TransporterMemory</a></li><li><a href="UpgradeTask.html">UpgradeTask</a></li><li><a href="UpgraderMemory.html">UpgraderMemory</a></li></ul><h3>Global</h3><ul><li><a href="global.html#ATTACKER">ATTACKER</a></li><li><a href="global.html#BUILD">BUILD</a></li><li><a href="global.html#BUILDER">BUILDER</a></li><li><a href="global.html#CLAIMER">CLAIMER</a></li><li><a href="global.html#COLONY">COLONY</a></li><li><a href="global.html#CONSTRUCTION_TIMER_LENGTH">CONSTRUCTION_TIMER_LENGTH</a></li><li><a href="global.html#COUNT_POPULATION_TIMER_LENGTH">COUNT_POPULATION_TIMER_LENGTH</a></li><li><a href="global.html#DEBUG_MODE">DEBUG_MODE</a></li><li><a href="global.html#DRILLER">DRILLER</a></li><li><a href="global.html#EXPANSION">EXPANSION</a></li><li><a href="global.html#HEALER">HEALER</a></li><li><a href="global.html#HIGHWAY">HIGHWAY</a></li><li><a href="global.html#KEEPER_LAIR">KEEPER_LAIR</a></li><li><a href="global.html#LOG_SIZE">LOG_SIZE</a></li><li><a href="global.html#MINERAL_DRILLER">MINERAL_DRILLER</a></li><li><a href="global.html#MINERAL_TRANSPORTER">MINERAL_TRANSPORTER</a></li><li><a href="global.html#NEW_ROOM_TIMER_LENGTH">NEW_ROOM_TIMER_LENGTH</a></li><li><a href="global.html#PLANT_STRUCTURES_TIMER_LENGTH">PLANT_STRUCTURES_TIMER_LENGTH</a></li><li><a href="global.html#PRODUCTION_TIMER_LENGTH">PRODUCTION_TIMER_LENGTH</a></li><li><a href="global.html#QUEEN">QUEEN</a></li><li><a href="global.html#REACTION_TIMER_LENGTH">REACTION_TIMER_LENGTH</a></li><li><a href="global.html#REPAIRER">REPAIRER</a></li><li><a href="global.html#REQUEST_POPULATION_TIMER_LENGTH">REQUEST_POPULATION_TIMER_LENGTH</a></li><li><a href="global.html#ROLES">ROLES</a></li><li><a href="global.html#ROOM_CONSTRUCTION_SITE_LIMIT">ROOM_CONSTRUCTION_SITE_LIMIT</a></li><li><a href="global.html#RoomManager">RoomManager</a></li><li><a href="global.html#SATISFACTION_LOG_SIZE">SATISFACTION_LOG_SIZE</a></li><li><a href="global.html#SATISFACTION_THRESHOLD">SATISFACTION_THRESHOLD</a></li><li><a href="global.html#SCOUT">SCOUT</a></li><li><a href="global.html#STATES">STATES</a></li><li><a href="global.html#TASK_TYPES">TASK_TYPES</a></li><li><a href="global.html#TERMINAL_TIMER_LENGTH">TERMINAL_TIMER_LENGTH</a></li><li><a href="global.html#TRANSPORTER">TRANSPORTER</a></li><li><a href="global.html#UPGRADER">UPGRADER</a></li><li><a href="global.html#USERNAME">USERNAME</a></li><li><a href="global.html#hlog">hlog</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-PlantRunner.html">PlantRunner</a></li><li><a href="module-PowerManager.html">PowerManager</a></li><li><a href="module-PowerSquadRunner.html">PowerSquadRunner</a></li><li><a href="module-RoomPlansFactory.html">RoomPlansFactory</a></li><li><a href="module-RoomRunner.html">RoomRunner</a></li><li><a href="module-TaskRunner.html">TaskRunner</a></li><li><a href="module-Timer.html">Timer</a></li><li><a href="module-Util.html">Util</a></li><li><a href="module-Visualizer.html">Visualizer</a></li></ul><h3>Classes</h3><ul><li><a href="AttackTask.html">AttackTask</a></li><li><a href="AttackerMemory.html">AttackerMemory</a></li><li><a href="BuildTask.html">BuildTask</a></li><li><a href="BuilderMemory.html">BuilderMemory</a></li><li><a href="ClaimTask.html">ClaimTask</a></li><li><a href="ClaimerMemory.html">ClaimerMemory</a></li><li><a href="CommodityCollectorMemory.html">CommodityCollectorMemory</a></li><li><a href="ConstructionPlan.html">ConstructionPlan</a></li><li><a href="CreepMemory.html">CreepMemory</a></li><li><a href="DepositTask.html">DepositTask</a></li><li><a href="DrillTask.html">DrillTask</a></li><li><a href="DrillerMemory.html">DrillerMemory</a></li><li><a href="GatherTask.html">GatherTask</a></li><li><a href="HarvestTask.html">HarvestTask</a></li><li><a href="HealTask.html">HealTask</a></li><li><a href="HealerMemory.html">HealerMemory</a></li><li><a href="IdleTask.html">IdleTask</a></li><li><a href="MainMemory.html">MainMemory</a></li><li><a href="MineralDrillerMemory.html">MineralDrillerMemory</a></li><li><a href="MineralPlan.html">MineralPlan</a></li><li><a href="MineralPopulation.html">MineralPopulation</a></li><li><a href="MineralTransporterMemory.html">MineralTransporterMemory</a></li><li><a href="MoveResourceTask.html">MoveResourceTask</a></li><li><a href="MoveRoomTask.html">MoveRoomTask</a></li><li><a href="ObserverLog.html">ObserverLog</a></li><li><a href="PlantData.html">PlantData</a></li><li><a href="Point.html">Point</a></li><li><a href="PowerAttackerMemory.html">PowerAttackerMemory</a></li><li><a href="PowerHealerMemory.html">PowerHealerMemory</a></li><li><a href="PowerSquad.html">PowerSquad</a></li><li><a href="PowerSquadPopulation.html">PowerSquadPopulation</a></li><li><a href="PowerTransporterMemory.html">PowerTransporterMemory</a></li><li><a href="Production.html">Production</a></li><li><a href="QueenMemory.html">QueenMemory</a></li><li><a href="Reaction.html">Reaction</a></li><li><a href="RenewOperatorTask.html">RenewOperatorTask</a></li><li><a href="RepairTask.html">RepairTask</a></li><li><a href="RepairerMemory.html">RepairerMemory</a></li><li><a href="ReserveTask.html">ReserveTask</a></li><li><a href="Role.html">Role</a></li><li><a href="RoomData.html">RoomData</a></li><li><a href="RoomPlans.html">RoomPlans</a></li><li><a href="RoomPopulation.html">RoomPopulation</a></li><li><a href="ScoutMemory.html">ScoutMemory</a></li><li><a href="SourcePlan.html">SourcePlan</a></li><li><a href="SourcePopulation.html">SourcePopulation</a></li><li><a href="Task.html">Task</a></li><li><a href="TransporterMemory.html">TransporterMemory</a></li><li><a href="UpgradeTask.html">UpgradeTask</a></li><li><a href="UpgraderMemory.html">UpgraderMemory</a></li></ul><h3>Global</h3><ul><li><a href="global.html#BUILD">BUILD</a></li><li><a href="global.html#COLONY">COLONY</a></li><li><a href="global.html#CONSTRUCTION_TIMER_LENGTH">CONSTRUCTION_TIMER_LENGTH</a></li><li><a href="global.html#COUNT_POPULATION_TIMER_LENGTH">COUNT_POPULATION_TIMER_LENGTH</a></li><li><a href="global.html#DEBUG_MODE">DEBUG_MODE</a></li><li><a href="global.html#EXPANSION">EXPANSION</a></li><li><a href="global.html#FACTORY_TIMER_LENGTH">FACTORY_TIMER_LENGTH</a></li><li><a href="global.html#FINAL_PRODUCTS">FINAL_PRODUCTS</a></li><li><a href="global.html#HIGHWAY">HIGHWAY</a></li><li><a href="global.html#INGREDIENTS">INGREDIENTS</a></li><li><a href="global.html#KEEPER_LAIR">KEEPER_LAIR</a></li><li><a href="global.html#LABS_TIMER_LENGTH">LABS_TIMER_LENGTH</a></li><li><a href="global.html#LOG_SIZE">LOG_SIZE</a></li><li><a href="global.html#NEW_ROOM_TIMER_LENGTH">NEW_ROOM_TIMER_LENGTH</a></li><li><a href="global.html#PLANT_STRUCTURES_TIMER_LENGTH">PLANT_STRUCTURES_TIMER_LENGTH</a></li><li><a href="global.html#POWER_SQUAD_TIMER">POWER_SQUAD_TIMER</a></li><li><a href="global.html#REQUEST_POPULATION_TIMER_LENGTH">REQUEST_POPULATION_TIMER_LENGTH</a></li><li><a href="global.html#ROLES">ROLES</a></li><li><a href="global.html#ROOM_CONSTRUCTION_SITE_LIMIT">ROOM_CONSTRUCTION_SITE_LIMIT</a></li><li><a href="global.html#RoomManager">RoomManager</a></li><li><a href="global.html#SATISFACTION_LOG_SIZE">SATISFACTION_LOG_SIZE</a></li><li><a href="global.html#SATISFACTION_THRESHOLD">SATISFACTION_THRESHOLD</a></li><li><a href="global.html#SIGNATURE">SIGNATURE</a></li><li><a href="global.html#STATES">STATES</a></li><li><a href="global.html#TASK_TYPES">TASK_TYPES</a></li><li><a href="global.html#TERMINAL_ENERGY_CAP">TERMINAL_ENERGY_CAP</a></li><li><a href="global.html#TERMINAL_TIMER_LENGTH">TERMINAL_TIMER_LENGTH</a></li><li><a href="global.html#TOWER_MINIMUM_ENERGY">TOWER_MINIMUM_ENERGY</a></li><li><a href="global.html#USERNAME">USERNAME</a></li><li><a href="global.html#hlog">hlog</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Tue Apr 15 2025 08:51:00 GMT-0500 (Central Daylight Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Wed Apr 23 2025 13:48:34 GMT-0500 (Central Daylight Time)
 </footer>
 
 <script> prettyPrint(); </script>
