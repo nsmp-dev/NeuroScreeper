@@ -301,8 +301,13 @@ global.TaskRunner = {
             // move to the room for the task
             creep.moveTo(new RoomPosition(25, 25, task.room_name));
         }else{
-            // clear the task
-            creep.memory.task = null;
+            if (task.timer == 5) {
+                // clear the task
+                creep.memory.task = null;
+            }else{
+                task.timer++;
+                creep.moveTo(new RoomPosition(25, 25, task.room_name));
+            }
         }
     },
     /**

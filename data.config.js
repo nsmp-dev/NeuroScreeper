@@ -4,6 +4,11 @@
  */
 global.USERNAME = "uhhyea";
 /**
+ * signature for signing controllers
+ * @constant {string} SIGNATURE
+ */
+global.SIGNATURE = "hello";
+/**
  * debug mode for logger
  * @constant {Boolean} DEBUG_MODE
  */
@@ -12,7 +17,7 @@ global.DEBUG_MODE = true;
  * change the build number to trigger a memory wipe
  * @constant {number} BUILD
  */
-global.BUILD = 4;
+global.BUILD = 7;
 /**
  * how many previous ticks to maintain for average cpu time
  * @constant {number} LOG_SIZE

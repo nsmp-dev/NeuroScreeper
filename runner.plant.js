@@ -49,7 +49,7 @@ global.PlantRunner = {
             }
         }
 
-        if (plant_data.labs_state == STATES.IDLE) {
+        if (plant_data.labs_state == STATES.IDLE && storage != undefined) {
             // loop through all the reagents in all the reactions in the game
             for (let reagent_1 in REACTIONS) {
                 // loop through all the other reagents for the current reagent
@@ -152,7 +152,7 @@ global.PlantRunner = {
         }
 
         // if there is no current production
-        if (plant_data.factory_state == STATES.IDLE) {
+        if (plant_data.factory_state == STATES.IDLE && storage != undefined) {
             // grab the store of the storage
             let store = storage.store;
             // loop through all the producible commodities

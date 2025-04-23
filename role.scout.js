@@ -37,6 +37,15 @@ class ScoutMemory extends CreepMemory{
          * @type {string[]}
          */
         this.room_log = [];
+        
+        // find the adjacent rooms
+        let adjacent_rooms = Game.rooms[room_name].getAdjacentRooms();
+
+        // loop through the adjacent rooms
+        for (let room_name of adjacent_rooms) {
+            // if the room name is not already in the old
+            this.room_queue.push(room_name);
+        }
     }
 }
 global.ScoutMemory = ScoutMemory;
@@ -47,25 +56,31 @@ global.ScoutMemory = ScoutMemory;
 Creep.prototype.runScout = function () {
     // if we don't have a task currently assigned
     if (this.memory.task == null) {
+        
         // shift the queue
-        if (this.memory.room_queue.length > 0) {
+        if (this.memory.room_queue[0] == this.room.name) {
             let room_name = this.memory.room_queue.shift();
             // add the room to the log to prevent revisits
             this.memory.room_log.push(room_name);
-        }
-        
-        // find the adjacent rooms
-        let adjacent_rooms = this.room.getAdjacentRooms();
-
-        // loop through the adjacent rooms
-        for (let room_name of adjacent_rooms) {
-            // if the room name is not already in the old
-            if (!this.memory.room_log.includes(room_name) && !this.memory.room_queue.includes(room_name)) {
-                // add the room to the queue
-                this.memory.room_queue.push(room_name);
+            
+            if (this.memory.room_queue.length == 0) {
+                this.memory.room_queue = this.memory.room_log.slice();
+                this.memory.room_log = [];
+            }
+            
+            // find the adjacent rooms
+            let adjacent_rooms = this.room.getAdjacentRooms();
+    
+            // loop through the adjacent rooms
+            for (let room_name of adjacent_rooms) {
+                // if the room name is not already in the old
+                if (!this.memory.room_log.includes(room_name) && !this.memory.room_queue.includes(room_name)) {
+                    // add the room to the queue
+                    this.memory.room_queue.push(room_name);
+                }
             }
         }
-
+        
         // if there are still rooms in the queue
         if (this.memory.room_queue.length > 0) {
             // assign a new task

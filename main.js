@@ -19,6 +19,14 @@ module.exports.loop = function () {
         hlog("initializing MainMemory...");
         // initialize the MainMemory object
         Memory.main_memory = new MainMemory();
+        
+        main_memory = Util.getMainMemory();
+        // grab one of the names of the spawns
+        let spawn_name = Object.keys(Game.spawns)[0];
+        // grab the room that spawn is in
+        let room = Game.spawns[spawn_name].room;
+        // initialize the room data entry
+        main_memory.room_data[room.name] = new RoomData(room, Game.spawns[spawn_name]);
     }
 
     // start the main timer
@@ -64,7 +72,10 @@ module.exports.loop = function () {
             // run the room
             RoomRunner.run(room, room_data);
             // render the visuals for the room
-            Visualizer.render(room);
+            if (room != undefined) {
+                Visualizer.render(room);
+            }
+            
         }
 
         // if the room died

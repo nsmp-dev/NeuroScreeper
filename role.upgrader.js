@@ -35,6 +35,7 @@ global.UpgraderMemory = UpgraderMemory;
  * upgrader that upgrades the room's controller
  */
 Creep.prototype.runUpgrader = function () {
+    // TODO: add in signature usage
     // if we don't have a task currently assigned
     if (this.memory.task == null) {
         // assign a new task

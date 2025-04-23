@@ -3,6 +3,63 @@
  * @module RoomRunner
  */
 global.RoomRunner = {
+    spawnRole: function(room_name, creep_memory, is_global = false){
+        // default success to false
+        let success = false;
+        // list of spawns that might work
+        let spawns = [];
+        // grab the role object based on the name of the role
+        let role = ROLES[creep_memory.role];
+    
+        // loop through the spawns we own
+        for (let name in Game.spawns) {
+            // if this spawn is in the room,
+            if ((Game.spawns[name].room.name == room_name || is_global) &&
+                // not spawning anything
+                Game.spawns[name].spawning == null &&
+                // and has the minimum energy needed
+                Game.spawns[name].room.energyAvailable > role.ENERGY_COST) {
+                // add the spawn to the list of spawns
+                spawns.push(Game.spawns[name]);
+            }
+        }
+    
+        // if there are any usable spawns
+        if (spawns.length > 0) {
+            // if we are spawning globally
+            if (global) {
+                // sort the spawns by distance to this room, ascending
+                spawns.sort(function (a, b) {
+                    return (Game.map.getRoomLinearDistance(room_name, a.room.name) - Game.map.getRoomLinearDistance(room_name, b.room.name));
+                });
+            }
+            // loop down from the max size to the min size
+            for (let i = role.MAX_BODY_MULTIPLIER; i > 0; i--) {
+                // do a test spawning
+                let result = spawns[0].spawnCreep(Util.multiArray(role.BODY, i), "test", {
+                    // provide the given memory
+                    memory: creep_memory,
+                    // flag the spawn as a test run
+                    dryRun: true,
+                });
+    
+                // if the test run was a success
+                if (result == OK) {
+                    // actually spawn the creep
+                    spawns[0].spawnCreep(Util.multiArray(role.BODY, i), role.EMOJI + Util.generateId(), {
+                        // provide the given memory
+                        memory: creep_memory,
+                    });
+                    hlog("spawning a " + creep_memory.role);
+                    // mark this as a success
+                    success = true;
+                }
+            }
+        }
+    
+        // return the result
+        return success;
+    },
     /**
      * recalculate the population needs and save the requested creeps to room_data
      * @param {Room} room - The Room we are running
@@ -13,13 +70,17 @@ global.RoomRunner = {
         // grab the population for this room
         /** @type {RoomPopulation} */
         let pop = main_memory.populations[room.name];
+        
+        if (pop == undefined) {
+            return;
+        }
         // create a list of requested creeps
         room_data.requested_creeps = [];
 
         // check if a claimer is needed
-        if (!room.controller.my && pop[CLAIMER.NAME] < 1) {
+        if (!room.controller.my && pop.roles[CLAIMER.NAME] < 1) {
             // request a claimer
-            room_data.requested_creeps.push(new ClaimerMemory(room.name));
+            room_data.requested_creeps.push(new ClaimerMemory(room_data.room_name));
         }
 
         // loop through the source_plans
@@ -28,7 +89,7 @@ global.RoomRunner = {
             if (source_pop.driller == null) {
                 // request a driller
                 room_data.requested_creeps.push(new DrillerMemory(
-                    room.name,
+                    room_data.room_name,
                     source_pop.source_id,
                     source_pop.container_location
                 ));
@@ -37,7 +98,7 @@ global.RoomRunner = {
             if (source_pop.transporter == null) {
                 // request a transporter
                 room_data.requested_creeps.push(new TransporterMemory(
-                    room.name,
+                    room_data.room_name,
                     source_pop.source_id,
                     source_pop.container_location
                 ));
@@ -45,94 +106,108 @@ global.RoomRunner = {
         }
 
         // check if an upgrader is needed
-        if (room_data.type == COLONY && pop[UPGRADER.NAME] < 1) {
+        if (room_data.type == COLONY && pop.roles[UPGRADER.NAME] < 1) {
             // request an upgrader
-            room_data.requested_creeps.push(new UpgraderMemory(room.name));
+            room_data.requested_creeps.push(new UpgraderMemory(room_data.room_name));
         }
 
         // count the construction sites
-        let site_count = room.find(FIND_MY_CONSTRUCTION_SITES).length;
+        let site_count = 0;
+        
+        if (room != undefined){
+            site_count = room.find(FIND_MY_CONSTRUCTION_SITES).length;
+        }
         // check if a builder is needed
-        if (site_count > 0 && pop[BUILDER.NAME] < 2) {
+        if (site_count > 0 && pop.roles[BUILDER.NAME] < 2) {
             // request a builder
-            room_data.requested_creeps.push(new BuilderMemory(room.name));
+            room_data.requested_creeps.push(new BuilderMemory(room_data.room_name));
         }
 
         // find all the structures
-        let structure_count = room.find(FIND_STRUCTURES, {
-            // that are damaged
-            filter: structure => structure.hits < structure.hitsMax,
-        }).length;
+        let structure_count = 0;
+        if (room != undefined) {
+            structure_count = room.find(FIND_STRUCTURES, {
+                // that are damaged
+                filter: structure => structure.hits < structure.hitsMax,
+            }).length;
+        }
+        
         // check if a repairer is needed
-        if (structure_count > 0 && pop[REPAIRER.NAME] < 1) {
+        if (structure_count > 0 && pop.roles[REPAIRER.NAME] < 1) {
             // request a repairer
-            room_data.requested_creeps.push(new RepairerMemory(room.name));
+            room_data.requested_creeps.push(new RepairerMemory(room_data.room_name));
         }
 
         // check if a queen is needed
-        if (room.storage != undefined && pop[QUEEN.NAME] < 1) {
+        if (room != undefined && room.storage != undefined && pop.roles[QUEEN.NAME] < 1) {
             // request a queen
-            room_data.requested_creeps.push(new QueenMemory(room.name));
+            room_data.requested_creeps.push(new QueenMemory(room_data.room_name));
         }
 
         // loop through the minerals
-        for (let mineral_pop of pop.mineral_populations) {
-            // check if a driller is needed for this mineral
-            if (mineral_pop.mineral_driller == null) {
-                // request a driller
-                room_data.requested_creeps.push(new MineralDrillerMemory(
-                    room.name,
-                    mineral_pop.mineral_id,
-                    mineral_pop.container_location
-                ));
+        if (room != undefined) {
+            for (let mineral_pop of pop.mineral_populations) {
+                if (!room.checkFor(mineral_pop.mineral_location.x, mineral_pop.mineral_location.y, STRUCTURE_EXTRACTOR)) {
+                    break;
+                }
+                // check if a driller is needed for this mineral
+                if (mineral_pop.mineral_driller == null) {
+                    // request a driller
+                    room_data.requested_creeps.push(new MineralDrillerMemory(
+                        room.name,
+                        mineral_pop.mineral_id,
+                        mineral_pop.container_location
+                    ));
+                }
+                // check if a transporter is needed for this mineral
+                if (mineral_pop.mineral_transporter == null) {
+                    // request a transporter
+                    room_data.requested_creeps.push(new MineralTransporterMemory(
+                        room.name,
+                        mineral_pop.mineral_id,
+                        mineral_pop.container_location,
+                        mineral_pop.resource_type,
+                    ));
+                }
             }
-            // check if a transporter is needed for this mineral
-            if (mineral_pop.mineral_transporter == null) {
-                // request a transporter
-                room_data.requested_creeps.push(new MineralTransporterMemory(
-                    room.name,
-                    mineral_pop.mineral_id,
-                    mineral_pop.container_location,
-                    mineral_pop.resource_type,
-                ));
+            
+            // find all the structures
+            let observer_count = room.find(FIND_STRUCTURES, {
+                // that are observers
+                filter: structure => structure.structureType == STRUCTURE_OBSERVER,
+            }).length;
+            // check if a scout is needed
+            if (room_data.type == COLONY && observer_count == 0 && pop.roles[SCOUT.NAME] < 1) {
+                // request a scout
+                room_data.requested_creeps.push(new ScoutMemory(room_data.room_name));
             }
         }
-
-        // find all the structures
-        let observer_count = room.find(FIND_STRUCTURES, {
-            // that are observers
-            filter: structure => structure.structureType == STRUCTURE_OBSERVER,
-        }).length;
-        // check if a scout is needed
-        if (room_data.type == COLONY && observer_count == 0 && pop[SCOUT.NAME] < 1) {
-            // request a scout
-            room_data.requested_creeps.push(new ScoutMemory(room.name));
-        }
+        
 
         // check if an attacker is needed
-        if (pop[ATTACKER.NAME] < 1) {
+        if (pop.roles[ATTACKER.NAME] < 1) {
             // request an attacker
-            room_data.requested_creeps.push(new AttackerMemory(room.name));
+            room_data.requested_creeps.push(new AttackerMemory(room_data.room_name));
         }
 
         // check if a healer is needed
-        if (pop[HEALER.NAME] < 1) {
+        if (pop.roles[HEALER.NAME] < 1) {
             // request a healer
-            room_data.requested_creeps.push(new HealerMemory(room.name));
+            room_data.requested_creeps.push(new HealerMemory(room_data.room_name));
         }
 
         if (pop.power_squad.power_attacker == null) {
-            room_data.requested_creeps.push(new PowerAttackerMemory(room.name));
+            room_data.requested_creeps.push(new PowerAttackerMemory(room_data.room_name));
         }
         if (pop.power_squad.power_healer == null) {
-            room_data.requested_creeps.push(new PowerHealerMemory(room.name));
+            room_data.requested_creeps.push(new PowerHealerMemory(room_data.room_name));
         }
         if (pop.power_squad.power_transporter == null) {
-            room_data.requested_creeps.push(new PowerTransporterMemory(room.name));
+            room_data.requested_creeps.push(new PowerTransporterMemory(room_data.room_name));
         }
 
-        if (pop[COMMODITY_COLLECTOR.NAME] < 1) {
-            room_data.requested_creeps.push(new CommodityCollectorMemory(room.name));
+        if (pop.roles[COMMODITY_COLLECTOR.NAME] < 1) {
+            room_data.requested_creeps.push(new CommodityCollectorMemory(room_data.room_name));
         }
     },
     /**
@@ -140,17 +215,17 @@ global.RoomRunner = {
      * @param {Room} room - The Room we are running
      * @param {RoomData} room_data - The room data for the room.
      */
-    spawnRequestedCreeps: function (room, room_data) {
+    spawnRequestedCreeps: function (room_data) {
         // declare a success variable
         let success;
 
         // if this room is a colony
         if (room_data.type == COLONY) {
             // attempt to spawn a creep locally
-            success = room.spawnRole(room_data.requested_creeps[0]);
+            success = this.spawnRole(room_data.room_name, room_data.requested_creeps[0]);
         }else{
             // attempt to spawn a creep globally
-            success = room.spawnRole(room_data.requested_creeps[0], true);
+            success = this.spawnRole(room_data.room_name, room_data.requested_creeps[0], true);
         }
         // check if we successfully spawned the creep
         if (success) {
@@ -183,11 +258,11 @@ global.RoomRunner = {
         room_data.satisfied = (Util.getSatisfiedRatio(room_data) > SATISFACTION_THRESHOLD);
 
         if (room_data.has_been_owned) {
-            if (!room.controller.my) {
+            if (room == undefined || !room.controller.my) {
                 room_data.dead = true;
             }
         }else{
-            if (room.controller.my) {
+            if (room != undefined && room.controller.my) {
                 room_data.has_been_owned = true;
             }
         }
@@ -199,7 +274,7 @@ global.RoomRunner = {
      */
     run: function (room, room_data) {
         let main_memory = Util.getMainMemory();
-        hlog("Running " + room_data.type + " room: '" + room.name + "'...");
+        hlog("Running " + room_data.type + " room: '" + room_data.room_name + "'...");
         // if the population timer has gone off
         if (room_data.population_timer > REQUEST_POPULATION_TIMER_LENGTH) {
             hlog("Requesting creeps...");
@@ -221,11 +296,11 @@ global.RoomRunner = {
         if (room_data.requested_creeps.length > 0) {
             hlog("Trying to spawn creeps...");
             // attempt to spawn another creep
-            this.spawnRequestedCreeps(room, room_data);
+            this.spawnRequestedCreeps(room_data);
         }
 
         // check if the construction timer has gone off
-        if (room_data.construction_timer > CONSTRUCTION_TIMER_LENGTH) {
+        if (room_data.construction_timer > CONSTRUCTION_TIMER_LENGTH && room != undefined) {
             hlog("Building construction sites...");
             Timer.start("constructing_plans");
             // try to create new construction sites
@@ -239,7 +314,7 @@ global.RoomRunner = {
         }
 
         // if the room has a plant
-        if (room_data.plans.plant_location != null && room.name == main_memory.capitol_room_name) {
+        if (room != undefined && room_data.plans.plant_location != null && room_data.room_name == main_memory.capitol_room_name) {
             // run the plant
             Timer.start("running_plant");
             PlantRunner.run(room, room_data.plant_data);

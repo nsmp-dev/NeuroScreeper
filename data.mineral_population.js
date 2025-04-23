@@ -15,6 +15,11 @@ class MineralPopulation {
          */
         this.mineral_id = mineral_plan.mineral_id;
         /**
+         * location of the mineral
+         * @type {Point}
+         */
+        this.mineral_location = mineral_plan.mineral_location;
+        /**
          * location of the container
          * @type {Point}
          */

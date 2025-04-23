@@ -250,6 +250,7 @@ class MoveRoomTask extends Task {
      */
     constructor(room_name) {
         super(TASK_TYPES.MOVE_ROOM, room_name);
+        this.timer = 0;
     }
 }
 global.MoveRoomTask = MoveRoomTask;

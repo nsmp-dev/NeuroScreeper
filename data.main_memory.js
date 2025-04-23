@@ -57,13 +57,6 @@ class MainMemory {
          * @type {Object<string, number>}
          */
         this.terminal_timers = {};
-
-        // grab one of the names of the spawns
-        let spawn_name = Object.keys(Game.spawns)[0];
-        // grab the room that spawn is in
-        let room = Game.spawns[spawn_name].room;
-        // initialize the room data entry
-        this.room_data[room.name] = new RoomData(room, Game.spawns[spawn_name]);
     }
 }
 

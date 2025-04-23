@@ -17,6 +17,11 @@ class RoomData {
          */
         this.type = null;
         /**
+         * type of the room
+         * @type {string}
+         */
+        this.room_name = room.name;
+        /**
          * timer for when to do construction
          * @type {number}
          */

@@ -28,7 +28,7 @@ class MineralDrillerMemory extends CreepMemory{
      * @param {Point} container_location - The location of the assigned container
      */
     constructor(room_name, mineral_id, container_location){
-        super(DRILLER.NAME, room_name);
+        super(MINERAL_DRILLER.NAME, room_name);
         /**
          * The id of the assigned mineral
          * @type {string}

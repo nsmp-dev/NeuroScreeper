@@ -258,6 +258,9 @@ Creep.prototype.run = function () {
         case CLAIMER.NAME:
             this.runClaimer();
             break;
+        case COMMODITY_COLLECTOR.NAME:
+            this.runCommodityCollector();
+            break;
         case DRILLER.NAME:
             this.runDriller();
             break;
@@ -269,6 +272,15 @@ Creep.prototype.run = function () {
             break;
         case MINERAL_TRANSPORTER.NAME:
             this.runMineralTransporter();
+            break;
+        case POWER_ATTACKER.NAME:
+            this.runPowerAttacker();
+            break;
+        case POWER_HEALER.NAME:
+            this.runPowerHealer();
+            break;
+        case POWER_TRANSPORTER.NAME:
+            this.runPowerTransporter();
             break;
         case QUEEN.NAME:
             this.runQueen();

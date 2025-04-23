@@ -251,11 +251,12 @@ global.Util = {
     clearMemory: function () {
         // loop through all the entries in memory
         for (let name in Memory) {
-            // if this field is not the id_counter
-            if (name != "id_counter") {
-                // delete the entry
-                delete Memory[name];
-            }
+            // delete the entry
+            delete Memory[name];
+        }
+        
+        for (let name in Game.creeps) {
+            Game.creeps[name].suicide();
         }
     },
     /**
