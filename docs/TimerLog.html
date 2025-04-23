@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Class: PowerTransporterMemory</title>
+    <title>JSDoc: Class: TimerLog</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Class: PowerTransporterMemory</h1>
+    <h1 class="page-title">Class: TimerLog</h1>
 
     
 
@@ -28,7 +28,7 @@
 
 <header>
     
-        <h2><span class="attribs"><span class="type-signature"></span></span>PowerTransporterMemory<span class="signature">()</span><span class="type-signature"></span></h2>
+        <h2><span class="attribs"><span class="type-signature"></span></span>TimerLog<span class="signature">()</span><span class="type-signature"></span></h2>
         
     
 </header>
@@ -41,7 +41,7 @@
     
 
     
-    <h4 class="name" id="PowerTransporterMemory"><span class="type-signature"></span>new PowerTransporterMemory<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="TimerLog"><span class="type-signature"></span>new TimerLog<span class="signature">()</span><span class="type-signature"></span></h4>
     
 
     
@@ -49,7 +49,7 @@
 
 
 <div class="description">
-    PowerTransporterMemory class, storing data for an attacker
+    TimerEntry class, an object that contains data for planning a source
 </div>
 
 
@@ -93,7 +93,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="role.power_transporter.js.html">role.power_transporter.js</a>, <a href="role.power_transporter.js.html#line5">line 5</a>
+        <a href="data.timer_log.js.html">data.timer_log.js</a>, <a href="data.timer_log.js.html#line1">line 1</a>
     </li></ul></dd>
     
 
@@ -138,6 +138,154 @@
 
     
 
+    
+        <h3 class="subsection-title">Members</h3>
+
+        
+            
+<h4 class="name" id="average_time"><span class="type-signature"></span>average_time<span class="type-signature"> :number</span></h4>
+
+
+
+
+<div class="description">
+    coordinates of the container
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">number</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="data.timer_log.js.html">data.timer_log.js</a>, <a href="data.timer_log.js.html#line19">line 19</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="log"><span class="type-signature"></span>log<span class="type-signature"> :Array.&lt;number></span></h4>
+
+
+
+
+<div class="description">
+    id of the Source object
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">Array.&lt;number></span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="data.timer_log.js.html">data.timer_log.js</a>, <a href="data.timer_log.js.html#line14">line 14</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
     
 
     
@@ -159,7 +307,7 @@
 
 <header>
     
-        <h2><span class="attribs"><span class="type-signature"></span></span>PowerTransporterMemory<span class="signature">(room_name)</span><span class="type-signature"></span></h2>
+        <h2><span class="attribs"><span class="type-signature"></span></span>TimerLog<span class="signature">()</span><span class="type-signature"></span></h2>
         
     
 </header>
@@ -172,7 +320,7 @@
     
 
     
-    <h4 class="name" id="PowerTransporterMemory"><span class="type-signature"></span>new PowerTransporterMemory<span class="signature">(room_name)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="TimerLog"><span class="type-signature"></span>new TimerLog<span class="signature">()</span><span class="type-signature"></span></h4>
     
 
     
@@ -180,7 +328,7 @@
 
 
 <div class="description">
-    creates an PowerTransporterMemory object
+    Creates a TimerLog Object
 </div>
 
 
@@ -189,55 +337,6 @@
 
 
 
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>room_name</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">The name of the room this creep is assigned to</td>
-        </tr>
-
-    
-    </tbody>
-</table>
 
 
 
@@ -273,7 +372,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="role.power_transporter.js.html">role.power_transporter.js</a>, <a href="role.power_transporter.js.html#line14">line 14</a>
+        <a href="data.timer_log.js.html">data.timer_log.js</a>, <a href="data.timer_log.js.html#line9">line 9</a>
     </li></ul></dd>
     
 
@@ -318,6 +417,154 @@
 
     
 
+    
+        <h3 class="subsection-title">Members</h3>
+
+        
+            
+<h4 class="name" id="average_time"><span class="type-signature"></span>average_time<span class="type-signature"> :number</span></h4>
+
+
+
+
+<div class="description">
+    coordinates of the container
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">number</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="data.timer_log.js.html">data.timer_log.js</a>, <a href="data.timer_log.js.html#line19">line 19</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="log"><span class="type-signature"></span>log<span class="type-signature"> :Array.&lt;number></span></h4>
+
+
+
+
+<div class="description">
+    id of the Source object
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">Array.&lt;number></span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="data.timer_log.js.html">data.timer_log.js</a>, <a href="data.timer_log.js.html#line14">line 14</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
     
 
     

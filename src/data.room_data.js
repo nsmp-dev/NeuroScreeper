@@ -17,7 +17,7 @@ class RoomData {
          */
         this.type = null;
         /**
-         * type of the room
+         * name of the room
          * @type {string}
          */
         this.room_name = room.name;

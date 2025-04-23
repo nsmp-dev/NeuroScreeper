@@ -1,6 +1,6 @@
 /**
  * Handles scanning and adding new rooms
- * @constant {Object} RoomManager
+ * @module RoomManager
  */
 global.RoomManager = {
     /**
@@ -60,6 +60,7 @@ global.RoomManager = {
     countPopulation: function () {
         let main_memory = Util.getMainMemory();
         // create our population object
+        /** @type {Object<string,RoomPopulation>} */
         let pop = {};
 
         // loop through each room in the room data

@@ -5,7 +5,8 @@
   "main": "main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "generate": "jsdoc -R ./README.md -d ./docs ./src"
+    "generate": "jsdoc -R ./README.md -d ./docs ./src",
+    "push": "grunt screeps"
   },
   "repository": {
     "type": "git",
@@ -21,7 +22,7 @@
   "bugs": {
     "url": "https://github.com/nsmp-dev/screeps/issues"
   },
-  "homepage": "https://github.com/nsmp-dev/screeps#readme",
+  "homepage": "https://nsmp-dev.github.io/screeps/",
   "dependencies": {},
   "devDependencies": {
     "grunt": "^1.6.1",

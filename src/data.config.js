@@ -7,14 +7,14 @@ global.USERNAME = "uhhyea";
  * signature for signing controllers
  * @constant {string} SIGNATURE
  */
-global.SIGNATURE = "hello";
+global.SIGNATURE = "Purely defensive, still debugging";
 /**
  * debug mode for logger
  * @constant {Boolean} DEBUG_MODE
  */
 global.DEBUG_MODE = true;
 /**
- * change the build number to trigger a memory wipe
+ * current version of the build, increment this to trigger a memory wipe and mass creep suicide
  * @constant {number} BUILD
  */
 global.BUILD = 7;
@@ -146,7 +146,6 @@ let hlog = function (value, label = null) {
         }
     }
 };
-// setting the hlog function to the global scope, fixes a JSDoc parsing issue with global functions
 global.hlog = hlog;
 
 /**

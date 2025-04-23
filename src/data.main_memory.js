@@ -8,12 +8,12 @@ class MainMemory {
      */
     constructor() {
         /**
-         * hash of all the room data objects
+         * hash of all the RoomData objects with the room name as the key
          * @type {Object.<string, RoomData>}
          */
         this.room_data = {};
         /**
-         * The second reagent resource
+         * timer for recounting the population
          * @type {number}
          */
         this.population_timer = COUNT_POPULATION_TIMER_LENGTH - 2;
@@ -23,37 +23,37 @@ class MainMemory {
          */
         this.new_room_timer = 0;
         /**
-         * The amount of resource the production will use and make
+         * hash of the RoomPopulation objects with the room name as the key
          * @type {Object.<string, RoomPopulation>}
          */
         this.populations = {};
         /**
-         * hash of all the room data objects
+         * the name of the room that is the capitol, or null if there is not a capitol
          * @type {string|null}
          */
         this.capitol_room_name = null;
         /**
-         * hash of all the timers
-         * @type {Object}
+         * hash of all the TimerLog objects with the id as the key
+         * @type {Object.<string, TimerLog>}
          */
         this.timers = {};
         /**
-         * hash of all the timers
+         * counter for ensuring no id collisions occur
          * @type {number}
          */
         this.id_counter = 0;
         /**
-         * hash of all the timers
+         * build number of this MainMemory object
          * @type {number}
          */
         this.build = BUILD;
         /**
-         * hash of all the timers
+         * hash of all the ObserverLog objects with the room name as the key
          * @type {Object.<string, ObserverLog>}
          */
         this.observer_log = {};
         /**
-         * hash of all the timers
+         * hash of all the Terminal timers with the room name as the key
          * @type {Object<string, number>}
          */
         this.terminal_timers = {};

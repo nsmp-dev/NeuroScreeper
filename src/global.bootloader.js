@@ -19,6 +19,8 @@ require('data.room_population');
 require('data.source_plan');
 require('data.source_population');
 require('data.tasks');
+require('data.timer_entry');
+require('data.timer_log');
 require('factory.room_plans');
 require('global.power_manager');
 require('global.room_manager');

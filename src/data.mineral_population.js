@@ -6,7 +6,6 @@ class MineralPopulation {
     /**
      * Creates a MineralPopulation Object
      * @param {MineralPlan} mineral_plan - the mineral plans this mineral population is for
-     *
      */
     constructor(mineral_plan) {
         /**

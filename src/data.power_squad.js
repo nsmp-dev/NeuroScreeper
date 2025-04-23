@@ -29,12 +29,12 @@ class PowerSquad {
          */
         this.room_name = room_name;
         /**
-         * stores the room that we return to
+         * stores the room that we are returning to
          * @type {string|null}
          */
         this.return_room_name = null;
         /**
-         * stores the room that owns this squad
+         * stores the current state of the PowerSquad
          * @type {number}
          */
         this.state = STATES.IDLE;
@@ -49,6 +49,7 @@ class PowerSquad {
          */
         this.highway_queue = [];
 
+        // get the MainMemory
         let main_memory = Util.getMainMemory();
         // loop through the rooms we have discovered so far
         for (let room_name in main_memory.room_data) {

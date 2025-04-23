@@ -4,6 +4,7 @@
  */
 global.Timer = {
     // where we store the timers we are working with
+    /** @type {Object.<string, TimerEntry>} */
     timers: {},
     /**
      * start a timer, defaults to the main timer
@@ -11,12 +12,7 @@ global.Timer = {
      */
     start: function (id = "main") {
         // set the start of the timer
-        this.timers[id] = {
-            // the time used at the start of the timer
-            start: Game.cpu.getUsed(),
-            // where the end time will go later
-            end: null,
-        };
+        this.timers[id] = new TimerEntry(Game.cpu.getUsed());
     },
     /**
      * stop a timer, defaults to the main timer
@@ -30,12 +26,7 @@ global.Timer = {
         // if we have not initialized the id's log and average
         if (main_memory.timers[id] == undefined) {
             // initialize the id's buffer
-            main_memory.timers[id] = {
-                // the log of the past times
-                log: [],
-                // the average of the times
-                average_time: 0,
-            };
+            main_memory.timers[id] = new TimerLog();
         }
         // push the total time onto the timer log
         main_memory.timers[id].log.push(this.timers[id].end - this.timers[id].start);

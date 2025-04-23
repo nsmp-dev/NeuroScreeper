@@ -3,17 +3,7 @@
 ## comments and documentation
 check all line comments and JSDoc signatures
 
-### files left (0/54)
-data.config.js
-data.construction_plan.js
-data.creep_memory.js
-data.main_memory.js
-data.mineral_plan.js
-data.mineral_population.js
-data.observer_log.js
-data.plant_data.js
-data.point.js
-data.power_squad.js
+### files left
 data.power_squad_population.js
 data.production.js
 data.reaction.js
@@ -24,6 +14,8 @@ data.room_population.js
 data.source_plan.js
 data.source_population.js
 data.tasks.js
+data.timer_entry.js
+data.timer_log.js
 factory.room_plans.js
 global.bootloader.js
 global.power_manager.js

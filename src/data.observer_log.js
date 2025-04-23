@@ -1,5 +1,5 @@
 /**
- * ObserverLog class, an object that contains all the data stored on the Memory object
+ * ObserverLog class, an object that contains all the data for running an Observer
  * @class ObserverLog
  */
 class ObserverLog {
@@ -8,17 +8,17 @@ class ObserverLog {
      */
     constructor(room_coords) {
         /**
-         * hash of all the room data objects
+         * top left room of the Observer's max range
          * @type {Point}
          */
         this.top_left = new Point(room_coords.x - 10, room_coords.y - 10);
         /**
-         * hash of all the room data objects
+         * bottom right room of the Observer's max range
          * @type {Point}
          */
         this.bottom_right = new Point(room_coords.x + 10, room_coords.y + 10);
         /**
-         * hash of all the room data objects
+         * the current room the Observer is looking at
          * @type {Point}
          */
         this.current_location = new Point(room_coords.x - 10, room_coords.y - 10);
