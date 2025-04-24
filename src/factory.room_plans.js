@@ -6,8 +6,8 @@ global.RoomPlansFactory = {
     /**
      * Plans the initial room, placing the base off the initial spawn's position
      * @param {Room} room - The Room we are planning
-     * @param {RoomPlans} plans - The Plans for the room.
-     * @param {StructureSpawn} initial_spawn - The initial spawn in the room.
+     * @param {RoomPlans} plans - The Plans for the room
+     * @param {StructureSpawn} initial_spawn - The initial spawn in the room
      */
     planFirstRoom: function (room, plans, initial_spawn) {
         // plan the sources in the room, if any, and their containers

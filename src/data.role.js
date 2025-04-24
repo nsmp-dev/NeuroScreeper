@@ -1,42 +1,44 @@
 /**
- * Role class, an object containing data for executing simple creep actions
+ * Role class, an object containing constants for a role
  * @class Role
  */
 class Role {
     /**
      * creates a Role object
-     * @param {string} name - The type of task
-     * @param {string} emoji - The room of the task
-     * @param {string[]} body - The type of task
-     * @param {number} energy_cost - The type of task
-     * @param {number} max_body_multiplier - The type of task
+     * @param {string} name - the name of the role, for id usage
+     * @param {string} emoji - set of emojis to represent the role
+     * @param {string[]} body - the standard body of the creep
+     * @param {number} energy_cost - energy cost of the standard body
+     * @param {number} max_body_multiplier - the max number of times the body can be multiplied
      */
     constructor(name, emoji, body, energy_cost, max_body_multiplier) {
         /**
-         * type of task being created
+         * the name of the role, for id usage
          * @type {string}
          */
         this.name = name;
         /**
-         * name of the room the target is in
+         * set of emojis to represent the role
          * @type {string}
          */
         this.emoji = emoji;
         /**
-         * name of the room the target is in
+         * the standard body of the creep
          * @type {string[]}
          */
         this.body = body;
         /**
-         * name of the room the target is in
+         * energy cost of the standard body
          * @type {number}
          */
         this.energy_cost = energy_cost;
         /**
-         * name of the room the target is in
+         * the max number of times the body can be multiplied
          * @type {number}
          */
         this.max_body_multiplier = max_body_multiplier;
     }
 }
+
+// export the Role class
 global.Role = Role;

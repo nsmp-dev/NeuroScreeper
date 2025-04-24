@@ -25,5 +25,5 @@ class ObserverLog {
     }
 }
 
-// exports the ObserverLog class
+// export the ObserverLog class
 global.ObserverLog = ObserverLog;

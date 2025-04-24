@@ -25,6 +25,7 @@ global.PowerManager = {
      * Manages the operator and handles spawning/upgrading/renewing the operator
      */
     run: function () {
+        // get the MainMemory object
         let main_memory = Util.getMainMemory();
         // make a list for the power spawns
         let power_spawns = [];

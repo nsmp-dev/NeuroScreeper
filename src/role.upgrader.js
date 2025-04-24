@@ -1,5 +1,7 @@
+// set up the role constants
 global.UpgraderRole = new Role("upgrader", "📈⬆️", [WORK, CARRY, MOVE, MOVE], 250, 12);
 
+// add the role to the roles hash
 global.ROLES[UpgraderRole.name] = UpgraderRole;
 
 /**
@@ -23,13 +25,14 @@ global.UpgraderMemory = UpgraderMemory;
 Creep.prototype.runUpgrader = function () {
     // if we don't have a task currently assigned
     if (this.memory.task == null) {
-        // assign a new task
+        // if the creep is out of energy
         if (this.store[RESOURCE_ENERGY] == 0) {
+            // gather some energy
             this.gatherEnergy();
         }else{
-            // assign a new task
+            // assign a new upgrade task
             this.memory.task = new UpgradeTask(this.room.name);
-            // announce the new task
+            // announce the upgrade task
             this.announceTask();
         }
     }

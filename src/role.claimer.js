@@ -1,5 +1,7 @@
+// set up the role constants
 global.ClaimerRole = new Role("claimer", "🚩🏰", [CLAIM, MOVE], 650, 25);
 
+// add the role to the roles hash
 global.ROLES[ClaimerRole.name] = ClaimerRole;
 
 /**
@@ -21,18 +23,20 @@ global.ClaimerMemory = ClaimerMemory;
  * claimer that moves toward the assigned room and either reserves or claims the controller
  */
 Creep.prototype.runClaimer = function () {
+    // get the MainMemory object
     let main_memory = Util.getMainMemory();
     // if we don't have a task currently assigned
     if (this.memory.task == null) {
+        // if this room is a colony
         if (main_memory.room_data[this.memory.room_name].type == COLONY) {
-            // assign a new task
+            // assign a new claim task
             this.memory.task = new ClaimTask(this.memory.room_name);
-            // announce the new task
+            // announce the claim task
             this.announceTask();
         }else{
-            // assign a new task
+            // assign a new reserve task
             this.memory.task = new ReserveTask(this.memory.room_name);
-            // announce the new task
+            // announce the reserve task
             this.announceTask();
         }
     }

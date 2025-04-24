@@ -1,5 +1,7 @@
+// set up the role constants
 global.ScoutRole = new Role("scout", "🗺️🌐", [MOVE], 50, 1);
 
+// add the role to the roles hash
 global.ROLES[ScoutRole.name] = ScoutRole;
 
 /**
@@ -45,12 +47,16 @@ Creep.prototype.runScout = function () {
         
         // shift the queue
         if (this.memory.room_queue[0] == this.room.name) {
+            // grab the room name from the front of the queue
             let room_name = this.memory.room_queue.shift();
             // add the room to the log to prevent revisits
             this.memory.room_log.push(room_name);
-            
+
+            // if the room queue does not have any rooms in it
             if (this.memory.room_queue.length == 0) {
+                // copy the room log to the queue
                 this.memory.room_queue = this.memory.room_log.slice();
+                // reset the room log
                 this.memory.room_log = [];
             }
             
@@ -59,7 +65,7 @@ Creep.prototype.runScout = function () {
     
             // loop through the adjacent rooms
             for (let room_name of adjacent_rooms) {
-                // if the room name is not already in the old
+                // if the room name is not already in the log or the queue
                 if (!this.memory.room_log.includes(room_name) && !this.memory.room_queue.includes(room_name)) {
                     // add the room to the queue
                     this.memory.room_queue.push(room_name);
@@ -69,14 +75,14 @@ Creep.prototype.runScout = function () {
         
         // if there are still rooms in the queue
         if (this.memory.room_queue.length > 0) {
-            // assign a new task
+            // assign a new MoveRoomTask
             this.memory.task = new MoveRoomTask(this.memory.room_queue[0]);
-            // announce the new task
+            // announce the MoveRoomTask
             this.announceTask();
         }else{
-            // assign a new task
+            // assign a new idle task
             this.memory.task = new IdleTask(this.room.name, 10);
-            // announce the new task
+            // announce the idle task
             this.announceTask();
         }
     }

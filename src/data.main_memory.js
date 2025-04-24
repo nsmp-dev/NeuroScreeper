@@ -60,5 +60,5 @@ class MainMemory {
     }
 }
 
-// exports the MainMemory class
+// export the MainMemory class
 global.MainMemory = MainMemory;

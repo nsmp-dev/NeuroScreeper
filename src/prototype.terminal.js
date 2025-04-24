@@ -2,25 +2,41 @@
  * move any ingredients to the capitol
  */
 StructureTerminal.prototype.moveIngredients = function () {
+    // get the MainMemory object
     let main_memory = Util.getMainMemory();
+    // hash of ingredients and their amounts found in the terminal
     let ingredients = {};
+    // grab the energy in the terminal
     let energy = this.store[RESOURCE_ENERGY];
 
+    // loop through the resources in the terminal's store
     for (let resource in this.store) {
+        // if the resource is an ingredient
         if (this.store[resource] > 0 && INGREDIENTS.includes(resource)) {
+            // set the amount on the ingredient hash
             ingredients[resource] = this.store[resource];
         }
     }
 
+    // loop through the ingredients found
     for (let resource in ingredients) {
+        // grab the amount of that ingredient
         let amount = ingredients[resource];
+        // while the amount to send is not affordable
         while (amount > 1 && energy < Game.market.calcTransactionCost(amount, this.room.name, main_memory.capitol_room_name)) {
+            // lower the amount
             amount--;
         }
 
-        if (amount > 0) {
-            this.send(resource, amount, main_memory.capitol_room_name, 'Resources for the capitol');
-            return;
+        // if the amount is non-zero and affordable
+        if (amount > 0 && Game.market.calcTransactionCost(amount, this.room.name, main_memory.capitol_room_name)) {
+            // send the transaction
+            let result = this.send(resource, amount, main_memory.capitol_room_name, 'Resources for the capitol');
+            // if the result of sending the resource was success
+            if (result == OK) {
+                // break the loop
+                break;
+            }
         }
     }
 };
@@ -29,26 +45,39 @@ StructureTerminal.prototype.moveIngredients = function () {
  * sell any excess energy and commodities
  */
 StructureTerminal.prototype.sellFinalProducts = function () {
+    // create a hash of the sellable resources
     let sellable_resources = {};
+    // grab the energy in the terminal
     let energy = this.store[RESOURCE_ENERGY];
 
+    // if the energy in the terminal is above the cap
     if (energy > TERMINAL_ENERGY_CAP) {
+        // add the excess energy to the sellable resources hash
         sellable_resources[RESOURCE_ENERGY] = energy - TERMINAL_ENERGY_CAP;
     }
 
+    // loop through the resources in the store
     for (let resource in this.store) {
+        // if the resource is a final product
         if (this.store[resource] > 0 && FINAL_PRODUCTS.includes(resource)) {
+            // add the resource to the sellable resources hash
             sellable_resources[resource] = this.store[resource];
         }
     }
 
+    // loop through the sellable resources
     for (let resource in sellable_resources) {
+        // grab the amount of the resource
         let amount = sellable_resources[resource];
+        // grab all the orders for this resource
         let orders = Game.market.getAllOrders({type: ORDER_BUY, resourceType: resource});
+        // if no orders were found
         if (orders.length == 0) {
+            // break the loop
             break;
         }
 
+        // default the highest price order to the first one
         let highest = orders[0];
 
         // loop through the orders
@@ -62,26 +91,36 @@ StructureTerminal.prototype.sellFinalProducts = function () {
 
         // default the trading amount to the amount of the trade
         let trade_amount = highest.remainingAmount;
+        // if the trade amount is larger than the amount we have
         if (trade_amount > amount) {
-            // set the trade amount to the energy in the terminal
+            // set the trade amount to the amount in the terminal
             trade_amount = amount;
         }
 
+        // if the resource is energy
         if (resource == RESOURCE_ENERGY) {
-            // adjust trade amount based on cost
+            // while the trade amount is not affordable
             while (trade_amount > 1 && (energy - trade_amount) < Game.market.calcTransactionCost(trade_amount,this.room.name, highest.roomName)) {
+                // lower the trade amount
                 trade_amount--;
             }
         }else{
+            // while the trade amount is not affordable
             while (trade_amount > 1 && energy < Game.market.calcTransactionCost(trade_amount,this.room.name, highest.roomName)) {
+                // lower the trade amount
                 trade_amount--;
             }
         }
 
-
+        // if the trade amount is non-zero
         if (trade_amount > 0) {
-            this.send(resource, trade_amount, highest.roomName, 'Thanks!');
-            return;
+            // execute the deal
+            let result = Game.market.deal(highest.id, trade_amount, highest.roomName);
+            // if the transaction was successful
+            if (result == OK) {
+                // break the loop
+                break;
+            }
         }
     }
 };
@@ -120,6 +159,7 @@ StructureTerminal.prototype.buySubToken = function () {
  * run the terminal
  */
 StructureTerminal.prototype.run = function () {
+    // get the MainMemory object
     let main_memory = Util.getMainMemory();
     // if this room's terminal timer has not been initialized
     if (main_memory.terminal_timers[this.room.name] == undefined) {
@@ -135,10 +175,13 @@ StructureTerminal.prototype.run = function () {
         this.cooldown == 0) {
         // reset the sell timer
         main_memory.terminal_timers[this.room.name] = 0;
-        // sell any sellable resources
+        // sell any final products
         this.sellFinalProducts();
+        // buy any sub tokens
         this.buySubToken();
+        // if the capitol is set, and it is not this room
         if (main_memory.capitol_room_name != null && Memory.capitol_room_name != this.room.name) {
+            // move any ingredients to the capitol room
             this.moveIngredients();
         }
     } else {

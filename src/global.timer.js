@@ -3,8 +3,10 @@
  * @module Timer
  */
 global.Timer = {
-    // where we store the timers we are working with
-    /** @type {Object.<string, TimerEntry>} */
+    /**
+     * where we store the timers that we are working with this tick
+     * @type {Object.<string, TimerEntry>}
+     */
     timers: {},
     /**
      * start a timer, defaults to the main timer
@@ -15,11 +17,11 @@ global.Timer = {
         this.timers[id] = new TimerEntry(Game.cpu.getUsed());
     },
     /**
-     * stop a timer, defaults to the main timer
-     * if stopping the main timer, advance the log and recalculate the average
+     * stop a timer, defaults to the main timer, logs the result to a TimerLog
      * @param {string} id - the id of the timer
      */
     stop: function (id = "main") {
+        // get the MainMemory object
         let main_memory = Util.getMainMemory();
         // set the end time of the timer
         this.timers[id].end = Game.cpu.getUsed();

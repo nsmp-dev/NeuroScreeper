@@ -1,44 +1,4 @@
 /**
- * renders the stats in the given room
- * @param {RoomPlans} plans - The plans of the room
- * @return {Boolean[][]} the 2D grid describing the taken and open spots as booleans
- */
-Room.prototype.getStructureGrid = function (plans) {
-    // 2d array of all the spots in the room
-    let structure_grid = [];
-    // loop through the X coordinates
-    for (let x = 0; x < 50; x++) {
-        // add a column to the structure grid
-        structure_grid.push([]);
-        // loop through the Y coordinates
-        for (let y = 0; y < 50; y++) {
-            // place a false for that position
-            structure_grid[x].push(false);
-        }
-    }
-
-    // loop through the planned structures
-    for (let structure of plans.structures) {
-        // set this spot to taken
-        structure_grid[structure.location.x][structure.location.y] = true;
-    }
-
-    // loop through the source plans
-    for (let source_plan of plans.source_plans) {
-        // set this spot to taken
-        structure_grid[source_plan.container_location.x][source_plan.container_location.y] = true;
-    }
-
-    // loop through the mineral plans
-    for (let mineral_plan of plans.mineral_plans) {
-        // set this spot to taken
-        structure_grid[mineral_plan.container_location.x][mineral_plan.container_location.y] = true;
-    }
-
-    // return the final structure grid
-    return structure_grid;
-};
-/**
  * finds a clear area of width and height, avoiding any planned structures
  * @param {number} width - width of the area to find
  * @param {number} height - height of the area to find
@@ -49,7 +9,7 @@ Room.prototype.getClearArea = function (width, height, plans) {
     // grab the terrain for the room
     let terrain_grid = this.getTerrain();
     // create a structure grid to reference
-    let structure_grid = this.getStructureGrid(plans);
+    let structure_grid = Util.getStructureGrid(plans);
     // create a list of clear spots that pass the check
     let clear_spots = [];
 
@@ -122,7 +82,7 @@ Room.prototype.getClearAdjacentLocation = function (x, y, plans) {
     // grab the terrain for the room
     let terrain_grid = this.getTerrain();
     // create a structure grid to reference
-    let structure_grid = this.getStructureGrid(plans);
+    let structure_grid = Util.getStructureGrid(plans);
     // create a list of clear spots that pass the check
     let clear_spots = [];
 
@@ -177,7 +137,7 @@ Room.prototype.getClearAdjacentLocation = function (x, y, plans) {
     return new Point(clear_spots[0].x, clear_spots[0].y);
 };
 /**
- * creates structures from the given list of planned structures and source plans, capping at 5 per room
+ * creates structures from the given room plans, capping at 5 per room
  * @param {RoomPlans} plans - the room plans containing the construction plans
  */
 Room.prototype.createConstructionSites = function (plans) {

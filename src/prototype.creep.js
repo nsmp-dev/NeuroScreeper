@@ -1,8 +1,8 @@
 /**
- * get a transporter target
+ * get a resource to gather for a transporter
  * @return {StructureContainer|Resource|null} The target, accounting for a not-yet-built container
  */
-Creep.prototype.getTransporterTarget = function () {
+let getTransporterTarget = function () {
     // grab the container from memory
     let target = Game.getObjectById(this.memory.container_id);
     // if the container is null
@@ -21,11 +21,14 @@ Creep.prototype.getTransporterTarget = function () {
 
     // if the target is still null
     if (target == null) {
+        // default to look for energy
         let look_type = LOOK_ENERGY;
+        // if the creep is a mineral transporter
         if (this.memory.role == MineralTransporterRole.name) {
+            // change the look type to look for all types of resources
             look_type = LOOK_RESOURCES;
         }
-        // look for dropped energy at the container location
+        // look for dropped resources at the container location
         let resources = this.room.lookForAt(look_type, this.memory.container_location.x, this.memory.container_location.y);
         // if any resources are found
         if (resources.length > 0) {
@@ -36,19 +39,23 @@ Creep.prototype.getTransporterTarget = function () {
     // return the target
     return target;
 };
+Creep.prototype.getTransporterTarget = getTransporterTarget;
+PowerCreep.prototype.getTransporterTarget = getTransporterTarget;
 /**
  * get a building target
  * @return {ConstructionSite} The closest construction site
  */
-Creep.prototype.getBuildTarget = function () {
+let getBuildTarget = function () {
     // find and return the closest construction site
     return this.pos.findClosestByPath(FIND_MY_CONSTRUCTION_SITES);
 };
+Creep.prototype.getBuildTarget = getBuildTarget;
+PowerCreep.prototype.getBuildTarget = getBuildTarget;
 /**
  * gets a general dumping target
  * @return {Structure} The closest dumping target
  */
-Creep.prototype.getDumpTarget = function () {
+let getDumpTarget = function () {
     // find any extensions that are not full
     let targets = this.room.findLowExtensions();
 
@@ -71,11 +78,13 @@ Creep.prototype.getDumpTarget = function () {
     // return the closest one by path
     return this.pos.findClosestByPath(targets);
 };
+Creep.prototype.getDumpTarget = getDumpTarget;
+PowerCreep.prototype.getDumpTarget = getDumpTarget;
 /**
  * gets a general filling target
  * @return {Structure|Resource} The closest target to get energy from
  */
-Creep.prototype.getFillTarget = function () {
+let getFillTarget = function () {
     // find any dropped energy
     let targets = this.room.find(FIND_DROPPED_RESOURCES, {filter: {resourceType: RESOURCE_ENERGY}});
 
@@ -98,22 +107,26 @@ Creep.prototype.getFillTarget = function () {
     // return the closest one by path
     return this.pos.findClosestByPath(targets);
 };
+Creep.prototype.getFillTarget = getFillTarget;
+PowerCreep.prototype.getFillTarget = getFillTarget;
 /**
  * get a repairing target
  * @return {Structure} the nearest damaged structure
  */
-Creep.prototype.getRepairTarget = function () {
+let getRepairTarget = function () {
     // return the closest structure
     return this.pos.findClosestByPath(FIND_STRUCTURES, {
         // if the structure is damaged
         filter: structure => structure.hits < structure.hitsMax,
     });
 };
+Creep.prototype.getRepairTarget = getRepairTarget;
+PowerCreep.prototype.getRepairTarget = getRepairTarget;
 /**
  * gets a dumping target for a queen
  * @return {StructureTower|StructureExtension|StructureSpawn|StructurePowerSpawn|StructureTerminal} The nearest target for dumping energy
  */
-Creep.prototype.getQueenDumpTarget = function () {
+let getQueenDumpTarget = function () {
     // find all the towers that are not full
     let targets = this.room.findLowTowers();
 
@@ -153,10 +166,13 @@ Creep.prototype.getQueenDumpTarget = function () {
     // return the closest one by path
     return this.pos.findClosestByPath(targets);
 };
+Creep.prototype.getQueenDumpTarget = getQueenDumpTarget;
+PowerCreep.prototype.getQueenDumpTarget = getQueenDumpTarget;
 /**
  * move toward the idle location for the current room to get out of the way
  */
-Creep.prototype.idle = function () {
+let idle = function () {
+    // get the MainMemory object
     let main_memory = Util.getMainMemory();
     // grab the room data
     let room_data = main_memory.room_data[this.room.name];
@@ -167,142 +183,117 @@ Creep.prototype.idle = function () {
         this.moveTo(room_data.plans.idle_location.x, room_data.plans.idle_location.y);
     }
 };
+Creep.prototype.idle = idle;
+PowerCreep.prototype.idle = idle;
 /**
- * returns the nearest storage or null
+ * get the nearest storage or null
  * @return {StructureStorage|null} The nearest storage or null
  */
-Creep.prototype.getNearestStorage = function () {
+let getNearestStorage = function () {
+    // get the MainMemory object
     let main_memory = Util.getMainMemory();
+    // create a list of storages
     let storages = [];
+    // loop through all the rooms we have seen so far
     for (let room_name in main_memory.room_data) {
+        // if the room is visible and has a storage
         if (Game.rooms[room_name] != undefined && Game.rooms[room_name].storage != undefined) {
+            // if this room is the room the creep is in
             if (room_name == this.room.name) {
+                // return the storage
                 return Game.rooms[room_name].storage;
             }else{
+                // add the storage to the list of storages
                 storages.push(Game.rooms[room_name].storage);
             }
         }
     }
+    // if no storages were found
     if (storages.length == 0) {
+        // return null
         return null;
     }
 
+    // default the closest storage to the first storage
     let nearest_storage = storages[0];
+    // default the lowest distance to the first storage
     let lowest_distance = Game.map.getRoomLinearDistance(this.room.name, storages[0].room.name);
+    // loop through the storages
     for (let storage of storages) {
+        // if this storage is closer than the closest storage
         if (Game.map.getRoomLinearDistance(this.room.name, storage.room.name) < lowest_distance) {
+            // store the new closest storage
             nearest_storage = storage;
+            // store the new lowest distance
             lowest_distance = Game.map.getRoomLinearDistance(this.room.name, storage.room.name);
         }
     }
+    // return the closest storage
     return nearest_storage;
 };
+Creep.prototype.getNearestStorage = getNearestStorage;
+PowerCreep.prototype.getNearestStorage = getNearestStorage;
 /**
- * returns the nearest room's name
- * @return {string|null} The nearest room's name
+ * returns the nearest colony room's name
+ * @return {string|null} The nearest colony room's name
  */
-Creep.prototype.getNearestColony = function () {
+let getNearestColony = function () {
+    // get the MainMemory object
     let main_memory = Util.getMainMemory();
+    // variable for the nearest room name
     let nearest_room_name = null;
+    // variable for the lowest distance
     let lowest_distance = null;
+    // loop through all the rooms we have seen so far
     for (let room_name in main_memory.room_data) {
+        // if the room is a colony and is closer than the closest colony so far
         if (main_memory.room_data[room_name].type == COLONY && (nearest_room_name == null || Game.map.getRoomLinearDistance(this.room.name, room_name) < lowest_distance)) {
+            // store the new closest room name
             nearest_room_name = room_name;
+            // store the new lowest distance
             lowest_distance = Game.map.getRoomLinearDistance(this.room.name, room_name);
         }
     }
+    // return the closest room name
     return nearest_room_name;
 };
+Creep.prototype.getNearestColony = getNearestColony;
+PowerCreep.prototype.getNearestColony = getNearestColony;
 /**
  * returns the squad this creep is assigned to
  * @return {PowerSquad} The nearest room's name
  */
 Creep.prototype.getPowerSquad = function () {
+    // get the MainMemory object
     let main_memory = Util.getMainMemory();
+    // return the power squad this creep is assigned to
     return main_memory.room_data[this.memory.room_name].power_squad;
 };
 /**
  * assign a standard gather task to just grab energy for various needs
  */
-Creep.prototype.gatherEnergy = function () {
+let gatherEnergy = function () {
     // find a new fill target
     let target = this.getFillTarget();
     // if a new target was found
     if (target != null) {
-        // assign a new task
+        // assign a new gather task
         this.memory.task = new GatherTask(target, RESOURCE_ENERGY);
         // announce the new task
         this.announceTask();
     }else{
-        // assign a new task
+        // assign a new idle task
         this.memory.task = new IdleTask(this.memory.room_name, 10);
         // announce the new task
         this.announceTask();
     }
 };
-/**
- * run the relevant function for the role that this creep has
- */
-Creep.prototype.run = function () {
-    // switch based on the creep's role
-    switch (this.memory.role) {
-        // if the role matches
-        case AttackerRole.name:
-            // call the function for this role
-            this.runAttacker();
-            // break the switch
-            break;
-        case BuilderRole.name:
-            this.runBuilder();
-            break;
-        case ClaimerRole.name:
-            this.runClaimer();
-            break;
-        case CommodityCollectorRole.name:
-            this.runCommodityCollector();
-            break;
-        case DrillerRole.name:
-            this.runDriller();
-            break;
-        case HealerRole.name:
-            this.runHealer();
-            break;
-        case MineralDrillerRole.name:
-            this.runMineralDriller();
-            break;
-        case MineralTransporterRole.name:
-            this.runMineralTransporter();
-            break;
-        case PowerAttackerRole.name:
-            this.runPowerAttacker();
-            break;
-        case PowerHealerRole.name:
-            this.runPowerHealer();
-            break;
-        case PowerTransporterRole.name:
-            this.runPowerTransporter();
-            break;
-        case QueenRole.name:
-            this.runQueen();
-            break;
-        case RepairerRole.name:
-            this.runRepairer();
-            break;
-        case ScoutRole.name:
-            this.runScout();
-            break;
-        case TransporterRole.name:
-            this.runTransporter();
-            break;
-        case UpgraderRole.name:
-            this.runUpgrader();
-            break;
-    }
-};
+Creep.prototype.gatherEnergy = gatherEnergy;
+PowerCreep.prototype.gatherEnergy = gatherEnergy;
 /**
  * announce the task that the creep is currently assigned
  */
-Creep.prototype.announceTask = function () {
+let announceTask = function () {
     // grab the task
     let task = this.memory.task;
 
@@ -397,6 +388,73 @@ Creep.prototype.announceTask = function () {
             // announce the task
             this.say("Moving Resource...");
             // break the switch
+            break;
+        // if the task type matches
+        case TASK_TYPES.HARVEST:
+            // announce the task
+            this.say("Harvesting...");
+            // break the switch
+            break;
+    }
+};
+Creep.prototype.announceTask = announceTask;
+PowerCreep.prototype.announceTask = announceTask;
+/**
+ * run the relevant function for the role that this creep has
+ */
+Creep.prototype.run = function () {
+    // switch based on the creep's role
+    switch (this.memory.role) {
+        // if the role matches
+        case AttackerRole.name:
+            // call the function for this role
+            this.runAttacker();
+            // break the switch
+            break;
+        case BuilderRole.name:
+            this.runBuilder();
+            break;
+        case ClaimerRole.name:
+            this.runClaimer();
+            break;
+        case CommodityCollectorRole.name:
+            this.runCommodityCollector();
+            break;
+        case DrillerRole.name:
+            this.runDriller();
+            break;
+        case HealerRole.name:
+            this.runHealer();
+            break;
+        case MineralDrillerRole.name:
+            this.runMineralDriller();
+            break;
+        case MineralTransporterRole.name:
+            this.runMineralTransporter();
+            break;
+        case PowerAttackerRole.name:
+            this.runPowerAttacker();
+            break;
+        case PowerHealerRole.name:
+            this.runPowerHealer();
+            break;
+        case PowerTransporterRole.name:
+            this.runPowerTransporter();
+            break;
+        case QueenRole.name:
+            this.runQueen();
+            break;
+        case RepairerRole.name:
+            this.runRepairer();
+            break;
+        case ScoutRole.name:
+            this.runScout();
+            break;
+        case TransporterRole.name:
+            this.runTransporter();
+            break;
+        case UpgraderRole.name:
+            this.runUpgrader();
             break;
     }
 };

@@ -72,6 +72,7 @@ global.RoomRunner = {
      * @param {Room|null} room - The Room we are running
      */
     requestCreeps: function (room_data, room) {
+        // get the MainMemory object
         let main_memory = Util.getMainMemory();
 
         // grab the population for this room
@@ -281,6 +282,7 @@ global.RoomRunner = {
      * @param {Room|null} room - The Room we are running
      */
     run: function (room_data, room = null) {
+        // get the MainMemory object
         let main_memory = Util.getMainMemory();
         hlog("Running " + room_data.type + " room: '" + room_data.room_name + "'...");
         // if the population timer has gone off

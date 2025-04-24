@@ -1,5 +1,7 @@
+// set up the role constants
 global.AttackerRole = new Role("attacker", "🗡️⚔️", [ATTACK, TOUGH, MOVE, MOVE], 100, 12);
 
+// add the role to the roles hash
 global.ROLES[AttackerRole.name] = AttackerRole;
 
 /**
@@ -29,14 +31,14 @@ Creep.prototype.runAttacker = function () {
         if (creeps.length > 0) {
             // find the closest hostile creep
             let target = this.pos.findClosestByPath(creeps);
-            // assign a new task
+            // assign a new attack task
             this.memory.task = new AttackTask(target);
-            // announce the new task
+            // announce the attack task
             this.announceTask();
         }else{
-            // assign a new task
+            // assign a new idle task
             this.memory.task = new IdleTask(this.memory.room_name, 10);
-            // announce the new task
+            // announce the idle task
             this.announceTask();
         }
     }

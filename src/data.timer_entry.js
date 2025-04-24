@@ -1,20 +1,20 @@
 /**
- * TimerEntry class, an object that contains data for planning a source
+ * TimerEntry class, an object that contains data for timing a section of code
  * @class TimerEntry
  */
 class TimerEntry {
     /**
      * Creates a TimerEntry Object
-     * @param {number} start - id of the Source object
+     * @param {number} start - the start time of the timer
      */
     constructor(start) {
         /**
-         * id of the Source object
+         * the start time of the timer
          * @type {number}
          */
         this.start = start;
         /**
-         * coordinates of the container
+         * the end time of the timer
          * @type {number|null}
          */
         this.end = null;

@@ -49,7 +49,7 @@ class PowerSquad {
          */
         this.highway_queue = [];
 
-        // get the MainMemory
+        // get the MainMemory object
         let main_memory = Util.getMainMemory();
         // loop through the rooms we have discovered so far
         for (let room_name in main_memory.room_data) {

@@ -89,7 +89,7 @@ class RoomPlans {
          */
         this.output_lab_location = null;
         /**
-         * coordinates for factory
+         * coordinates for the factory
          * @type {Point|null}
          */
         this.factory_location = null;

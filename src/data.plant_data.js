@@ -87,5 +87,5 @@ class PlantData {
     }
 }
 
-// exports the PlantData class
+// export the PlantData class
 global.PlantData = PlantData;

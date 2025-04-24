@@ -3,49 +3,7 @@
 ## comments and documentation
 check all line comments and JSDoc signatures
 
-### files left
-data.power_squad_population.js
-data.production.js
-data.reaction.js
-data.role.js
-data.room_data.js
-data.room_plans.js
-data.room_population.js
-data.source_plan.js
-data.source_population.js
-data.tasks.js
-data.timer_entry.js
-data.timer_log.js
-factory.room_plans.js
-global.bootloader.js
-global.power_manager.js
-global.room_manager.js
-global.timer.js
-global.util.js
-global.visualizer.js
-main.js
-prototype.creep.js
-prototype.observer.js
-prototype.room.js
-prototype.terminal.js
-prototype.tower.js
-role.attacker.js
-role.builder.js
-role.claimer.js
-role.commodity_collector.js
-role.driller.js
-role.healer.js
-role.mineral_driller.js
-role.mineral_transporter.js
-role.operator.js
-role.power_attacker.js
-role.power_healer.js
-role.power_transporter.js
-role.queen.js
-role.repairer.js
-role.scout.js
-role.transporter.js
-role.upgrader.js
+### files left (5 left)
 runner.plant.js
 runner.power_squad.js
 runner.room.js

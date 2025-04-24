@@ -8,7 +8,9 @@ global.Visualizer = {
      * @param {Room} room - The room we are rendering on
      */
     render: function (room) {
+        // get the MainMemory object
         let main_memory = Util.getMainMemory();
+        // if the main timer is defined
         if (main_memory.timers["main"] != undefined) {
             // grab the times from the timer log
             let times = main_memory.timers["main"].log;
@@ -25,7 +27,6 @@ global.Visualizer = {
                 room.visual.rect(i, 49 - height, 1, height, {fill: color});
             }
         }
-        
 
         // grab the local population
         let pop = main_memory.populations[room.name];

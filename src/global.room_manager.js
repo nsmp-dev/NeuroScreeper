@@ -7,6 +7,7 @@ global.RoomManager = {
      * scan for any new rooms and add their data if found
      */
     scanNewRooms: function () {
+        // get the MainMemory object
         let main_memory = Util.getMainMemory();
         // loop through all the rooms
         for (let name in Game.rooms) {
@@ -22,6 +23,7 @@ global.RoomManager = {
      * attempt to spawn a new colony
      */
     spawnNewColony: function () {
+        // get the MainMemory object
         let main_memory = Util.getMainMemory();
         // loop through all the room data
         for (let name in main_memory.room_data) {
@@ -40,6 +42,7 @@ global.RoomManager = {
      * attempt to spawn a new expansion
      */
     spawnNewExpansion: function () {
+        // get the MainMemory object
         let main_memory = Util.getMainMemory();
         // loop through all the room data
         for (let name in main_memory.room_data) {
@@ -58,6 +61,7 @@ global.RoomManager = {
      * count up all the creeps in the game
      */
     countPopulation: function () {
+        // get the MainMemory object
         let main_memory = Util.getMainMemory();
         // create our population object
         /** @type {Object<string,RoomPopulation>} */
@@ -66,9 +70,7 @@ global.RoomManager = {
         // loop through each room in the room data
         for (let name in main_memory.room_data) {
             // if this room is a colony or expansion
-            if (main_memory.room_data[name].type == COLONY ||
-                main_memory.room_data[name].type == EXPANSION) {
-
+            if (main_memory.room_data[name].type == COLONY || main_memory.room_data[name].type == EXPANSION) {
                 // create the room's population object
                 pop[name] = new RoomPopulation(main_memory.room_data[name].plans);
             }
@@ -78,6 +80,7 @@ global.RoomManager = {
         for (let name in Game.creeps) {
             // grab the creep
             let creep = Game.creeps[name];
+            // grab the RoomPopulation object
             /** @type {RoomPopulation} */
             let room_pop = pop[creep.memory.room_name];
 
@@ -88,47 +91,61 @@ global.RoomManager = {
 
             // if this creep is a driller
             if (creep.memory.role == DrillerRole.name) {
-                // set the entry for the driller to the id of the creep
+                // loop through the source populations
                 for (let source_pop of room_pop.source_populations) {
+                    // if the source population's source id matches the creep's source id
                     if (source_pop.source_id == creep.memory.source) {
+                        // mark this source population's driller as spawned
                         source_pop.driller = creep.id;
                     }
                 }
             }
             // if this creep is a transporter
             if (creep.memory.role == TransporterRole.name) {
-                // set the entry for the transporter to the id of the creep
+                // loop through the source populations
                 for (let source_pop of room_pop.source_populations) {
+                    // if the source population's source id matches the creep's source id
                     if (source_pop.source_id == creep.memory.source) {
+                        // mark this source population's transporter as spawned
                         source_pop.transporter = creep.id;
                     }
                 }
             }
             // if this creep is a mineral driller
             if (creep.memory.role == MineralDrillerRole.name) {
-                // set the entry for the driller to the id of the creep
+                // loop through the mineral populations
                 for (let mineral_pop of room_pop.mineral_populations) {
+                    // if the mineral population's mineral id matches the creep's mineral id
                     if (mineral_pop.mineral_id == creep.memory.mineral) {
+                        // mark this mineral population's mineral transporter as spawned
                         mineral_pop.mineral_driller = creep.id;
                     }
                 }
             }
             // if this creep is a transporter
             if (creep.memory.role == MineralTransporterRole.name) {
-                // set the entry for the transporter to the id of the creep
+                // loop through the mineral populations
                 for (let mineral_pop of room_pop.mineral_populations) {
+                    // if the mineral population's mineral id matches the creep's mineral id
                     if (mineral_pop.mineral_id == creep.memory.mineral) {
+                        // mark this mineral population's mineral driller as spawned
                         mineral_pop.mineral_transporter = creep.id;
                     }
                 }
             }
+            // if the creep is a power attacker
             if (creep.memory.role == PowerAttackerRole.name) {
+                // mark the power squad's power attacker as spawned
                 room_pop.power_squad.power_attacker = creep.id;
             }
+            // if the creep is a power healer
             if (creep.memory.role == PowerHealerRole.name) {
+                // mark the power squad's power healer as spawned
                 room_pop.power_squad.power_healer = creep.id;
             }
+            // if the creep is a power transporter
             if (creep.memory.role == PowerTransporterRole.name) {
+                // mark the power squad's power transporter as spawned
                 room_pop.power_squad.power_transporter = creep.id;
             }
         }

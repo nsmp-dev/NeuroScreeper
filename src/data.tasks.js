@@ -63,7 +63,7 @@ class DepositTask extends Task {
     /**
      * creates a deposit task
      * @param {Structure} target - The target to deposit in
-     * @param {string} resource - The resource to deposit
+     * @param {string} resource - The type of resource to deposit
      * @param {number|null} amount - The amount of resource to deposit
      */
     constructor(target, resource, amount = null) {
@@ -93,7 +93,7 @@ global.DepositTask = DepositTask;
  */
 class BuildTask extends Task {
     /**
-     * creates a deposit task
+     * creates a build task
      * @param {ConstructionSite} construction_site - The target to build
      */
     constructor(construction_site) {
@@ -181,7 +181,7 @@ class DrillTask extends Task {
      * creates a drill task
      * @param {string} source_id - The id of the source to drill
      * @param {Point} container_location - location of the container
-     * @param {string} room_name - location of the container
+     * @param {string} room_name - name of the room the source is in
      */
     constructor(source_id, container_location, room_name) {
         super(TASK_TYPES.DRILL, room_name);
@@ -226,12 +226,12 @@ global.AttackTask = AttackTask;
 class HealTask extends Task {
     /**
      * creates a heal task
-     * @param {Creep} creep - The target to heal
+     * @param {Creep} creep - The creep to heal
      */
     constructor(creep) {
         super(TASK_TYPES.HEAL, creep.room.name);
         /**
-         * The target to heal
+         * The creep to heal
          * @type {string}
          */
         this.creep = creep.id;
@@ -250,6 +250,10 @@ class MoveRoomTask extends Task {
      */
     constructor(room_name) {
         super(TASK_TYPES.MOVE_ROOM, room_name);
+        /**
+         * timer for ensuring we stay in the new room for a few ticks
+         * @type {number}
+         */
         this.timer = 0;
     }
 }
@@ -268,7 +272,7 @@ class RenewOperatorTask extends Task {
     constructor(power_spawn, previous_task) {
         super(TASK_TYPES.RENEW_OPERATOR, power_spawn.room.name);
         /**
-         * The target to renew at
+         * The PowerSpawn to renew at
          * @type {string}
          */
         this.power_spawn = power_spawn.id;
@@ -359,7 +363,7 @@ class HarvestTask extends Task {
     /**
      * creates a harvest task
      * @param {string} room_name - name of the room in which the task is in
-     * @param {Source|Deposit} target - the source or deposit
+     * @param {Source|Deposit} target - the source or deposit to harvest from
      */
     constructor(room_name, target) {
         super(TASK_TYPES.HARVEST, room_name);

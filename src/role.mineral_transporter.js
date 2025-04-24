@@ -1,5 +1,7 @@
+// set up the role constants
 global.MineralTransporterRole = new Role("mineral_transporter", "💎🚛", [CARRY, MOVE], 100, 25);
 
+// add the role to the roles hash
 global.ROLES[MineralTransporterRole.name] = MineralTransporterRole;
 
 /**
@@ -17,22 +19,22 @@ class MineralTransporterMemory extends CreepMemory{
     constructor(room_name, mineral_id, container_location, resource_type){
         super(MineralTransporterRole.name, room_name);
         /**
-         * type of task being created
+         * The id of the assigned mineral
          * @type {string}
          */
         this.mineral = mineral_id;
         /**
-         * type of task being created
+         * The location of the assigned container
          * @type {Point}
          */
         this.container_location = container_location;
         /**
-         * type of task being created
+         * The type of resource this mineral produces
          * @type {string}
          */
         this.resource_type = resource_type;
         /**
-         * type of task being created
+         * cached id of the container
          * @type {string|null}
          */
         this.container_id = null;
@@ -46,44 +48,41 @@ global.MineralTransporterMemory = MineralTransporterMemory;
 Creep.prototype.runMineralTransporter = function () {
     // if we don't have a task currently assigned
     if (this.memory.task == null) {
-        // assign a new task
+        // if the store is empty
         if (this.store.getUsedCapacity() == 0) {
-            // grab the target
-            let target = this.getTransporterTarget();
-
-            // if the target is still null or empty
-            if (target == null || (target.store != undefined && target.store.getUsedCapacity() == 0)) {
-                // assign a new task
-                this.memory.task = new IdleTask(this.memory.room_name, 10);
-                // announce the new task
+            if (this.room.name != this.memory.room_name) {
+                // assign a new move room task
+                this.memory.task = new MoveRoomTask(this.memory.room_name);
+                // announce the move room task
                 this.announceTask();
             }else{
-                // assign a new task
-                this.memory.task = new GatherTask(target, this.memory.resource_type);
-                // announce the new task
-                this.announceTask();
-            }
-        }else{
-            // if we are in the room of the nearest colony
-            if (this.room.name == this.getNearestColony()) {
-                // find a new dump target
-                let storage = this.room.storage;
-                // if a new target was found
-                if (storage != null) {
-                    // assign a new task
-                    this.memory.task = new DepositTask(storage, RESOURCE_ENERGY);
-                    // announce the new task
+                let target = this.getTransporterTarget();
+                if (target != null) {
+                    // assign a new gather task
+                    this.memory.task = new GatherTask(target, this.memory.resource_type);
+                    // announce the gather task
                     this.announceTask();
                 }else{
-                    // assign a new task
+                    // assign a new idle task
                     this.memory.task = new IdleTask(this.memory.room_name, 10);
-                    // announce the new task
+                    // announce the idle task
                     this.announceTask();
                 }
+            }
+        }else{
+            // grab the storage
+            let storage = this.room.storage;
+
+            // if the storage is not built or full
+            if (storage == undefined || storage.store.getFreeCapacity() == 0) {
+                // assign a new idle task
+                this.memory.task = new IdleTask(this.memory.room_name, 10);
+                // announce the idle task
+                this.announceTask();
             }else{
-                // assign a new task
-                this.memory.task = new MoveRoomTask(this.getNearestColony());
-                // announce the new task
+                // assign a new deposit task
+                this.memory.task = new DepositTask(storage, this.memory.resource_type);
+                // announce the deposit task
                 this.announceTask();
             }
         }

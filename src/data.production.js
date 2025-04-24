@@ -28,5 +28,5 @@ class Production {
     }
 }
 
-// exports the Production class
+// export the Production class
 global.Production = Production;

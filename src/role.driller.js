@@ -1,5 +1,7 @@
+// set up the role constants
 global.DrillerRole = new Role("driller", "⚡⛏️", [WORK, MOVE], 150, 25);
 
+// add the role to the roles hash
 global.ROLES[DrillerRole.name] = DrillerRole;
 
 /**
@@ -35,9 +37,9 @@ global.DrillerMemory = DrillerMemory;
 Creep.prototype.runDriller = function () {
     // if we don't have a task currently assigned
     if (this.memory.task == null) {
-        // assign a new task
+        // assign a new drill task
         this.memory.task = new DrillTask(this.memory.source, this.memory.container_location, this.memory.room_name);
-        // announce the new task
+        // announce the drill task
         this.announceTask();
     }
     // run the task

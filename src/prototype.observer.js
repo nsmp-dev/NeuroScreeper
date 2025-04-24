@@ -2,6 +2,7 @@
  * run the observer, keeping a log of rooms to be scanned and scanning the next one
  */
 StructureObserver.prototype.run = function () {
+    // get the MainMemory object
     let main_memory = Util.getMainMemory();
 
     // if the log for this room has not been initialized

@@ -34,5 +34,5 @@ class Reaction {
     }
 }
 
-// exports the Reaction class
+// export the Reaction class
 global.Reaction = Reaction;

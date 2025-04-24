@@ -1,5 +1,5 @@
 /**
- * TimerEntry class, an object that contains data for planning a source
+ * TimerEntry class, an object that contains data for logging the times of a timer to calculate running averages
  * @class TimerLog
  */
 class TimerLog {
@@ -8,12 +8,12 @@ class TimerLog {
      */
     constructor() {
         /**
-         * id of the Source object
+         * list of previous times
          * @type {number[]}
          */
         this.log = [];
         /**
-         * coordinates of the container
+         * average of the times in the log
          * @type {number}
          */
         this.average_time = 0;

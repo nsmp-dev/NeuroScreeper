@@ -1,5 +1,7 @@
+// set up the role constants
 global.BuilderRole = new Role("builder", "⚒️🛠️", [WORK, CARRY, MOVE, MOVE], 250, 12);
 
+// add the role to the roles hash
 global.ROLES[BuilderRole.name] = BuilderRole;
 
 /**
@@ -23,31 +25,32 @@ global.BuilderMemory = BuilderMemory;
 Creep.prototype.runBuilder = function () {
     // if we don't have a task currently assigned
     if (this.memory.task == null) {
-        // assign a new task
+        // if the store is empty
         if (this.store[RESOURCE_ENERGY] == 0) {
+            // gather some energy
             this.gatherEnergy();
         }else{
             // find a new build target
             let target = this.getBuildTarget();
             // if we found a target
             if (target != null) {
-                // assign a new task
+                // assign a new build task
                 this.memory.task = new BuildTask(target);
-                // announce the new task
+                // announce the new build task
                 this.announceTask();
             }else{
                 // find a new repair target
                 let repair_target = this.getRepairTarget();
                 // if we found a target
                 if (repair_target != null) {
-                    // assign a new task
+                    // assign a new repair task
                     this.memory.task = new RepairTask(repair_target);
-                    // announce the new task
+                    // announce the repair task
                     this.announceTask();
                 }else{
-                    // assign a new task
+                    // assign a new upgrade task
                     this.memory.task = new UpgradeTask(this.memory.room_name);
-                    // announce the new task
+                    // announce the upgrade task
                     this.announceTask();
                 }
 

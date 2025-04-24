@@ -4,10 +4,11 @@
  */
 global.Util = {
     /**
-     * converts an x/y room coordinate to a string name
-     * @return {MainMemory} the string name for the room
+     * gets the MainMemory object, helping with type safety
+     * @return {MainMemory} the MainMemory object
      */
     getMainMemory: function () {
+        // return the MainMemory object
         return Memory.main_memory;
     },
     /**
@@ -97,7 +98,7 @@ global.Util = {
         return coordinates;
     },
     /**
-     * multiplies an array by num times
+     * multiplies an array a number of times
      * @param {Array} arr - The array that will be duplicated
      * @param {number} num - The number of times to repeat the array
      * @return {Array} the new resultant array
@@ -118,6 +119,7 @@ global.Util = {
      * @return {string} the guaranteed unique id
      */
     generateId: function () {
+        // get the MainMemory object
         let main_memory = Util.getMainMemory();
         // the id we are building
         let id = "";
@@ -215,19 +217,20 @@ global.Util = {
         // the current bucket size
         str += " | bucket: " + Game.cpu.bucket;
         // print the summary
-        console.log(str);
+        hlog(str);
     },
     /**
      * print all the timers we have
      */
     printTimers: function () {
+        // get the MainMemory object
         let main_memory = Util.getMainMemory();
         // draw a separator
-        console.log("-----Average Times-----");
+        hlog("-----Average Times-----");
         // loop through all the timers
         for (let id in main_memory.timers) {
             // print the id and average of this timer
-            console.log(id + ": " + main_memory.timers[id].average_time);
+            hlog(main_memory.timers[id].average_time.toString(), id);
         }
     },
     /**
@@ -235,18 +238,24 @@ global.Util = {
      * @return {string[]} array of all the highway room names
      */
     getHighwayRooms: function () {
+        // get the MainMemory object
         let main_memory = Util.getMainMemory();
+        // create a list for the highways
         let highways = [];
 
+        // loop through the rooms seen so far
         for (let room_name in main_memory.room_data) {
+            // if the room is a highway
             if (main_memory.room_data[room_name] == HIGHWAY) {
+                // add the room to the list of highways
                 highways.push(room_name);
             }
         }
+        // return the list of highways
         return highways;
     },
     /**
-     * clear all memory except for the id counter
+     * clear all the MainMemory object and suicide all creeps
      */
     clearMemory: function () {
         // loop through all the entries in memory
@@ -254,8 +263,10 @@ global.Util = {
             // delete the entry
             delete Memory[name];
         }
-        
+
+        // loop through all creeps
         for (let name in Game.creeps) {
+            // suicide this creep
             Game.creeps[name].suicide();
         }
     },
@@ -283,5 +294,45 @@ global.Util = {
         let y = b.y - b.y;
         // return the hypotenuse of the two points
         return Math.sqrt( (x * x) + (y * y) );
+    },
+    /**
+     * gets a 2D grid of the blocking structures from a RoomPlans object
+     * @param {RoomPlans} plans - The plans of the room
+     * @return {Boolean[][]} the 2D grid describing the taken and open spots as booleans
+     */
+    getStructureGrid: function (plans) {
+        // 2d array of all the spots in the room
+        let structure_grid = [];
+        // loop through the X coordinates
+        for (let x = 0; x < 50; x++) {
+            // add a column to the structure grid
+            structure_grid.push([]);
+            // loop through the Y coordinates
+            for (let y = 0; y < 50; y++) {
+                // place a false for that position
+                structure_grid[x].push(false);
+            }
+        }
+
+        // loop through the planned structures
+        for (let structure of plans.structures) {
+            // set this spot to taken
+            structure_grid[structure.location.x][structure.location.y] = true;
+        }
+
+        // loop through the source plans
+        for (let source_plan of plans.source_plans) {
+            // set this spot to taken
+            structure_grid[source_plan.container_location.x][source_plan.container_location.y] = true;
+        }
+
+        // loop through the mineral plans
+        for (let mineral_plan of plans.mineral_plans) {
+            // set this spot to taken
+            structure_grid[mineral_plan.container_location.x][mineral_plan.container_location.y] = true;
+        }
+
+        // return the final structure grid
+        return structure_grid;
     },
 };

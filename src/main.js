@@ -10,7 +10,7 @@ module.exports.loop = function () {
     // grab the MainMemory object
     let main_memory = Util.getMainMemory();
 
-    // wipe the memory if the build has changed
+    // if the main memory object is not defined or the build number has changed
     if (main_memory == undefined || main_memory.build != BUILD) {
         hlog("Build has changed, clearing memory...");
         // clear the old memory
@@ -19,13 +19,13 @@ module.exports.loop = function () {
         hlog("initializing MainMemory...");
         // initialize the MainMemory object
         Memory.main_memory = new MainMemory();
-        
+        // store the main memory object for usage in main
         main_memory = Util.getMainMemory();
         // grab one of the names of the spawns
         let spawn_name = Object.keys(Game.spawns)[0];
         // grab the room that spawn is in
         let room = Game.spawns[spawn_name].room;
-        // initialize the room data entry
+        // initialize the room data entry for the first room
         main_memory.room_data[room.name] = new RoomData(room, Game.spawns[spawn_name]);
     }
 
@@ -51,9 +51,7 @@ module.exports.loop = function () {
     // loop through all the structures
     for (let id in Game.structures) {
         // if it's a tower, terminal, or observer
-        if (Game.structures[id].structureType == STRUCTURE_TOWER ||
-            Game.structures[id].structureType == STRUCTURE_OBSERVER ||
-            Game.structures[id].structureType == STRUCTURE_TERMINAL) {
+        if (Game.structures[id].structureType == STRUCTURE_TOWER || Game.structures[id].structureType == STRUCTURE_OBSERVER || Game.structures[id].structureType == STRUCTURE_TERMINAL) {
             // run the structure
             Game.structures[id].run();
         }
@@ -67,16 +65,16 @@ module.exports.loop = function () {
 
         // if the room is a colony or expansion, run it
         if (room_data.type == COLONY || room_data.type == EXPANSION) {
+            // if the room is currently visible
             if (Game.rooms[name] != undefined) {
+                // run the room with the room reference
                 RoomRunner.run(room_data, Game.rooms[name]);
+                // render the visuals for the room
+                Visualizer.render(Game.rooms[name]);
             }else{
+                // run the room without the room reference
                 RoomRunner.run(room_data);
             }
-            // render the visuals for the room
-            if (Game.rooms[name] != undefined) {
-                Visualizer.render(Game.rooms[name]);
-            }
-            
         }
 
         // if the room died
@@ -93,7 +91,7 @@ module.exports.loop = function () {
     }
 
     hlog("Collecting garbage...");
-    // collect the creep's garbage
+    // collect the creep's garbage and generate pixels
     Util.collectGarbage();
     // print a nice tick summary
     Util.printSummary();
