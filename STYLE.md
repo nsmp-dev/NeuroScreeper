@@ -1,7 +1,7 @@
 # Style Guide
 
 ## Rules
-1. Raw Javascript only
+1. Raw JavaScript only
 2. No syntactic sugar
 3. No libraries
 4. No compilation
@@ -117,18 +117,18 @@ var TRI_STATE = {
 ```
 
 ### Tags
-- @extends - Indicate that a symbol inherits from, and adds to, a parent symbol.
-- @class - This function is intended to be called with the "new" keyword.
-- @classdesc - Use the following text to describe the entire class.
-- @constant - Document an object as a constant.
-- @enum - Document a collection of related properties.
-- @generator - Indicate that a function is a generator function.
-- @global - Document a global object.
-- @module - Document a JavaScript module.
-- @param - Document the parameter to a function.
-- @private - This symbol is meant to be private.
-- @returns - Document the return value of a function.
-- @static - Document a static member.
+- @extends—Indicate that a symbol inherits from, and adds to, a parent symbol.
+- @class—This function is intended to be called with the "new" keyword.
+- @classdesc—Use the following text to describe the entire class.
+- @constant—Document an object as a constant.
+- @enum—Document a collection of related properties.
+- @generator—Indicate that a function is a generator function.
+- @global—Document a global object.
+- @module—Document a JavaScript module.
+- @param—Document the parameter to a function.
+- @private—This symbol is meant to be private.
+- @returns—Document the return value of a function.
+- @static—Document a static member.
 
 # CHANGELOG.md formatting
 
@@ -146,17 +146,17 @@ var TRI_STATE = {
 
 ### Added
 
-- v1.1 Brazilian Portuguese translation.
-- v1.1 German Translation
+- Brazilian Portuguese translation.
+- German Translation
 
 ### Changed
 
-- Use formatter title & description in each language version template
-- Replace broken OpenGraph image with an...
+- Use title and description in each language version template
+- Replaced broken OpenGraph image with a thing
 
 ### Removed
 
-- Trademark sign previously shown after...
+- Trademark sign previously shown and is now no more
 
 ## [1.1.1] - 2023-03-05
 

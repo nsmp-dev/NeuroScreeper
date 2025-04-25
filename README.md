@@ -1,19 +1,19 @@
-# Screeps AI
+# NeuroScreeper
 Role-based, polished AI for the programming game Screeps.
 
 ## Features
-- robust, consistent, and role-based creep behaviour
+- robust, consistent, and role-based creep behavior
 - extensive prototyping, high-level management code
 - polished with many statistics, visuals, and monitoring systems
 - high safety and stability, no breaking errors
 - well documented and commented, for easy learning and forced rubber ducky effect
 - fully mechanically complete: uses all mechanics and systems in the game
-- raw Javascript only, no typescript, no libraries, no compilation, no obfuscation, no syntactic sugar
+- raw JavaScript only, no TypeScript, no libraries, no compilation, no obfuscation, no syntactic sugar
 
 ## Documentation
 [Click here for documentation](https://nsmp-dev.github.io/screeps/)
 ### Spawning
-Your first spawn must be placed with a clearance of 5 spaces to it's left, 6 to the top and bottom, and 7 to the right.
+Your first spawn must be placed with a clearance of 5 spaces to its left, 6 to the top and bottom, and 7 to the right.
 This allows for ample room for a base to be built in the first room.
 
 ## Visualizer

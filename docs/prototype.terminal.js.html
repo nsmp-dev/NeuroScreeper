@@ -30,25 +30,41 @@
  * move any ingredients to the capitol
  */
 StructureTerminal.prototype.moveIngredients = function () {
+    // get the MainMemory object
     let main_memory = Util.getMainMemory();
+    // hash of ingredients and their amounts found in the terminal
     let ingredients = {};
+    // grab the energy in the terminal
     let energy = this.store[RESOURCE_ENERGY];
 
+    // loop through the resources in the terminal's store
     for (let resource in this.store) {
+        // if the resource is an ingredient
         if (this.store[resource] > 0 &amp;&amp; INGREDIENTS.includes(resource)) {
+            // set the amount on the ingredient hash
             ingredients[resource] = this.store[resource];
         }
     }
 
+    // loop through the ingredients found
     for (let resource in ingredients) {
+        // grab the amount of that ingredient
         let amount = ingredients[resource];
+        // while the amount to send is not affordable
         while (amount > 1 &amp;&amp; energy &lt; Game.market.calcTransactionCost(amount, this.room.name, main_memory.capitol_room_name)) {
+            // lower the amount
             amount--;
         }
 
-        if (amount > 0) {
-            this.send(resource, amount, main_memory.capitol_room_name, 'Resources for the capitol');
-            return;
+        // if the amount is non-zero and affordable
+        if (amount > 0 &amp;&amp; Game.market.calcTransactionCost(amount, this.room.name, main_memory.capitol_room_name)) {
+            // send the transaction
+            let result = this.send(resource, amount, main_memory.capitol_room_name, 'Resources for the capitol');
+            // if the result of sending the resource was success
+            if (result == OK) {
+                // break the loop
+                break;
+            }
         }
     }
 };
@@ -57,26 +73,39 @@ StructureTerminal.prototype.moveIngredients = function () {
  * sell any excess energy and commodities
  */
 StructureTerminal.prototype.sellFinalProducts = function () {
+    // create a hash of the sellable resources
     let sellable_resources = {};
+    // grab the energy in the terminal
     let energy = this.store[RESOURCE_ENERGY];
 
+    // if the energy in the terminal is above the cap
     if (energy > TERMINAL_ENERGY_CAP) {
+        // add the excess energy to the sellable resources hash
         sellable_resources[RESOURCE_ENERGY] = energy - TERMINAL_ENERGY_CAP;
     }
 
+    // loop through the resources in the store
     for (let resource in this.store) {
+        // if the resource is a final product
         if (this.store[resource] > 0 &amp;&amp; FINAL_PRODUCTS.includes(resource)) {
+            // add the resource to the sellable resources hash
             sellable_resources[resource] = this.store[resource];
         }
     }
 
+    // loop through the sellable resources
     for (let resource in sellable_resources) {
+        // grab the amount of the resource
         let amount = sellable_resources[resource];
+        // grab all the orders for this resource
         let orders = Game.market.getAllOrders({type: ORDER_BUY, resourceType: resource});
+        // if no orders were found
         if (orders.length == 0) {
+            // break the loop
             break;
         }
 
+        // default the highest price order to the first one
         let highest = orders[0];
 
         // loop through the orders
@@ -90,26 +119,36 @@ StructureTerminal.prototype.sellFinalProducts = function () {
 
         // default the trading amount to the amount of the trade
         let trade_amount = highest.remainingAmount;
+        // if the trade amount is larger than the amount we have
         if (trade_amount > amount) {
-            // set the trade amount to the energy in the terminal
+            // set the trade amount to the amount in the terminal
             trade_amount = amount;
         }
 
+        // if the resource is energy
         if (resource == RESOURCE_ENERGY) {
-            // adjust trade amount based on cost
+            // while the trade amount is not affordable
             while (trade_amount > 1 &amp;&amp; (energy - trade_amount) &lt; Game.market.calcTransactionCost(trade_amount,this.room.name, highest.roomName)) {
+                // lower the trade amount
                 trade_amount--;
             }
         }else{
+            // while the trade amount is not affordable
             while (trade_amount > 1 &amp;&amp; energy &lt; Game.market.calcTransactionCost(trade_amount,this.room.name, highest.roomName)) {
+                // lower the trade amount
                 trade_amount--;
             }
         }
 
-
+        // if the trade amount is non-zero
         if (trade_amount > 0) {
-            this.send(resource, trade_amount, highest.roomName, 'Thanks!');
-            return;
+            // execute the deal
+            let result = Game.market.deal(highest.id, trade_amount, highest.roomName);
+            // if the transaction was successful
+            if (result == OK) {
+                // break the loop
+                break;
+            }
         }
     }
 };
@@ -148,6 +187,7 @@ StructureTerminal.prototype.buySubToken = function () {
  * run the terminal
  */
 StructureTerminal.prototype.run = function () {
+    // get the MainMemory object
     let main_memory = Util.getMainMemory();
     // if this room's terminal timer has not been initialized
     if (main_memory.terminal_timers[this.room.name] == undefined) {
@@ -163,10 +203,13 @@ StructureTerminal.prototype.run = function () {
         this.cooldown == 0) {
         // reset the sell timer
         main_memory.terminal_timers[this.room.name] = 0;
-        // sell any sellable resources
+        // sell any final products
         this.sellFinalProducts();
+        // buy any sub tokens
         this.buySubToken();
+        // if the capitol is set, and it is not this room
         if (main_memory.capitol_room_name != null &amp;&amp; Memory.capitol_room_name != this.room.name) {
+            // move any ingredients to the capitol room
             this.moveIngredients();
         }
     } else {
@@ -183,13 +226,13 @@ StructureTerminal.prototype.run = function () {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-PlantRunner.html">PlantRunner</a></li><li><a href="module-PowerManager.html">PowerManager</a></li><li><a href="module-PowerSquadRunner.html">PowerSquadRunner</a></li><li><a href="module-RoomManager.html">RoomManager</a></li><li><a href="module-RoomPlansFactory.html">RoomPlansFactory</a></li><li><a href="module-RoomRunner.html">RoomRunner</a></li><li><a href="module-TaskRunner.html">TaskRunner</a></li><li><a href="module-Timer.html">Timer</a></li><li><a href="module-Util.html">Util</a></li><li><a href="module-Visualizer.html">Visualizer</a></li></ul><h3>Classes</h3><ul><li><a href="AttackTask.html">AttackTask</a></li><li><a href="AttackerMemory.html">AttackerMemory</a></li><li><a href="BuildTask.html">BuildTask</a></li><li><a href="BuilderMemory.html">BuilderMemory</a></li><li><a href="ClaimTask.html">ClaimTask</a></li><li><a href="ClaimerMemory.html">ClaimerMemory</a></li><li><a href="CommodityCollectorMemory.html">CommodityCollectorMemory</a></li><li><a href="ConstructionPlan.html">ConstructionPlan</a></li><li><a href="CreepMemory.html">CreepMemory</a></li><li><a href="DepositTask.html">DepositTask</a></li><li><a href="DrillTask.html">DrillTask</a></li><li><a href="DrillerMemory.html">DrillerMemory</a></li><li><a href="GatherTask.html">GatherTask</a></li><li><a href="HarvestTask.html">HarvestTask</a></li><li><a href="HealTask.html">HealTask</a></li><li><a href="HealerMemory.html">HealerMemory</a></li><li><a href="IdleTask.html">IdleTask</a></li><li><a href="MainMemory.html">MainMemory</a></li><li><a href="MineralDrillerMemory.html">MineralDrillerMemory</a></li><li><a href="MineralPlan.html">MineralPlan</a></li><li><a href="MineralPopulation.html">MineralPopulation</a></li><li><a href="MineralTransporterMemory.html">MineralTransporterMemory</a></li><li><a href="MoveResourceTask.html">MoveResourceTask</a></li><li><a href="MoveRoomTask.html">MoveRoomTask</a></li><li><a href="ObserverLog.html">ObserverLog</a></li><li><a href="PlantData.html">PlantData</a></li><li><a href="Point.html">Point</a></li><li><a href="PowerAttackerMemory.html">PowerAttackerMemory</a></li><li><a href="PowerHealerMemory.html">PowerHealerMemory</a></li><li><a href="PowerSquad.html">PowerSquad</a></li><li><a href="PowerSquadPopulation.html">PowerSquadPopulation</a></li><li><a href="PowerTransporterMemory.html">PowerTransporterMemory</a></li><li><a href="Production.html">Production</a></li><li><a href="QueenMemory.html">QueenMemory</a></li><li><a href="Reaction.html">Reaction</a></li><li><a href="RenewOperatorTask.html">RenewOperatorTask</a></li><li><a href="RepairTask.html">RepairTask</a></li><li><a href="RepairerMemory.html">RepairerMemory</a></li><li><a href="ReserveTask.html">ReserveTask</a></li><li><a href="Role.html">Role</a></li><li><a href="RoomData.html">RoomData</a></li><li><a href="RoomPlans.html">RoomPlans</a></li><li><a href="RoomPopulation.html">RoomPopulation</a></li><li><a href="ScoutMemory.html">ScoutMemory</a></li><li><a href="SourcePlan.html">SourcePlan</a></li><li><a href="SourcePopulation.html">SourcePopulation</a></li><li><a href="Task.html">Task</a></li><li><a href="TimerEntry.html">TimerEntry</a></li><li><a href="TimerLog.html">TimerLog</a></li><li><a href="TransporterMemory.html">TransporterMemory</a></li><li><a href="UpgradeTask.html">UpgradeTask</a></li><li><a href="UpgraderMemory.html">UpgraderMemory</a></li></ul><h3>Global</h3><ul><li><a href="global.html#BUILD">BUILD</a></li><li><a href="global.html#COLONY">COLONY</a></li><li><a href="global.html#CONSTRUCTION_TIMER_LENGTH">CONSTRUCTION_TIMER_LENGTH</a></li><li><a href="global.html#COUNT_POPULATION_TIMER_LENGTH">COUNT_POPULATION_TIMER_LENGTH</a></li><li><a href="global.html#DEBUG_MODE">DEBUG_MODE</a></li><li><a href="global.html#EXPANSION">EXPANSION</a></li><li><a href="global.html#FACTORY_TIMER_LENGTH">FACTORY_TIMER_LENGTH</a></li><li><a href="global.html#FINAL_PRODUCTS">FINAL_PRODUCTS</a></li><li><a href="global.html#HIGHWAY">HIGHWAY</a></li><li><a href="global.html#INGREDIENTS">INGREDIENTS</a></li><li><a href="global.html#KEEPER_LAIR">KEEPER_LAIR</a></li><li><a href="global.html#LABS_TIMER_LENGTH">LABS_TIMER_LENGTH</a></li><li><a href="global.html#LOG_SIZE">LOG_SIZE</a></li><li><a href="global.html#NEW_ROOM_TIMER_LENGTH">NEW_ROOM_TIMER_LENGTH</a></li><li><a href="global.html#PLANT_STRUCTURES_TIMER_LENGTH">PLANT_STRUCTURES_TIMER_LENGTH</a></li><li><a href="global.html#POWER_SQUAD_TIMER">POWER_SQUAD_TIMER</a></li><li><a href="global.html#REQUEST_POPULATION_TIMER_LENGTH">REQUEST_POPULATION_TIMER_LENGTH</a></li><li><a href="global.html#ROLES">ROLES</a></li><li><a href="global.html#ROOM_CONSTRUCTION_SITE_LIMIT">ROOM_CONSTRUCTION_SITE_LIMIT</a></li><li><a href="global.html#SATISFACTION_LOG_SIZE">SATISFACTION_LOG_SIZE</a></li><li><a href="global.html#SATISFACTION_THRESHOLD">SATISFACTION_THRESHOLD</a></li><li><a href="global.html#SIGNATURE">SIGNATURE</a></li><li><a href="global.html#STATES">STATES</a></li><li><a href="global.html#TASK_TYPES">TASK_TYPES</a></li><li><a href="global.html#TERMINAL_ENERGY_CAP">TERMINAL_ENERGY_CAP</a></li><li><a href="global.html#TERMINAL_TIMER_LENGTH">TERMINAL_TIMER_LENGTH</a></li><li><a href="global.html#TOWER_MINIMUM_ENERGY">TOWER_MINIMUM_ENERGY</a></li><li><a href="global.html#USERNAME">USERNAME</a></li><li><a href="global.html#hlog">hlog</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-NeuroPlant.html">NeuroPlant</a></li><li><a href="module-NeuroPower.html">NeuroPower</a></li><li><a href="module-NeuroPowerSquad.html">NeuroPowerSquad</a></li><li><a href="module-NeuroRoom.html">NeuroRoom</a></li><li><a href="module-NeuroScreeper.html">NeuroScreeper</a></li><li><a href="module-NeuroTask.html">NeuroTask</a></li><li><a href="module-RoomPlansFactory.html">RoomPlansFactory</a></li><li><a href="module-Timer.html">Timer</a></li><li><a href="module-Util.html">Util</a></li><li><a href="module-Visualizer.html">Visualizer</a></li></ul><h3>Classes</h3><ul><li><a href="AttackTask.html">AttackTask</a></li><li><a href="AttackerMemory.html">AttackerMemory</a></li><li><a href="BuildTask.html">BuildTask</a></li><li><a href="BuilderMemory.html">BuilderMemory</a></li><li><a href="ClaimTask.html">ClaimTask</a></li><li><a href="ClaimerMemory.html">ClaimerMemory</a></li><li><a href="CommodityCollectorMemory.html">CommodityCollectorMemory</a></li><li><a href="ConstructionPlan.html">ConstructionPlan</a></li><li><a href="CreepMemory.html">CreepMemory</a></li><li><a href="DepositTask.html">DepositTask</a></li><li><a href="DrillTask.html">DrillTask</a></li><li><a href="DrillerMemory.html">DrillerMemory</a></li><li><a href="GatherTask.html">GatherTask</a></li><li><a href="HarvestTask.html">HarvestTask</a></li><li><a href="HealTask.html">HealTask</a></li><li><a href="HealerMemory.html">HealerMemory</a></li><li><a href="IdleTask.html">IdleTask</a></li><li><a href="MainMemory.html">MainMemory</a></li><li><a href="MineralDrillerMemory.html">MineralDrillerMemory</a></li><li><a href="MineralPlan.html">MineralPlan</a></li><li><a href="MineralPopulation.html">MineralPopulation</a></li><li><a href="MineralTransporterMemory.html">MineralTransporterMemory</a></li><li><a href="MoveResourceTask.html">MoveResourceTask</a></li><li><a href="MoveRoomTask.html">MoveRoomTask</a></li><li><a href="ObserverLog.html">ObserverLog</a></li><li><a href="PlantData.html">PlantData</a></li><li><a href="Point.html">Point</a></li><li><a href="PowerAttackerMemory.html">PowerAttackerMemory</a></li><li><a href="PowerHealerMemory.html">PowerHealerMemory</a></li><li><a href="PowerSquad.html">PowerSquad</a></li><li><a href="PowerSquadPopulation.html">PowerSquadPopulation</a></li><li><a href="PowerTransporterMemory.html">PowerTransporterMemory</a></li><li><a href="Production.html">Production</a></li><li><a href="QueenMemory.html">QueenMemory</a></li><li><a href="Reaction.html">Reaction</a></li><li><a href="RenewOperatorTask.html">RenewOperatorTask</a></li><li><a href="RepairTask.html">RepairTask</a></li><li><a href="RepairerMemory.html">RepairerMemory</a></li><li><a href="ReserveTask.html">ReserveTask</a></li><li><a href="Role.html">Role</a></li><li><a href="RoomData.html">RoomData</a></li><li><a href="RoomPlans.html">RoomPlans</a></li><li><a href="RoomPopulation.html">RoomPopulation</a></li><li><a href="ScoutMemory.html">ScoutMemory</a></li><li><a href="SourcePlan.html">SourcePlan</a></li><li><a href="SourcePopulation.html">SourcePopulation</a></li><li><a href="Task.html">Task</a></li><li><a href="TimerEntry.html">TimerEntry</a></li><li><a href="TimerLog.html">TimerLog</a></li><li><a href="TransporterMemory.html">TransporterMemory</a></li><li><a href="UpgradeTask.html">UpgradeTask</a></li><li><a href="UpgraderMemory.html">UpgraderMemory</a></li></ul><h3>Global</h3><ul><li><a href="global.html#BUILD">BUILD</a></li><li><a href="global.html#COLONY">COLONY</a></li><li><a href="global.html#CONSTRUCTION_TIMER_LENGTH">CONSTRUCTION_TIMER_LENGTH</a></li><li><a href="global.html#COUNT_POPULATION_TIMER_LENGTH">COUNT_POPULATION_TIMER_LENGTH</a></li><li><a href="global.html#DEBUG_MODE">DEBUG_MODE</a></li><li><a href="global.html#EXPANSION">EXPANSION</a></li><li><a href="global.html#FACTORY_TIMER_LENGTH">FACTORY_TIMER_LENGTH</a></li><li><a href="global.html#FINAL_PRODUCTS">FINAL_PRODUCTS</a></li><li><a href="global.html#HIGHWAY">HIGHWAY</a></li><li><a href="global.html#INGREDIENTS">INGREDIENTS</a></li><li><a href="global.html#KEEPER_LAIR">KEEPER_LAIR</a></li><li><a href="global.html#LABS_TIMER_LENGTH">LABS_TIMER_LENGTH</a></li><li><a href="global.html#LOG_SIZE">LOG_SIZE</a></li><li><a href="global.html#NEW_ROOM_TIMER_LENGTH">NEW_ROOM_TIMER_LENGTH</a></li><li><a href="global.html#PLANT_STRUCTURES_TIMER_LENGTH">PLANT_STRUCTURES_TIMER_LENGTH</a></li><li><a href="global.html#POWER_SQUAD_TIMER">POWER_SQUAD_TIMER</a></li><li><a href="global.html#REQUEST_POPULATION_TIMER_LENGTH">REQUEST_POPULATION_TIMER_LENGTH</a></li><li><a href="global.html#ROLES">ROLES</a></li><li><a href="global.html#ROOM_CONSTRUCTION_SITE_LIMIT">ROOM_CONSTRUCTION_SITE_LIMIT</a></li><li><a href="global.html#SATISFACTION_LOG_SIZE">SATISFACTION_LOG_SIZE</a></li><li><a href="global.html#SATISFACTION_THRESHOLD">SATISFACTION_THRESHOLD</a></li><li><a href="global.html#SIGNATURE">SIGNATURE</a></li><li><a href="global.html#STATES">STATES</a></li><li><a href="global.html#TASK_TYPES">TASK_TYPES</a></li><li><a href="global.html#TERMINAL_ENERGY_CAP">TERMINAL_ENERGY_CAP</a></li><li><a href="global.html#TERMINAL_TIMER_LENGTH">TERMINAL_TIMER_LENGTH</a></li><li><a href="global.html#TOWER_MINIMUM_ENERGY">TOWER_MINIMUM_ENERGY</a></li><li><a href="global.html#USERNAME">USERNAME</a></li><li><a href="global.html#announceTask">announceTask</a></li><li><a href="global.html#gatherEnergy">gatherEnergy</a></li><li><a href="global.html#getBuildTarget">getBuildTarget</a></li><li><a href="global.html#getDumpTarget">getDumpTarget</a></li><li><a href="global.html#getFillTarget">getFillTarget</a></li><li><a href="global.html#getNearestColony">getNearestColony</a></li><li><a href="global.html#getNearestStorage">getNearestStorage</a></li><li><a href="global.html#getQueenDumpTarget">getQueenDumpTarget</a></li><li><a href="global.html#getRepairTarget">getRepairTarget</a></li><li><a href="global.html#getTransporterTarget">getTransporterTarget</a></li><li><a href="global.html#hlog">hlog</a></li><li><a href="global.html#idle">idle</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Wed Apr 23 2025 16:00:05 GMT-0500 (Central Daylight Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Fri Apr 25 2025 12:57:08 GMT-0500 (Central Daylight Time)
 </footer>
 
 <script> prettyPrint(); </script>
