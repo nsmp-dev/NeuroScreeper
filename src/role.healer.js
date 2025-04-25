@@ -8,15 +8,16 @@ global.ROLES[HealerRole.name] = HealerRole;
  * HealerMemory class, storing data for a healer
  * @class HealerMemory
  */
-class HealerMemory extends CreepMemory{
+class HealerMemory extends CreepMemory {
     /**
      * creates an HealerMemory object
      * @param {string} room_name - The name of the room this creep is assigned to
      */
-    constructor(room_name){
+    constructor(room_name) {
         super(HealerRole.name, room_name);
     }
 }
+
 global.HealerMemory = HealerMemory;
 
 /**
@@ -38,7 +39,7 @@ Creep.prototype.runHealer = function () {
             this.memory.task = new HealTask(target);
             // announce the heal task
             this.announceTask();
-        }else{
+        } else {
             // assign a new idle task
             this.memory.task = new IdleTask(this.memory.room_name, 10);
             // announce the new task

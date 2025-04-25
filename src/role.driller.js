@@ -8,14 +8,14 @@ global.ROLES[DrillerRole.name] = DrillerRole;
  * DrillerMemory class, storing data for a driller
  * @class DrillerMemory
  */
-class DrillerMemory extends CreepMemory{
+class DrillerMemory extends CreepMemory {
     /**
      * creates an DrillerMemory object
      * @param {string} room_name - The name of the room this creep is assigned to
      * @param {string} source_id - The id of the assigned source
      * @param {Point} container_location - The location of the assigned container
      */
-    constructor(room_name, source_id, container_location){
+    constructor(room_name, source_id, container_location) {
         super(DrillerRole.name, room_name);
         /**
          * The id of the assigned source
@@ -29,6 +29,7 @@ class DrillerMemory extends CreepMemory{
         this.container_location = container_location;
     }
 }
+
 global.DrillerMemory = DrillerMemory;
 
 /**

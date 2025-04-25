@@ -1,6 +1,11 @@
 /**
- * handles logic for production and reactions
- * @module NeuroPlant
+ * This module handles the logic for the plant in a room.
+ * Subroutines are done periodically and never on the same tick, reducing average cpu time.
+ * It caches the ids of the labs and factory, accounting for losing structures and resetting the state.
+ * The plant uses two independent state machines for the labs and the factory.
+ * This allows them to work independently of each other, and the operator can load/unload one while the other is running.
+ * The state machines automatically detect destroyed structures or incorrect ingredients, resetting the state to cleaning.
+ * @namepace NeuroPlant
  */
 global.NeuroPlant = {
     /**
@@ -27,7 +32,7 @@ global.NeuroPlant = {
             if ((input_lab_1 != null && input_lab_1.store.getUsedCapacity() > 0) || (input_lab_2 != null && input_lab_2.store.getUsedCapacity() > 0) || (output_lab != null && output_lab.store.getUsedCapacity() > 0)) {
                 // set the plant to clean up the reaction
                 plant_data.labs_state = STATES.CLEANING;
-            }else{
+            } else {
                 // set the plant to idle
                 plant_data.labs_state = STATES.IDLE;
             }
@@ -98,7 +103,7 @@ global.NeuroPlant = {
                 if (output_lab.store[reaction.output] == reaction.amount) {
                     // set the labs to finished
                     plant_data.labs_state = STATES.FINISHED;
-                }else{
+                } else {
                     // run the reaction
                     output_lab.runReaction(input_lab_1, input_lab_2);
                 }
@@ -140,7 +145,7 @@ global.NeuroPlant = {
             if (factory != null && factory.store.getUsedCapacity() > 0) {
                 // set the factory to clean up the production
                 plant_data.factory_state = STATES.CLEANING;
-            }else{
+            } else {
                 // set the factory to idle
                 plant_data.factory_state = STATES.IDLE;
             }
@@ -274,7 +279,7 @@ global.NeuroPlant = {
             plant_data.input_lab_2_id = null;
             // clear the output lab id cache
             plant_data.output_lab_id = null;
-        }else{
+        } else {
             // store the first input lab id
             plant_data.input_lab_1_id = input_lab_1.id;
             // store the second input lab id
@@ -287,7 +292,7 @@ global.NeuroPlant = {
         if (factory == null || storage == undefined) {
             // clear the factory id cache
             plant_data.factory_id = null;
-        }else{
+        } else {
             // store the factory id
             plant_data.factory_id = factory.id;
         }
@@ -312,7 +317,7 @@ global.NeuroPlant = {
             hlog("Grabbing Plant Structures...");
             // cache the structure ids
             this.getStructures(plant_data, room);
-        }else{
+        } else {
             // increment the structure timer
             plant_data.structure_timer++;
         }
@@ -324,7 +329,7 @@ global.NeuroPlant = {
             hlog("Recalculating Reaction...");
             // request a reaction
             this.runLabs(plant_data, room);
-        }else{
+        } else {
             // increment the reaction timer
             plant_data.labs_timer++;
         }
@@ -336,7 +341,7 @@ global.NeuroPlant = {
             hlog("Recalculating Production...");
             // request a production
             this.runFactory(plant_data, room);
-        }else{
+        } else {
             // increment the production timer
             plant_data.factory_timer++;
         }

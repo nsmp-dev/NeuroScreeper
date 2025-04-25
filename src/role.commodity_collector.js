@@ -8,12 +8,12 @@ global.ROLES[CommodityCollectorRole.name] = CommodityCollectorRole;
  * CommodityCollectorMemory class, storing data for an attacker
  * @class CommodityCollectorMemory
  */
-class CommodityCollectorMemory extends CreepMemory{
+class CommodityCollectorMemory extends CreepMemory {
     /**
      * creates an CommodityCollectorMemory object
      * @param {string} room_name - The name of the room this creep is assigned to
      */
-    constructor(room_name){
+    constructor(room_name) {
         super(CommodityCollectorRole.name, room_name);
         /**
          * stores the rooms that have already been visited
@@ -27,6 +27,7 @@ class CommodityCollectorMemory extends CreepMemory{
         this.highway_queue = [];
     }
 }
+
 global.CommodityCollectorMemory = CommodityCollectorMemory;
 
 Creep.prototype.runCommodityCollector = function () {
@@ -44,13 +45,13 @@ Creep.prototype.runCommodityCollector = function () {
                 this.memory.task = new DepositTask(nearest_storage, resource, this.store[resource]);
                 // announce the deposit task
                 this.announceTask();
-            }else{
+            } else {
                 // assign a new idle task
                 this.memory.task = new IdleTask(this.room.name);
                 // announce the idle task
                 this.announceTask();
             }
-        }else{
+        } else {
             // grab the deposit in the room
             let deposit = this.pos.findClosestByPath(FIND_DEPOSITS);
             // if a deposit was found
@@ -59,7 +60,7 @@ Creep.prototype.runCommodityCollector = function () {
                 this.memory.task = new HarvestTask(this.room.name, deposit);
                 // announce the harvest task
                 this.announceTask();
-            }else{
+            } else {
                 // if the highway queue is empty
                 if (this.memory.highway_queue.length == 0) {
                     // get all the highways in the game
@@ -73,7 +74,7 @@ Creep.prototype.runCommodityCollector = function () {
                     this.memory.task = new IdleTask(this.room.name);
                     // announce the idle task
                     this.announceTask();
-                }else{
+                } else {
                     // shift the highway queue, storing the room name
                     let room_name = this.memory.highway_queue.shift();
                     // push the room onto the highway log

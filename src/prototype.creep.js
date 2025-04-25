@@ -13,7 +13,7 @@ let getTransporterTarget = function () {
         if (target != null) {
             // save the container id in memory
             this.memory.container_id = target.id;
-        }else{
+        } else {
             // remove the container id from memory
             this.memory.container_id = null;
         }
@@ -202,7 +202,7 @@ let getNearestStorage = function () {
             if (room_name == this.room.name) {
                 // return the storage
                 return Game.rooms[room_name].storage;
-            }else{
+            } else {
                 // add the storage to the list of storages
                 storages.push(Game.rooms[room_name].storage);
             }
@@ -281,7 +281,7 @@ let gatherEnergy = function () {
         this.memory.task = new GatherTask(target, RESOURCE_ENERGY);
         // announce the new task
         this.announceTask();
-    }else{
+    } else {
         // assign a new idle task
         this.memory.task = new IdleTask(this.memory.room_name, 10);
         // announce the new task

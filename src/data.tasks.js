@@ -21,6 +21,7 @@ class Task {
         this.room_name = room_name;
     }
 }
+
 global.Task = Task;
 
 /**
@@ -53,6 +54,7 @@ class GatherTask extends Task {
         this.amount = amount;
     }
 }
+
 global.GatherTask = GatherTask;
 
 /**
@@ -85,6 +87,7 @@ class DepositTask extends Task {
         this.amount = amount;
     }
 }
+
 global.DepositTask = DepositTask;
 
 /**
@@ -105,6 +108,7 @@ class BuildTask extends Task {
         this.construction_site = construction_site.id;
     }
 }
+
 global.BuildTask = BuildTask;
 
 /**
@@ -125,6 +129,7 @@ class RepairTask extends Task {
         this.structure = structure.id;
     }
 }
+
 global.RepairTask = RepairTask;
 
 /**
@@ -140,6 +145,7 @@ class UpgradeTask extends Task {
         super(TASK_TYPES.UPGRADE, room_name);
     }
 }
+
 global.UpgradeTask = UpgradeTask;
 
 /**
@@ -155,6 +161,7 @@ class ClaimTask extends Task {
         super(TASK_TYPES.CLAIM, room_name);
     }
 }
+
 global.ClaimTask = ClaimTask;
 
 /**
@@ -170,6 +177,7 @@ class ReserveTask extends Task {
         super(TASK_TYPES.RESERVE, room_name);
     }
 }
+
 global.ReserveTask = ReserveTask;
 
 /**
@@ -197,6 +205,7 @@ class DrillTask extends Task {
         this.container_location = container_location;
     }
 }
+
 global.DrillTask = DrillTask;
 
 /**
@@ -217,6 +226,7 @@ class AttackTask extends Task {
         this.target = target.id;
     }
 }
+
 global.AttackTask = AttackTask;
 
 /**
@@ -237,6 +247,7 @@ class HealTask extends Task {
         this.creep = creep.id;
     }
 }
+
 global.HealTask = HealTask;
 
 /**
@@ -257,6 +268,7 @@ class MoveRoomTask extends Task {
         this.timer = 0;
     }
 }
+
 global.MoveRoomTask = MoveRoomTask;
 
 /**
@@ -283,6 +295,7 @@ class RenewOperatorTask extends Task {
         this.previous_task = previous_task;
     }
 }
+
 global.RenewOperatorTask = RenewOperatorTask;
 
 /**
@@ -309,6 +322,7 @@ class IdleTask extends Task {
         this.tick_counter = 0;
     }
 }
+
 global.IdleTask = IdleTask;
 
 /**
@@ -353,6 +367,7 @@ class MoveResourceTask extends Task {
         this.state = STATES.FILLING;
     }
 }
+
 global.MoveResourceTask = MoveResourceTask;
 
 /**
@@ -374,4 +389,5 @@ class HarvestTask extends Task {
         this.target = target.id;
     }
 }
+
 global.HarvestTask = HarvestTask;

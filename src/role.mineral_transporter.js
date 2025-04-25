@@ -8,7 +8,7 @@ global.ROLES[MineralTransporterRole.name] = MineralTransporterRole;
  * MineralTransporterMemory class, storing data for a mineral transporter
  * @class MineralTransporterMemory
  */
-class MineralTransporterMemory extends CreepMemory{
+class MineralTransporterMemory extends CreepMemory {
     /**
      * creates an MineralTransporterMemory object
      * @param {string} room_name - The name of the room this creep is assigned to
@@ -16,7 +16,7 @@ class MineralTransporterMemory extends CreepMemory{
      * @param {Point} container_location - The location of the assigned container
      * @param {string} resource_type - The type of resource this mineral produces
      */
-    constructor(room_name, mineral_id, container_location, resource_type){
+    constructor(room_name, mineral_id, container_location, resource_type) {
         super(MineralTransporterRole.name, room_name);
         /**
          * The id of the assigned mineral
@@ -40,6 +40,7 @@ class MineralTransporterMemory extends CreepMemory{
         this.container_id = null;
     }
 }
+
 global.MineralTransporterMemory = MineralTransporterMemory;
 
 /**
@@ -55,21 +56,21 @@ Creep.prototype.runMineralTransporter = function () {
                 this.memory.task = new MoveRoomTask(this.memory.room_name);
                 // announce the move room task
                 this.announceTask();
-            }else{
+            } else {
                 let target = this.getTransporterTarget();
                 if (target != null) {
                     // assign a new gather task
                     this.memory.task = new GatherTask(target, this.memory.resource_type);
                     // announce the gather task
                     this.announceTask();
-                }else{
+                } else {
                     // assign a new idle task
                     this.memory.task = new IdleTask(this.memory.room_name, 10);
                     // announce the idle task
                     this.announceTask();
                 }
             }
-        }else{
+        } else {
             // grab the storage
             let storage = this.room.storage;
 
@@ -79,7 +80,7 @@ Creep.prototype.runMineralTransporter = function () {
                 this.memory.task = new IdleTask(this.memory.room_name, 10);
                 // announce the idle task
                 this.announceTask();
-            }else{
+            } else {
                 // assign a new deposit task
                 this.memory.task = new DepositTask(storage, this.memory.resource_type);
                 // announce the deposit task

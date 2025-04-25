@@ -2,6 +2,14 @@
 
 ## [Unreleased]
 
+## [0.3.1] - 2025-04-25
+
+## Changed
+- documentation updates
+- bug fixes
+- name changes to fit the theme of the new name
+- documentation grammar updates
+
 ## [0.3.0] - 2025-04-23
 
 ## Added

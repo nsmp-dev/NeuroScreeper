@@ -8,15 +8,16 @@ global.ROLES[AttackerRole.name] = AttackerRole;
  * AttackerMemory class, storing data for an attacker
  * @class AttackerMemory
  */
-class AttackerMemory extends CreepMemory{
+class AttackerMemory extends CreepMemory {
     /**
      * creates an AttackerMemory object
      * @param {string} room_name - The name of the room this creep is assigned to
      */
-    constructor(room_name){
+    constructor(room_name) {
         super(AttackerRole.name, room_name);
     }
 }
+
 global.AttackerMemory = AttackerMemory;
 
 /**
@@ -35,7 +36,7 @@ Creep.prototype.runAttacker = function () {
             this.memory.task = new AttackTask(target);
             // announce the attack task
             this.announceTask();
-        }else{
+        } else {
             // assign a new idle task
             this.memory.task = new IdleTask(this.memory.room_name, 10);
             // announce the idle task

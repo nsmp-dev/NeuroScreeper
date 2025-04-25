@@ -8,14 +8,14 @@ global.ROLES[MineralDrillerRole.name] = MineralDrillerRole;
  * MineralDrillerMemory class, storing data for a mineral driller
  * @class MineralDrillerMemory
  */
-class MineralDrillerMemory extends CreepMemory{
+class MineralDrillerMemory extends CreepMemory {
     /**
      * creates an MineralDrillerMemory object
      * @param {string} room_name - The name of the room this creep is assigned to
      * @param {string} mineral_id - The id of the assigned mineral
      * @param {Point} container_location - The location of the assigned container
      */
-    constructor(room_name, mineral_id, container_location){
+    constructor(room_name, mineral_id, container_location) {
         super(MineralDrillerRole.name, room_name);
         /**
          * The id of the assigned mineral
@@ -29,6 +29,7 @@ class MineralDrillerMemory extends CreepMemory{
         this.container_location = container_location;
     }
 }
+
 global.MineralDrillerMemory = MineralDrillerMemory;
 
 /**

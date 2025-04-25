@@ -1,6 +1,6 @@
 /**
  * contains logic for running a room, using a room data object for storage
- * @module NeuroRoom
+ * @namepace NeuroRoom
  */
 global.NeuroRoom = {
     /**
@@ -9,7 +9,7 @@ global.NeuroRoom = {
      * @param {CreepMemory} creep_memory - creep memory to spawn
      * @param {Boolean} is_global - flag to spawn globally
      */
-    spawnRole: function(room_name, creep_memory, is_global = false){
+    spawnRole: function (room_name, creep_memory, is_global = false) {
         // default success to false
         let success = false;
         /**
@@ -22,7 +22,7 @@ global.NeuroRoom = {
          * @type {Role}
          */
         let role = ROLES[creep_memory.role];
-    
+
         // loop through the spawns we own
         for (let name in Game.spawns) {
             // if this spawn is in the room,
@@ -35,7 +35,7 @@ global.NeuroRoom = {
                 spawns.push(Game.spawns[name]);
             }
         }
-    
+
         // if there are any usable spawns
         if (spawns.length > 0) {
             // if we are spawning globally
@@ -54,7 +54,7 @@ global.NeuroRoom = {
                     // flag the spawn as a test run
                     dryRun: true,
                 });
-    
+
                 // if the test run was a success
                 if (result == OK) {
                     // actually spawn the creep
@@ -68,7 +68,7 @@ global.NeuroRoom = {
                 }
             }
         }
-    
+
         // return the result
         return success;
     },
@@ -130,7 +130,7 @@ global.NeuroRoom = {
         let site_count = 0;
 
         // if the room is visible
-        if (room != null){
+        if (room != null) {
             // count the construction sites
             site_count = room.find(FIND_MY_CONSTRUCTION_SITES).length;
         }
@@ -151,7 +151,7 @@ global.NeuroRoom = {
                 filter: structure => structure.hits < structure.hitsMax,
             }).length;
         }
-        
+
         // check if a repairer is needed
         if (structure_count > 0 && pop.roles[RepairerRole.name] < 1) {
             // request a repairer
@@ -193,7 +193,7 @@ global.NeuroRoom = {
                     ));
                 }
             }
-            
+
             // assume there are no observers
             let observer_count = 0;
 
@@ -265,7 +265,7 @@ global.NeuroRoom = {
         if (room_data.type == COLONY) {
             // attempt to spawn a creep locally
             success = this.spawnRole(room_data.room_name, room_data.requested_creeps[0]);
-        }else{
+        } else {
             // attempt to spawn a creep globally
             success = this.spawnRole(room_data.room_name, room_data.requested_creeps[0], true);
         }
@@ -306,7 +306,7 @@ global.NeuroRoom = {
                 // mark the room as dead
                 room_data.dead = true;
             }
-        }else{
+        } else {
             // if the room is visible and owned
             if (room != null && room.controller.my) {
                 // mark the room as owned

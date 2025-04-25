@@ -8,15 +8,16 @@ global.ROLES[ClaimerRole.name] = ClaimerRole;
  * ClaimerMemory class, storing data for a claimer
  * @class ClaimerMemory
  */
-class ClaimerMemory extends CreepMemory{
+class ClaimerMemory extends CreepMemory {
     /**
      * creates an ClaimerMemory object
      * @param {string} room_name - The name of the room this creep is assigned to
      */
-    constructor(room_name){
+    constructor(room_name) {
         super(ClaimerRole.name, room_name);
     }
 }
+
 global.ClaimerMemory = ClaimerMemory;
 
 /**
@@ -33,7 +34,7 @@ Creep.prototype.runClaimer = function () {
             this.memory.task = new ClaimTask(this.memory.room_name);
             // announce the claim task
             this.announceTask();
-        }else{
+        } else {
             // assign a new reserve task
             this.memory.task = new ReserveTask(this.memory.room_name);
             // announce the reserve task

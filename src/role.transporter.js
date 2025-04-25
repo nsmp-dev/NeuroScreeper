@@ -8,14 +8,14 @@ global.ROLES[TransporterRole.name] = TransporterRole;
  * TransporterMemory class, storing data for an attacker
  * @class TransporterMemory
  */
-class TransporterMemory extends CreepMemory{
+class TransporterMemory extends CreepMemory {
     /**
      * creates an TransporterMemory object
      * @param {string} room_name - The name of the room this creep is assigned to
      * @param {string} source_id - The name of the room this creep is assigned to
      * @param {Point} container_location - The name of the room this creep is assigned to
      */
-    constructor(room_name, source_id, container_location){
+    constructor(room_name, source_id, container_location) {
         super(TransporterRole.name, room_name);
         /**
          * type of task being created
@@ -39,6 +39,7 @@ class TransporterMemory extends CreepMemory{
         this.nearest_colony_name = null;
     }
 }
+
 global.TransporterMemory = TransporterMemory;
 
 /**
@@ -58,13 +59,13 @@ Creep.prototype.runTransporter = function () {
                 this.memory.task = new IdleTask(this.memory.room_name, 10);
                 // announce the new task
                 this.announceTask();
-            }else{
+            } else {
                 // assign a new gather task
                 this.memory.task = new GatherTask(target, RESOURCE_ENERGY);
                 // announce the gather task
                 this.announceTask();
             }
-        }else{
+        } else {
             // if we are in the room of the nearest colony
             if (this.room.name == this.memory.nearest_colony_name) {
                 // remove the nearest colony name
@@ -77,13 +78,13 @@ Creep.prototype.runTransporter = function () {
                     this.memory.task = new DepositTask(target, RESOURCE_ENERGY);
                     // announce the deposit task
                     this.announceTask();
-                }else{
+                } else {
                     // assign a new idle task
                     this.memory.task = new IdleTask(this.memory.room_name, 10);
                     // announce the idle task
                     this.announceTask();
                 }
-            }else{
+            } else {
                 // store the nearest colony name
                 this.memory.nearest_colony_name = this.getNearestColony();
                 // assign a new MoveRoomTask

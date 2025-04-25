@@ -86,14 +86,14 @@ class RoomData {
          * @type {Boolean}
          */
         this.has_been_owned = false;
-        
+
         // if the initial spawn was provided
         if (initial_spawn != null) {
             // plan the first room
             RoomPlansFactory.planFirstRoom(room, this.plans, initial_spawn);
             // set it to be a colony
             this.type = COLONY;
-        }else{
+        } else {
             // plan the room normally
             RoomPlansFactory.planRoom(room, this.plans);
         }
@@ -113,11 +113,11 @@ class RoomData {
             if (source_keeper_lairs.length > 0) {
                 // set the type to a keeper lair
                 this.type = KEEPER_LAIR;
-            }else{
+            } else {
                 // set the type to a highway
                 this.type = HIGHWAY;
             }
-        }else{
+        } else {
             // if there's more than one source, the room can be an expansion
             this.possible_expansion = (
                 // if there's more than one source
@@ -132,9 +132,10 @@ class RoomData {
             // initialize the plant data
             this.plant_data = new PlantData(this.plans);
         }
-        
+
         Timer.stop("creating_room_data");
     }
 }
+
 // export the RoomData class
 global.RoomData = RoomData;

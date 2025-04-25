@@ -1,6 +1,6 @@
 {
   "name": "neuro-screeper",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "A Screeps AI",
   "main": "main.js",
   "scripts": {

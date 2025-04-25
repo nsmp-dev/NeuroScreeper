@@ -8,12 +8,12 @@ global.ROLES[ScoutRole.name] = ScoutRole;
  * ScoutMemory class, storing data for an attacker
  * @class ScoutMemory
  */
-class ScoutMemory extends CreepMemory{
+class ScoutMemory extends CreepMemory {
     /**
      * creates an ScoutMemory object
      * @param {string} room_name - The name of the room this creep is assigned to
      */
-    constructor(room_name){
+    constructor(room_name) {
         super(ScoutRole.name, room_name);
         /**
          * type of task being created
@@ -25,7 +25,7 @@ class ScoutMemory extends CreepMemory{
          * @type {string[]}
          */
         this.room_log = [];
-        
+
         // find the adjacent rooms
         let adjacent_rooms = Game.rooms[room_name].getAdjacentRooms();
 
@@ -36,6 +36,7 @@ class ScoutMemory extends CreepMemory{
         }
     }
 }
+
 global.ScoutMemory = ScoutMemory;
 
 /**
@@ -44,7 +45,7 @@ global.ScoutMemory = ScoutMemory;
 Creep.prototype.runScout = function () {
     // if we don't have a task currently assigned
     if (this.memory.task == null) {
-        
+
         // shift the queue
         if (this.memory.room_queue[0] == this.room.name) {
             // grab the room name from the front of the queue
@@ -59,10 +60,10 @@ Creep.prototype.runScout = function () {
                 // reset the room log
                 this.memory.room_log = [];
             }
-            
+
             // find the adjacent rooms
             let adjacent_rooms = this.room.getAdjacentRooms();
-    
+
             // loop through the adjacent rooms
             for (let room_name of adjacent_rooms) {
                 // if the room name is not already in the log or the queue
@@ -72,14 +73,14 @@ Creep.prototype.runScout = function () {
                 }
             }
         }
-        
+
         // if there are still rooms in the queue
         if (this.memory.room_queue.length > 0) {
             // assign a new MoveRoomTask
             this.memory.task = new MoveRoomTask(this.memory.room_queue[0]);
             // announce the MoveRoomTask
             this.announceTask();
-        }else{
+        } else {
             // assign a new idle task
             this.memory.task = new IdleTask(this.room.name, 10);
             // announce the idle task

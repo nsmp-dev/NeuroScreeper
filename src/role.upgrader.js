@@ -8,15 +8,16 @@ global.ROLES[UpgraderRole.name] = UpgraderRole;
  * UpgraderMemory class, storing data for an attacker
  * @class UpgraderMemory
  */
-class UpgraderMemory extends CreepMemory{
+class UpgraderMemory extends CreepMemory {
     /**
      * creates an UpgraderMemory object
      * @param {string} room_name - The name of the room this creep is assigned to
      */
-    constructor(room_name){
+    constructor(room_name) {
         super(UpgraderRole.name, room_name);
     }
 }
+
 global.UpgraderMemory = UpgraderMemory;
 
 /**
@@ -29,7 +30,7 @@ Creep.prototype.runUpgrader = function () {
         if (this.store[RESOURCE_ENERGY] == 0) {
             // gather some energy
             this.gatherEnergy();
-        }else{
+        } else {
             // assign a new upgrade task
             this.memory.task = new UpgradeTask(this.room.name);
             // announce the upgrade task

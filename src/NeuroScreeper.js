@@ -1,6 +1,6 @@
 /**
  * Handles scanning and adding new rooms
- * @module NeuroScreeper
+ * @namepace NeuroScreeper
  */
 global.NeuroScreeper = {
     /**

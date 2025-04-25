@@ -8,15 +8,16 @@ global.ROLES[RepairerRole.name] = RepairerRole;
  * RepairerMemory class, storing data for an attacker
  * @class RepairerMemory
  */
-class RepairerMemory extends CreepMemory{
+class RepairerMemory extends CreepMemory {
     /**
      * creates an RepairerMemory object
      * @param {string} room_name - The name of the room this creep is assigned to
      */
-    constructor(room_name){
+    constructor(room_name) {
         super(RepairerRole.name, room_name);
     }
 }
+
 global.RepairerMemory = RepairerMemory;
 
 /**
@@ -29,7 +30,7 @@ Creep.prototype.runRepairer = function () {
         if (this.store[RESOURCE_ENERGY] == 0) {
             // gather some energy
             this.gatherEnergy();
-        }else{
+        } else {
             // find a new repair target
             let target = this.getRepairTarget();
             // if a target was found
@@ -38,7 +39,7 @@ Creep.prototype.runRepairer = function () {
                 this.memory.task = new RepairTask(target);
                 // announce the repair task
                 this.announceTask();
-            }else{
+            } else {
                 // find a new build target
                 let build_target = this.getBuildTarget();
                 // if a target was found
@@ -47,7 +48,7 @@ Creep.prototype.runRepairer = function () {
                     this.memory.task = new BuildTask(build_target);
                     // announce the build task
                     this.announceTask();
-                }else{
+                } else {
                     // assign a new upgrade task
                     this.memory.task = new UpgradeTask(this.memory.room_name);
                     // announce the upgrade task

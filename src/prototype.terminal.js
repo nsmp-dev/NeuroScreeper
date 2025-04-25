@@ -100,13 +100,13 @@ StructureTerminal.prototype.sellFinalProducts = function () {
         // if the resource is energy
         if (resource == RESOURCE_ENERGY) {
             // while the trade amount is not affordable
-            while (trade_amount > 1 && (energy - trade_amount) < Game.market.calcTransactionCost(trade_amount,this.room.name, highest.roomName)) {
+            while (trade_amount > 1 && (energy - trade_amount) < Game.market.calcTransactionCost(trade_amount, this.room.name, highest.roomName)) {
                 // lower the trade amount
                 trade_amount--;
             }
-        }else{
+        } else {
             // while the trade amount is not affordable
-            while (trade_amount > 1 && energy < Game.market.calcTransactionCost(trade_amount,this.room.name, highest.roomName)) {
+            while (trade_amount > 1 && energy < Game.market.calcTransactionCost(trade_amount, this.room.name, highest.roomName)) {
                 // lower the trade amount
                 trade_amount--;
             }

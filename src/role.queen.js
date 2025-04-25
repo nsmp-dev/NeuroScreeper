@@ -8,15 +8,16 @@ global.ROLES[QueenRole.name] = QueenRole;
  * QueenMemory class, storing data for an attacker
  * @class QueenMemory
  */
-class QueenMemory extends CreepMemory{
+class QueenMemory extends CreepMemory {
     /**
      * creates an QueenMemory object
      * @param {string} room_name - The name of the room this creep is assigned to
      */
-    constructor(room_name){
+    constructor(room_name) {
         super(QueenRole.name, room_name);
     }
 }
+
 global.QueenMemory = QueenMemory;
 
 /**
@@ -40,7 +41,7 @@ Creep.prototype.runQueen = function () {
                 this.memory.task = new IdleTask(this.memory.room_name, 10);
                 // announce the idle task
                 this.announceTask();
-            }else{
+            } else {
                 // if this room is the capitol
                 if (this.room.name == main_memory.capitol_room_name) {
                     // loop through the resources in the storage
@@ -73,7 +74,7 @@ Creep.prototype.runQueen = function () {
                         // announce the idle task
                         this.announceTask();
                     }
-                }else{
+                } else {
                     // if the terminal is built
                     if (terminal != undefined) {
                         // loop through the resources in the storage
@@ -86,7 +87,7 @@ Creep.prototype.runQueen = function () {
                                 this.announceTask();
                             }
                         }
-                    }else{
+                    } else {
                         // assign a new idle task
                         this.memory.task = new IdleTask(this.room.name);
                         // announce the idle task
@@ -116,7 +117,7 @@ Creep.prototype.runQueen = function () {
                         this.memory.task = new MoveResourceTask(this.room.name, storage, target, RESOURCE_ENERGY, amount);
                         // announce the MoveResourceTask
                         this.announceTask();
-                    }else{
+                    } else {
                         // assign a new idle task
                         this.memory.task = new IdleTask(this.room.name);
                         // announce the idle task
@@ -124,7 +125,7 @@ Creep.prototype.runQueen = function () {
                     }
                 }
             }
-        }else{
+        } else {
             // grab the storage
             let storage = this.room.storage;
             // if the storage is built
@@ -146,7 +147,7 @@ Creep.prototype.runQueen = function () {
                     // announce the idle task
                     this.announceTask();
                 }
-            }else{
+            } else {
                 // assign a new idle task
                 this.memory.task = new IdleTask(this.room.name);
                 // announce the idle task

@@ -11,8 +11,6 @@ NeuroScreeper
 - watch each role for a while, making sure they spawn and behave properly
 
 ## Documentation and comments
-- polish all the comments and JSDoc descriptions/types
-- regenerate the JSDoc site
 - look at themes for JSDoc
 - flesh out the documentation Markdown files
 

@@ -1,6 +1,6 @@
 /**
  * Factory that assists in filling out room plans
- * @module RoomPlansFactory
+ * @namespace RoomPlansFactory
  */
 global.RoomPlansFactory = {
     /**

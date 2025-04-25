@@ -1,5 +1,5 @@
 // load all the files using a bootloader script
-require('global.bootloader');
+require('data.bootloader');
 
 // the main loop that gets run every tick
 module.exports.loop = function () {
@@ -71,7 +71,7 @@ module.exports.loop = function () {
                 NeuroRoom.run(room_data, Game.rooms[name]);
                 // render the visuals for the room
                 Visualizer.render(Game.rooms[name]);
-            }else{
+            } else {
                 // run the room without the room reference
                 NeuroRoom.run(room_data);
             }

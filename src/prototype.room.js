@@ -35,9 +35,9 @@ Room.prototype.getClearArea = function (width, height, plans) {
             // if the entire area is clear
             if (clear) {
                 // get the center X coordinate
-                let tx = (x + Math.floor(width/2)) - 25;
+                let tx = (x + Math.floor(width / 2)) - 25;
                 // get the center Y coordinate
-                let ty = (y + Math.floor(height/2)) - 25;
+                let ty = (y + Math.floor(height / 2)) - 25;
                 // add the location to the list of clear spots
                 clear_spots.push({
                     // the X coordinate of the area
@@ -425,7 +425,7 @@ Room.prototype.getPowerSpawn = function () {
     if (power_spawns.length > 0) {
         // return the first power spawn
         return power_spawns[0];
-    }else{
+    } else {
         // return null since we didn't find any power spawns
         return null;
     }

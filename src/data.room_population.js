@@ -53,5 +53,6 @@ class RoomPopulation {
         }
     }
 }
+
 // export the RoomPopulation class
 global.RoomPopulation = RoomPopulation;

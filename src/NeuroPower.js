@@ -1,6 +1,6 @@
 /**
  * Takes care of running power spawns and spawning, upgrading, and running the operator
- * @module NeuroPower
+ * @namepace NeuroPower
  */
 global.NeuroPower = {
     /**
@@ -45,7 +45,7 @@ global.NeuroPower = {
             }
         }
         // if we have not created an operator before, and we have the level needed for it
-        if (Game.powerCreeps["operator"] == undefined && Game.gpl.level > 0 ) {
+        if (Game.powerCreeps["operator"] == undefined && Game.gpl.level > 0) {
             hlog("Creating PowerCreep...");
             // create the operator power creep
             PowerCreep.create("operator", POWER_CLASS.OPERATOR);
@@ -79,7 +79,7 @@ global.NeuroPower = {
                     operator.spawn(capitol_power_spawn);
                 }
             }
-        }else{
+        } else {
             // if the operator is lower level than the GPL
             if (operator.level < Game.gpl.level) {
                 hlog("Upgrading PowerCreep...");

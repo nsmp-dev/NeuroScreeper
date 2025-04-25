@@ -140,7 +140,7 @@ let hlog = function (value, label = null) {
         if (label != null) {
             // print the variable with a label
             console.log(label + ": " + str);
-        }else{
+        } else {
             // print the variable
             console.log(str);
         }

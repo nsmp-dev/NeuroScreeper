@@ -1,6 +1,6 @@
 /**
  * visualizer module that displays various stats and populations in the relevant rooms
- * @module Visualizer
+ * @namespace Visualizer
  */
 global.Visualizer = {
     /**
@@ -14,7 +14,7 @@ global.Visualizer = {
         if (main_memory.timers["main"] != undefined) {
             // grab the times from the timer log
             let times = main_memory.timers["main"].log;
-    
+
             // loop through all the times
             for (let i = 0; i < times.length; i++) {
                 // get the height of the bar for the bar graph

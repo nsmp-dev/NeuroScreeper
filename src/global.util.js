@@ -1,6 +1,6 @@
 /**
  * commonly used helper functions
- * @module Util
+ * @namespace Util
  */
 global.Util = {
     /**
@@ -293,7 +293,7 @@ global.Util = {
         // get the distance between the y coordinates
         let y = b.y - b.y;
         // return the hypotenuse of the two points
-        return Math.sqrt( (x * x) + (y * y) );
+        return Math.sqrt((x * x) + (y * y));
     },
     /**
      * gets a 2D grid of the blocking structures from a RoomPlans object

@@ -37,8 +37,8 @@ PowerCreep.prototype.runOperator = function (plant_data) {
                     }
                 }
             }
-        // if the labs are cleaning or finished
-        }else if (plant_data.labs_state == STATES.CLEANING || plant_data.labs_state == STATES.FINISHED){
+            // if the labs are cleaning or finished
+        } else if (plant_data.labs_state == STATES.CLEANING || plant_data.labs_state == STATES.FINISHED) {
             // make an array of the lab ids
             let labs = [plant_data.input_lab_1_id, plant_data.input_lab_2_id, plant_data.output_lab_id];
             // loop through the labs
@@ -66,8 +66,8 @@ PowerCreep.prototype.runOperator = function (plant_data) {
                     }
                 }
             }
-        // if the factory is loading
-        }else if (plant_data.factory_state == STATES.LOADING){
+            // if the factory is loading
+        } else if (plant_data.factory_state == STATES.LOADING) {
             // grab the current production
             let production = plant_data.current_production;
             // grab the factory
@@ -88,8 +88,8 @@ PowerCreep.prototype.runOperator = function (plant_data) {
                     }
                 }
             }
-        // if the labs are loading
-        }else if (plant_data.labs_state == STATES.LOADING){
+            // if the labs are loading
+        } else if (plant_data.labs_state == STATES.LOADING) {
             // grab the current reaction
             let reaction = plant_data.current_reaction;
             // grab the first input lab
@@ -104,15 +104,15 @@ PowerCreep.prototype.runOperator = function (plant_data) {
                     this.memory.task = new MoveResourceTask(this.room.name, this.room.storage, input_lab_1, reaction.input_1, (reaction.amount - input_lab_1.store[reaction.input_1]));
                     // announce the MoveResourceTask
                     this.announceTask();
-                // if the second input lab does not have enough of the required resource
-                }else if (input_lab_2.store[reaction.input_2] == undefined || input_lab_2.store[reaction.input_2] < reaction.amount) {
+                    // if the second input lab does not have enough of the required resource
+                } else if (input_lab_2.store[reaction.input_2] == undefined || input_lab_2.store[reaction.input_2] < reaction.amount) {
                     // assign a MoveResourceTask
                     this.memory.task = new MoveResourceTask(this.room.name, this.room.storage, input_lab_2, reaction.input_2, (reaction.amount - input_lab_2.store[reaction.input_2]));
                     // announce the MoveResourceTask
                     this.announceTask();
                 }
             }
-        }else{
+        } else {
             // assign a new IdleTask
             this.memory.task = new IdleTask(this.room.name);
             // announce the IdleTask

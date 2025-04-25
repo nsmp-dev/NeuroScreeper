@@ -1,6 +1,6 @@
 /**
  * contains logic for running a power squad, using a PowerSquad object for storage
- * @module NeuroPowerSquad
+ * @namepace NeuroPowerSquad
  */
 global.NeuroPowerSquad = {
     /**
@@ -71,7 +71,7 @@ global.NeuroPowerSquad = {
                 power_transporter = found_power_transporter;
                 // set the power squad to searching
                 power_squad.state = STATES.SEARCHING;
-            }else{
+            } else {
                 // invalidate the power attacker cache
                 power_squad.power_attacker = null;
                 // invalidate the power healer cache
@@ -93,7 +93,7 @@ global.NeuroPowerSquad = {
                 if (power_squad.highway_log.length > 0) {
                     // push a room from the log onto the queue
                     power_squad.highway_queue.push(power_squad.highway_log.shift());
-                }else{
+                } else {
                     // set the power squad to idle
                     power_squad.state = STATES.IDLE;
                     // exit the function
@@ -105,32 +105,32 @@ global.NeuroPowerSquad = {
                 // shift the next room in the queue onto the log
                 power_squad.highway_log.push(power_squad.highway_queue.shift());
                 // find any power banks in the room
-                let power_banks = this.room.find(FIND_STRUCTURES, { filter: { structureType: STRUCTURE_POWER_BANK } });
+                let power_banks = this.room.find(FIND_STRUCTURES, {filter: {structureType: STRUCTURE_POWER_BANK}});
                 // if any power banks are found
                 if (power_banks.length > 0) {
                     // set the power squad to collectins
                     power_squad.state = STATES.COLLECTING;
                 }
             }
-        // if the power squad is collecting
-        }else if (power_squad.state == STATES.COLLECTING) {
+            // if the power squad is collecting
+        } else if (power_squad.state == STATES.COLLECTING) {
             // if the power transporter is full
             if (power_transporter.store.getUsedCapacity() == 0) {
                 // set the power squad's return room to the nearest colony
                 power_squad.return_room_name = power_transporter.getNearestColony();
                 // set the power squad to returning
                 power_squad.state = STATES.RETURNING;
-            }else{
+            } else {
                 // find any power banks in the room
-                let power_banks = this.room.find(FIND_STRUCTURES, { filter: { structureType: STRUCTURE_POWER_BANK } });
+                let power_banks = this.room.find(FIND_STRUCTURES, {filter: {structureType: STRUCTURE_POWER_BANK}});
                 // if any power banks are found
                 if (power_banks.length == 0) {
                     // set the power squad to searching
                     power_squad.state = STATES.SEARCHING;
                 }
             }
-        // if the power squad is returning
-        }else if (power_squad.state == STATES.RETURNING) {
+            // if the power squad is returning
+        } else if (power_squad.state == STATES.RETURNING) {
             // if the power transporter is empty
             if (power_transporter.store.getUsedCapacity() == 0) {
                 // set the power squad to searching

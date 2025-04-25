@@ -1,6 +1,6 @@
 /**
  * runs a task attached to the provided creep
- * @module NeuroTask
+ * @namepace NeuroTask
  */
 global.NeuroTask = {
     /**
@@ -13,26 +13,26 @@ global.NeuroTask = {
         if (creep.room.name != task.room_name) {
             // move to the room for the task
             creep.moveTo(new RoomPosition(25, 25, task.room_name));
-        // if the creep has enough of the requested resource or is full
-        }else if ((task.amount != null && creep.store[task.resource] >= task.amount) || creep.store.getFreeCapacity(task.resource) == 0) {
+            // if the creep has enough of the requested resource or is full
+        } else if ((task.amount != null && creep.store[task.resource] >= task.amount) || creep.store.getFreeCapacity(task.resource) == 0) {
             // clear the task
             creep.memory.task = null;
-        }else{
+        } else {
             // grab the target
             let target = Game.getObjectById(task.target);
             // if the target is no longer valid
             if (target == null) {
                 // clear the task
                 creep.memory.task = null;
-            // if the target is a resource
-            }else if (target instanceof Resource) {
+                // if the target is a resource
+            } else if (target instanceof Resource) {
                 // if attempting to pick up the resource results in not being in range
                 if (creep.pickup(target) == ERR_NOT_IN_RANGE) {
                     // move to the resource
                     creep.moveTo(target);
                 }
-            // if the target is a structure that has a store
-            }else if (target instanceof StructureContainer ||
+                // if the target is a structure that has a store
+            } else if (target instanceof StructureContainer ||
                 target instanceof StructureStorage ||
                 target instanceof StructureTerminal ||
                 target instanceof StructureLab ||
@@ -41,14 +41,14 @@ global.NeuroTask = {
                 if (target.store[task.resource] == 0) {
                     // clear the task
                     creep.memory.task = null;
-                // if the task has an amount
-                }else if (task.amount != null) {
+                    // if the task has an amount
+                } else if (task.amount != null) {
                     // if attempting to withdraw the resource results in not being in range
                     if (creep.withdraw(target, task.resource, task.amount) == ERR_NOT_IN_RANGE) {
                         // move to the target
                         creep.moveTo(target);
                     }
-                }else{
+                } else {
                     // if attempting to withdraw the resource results in not being in range
                     if (creep.withdraw(target, task.resource) == ERR_NOT_IN_RANGE) {
                         // move to the target
@@ -68,18 +68,18 @@ global.NeuroTask = {
         if (creep.room.name != task.room_name) {
             // move to the room for the task
             creep.moveTo(new RoomPosition(25, 25, task.room_name));
-        // if the creep is empty
-        }else if (creep.store[task.resource] == 0) {
+            // if the creep is empty
+        } else if (creep.store[task.resource] == 0) {
             // clear the task
             creep.memory.task = null;
-        }else{
+        } else {
             // grab the target
             let target = Game.getObjectById(task.target);
             // if the target is not valid or empty
             if (target == null || target.store.getFreeCapacity(task.resource) == 0) {
                 // clear the task
                 creep.memory.task = null;
-            }else {
+            } else {
                 // if the amount is specified
                 if (task.amount != null) {
                     // if transferring to the target results in not being in range
@@ -87,7 +87,7 @@ global.NeuroTask = {
                         // move to the target
                         creep.moveTo(target);
                     }
-                }else{
+                } else {
                     // if transferring to the target results in not being in range
                     if (creep.transfer(target, task.resource) == ERR_NOT_IN_RANGE) {
                         // move to the target
@@ -107,18 +107,18 @@ global.NeuroTask = {
         if (creep.room.name != task.room_name) {
             // move to the room for the task
             creep.moveTo(new RoomPosition(25, 25, task.room_name));
-        // if the creep is empty
-        }else if (creep.store[RESOURCE_ENERGY] == 0) {
+            // if the creep is empty
+        } else if (creep.store[RESOURCE_ENERGY] == 0) {
             // clear the task
             creep.memory.task = null;
-        }else{
+        } else {
             // grab the target
             let target = Game.getObjectById(task.structure);
             // if the target is invalid or at max health
             if (target == null || target.hits == target.hitsMax) {
                 // clear the task
                 creep.memory.task = null;
-            }else{
+            } else {
                 // if repairing the target results in not being in range
                 if (creep.repair(target) == ERR_NOT_IN_RANGE) {
                     // move to the target
@@ -137,18 +137,18 @@ global.NeuroTask = {
         if (creep.room.name != task.room_name) {
             // move to the room for the task
             creep.moveTo(new RoomPosition(25, 25, task.room_name));
-        // if the creep is empty
-        }else if (creep.store[RESOURCE_ENERGY] == 0) {
+            // if the creep is empty
+        } else if (creep.store[RESOURCE_ENERGY] == 0) {
             // clear the task
             creep.memory.task = null;
-        }else{
+        } else {
             // grab the target
             let target = Game.getObjectById(task.construction_site);
             // if the target is invalid
             if (target == null) {
                 // clear the task
                 creep.memory.task = null;
-            }else{
+            } else {
                 // if building the target results in not being in range
                 if (creep.build(target) == ERR_NOT_IN_RANGE) {
                     // move to the target
@@ -167,11 +167,11 @@ global.NeuroTask = {
         if (creep.room.name != task.room_name) {
             // move to the room for the task
             creep.moveTo(new RoomPosition(25, 25, task.room_name));
-        // if the creep is empty
-        }else if (creep.store[RESOURCE_ENERGY] == 0) {
+            // if the creep is empty
+        } else if (creep.store[RESOURCE_ENERGY] == 0) {
             // clear the task
             creep.memory.task = null;
-        }else{
+        } else {
             // if the controller's sign does not match the signature
             if (creep.room.controller.sign.text != SIGNATURE) {
                 // if signing the controller results in not being in range
@@ -179,7 +179,7 @@ global.NeuroTask = {
                     // move to the controller
                     creep.moveTo(creep.room.controller);
                 }
-            }else{
+            } else {
                 // if upgrading the controller results in not being in range
                 if (creep.upgradeController(creep.room.controller) == ERR_NOT_IN_RANGE) {
                     // move to the controller
@@ -198,7 +198,7 @@ global.NeuroTask = {
         if (creep.room.name != task.room_name) {
             // move to the room for the task
             creep.moveTo(new RoomPosition(25, 25, task.room_name));
-        }else{
+        } else {
             // if the controller's sign does not match the signature
             if (creep.room.controller.sign.text != SIGNATURE) {
                 // if signing the controller results in not being in range
@@ -206,7 +206,7 @@ global.NeuroTask = {
                     // move to the controller
                     creep.moveTo(creep.room.controller);
                 }
-            }else{
+            } else {
                 // if claiming the controller results in not being in range
                 if (creep.claimController(creep.room.controller) == ERR_NOT_IN_RANGE) {
                     // move to the controller
@@ -225,7 +225,7 @@ global.NeuroTask = {
         if (creep.room.name != task.room_name) {
             // move to the room for the task
             creep.moveTo(new RoomPosition(25, 25, task.room_name));
-        }else{
+        } else {
             // if the controller's sign does not match the signature
             if (creep.room.controller.sign.text != SIGNATURE) {
                 // if signing the controller results in not being in range
@@ -233,7 +233,7 @@ global.NeuroTask = {
                     // move to the controller
                     creep.moveTo(creep.room.controller);
                 }
-            }else{
+            } else {
                 // if reserving the controller results in not being in range
                 if (creep.reserveController(creep.room.controller) == ERR_NOT_IN_RANGE) {
                     // move to the controller
@@ -252,7 +252,7 @@ global.NeuroTask = {
         if (creep.room.name != task.room_name) {
             // move to the room for the task
             creep.moveTo(new RoomPosition(25, 25, task.room_name));
-        }else{
+        } else {
             // grab the target
             let target = Game.getObjectById(task.source_id);
             // if we are at the location of the container
@@ -275,14 +275,14 @@ global.NeuroTask = {
         if (creep.room.name != task.room_name) {
             // move to the room for the task
             creep.moveTo(new RoomPosition(25, 25, task.room_name));
-        }else{
+        } else {
             // grab the target
             let target = Game.getObjectById(task.target);
             // if the target is null
             if (target == null) {
                 // clear the task
                 creep.memory.task = null;
-            }else{
+            } else {
                 // if attacking the target results in not being in range
                 if (creep.attack(target) == ERR_NOT_IN_RANGE) {
                     // move to the target
@@ -301,14 +301,14 @@ global.NeuroTask = {
         if (creep.room.name != task.room_name) {
             // move to the room for the task
             creep.moveTo(new RoomPosition(25, 25, task.room_name));
-        }else{
+        } else {
             // grab the target
             let target = Game.getObjectById(task.creep);
             // if the target is invalid or at max health
             if (target == null || target.hits == target.hitsMax) {
                 // clear the task
                 creep.memory.task = null;
-            }else{
+            } else {
                 // if healing the target results in not being in range
                 if (creep.heal(target) == ERR_NOT_IN_RANGE) {
                     // move to the target
@@ -327,12 +327,12 @@ global.NeuroTask = {
         if (creep.room.name != task.room_name) {
             // move to the room for the task
             creep.moveTo(new RoomPosition(25, 25, task.room_name));
-        }else{
+        } else {
             // if the timer has gone off
             if (task.timer >= 5) {
                 // clear the task
                 creep.memory.task = null;
-            }else{
+            } else {
                 // increment the timer
                 task.timer++;
                 // move to the room for the task
@@ -350,12 +350,12 @@ global.NeuroTask = {
         if (creep.room.name != task.room_name) {
             // move to the room for the task
             creep.moveTo(new RoomPosition(25, 25, task.room_name));
-        }else{
+        } else {
             // if the task has reached the tick limit
             if (task.tick_counter > task.tick_limit) {
                 // clear the task
                 creep.memory.task = null;
-            }else{
+            } else {
                 // increment the tick counter
                 task.tick_counter++;
                 // idle the creep
@@ -373,14 +373,14 @@ global.NeuroTask = {
         if (creep.room.name != task.room_name) {
             // move to the room for the task
             creep.moveTo(new RoomPosition(25, 25, task.room_name));
-        }else{
+        } else {
             // grab the power spawn
             let power_spawn = Game.getObjectById(task.power_spawn);
             // if the power spawn is invalid
             if (power_spawn == null) {
                 // clear the task
                 creep.memory.task = null;
-            }else{
+            } else {
                 // try to renew
                 let result = creep.renew(power_spawn);
                 // if the creep is not in range
@@ -408,7 +408,7 @@ global.NeuroTask = {
             if (creep.store[task.resource] == task.amount) {
                 // set the task to dumping
                 task.state = STATES.DUMPING;
-            }else{
+            } else {
                 // grab the source structure
                 let source_structure = Game.getObjectById(task.source_structure);
                 // if the source structure is valid
@@ -418,7 +418,7 @@ global.NeuroTask = {
                         // move to the source structure
                         creep.moveTo(source_structure);
                     }
-                }else{
+                } else {
                     // clear the task
                     creep.memory.task = null;
                 }
@@ -430,7 +430,7 @@ global.NeuroTask = {
             if (creep.store.getUsedCapacity() == 0) {
                 // clear the task
                 creep.memory.task = null;
-            }else{
+            } else {
                 // grab the target structure
                 let target_structure = Game.getObjectById(task.target_structure);
                 // if the target structure is valid
@@ -440,7 +440,7 @@ global.NeuroTask = {
                         // move to the target structure
                         creep.moveTo(target_structure);
                     }
-                }else{
+                } else {
                     // clear the task
                     creep.memory.task = null;
                 }
@@ -457,12 +457,12 @@ global.NeuroTask = {
         if (creep.room.name != task.room_name) {
             // move to the room for the task
             creep.moveTo(new RoomPosition(25, 25, task.room_name));
-        }else{
+        } else {
             // if the creep is full
             if (creep.store.getFreeCapacity() == 0) {
                 // clear the task
                 creep.memory.task = null;
-            }else{
+            } else {
                 // grab the target
                 let target = Game.getObjectById(task.target);
                 // if attempting to harvest the target results in not being in range

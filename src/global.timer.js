@@ -1,6 +1,6 @@
 /**
  * handles timing parts of code and logging the averages over time
- * @module Timer
+ * @namespace Timer
  */
 global.Timer = {
     /**
