@@ -1,8 +1,8 @@
 /**
  * Takes care of running power spawns and spawning, upgrading, and running the operator
- * @module PowerManager
+ * @module NeuroPower
  */
-global.PowerManager = {
+global.NeuroPower = {
     /**
      * upgrades the operator's lowest level power
      * @param {PowerCreep} operator - The operator we are upgrading

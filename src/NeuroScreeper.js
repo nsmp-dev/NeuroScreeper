@@ -1,8 +1,8 @@
 /**
  * Handles scanning and adding new rooms
- * @module RoomManager
+ * @module NeuroScreeper
  */
-global.RoomManager = {
+global.NeuroScreeper = {
     /**
      * scan for any new rooms and add their data if found
      */
@@ -64,7 +64,7 @@ global.RoomManager = {
         // get the MainMemory object
         let main_memory = Util.getMainMemory();
         // create our population object
-        /** @type {Object<string,RoomPopulation>} */
+        /** @type {Object.<string,RoomPopulation>} */
         let pop = {};
 
         // loop through each room in the room data

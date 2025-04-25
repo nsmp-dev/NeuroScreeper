@@ -115,7 +115,7 @@ global.SATISFACTION_LOG_SIZE = 100;
 global.TOWER_MINIMUM_ENERGY = 100;
 /**
  * hash table for grabbing role constants using their id strings
- * @constant {Object<string,Role>} ROLES
+ * @constant {Object.<string,Role>} ROLES
  */
 global.ROLES = {};
 
@@ -150,7 +150,7 @@ global.hlog = hlog;
 
 /**
  * List of task types that are used to identify tasks
- * @constant {Object<string,number>} TASK_TYPES
+ * @constant {Object.<string,number>} TASK_TYPES
  * @enum {number}
  */
 global.TASK_TYPES = {
@@ -188,7 +188,7 @@ global.TASK_TYPES = {
 
 /**
  * states enum for state machines
- * @constant {Object<string,number>} STATES
+ * @constant {Object.<string,number>} STATES
  * @enum {number}
  */
 global.STATES = {

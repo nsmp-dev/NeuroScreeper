@@ -15,7 +15,7 @@ class RoomPopulation {
         this.total = 0;
         /**
          * hash with the population of each role
-         * @type {Object<string,number>}
+         * @type {Object.<string,number>}
          */
         this.roles = {};
         /**

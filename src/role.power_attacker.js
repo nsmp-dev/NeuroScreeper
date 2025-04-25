@@ -79,5 +79,5 @@ Creep.prototype.runPowerAttacker = function () {
         }
     }
     // run the task
-    TaskRunner.run(this);
+    NeuroTask.run(this);
 };

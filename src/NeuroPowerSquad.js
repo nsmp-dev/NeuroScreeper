@@ -1,8 +1,8 @@
 /**
  * contains logic for running a power squad, using a PowerSquad object for storage
- * @module PowerSquadRunner
+ * @module NeuroPowerSquad
  */
-global.PowerSquadRunner = {
+global.NeuroPowerSquad = {
     /**
      * run the power squad, kicking off sub-functions for specific activities
      * @param {PowerSquad} power_squad - The power squad we are running
@@ -13,7 +13,7 @@ global.PowerSquadRunner = {
 
         // loop through the rooms we have seen so far
         for (let room_name in main_memory.room_data) {
-            // if the room is a highway and the room is not in the queue or the log
+            // if the room is a highway, and the room is not in the queue or the log
             if (main_memory.room_data[room_name].type == HIGHWAY && !power_squad.highway_queue.includes(room_name) && !power_squad.highway_log.includes(room_name)) {
                 // add the room to the queue
                 power_squad.highway_queue.push(room_name);
@@ -27,7 +27,7 @@ global.PowerSquadRunner = {
         // grab the power transporter
         let power_transporter = Game.getObjectById(power_squad.power_transporter);
 
-        // if the any of the creeps are not valid
+        // if any of the creeps are not valid
         if (power_attacker == null || power_healer == null || power_transporter == null) {
             // default the power attacker to not found
             let found_power_attacker = null;
@@ -55,7 +55,7 @@ global.PowerSquadRunner = {
                 }
             }
 
-            // if all of the creeps are found
+            // if all the creeps are found
             if (found_power_attacker != null && found_power_healer != null && found_power_transporter != null) {
                 // cache the power attacker id
                 power_squad.power_attacker = found_power_attacker.id;

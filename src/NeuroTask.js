@@ -1,8 +1,8 @@
 /**
  * runs a task attached to the provided creep
- * @module TaskRunner
+ * @module NeuroTask
  */
-global.TaskRunner = {
+global.NeuroTask = {
     /**
      * run the gather task on the creep
      * @param {Creep|PowerCreep} creep - The Creep doing the task
@@ -13,7 +13,7 @@ global.TaskRunner = {
         if (creep.room.name != task.room_name) {
             // move to the room for the task
             creep.moveTo(new RoomPosition(25, 25, task.room_name));
-            // if the creep has enough of the requested resource or is full
+        // if the creep has enough of the requested resource or is full
         }else if ((task.amount != null && creep.store[task.resource] >= task.amount) || creep.store.getFreeCapacity(task.resource) == 0) {
             // clear the task
             creep.memory.task = null;
@@ -24,14 +24,14 @@ global.TaskRunner = {
             if (target == null) {
                 // clear the task
                 creep.memory.task = null;
-                // if the target is a resource
+            // if the target is a resource
             }else if (target instanceof Resource) {
                 // if attempting to pick up the resource results in not being in range
                 if (creep.pickup(target) == ERR_NOT_IN_RANGE) {
                     // move to the resource
                     creep.moveTo(target);
                 }
-                // if the target is a structure that has a store
+            // if the target is a structure that has a store
             }else if (target instanceof StructureContainer ||
                 target instanceof StructureStorage ||
                 target instanceof StructureTerminal ||
@@ -41,7 +41,7 @@ global.TaskRunner = {
                 if (target.store[task.resource] == 0) {
                     // clear the task
                     creep.memory.task = null;
-                    // if the task has an amount
+                // if the task has an amount
                 }else if (task.amount != null) {
                     // if attempting to withdraw the resource results in not being in range
                     if (creep.withdraw(target, task.resource, task.amount) == ERR_NOT_IN_RANGE) {
@@ -59,7 +59,7 @@ global.TaskRunner = {
         }
     },
     /**
-     * run the gather task on the creep
+     * run the deposit task on the creep
      * @param {Creep|PowerCreep} creep - The Creep doing the task
      * @param {DepositTask} task - the task being run
      */
@@ -68,7 +68,7 @@ global.TaskRunner = {
         if (creep.room.name != task.room_name) {
             // move to the room for the task
             creep.moveTo(new RoomPosition(25, 25, task.room_name));
-            // if the creep is empty
+        // if the creep is empty
         }else if (creep.store[task.resource] == 0) {
             // clear the task
             creep.memory.task = null;
@@ -98,7 +98,7 @@ global.TaskRunner = {
         }
     },
     /**
-     * run the gather task on the creep
+     * run the repair task on the creep
      * @param {Creep|PowerCreep} creep - The Creep doing the task
      * @param {RepairTask} task - the task being run
      */
@@ -107,7 +107,7 @@ global.TaskRunner = {
         if (creep.room.name != task.room_name) {
             // move to the room for the task
             creep.moveTo(new RoomPosition(25, 25, task.room_name));
-            // if the creep is empty
+        // if the creep is empty
         }else if (creep.store[RESOURCE_ENERGY] == 0) {
             // clear the task
             creep.memory.task = null;
@@ -137,7 +137,7 @@ global.TaskRunner = {
         if (creep.room.name != task.room_name) {
             // move to the room for the task
             creep.moveTo(new RoomPosition(25, 25, task.room_name));
-            // if the creep is empty
+        // if the creep is empty
         }else if (creep.store[RESOURCE_ENERGY] == 0) {
             // clear the task
             creep.memory.task = null;
@@ -158,7 +158,7 @@ global.TaskRunner = {
         }
     },
     /**
-     * run the gather task on the creep
+     * run the upgrade task on the creep
      * @param {Creep|PowerCreep} creep - The Creep doing the task
      * @param {UpgradeTask} task - the task being run
      */
@@ -167,13 +167,14 @@ global.TaskRunner = {
         if (creep.room.name != task.room_name) {
             // move to the room for the task
             creep.moveTo(new RoomPosition(25, 25, task.room_name));
-            // if the creep is empty
+        // if the creep is empty
         }else if (creep.store[RESOURCE_ENERGY] == 0) {
             // clear the task
             creep.memory.task = null;
         }else{
+            // if the controller's sign does not match the signature
             if (creep.room.controller.sign.text != SIGNATURE) {
-                // if upgrading the controller results in not being in range
+                // if signing the controller results in not being in range
                 if (creep.signController(creep.room.controller, SIGNATURE) == ERR_NOT_IN_RANGE) {
                     // move to the controller
                     creep.moveTo(creep.room.controller);
@@ -188,7 +189,7 @@ global.TaskRunner = {
         }
     },
     /**
-     * run the gather task on the creep
+     * run the claim task on the creep
      * @param {Creep|PowerCreep} creep - The Creep doing the task
      * @param {ClaimTask} task - the task being run
      */
@@ -198,14 +199,15 @@ global.TaskRunner = {
             // move to the room for the task
             creep.moveTo(new RoomPosition(25, 25, task.room_name));
         }else{
+            // if the controller's sign does not match the signature
             if (creep.room.controller.sign.text != SIGNATURE) {
-                // if upgrading the controller results in not being in range
+                // if signing the controller results in not being in range
                 if (creep.signController(creep.room.controller, SIGNATURE) == ERR_NOT_IN_RANGE) {
                     // move to the controller
                     creep.moveTo(creep.room.controller);
                 }
             }else{
-                // if upgrading the controller results in not being in range
+                // if claiming the controller results in not being in range
                 if (creep.claimController(creep.room.controller) == ERR_NOT_IN_RANGE) {
                     // move to the controller
                     creep.moveTo(creep.room.controller);
@@ -214,7 +216,7 @@ global.TaskRunner = {
         }
     },
     /**
-     * run the gather task on the creep
+     * run the reserve task on the creep
      * @param {Creep|PowerCreep} creep - The Creep doing the task
      * @param {ReserveTask} task - the task being run
      */
@@ -224,14 +226,15 @@ global.TaskRunner = {
             // move to the room for the task
             creep.moveTo(new RoomPosition(25, 25, task.room_name));
         }else{
+            // if the controller's sign does not match the signature
             if (creep.room.controller.sign.text != SIGNATURE) {
-                // if upgrading the controller results in not being in range
+                // if signing the controller results in not being in range
                 if (creep.signController(creep.room.controller, SIGNATURE) == ERR_NOT_IN_RANGE) {
                     // move to the controller
                     creep.moveTo(creep.room.controller);
                 }
             }else{
-                // if upgrading the controller results in not being in range
+                // if reserving the controller results in not being in range
                 if (creep.reserveController(creep.room.controller) == ERR_NOT_IN_RANGE) {
                     // move to the controller
                     creep.moveTo(creep.room.controller);
@@ -240,7 +243,7 @@ global.TaskRunner = {
         }
     },
     /**
-     * run the gather task on the creep
+     * run the drill task on the creep
      * @param {Creep|PowerCreep} creep - The Creep doing the task
      * @param {DrillTask} task - the task being run
      */
@@ -263,7 +266,7 @@ global.TaskRunner = {
         }
     },
     /**
-     * run the gather task on the creep
+     * run the attack task on the creep
      * @param {Creep|PowerCreep} creep - The Creep doing the task
      * @param {AttackTask} task - the task being run
      */
@@ -289,7 +292,7 @@ global.TaskRunner = {
         }
     },
     /**
-     * run the gather task on the creep
+     * run the heal task on the creep
      * @param {Creep|PowerCreep} creep - The Creep doing the task
      * @param {HealTask} task - the task being run
      */
@@ -315,7 +318,7 @@ global.TaskRunner = {
         }
     },
     /**
-     * run the gather task on the creep
+     * run the move room task on the creep
      * @param {Creep|PowerCreep} creep - The Creep doing the task
      * @param {MoveRoomTask} task - the task being run
      */
@@ -325,17 +328,20 @@ global.TaskRunner = {
             // move to the room for the task
             creep.moveTo(new RoomPosition(25, 25, task.room_name));
         }else{
-            if (task.timer == 5) {
+            // if the timer has gone off
+            if (task.timer >= 5) {
                 // clear the task
                 creep.memory.task = null;
             }else{
+                // increment the timer
                 task.timer++;
+                // move to the room for the task
                 creep.moveTo(new RoomPosition(25, 25, task.room_name));
             }
         }
     },
     /**
-     * run the gather task on the creep
+     * run the idle task on the creep
      * @param {Creep|PowerCreep} creep - The Creep doing the task
      * @param {IdleTask} task - the task being run
      */
@@ -358,8 +364,8 @@ global.TaskRunner = {
         }
     },
     /**
-     * run the gather task on the creep
-     * @param {Creep|PowerCreep} creep - The Creep doing the task
+     * run the renew operator task on the creep
+     * @param {PowerCreep} creep - The Creep doing the task
      * @param {RenewOperatorTask} task - the task being run
      */
     runRenewOperator: function (creep, task) {
@@ -391,42 +397,58 @@ global.TaskRunner = {
         }
     },
     /**
-     * run the gather task on the creep
+     * run the move resource task on the creep
      * @param {Creep|PowerCreep} creep - The Creep doing the task
      * @param {MoveResourceTask} task - the task being run
      */
     runMoveResource: function (creep, task) {
+        // if the task is filling
         if (task.state == STATES.FILLING) {
+            // if the creep has the requested amount of the resource
             if (creep.store[task.resource] == task.amount) {
+                // set the task to dumping
                 task.state = STATES.DUMPING;
             }else{
+                // grab the source structure
                 let source_structure = Game.getObjectById(task.source_structure);
+                // if the source structure is valid
                 if (source_structure != null) {
+                    // if attempting to withdraw from the source structure results in not being in range
                     if (creep.withdraw(source_structure, task.resource, task.amount) == ERR_NOT_IN_RANGE) {
+                        // move to the source structure
                         creep.moveTo(source_structure);
                     }
                 }else{
+                    // clear the task
                     creep.memory.task = null;
                 }
             }
         }
+        // if the task is dumping
         if (task.state == STATES.DUMPING) {
+            // if the creep is empty
             if (creep.store.getUsedCapacity() == 0) {
+                // clear the task
                 creep.memory.task = null;
             }else{
+                // grab the target structure
                 let target_structure = Game.getObjectById(task.target_structure);
+                // if the target structure is valid
                 if (target_structure != null) {
+                    // if attempting to transfer to the target structure results in not being in range
                     if (creep.transfer(target_structure, task.resource, task.amount) == ERR_NOT_IN_RANGE) {
+                        // move to the target structure
                         creep.moveTo(target_structure);
                     }
                 }else{
+                    // clear the task
                     creep.memory.task = null;
                 }
             }
         }
     },
     /**
-     * run the gather task on the creep
+     * run the harvest task on the creep
      * @param {Creep|PowerCreep} creep - The Creep doing the task
      * @param {HarvestTask} task - the task being run
      */
@@ -436,14 +458,16 @@ global.TaskRunner = {
             // move to the room for the task
             creep.moveTo(new RoomPosition(25, 25, task.room_name));
         }else{
+            // if the creep is full
             if (creep.store.getFreeCapacity() == 0) {
+                // clear the task
                 creep.memory.task = null;
             }else{
                 // grab the target
                 let target = Game.getObjectById(task.target);
-                // if we are at the location of the container
+                // if attempting to harvest the target results in not being in range
                 if (creep.harvest(target) == ERR_NOT_IN_RANGE) {
-                    // harvest from the assigned source
+                    // move to the assigned source
                     creep.moveTo(target);
                 }
             }
@@ -454,8 +478,10 @@ global.TaskRunner = {
      * @param {Creep|PowerCreep} creep - The Creep doing the task
      */
     run: function (creep) {
-        // grab the task from the creep
-        /** @type {Task} */
+        /**
+         * grab the task from the creep
+         * @type {Task}
+         */
         let task = creep.memory.task;
 
         // if the task matches

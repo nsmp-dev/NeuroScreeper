@@ -32,9 +32,9 @@ module.exports.loop = function () {
     // start the main timer
     Timer.start();
 
-    hlog("Running RoomManager...");
+    hlog("Running NeuroScreeper...");
     // run the room manager
-    RoomManager.run(main_memory);
+    NeuroScreeper.run(main_memory);
 
     hlog("Running creeps...");
     // loop through all the creeps
@@ -45,7 +45,7 @@ module.exports.loop = function () {
 
     hlog("Running PowerManager...");
     // run the power manager
-    PowerManager.run();
+    NeuroPower.run();
 
     hlog("Running structures...");
     // loop through all the structures
@@ -68,12 +68,12 @@ module.exports.loop = function () {
             // if the room is currently visible
             if (Game.rooms[name] != undefined) {
                 // run the room with the room reference
-                RoomRunner.run(room_data, Game.rooms[name]);
+                NeuroRoom.run(room_data, Game.rooms[name]);
                 // render the visuals for the room
                 Visualizer.render(Game.rooms[name]);
             }else{
                 // run the room without the room reference
-                RoomRunner.run(room_data);
+                NeuroRoom.run(room_data);
             }
         }
 

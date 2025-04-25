@@ -155,5 +155,5 @@ Creep.prototype.runQueen = function () {
         }
     }
     // run the task
-    TaskRunner.run(this);
+    NeuroTask.run(this);
 };

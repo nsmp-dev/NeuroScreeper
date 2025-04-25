@@ -87,5 +87,5 @@ Creep.prototype.runCommodityCollector = function () {
         }
     }
     // run the task
-    TaskRunner.run(this);
+    NeuroTask.run(this);
 };

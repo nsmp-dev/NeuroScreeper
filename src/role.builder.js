@@ -58,5 +58,5 @@ Creep.prototype.runBuilder = function () {
         }
     }
     // run the task
-    TaskRunner.run(this);
+    NeuroTask.run(this);
 };

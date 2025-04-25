@@ -94,5 +94,5 @@ Creep.prototype.runTransporter = function () {
         }
     }
     // run the task
-    TaskRunner.run(this);
+    NeuroTask.run(this);
 };

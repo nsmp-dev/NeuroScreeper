@@ -43,5 +43,5 @@ Creep.prototype.runMineralDriller = function () {
         this.announceTask();
     }
     // run the task
-    TaskRunner.run(this);
+    NeuroTask.run(this);
 };

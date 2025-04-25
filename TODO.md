@@ -1,16 +1,8 @@
 # v0.3
 
-## comments and documentation
-check all line comments and JSDoc signatures
-
-### files left (5 left)
-runner.room.js
-runner.task.js
-
-## name possibilities
+## name change
 NeuroScreeper
-SongCrawl
-CyberCreeps
+change the name of the GitHub repo to NeuroScreeper
 
 # v0.4
 

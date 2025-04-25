@@ -69,7 +69,7 @@ Creep.prototype.runPowerHealer = function () {
             }
         // if the power squad is returning
         }else if (squad.state == STATES.RETURNING) {
-            // if we are in the room the power squad is returning to
+            // if we are in the room that the power squad is returning to
             if (this.room.name == squad.return_room_name) {
                 // assign a new idle task
                 this.memory.task = new IdleTask(this.room.name);
@@ -84,5 +84,5 @@ Creep.prototype.runPowerHealer = function () {
         }
     }
     // run the task
-    TaskRunner.run(this);
+    NeuroTask.run(this);
 };

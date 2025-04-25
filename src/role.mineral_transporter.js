@@ -88,5 +88,5 @@ Creep.prototype.runMineralTransporter = function () {
         }
     }
     // run the task
-    TaskRunner.run(this);
+    NeuroTask.run(this);
 };

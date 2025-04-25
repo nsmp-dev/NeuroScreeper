@@ -120,5 +120,5 @@ PowerCreep.prototype.runOperator = function (plant_data) {
         }
     }
     // run the task
-    TaskRunner.run(this);
+    NeuroTask.run(this);
 };

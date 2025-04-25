@@ -54,7 +54,7 @@ class MainMemory {
         this.observer_log = {};
         /**
          * hash of all the Terminal timers with the room name as the key
-         * @type {Object<string, number>}
+         * @type {Object.<string, number>}
          */
         this.terminal_timers = {};
     }

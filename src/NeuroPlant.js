@@ -1,8 +1,8 @@
 /**
  * handles logic for production and reactions
- * @module PlantRunner
+ * @module NeuroPlant
  */
-global.PlantRunner = {
+global.NeuroPlant = {
     /**
      * Checks if the required resources for a reaction are present and sets the requested reaction or cleanup reaction flag
      * @param {PlantData} plant_data - The plant data for storing in memory
@@ -150,7 +150,7 @@ global.PlantRunner = {
         if (plant_data.current_production != null) {
             // grab the current production
             let production = plant_data.current_production;
-            // grab the store object of factory
+            // grab the store object of the factory
             let store = factory.store;
             // assume the contents are correct
             let correct_contents = true;
