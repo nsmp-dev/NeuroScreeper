@@ -28,6 +28,7 @@ global.PlantRunner = {
                 // set the plant to clean up the reaction
                 plant_data.labs_state = STATES.CLEANING;
             }else{
+                // set the plant to idle
                 plant_data.labs_state = STATES.IDLE;
             }
             // exit the function early
@@ -45,10 +46,11 @@ global.PlantRunner = {
                 plant_data.current_reaction = null;
                 // set the plant to clean up the reaction
                 plant_data.labs_state = STATES.CLEANING;
+                // exit the function early
                 return;
             }
         }
-
+        // if the labs are idle
         if (plant_data.labs_state == STATES.IDLE) {
             // loop through all the reagents in all the reactions in the game
             for (let reagent_1 in REACTIONS) {
@@ -60,42 +62,61 @@ global.PlantRunner = {
                         let amount = storage.store[reagent_1] > storage.store[reagent_2] ? storage.store[reagent_2] : storage.store[reagent_1];
                         // round the amount down to the nearest 5
                         amount = Math.floor(amount / 5) * 5;
-
+                        // if the amount is greater than the capacity of a lab
                         if (amount > (LAB_MINERAL_CAPACITY / 2)) {
+                            // set the amount to the capacity of a lab
                             amount = (LAB_MINERAL_CAPACITY / 2);
                         }
                         // create and store the enw reaction
                         plant_data.current_reaction = new Reaction(reagent_1, reagent_2, REACTIONS[reagent_1][reagent_2], amount);
+                        // set the state of the labs to loading
                         plant_data.labs_state = STATES.LOADING;
                     }
                 }
             }
         }
+        // if the labs are loading
         if (plant_data.labs_state == STATES.LOADING) {
+            // grab the current reaction
             let reaction = plant_data.current_reaction;
 
+            // if both input labs have the required resource amounts
             if (input_lab_1.store[reaction.input_1] == reaction.amount && input_lab_2.store[reaction.input_2] == reaction.amount) {
+                // set the state of the labs to running
                 plant_data.labs_state = STATES.RUNNING;
+                // start the reaction
                 output_lab.runReaction(input_lab_1, input_lab_2);
             }
         }
+        // if the labs are running
         if (plant_data.labs_state == STATES.RUNNING) {
+            // grab the current reaction
             let reaction = plant_data.current_reaction;
+            // if the output lab is off cooldown
             if (output_lab.cooldown == 0) {
+                // if the output lab has the amount requested in the reaction
                 if (output_lab.store[reaction.output] == reaction.amount) {
+                    // set the labs to finished
                     plant_data.labs_state = STATES.FINISHED;
                 }else{
+                    // run the reaction
                     output_lab.runReaction(input_lab_1, input_lab_2);
                 }
             }
         }
+        // if the labs are finished
         if (plant_data.labs_state == STATES.FINISHED) {
+            // if the output lab is empty
             if (output_lab.store.getUsedCapacity() == 0) {
+                // set the labs to idle
                 plant_data.labs_state = STATES.IDLE;
             }
         }
+        // if the labs are cleaning
         if (plant_data.labs_state == STATES.CLEANING) {
+            // if all the labs are empty
             if (input_lab_1.store.getUsedCapacity() == 0 && input_lab_2.store.getUsedCapacity() == 0 && output_lab.store.getUsedCapacity() == 0) {
+                // set the labs to idle
                 plant_data.labs_state = STATES.IDLE;
             }
         }
@@ -117,9 +138,10 @@ global.PlantRunner = {
             plant_data.current_production = null;
             // if the factory is built, and it has resources in it
             if (factory != null && factory.store.getUsedCapacity() > 0) {
-                // set the plant to clean up the production
+                // set the factory to clean up the production
                 plant_data.factory_state = STATES.CLEANING;
             }else{
+                // set the factory to idle
                 plant_data.factory_state = STATES.IDLE;
             }
         }
@@ -128,7 +150,7 @@ global.PlantRunner = {
         if (plant_data.current_production != null) {
             // grab the current production
             let production = plant_data.current_production;
-            // grab the store object
+            // grab the store object of factory
             let store = factory.store;
             // assume the contents are correct
             let correct_contents = true;
@@ -175,6 +197,7 @@ global.PlantRunner = {
                 if (has_components) {
                     // create and store the new production
                     plant_data.current_production = new Production(recipe.components, commodity, recipe.amount);
+                    // set the factory to loading
                     plant_data.factory_state = STATES.LOADING;
                     // exit the loop
                     break;
@@ -182,29 +205,46 @@ global.PlantRunner = {
             }
         }
 
+        // if the factory is loading
         if (plant_data.factory_state == STATES.LOADING) {
+            // grab the current production
             let production = plant_data.current_production;
+            // assume we are ready for the production
             let ready = true;
+            // loop through the ingredients of the production
             for (let ingredient in production.inputs) {
+                // if the factory does not have enough of that resource
                 if (factory.store[ingredient] == undefined || factory.store[ingredient] < production.inputs[ingredient]) {
+                    // mark the factory as not ready
                     ready = false;
+                    // break the loop
+                    break;
                 }
             }
 
+            // if the factory is ready
             if (ready) {
+                // set the factory to running
                 plant_data.factory_state = STATES.RUNNING;
+                // start the production
                 factory.produce(production.output);
             }
         }
 
+        // if the factory is running
         if (plant_data.factory_state == STATES.RUNNING) {
+            // if the factory is off of cooldown
             if (factory.cooldown == 0) {
+                // set the factory to finished
                 plant_data.factory_state = STATES.FINISHED;
             }
         }
 
+        // if the factory is finished or cleaning
         if (plant_data.factory_state == STATES.FINISHED || plant_data.factory_state == STATES.CLEANING) {
+            // if the factory is empty
             if (factory.store.getUsedCapacity() == 0) {
+                // set the factory to idle
                 plant_data.labs_state = STATES.IDLE;
             }
         }
@@ -258,7 +298,9 @@ global.PlantRunner = {
      * @param {Room|null} room - The Room the plant is in
      */
     run: function (plant_data, room) {
+        // if the room is not visible
         if (room == null) {
+            // exit the function
             return;
         }
         hlog("Running Plant '" + room.name + "'...");

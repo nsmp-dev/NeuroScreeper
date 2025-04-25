@@ -4,8 +4,6 @@
 check all line comments and JSDoc signatures
 
 ### files left (5 left)
-runner.plant.js
-runner.power_squad.js
 runner.room.js
 runner.task.js
 

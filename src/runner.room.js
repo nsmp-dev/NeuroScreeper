@@ -21,7 +21,7 @@ global.RoomRunner = {
         for (let name in Game.spawns) {
             // if this spawn is in the room,
             if ((Game.spawns[name].room.name == room_name || is_global) &&
-                // not spawning anything
+                // and not spawning anything
                 Game.spawns[name].spawning == null &&
                 // and has the minimum energy needed
                 Game.spawns[name].room.energyAvailable > role.energy_cost) {
