@@ -20,3 +20,6 @@ NeuroScreeper
 ## Logger additions
 - add in logs for more comprehensive status messaging
 - add in timers in many places that are CPU intensive
+2 log methods:
+the console log is for timers, debug, tick count, etc.
+the visualizer log is for updates like finding a room, making a colony, spawning a creep, etc.

@@ -13,7 +13,7 @@ global.NeuroScreeper = {
         for (let name in Game.rooms) {
             // if we have not scanned this room yet
             if (main_memory.room_data[name] == undefined) {
-                hlog("Found a new room!");
+                Visualizer.popup("Found a new room!");
                 // create a new RoomData object for the new room
                 main_memory.room_data[name] = new RoomData(Game.rooms[name]);
             }
@@ -159,7 +159,6 @@ global.NeuroScreeper = {
     run: function (main_memory) {
         // if the population timer has gone off
         if (main_memory.population_timer > COUNT_POPULATION_TIMER_LENGTH) {
-            hlog("Recounting the population...");
             // recount the population
             this.countPopulation();
             // reset the population timer
@@ -171,7 +170,6 @@ global.NeuroScreeper = {
 
         // if the new room timer has gone off
         if (main_memory.new_room_timer > NEW_ROOM_TIMER_LENGTH) {
-            hlog("Checking if we can add a new room...");
             // default to satisfied
             let satisfied = true;
             // current count of colonies
@@ -204,12 +202,10 @@ global.NeuroScreeper = {
                 if (expansion_count > colony_count) {
                     // if we can control more rooms
                     if (colony_count < Game.gcl.level) {
-                        hlog("Attempting to add a colony...");
                         // spawn a new colony
                         this.spawnNewColony();
                     }
                 } else {
-                    hlog("Attempting to add an expansion...");
                     // spawn a new expansion
                     this.spawnNewExpansion();
                 }
@@ -221,7 +217,6 @@ global.NeuroScreeper = {
                 for (let name in main_memory.room_data) {
                     // if the room is a colony and has a plant
                     if (main_memory.room_data[name].type == COLONY && main_memory.room_data[name].plans.plant_location != null) {
-                        hlog("Designating a new Capitol...");
                         // store the new capitol room name
                         main_memory.capitol_room_name = name;
                         // break out of the loop

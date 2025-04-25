@@ -62,7 +62,7 @@ global.NeuroRoom = {
                         // provide the given memory
                         memory: creep_memory,
                     });
-                    hlog("spawning a " + creep_memory.role);
+                    Visualizer.popup("Spawning a " + creep_memory.role);
                     // mark this as a success
                     success = true;
                 }
@@ -322,10 +322,8 @@ global.NeuroRoom = {
     run: function (room_data, room = null) {
         // get the MainMemory object
         let main_memory = Util.getMainMemory();
-        hlog("Running " + room_data.type + " room: '" + room_data.room_name + "'...");
         // if the population timer has gone off
         if (room_data.population_timer > REQUEST_POPULATION_TIMER_LENGTH) {
-            hlog("Requesting creeps...");
             Timer.start("requesting_creeps");
             // request a new set of creeps
             this.requestCreeps(room_data, room);
@@ -342,14 +340,12 @@ global.NeuroRoom = {
 
         // if there are any creeps still requested
         if (room_data.requested_creeps.length > 0) {
-            hlog("Trying to spawn creeps...");
             // attempt to spawn another creep
             this.spawnRequestedCreeps(room_data);
         }
 
         // check if the construction timer has gone off
         if (room_data.construction_timer > CONSTRUCTION_TIMER_LENGTH && room != null) {
-            hlog("Building construction sites...");
             Timer.start("constructing_plans");
             // try to create new construction sites
             room.createConstructionSites(room_data.plans);

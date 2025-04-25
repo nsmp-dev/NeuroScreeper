@@ -7,7 +7,6 @@ class RoomPlans {
      * creates a RoomPlans object
      */
     constructor() {
-        hlog("Creating a new RoomPlans Object...");
         Timer.start("creating_room_plans");
         /**
          * coordinates of the idle location

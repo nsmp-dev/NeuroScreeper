@@ -46,5 +46,40 @@ global.Visualizer = {
 
         // draw total population of the room
         room.visual.text("total : " + pop.total, 1, 1 + offset_y, {font: 0.8});
+
+        // make a couple spaces for the popup messages
+        offset_y += 2;
+
+        // for each role in the population
+        for (let i = 0; i < main_memory.popup_messages.length; i++) {
+            // if this popup message has expired
+            if (main_memory.popup_messages[i].timer > POPUP_TIMER_LIMIT) {
+                // remove it from the list of popups
+                main_memory.popup_messages.splice(i, 1);
+                // decrement the i so we don't skip over the next one
+                i--;
+            }else{
+                // draw the popup message
+                room.visual.text(main_memory.popup_messages[i].text, 1, 1 + offset_y, {
+                    font: 0.8,
+                    // adjust the opacity based on how long it has been showing
+                    opacity: (1 - (main_memory.popup_messages[i].timer / POPUP_TIMER_LIMIT)),
+                });
+                // increment the timer for this popup message
+                main_memory.popup_messages[i].timer++;
+                // increment the offset
+                offset_y++;
+            }
+        }
+    },
+    /**
+     * add a popup message to the list of popups
+     * @param {string} text - the text to display
+     */
+    popup: function (text) {
+        // get the MainMemory object
+        let main_memory = Util.getMainMemory();
+        // add the popup message to the list of popups
+        main_memory.popup_messages.push(new PopupMessage(text));
     },
 };

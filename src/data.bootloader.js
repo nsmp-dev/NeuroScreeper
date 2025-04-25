@@ -8,6 +8,7 @@ require('data.mineral_population');
 require('data.observer_log');
 require('data.plant_data');
 require('data.point');
+require('data.popup_message');
 require('data.power_squad');
 require('data.power_squad_population');
 require('data.production');

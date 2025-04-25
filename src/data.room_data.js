@@ -9,7 +9,6 @@ class RoomData {
      * @param {StructureSpawn|null} initial_spawn - The initial spawn, if this is the first room
      */
     constructor(room, initial_spawn = null) {
-        hlog("Creating a new RoomData Object...");
         Timer.start("creating_room_data");
         /**
          * type of the room

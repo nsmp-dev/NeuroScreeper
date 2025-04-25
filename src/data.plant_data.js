@@ -8,7 +8,6 @@ class PlantData {
      * @param {RoomPlans} plans - The RoomPlans object for this room
      */
     constructor(plans) {
-        hlog("Creating a new PlantData Object...");
         /**
          * the current reaction in progress
          * @type {Reaction|null}

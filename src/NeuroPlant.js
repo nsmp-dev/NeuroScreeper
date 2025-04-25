@@ -74,6 +74,7 @@ global.NeuroPlant = {
                         }
                         // create and store the enw reaction
                         plant_data.current_reaction = new Reaction(reagent_1, reagent_2, REACTIONS[reagent_1][reagent_2], amount);
+                        Visualizer.popup("Requested a reaction for " + plant_data.current_reaction.amount + " " + plant_data.current_reaction.output);
                         // set the state of the labs to loading
                         plant_data.labs_state = STATES.LOADING;
                     }
@@ -202,6 +203,7 @@ global.NeuroPlant = {
                 if (has_components) {
                     // create and store the new production
                     plant_data.current_production = new Production(recipe.components, commodity, recipe.amount);
+                    Visualizer.popup("Requested a production of " + plant_data.current_production.amount + " " + plant_data.current_reaction.output);
                     // set the factory to loading
                     plant_data.factory_state = STATES.LOADING;
                     // exit the loop
@@ -308,13 +310,11 @@ global.NeuroPlant = {
             // exit the function
             return;
         }
-        hlog("Running Plant '" + room.name + "'...");
 
         // if the structure timer has gone off
         if (plant_data.structure_timer > this.PLANT_STRUCTURES_TIMER_LENGTH) {
             // reset the structure timer
             plant_data.structure_timer = 0;
-            hlog("Grabbing Plant Structures...");
             // cache the structure ids
             this.getStructures(plant_data, room);
         } else {
@@ -326,7 +326,6 @@ global.NeuroPlant = {
         if (plant_data.labs_timer > LABS_TIMER_LENGTH) {
             // reset the reaction timer
             plant_data.labs_timer = 0;
-            hlog("Recalculating Reaction...");
             // request a reaction
             this.runLabs(plant_data, room);
         } else {
@@ -338,7 +337,6 @@ global.NeuroPlant = {
         if (plant_data.factory_timer > FACTORY_TIMER_LENGTH) {
             // reset the production timer
             plant_data.factory_timer = 0;
-            hlog("Recalculating Production...");
             // request a production
             this.runFactory(plant_data, room);
         } else {

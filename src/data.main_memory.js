@@ -57,6 +57,11 @@ class MainMemory {
          * @type {Object.<string, number>}
          */
         this.terminal_timers = {};
+        /**
+         * list of popup messages
+         * @type {PopupMessage[]}
+         */
+        this.popup_messages = [];
     }
 }
 

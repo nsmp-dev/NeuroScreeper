@@ -3,10 +3,6 @@ require('data.bootloader');
 
 // the main loop that gets run every tick
 module.exports.loop = function () {
-    hlog("-------------------------------------");
-    hlog("-------------------------------------");
-    hlog("-------------------------------------");
-
     // grab the MainMemory object
     let main_memory = Util.getMainMemory();
 
@@ -27,27 +23,24 @@ module.exports.loop = function () {
         let room = Game.spawns[spawn_name].room;
         // initialize the room data entry for the first room
         main_memory.room_data[room.name] = new RoomData(room, Game.spawns[spawn_name]);
+        Visualizer.popup("Recreated MainMemory!");
     }
 
     // start the main timer
     Timer.start();
 
-    hlog("Running NeuroScreeper...");
     // run the room manager
     NeuroScreeper.run(main_memory);
 
-    hlog("Running creeps...");
     // loop through all the creeps
     for (let name in Game.creeps) {
         // run the creep
         Game.creeps[name].run();
     }
 
-    hlog("Running PowerManager...");
     // run the power manager
     NeuroPower.run();
 
-    hlog("Running structures...");
     // loop through all the structures
     for (let id in Game.structures) {
         // if it's a tower, terminal, or observer
@@ -57,7 +50,6 @@ module.exports.loop = function () {
         }
     }
 
-    hlog("Running rooms...");
     // loop through every room we have data on
     for (let name in main_memory.room_data) {
         // grab the room data
@@ -79,7 +71,7 @@ module.exports.loop = function () {
 
         // if the room died
         if (main_memory.room_data[name].dead) {
-            hlog("Room '" + name + "' died!");
+            Visualizer.popup("Room '" + name + "' died!");
             // delete the room data
             delete main_memory.room_data[name];
             // if the room was the capitol
@@ -90,7 +82,6 @@ module.exports.loop = function () {
         }
     }
 
-    hlog("Collecting garbage...");
     // collect the creep's garbage and generate pixels
     Util.collectGarbage();
     // print a nice tick summary

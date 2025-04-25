@@ -46,7 +46,7 @@ global.NeuroPower = {
         }
         // if we have not created an operator before, and we have the level needed for it
         if (Game.powerCreeps["operator"] == undefined && Game.gpl.level > 0) {
-            hlog("Creating PowerCreep...");
+            Visualizer.popup("Created the operator!");
             // create the operator power creep
             PowerCreep.create("operator", POWER_CLASS.OPERATOR);
         }
@@ -74,7 +74,7 @@ global.NeuroPower = {
 
                 // if we found a PowerSpawn in the capitol
                 if (capitol_power_spawn != null) {
-                    hlog("Spawning power creep...");
+                    Visualizer.popup("Spawned the operator!");
                     // spawn the power creep
                     operator.spawn(capitol_power_spawn);
                 }
@@ -82,7 +82,6 @@ global.NeuroPower = {
         } else {
             // if the operator is lower level than the GPL
             if (operator.level < Game.gpl.level) {
-                hlog("Upgrading PowerCreep...");
                 // attempt to upgrade the factory power
                 let result = operator.upgrade(PWR_OPERATE_FACTORY);
                 // if the upgrade failed due to the factory power being full
@@ -90,8 +89,8 @@ global.NeuroPower = {
                     // upgrade the lowest level power instead
                     this.upgradeLowestPower(operator);
                 }
+                Visualizer.popup("Upgraded the operator!");
             }
-            hlog("Running PowerCreep...");
             // run the operator, passing the appropriate plant data
             operator.runOperator(main_memory.room_data[operator.room.name].plant_data);
         }
