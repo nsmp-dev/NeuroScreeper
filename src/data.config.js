@@ -17,7 +17,7 @@ global.DEBUG_MODE = true;
  * current version of the build, increment this to trigger a memory wipe and mass creep suicide
  * @constant {number} BUILD
  */
-global.BUILD = 7;
+global.BUILD = 11;
 /**
  * how many previous ticks to maintain for average cpu time
  * @constant {number} LOG_SIZE
@@ -117,7 +117,7 @@ global.TOWER_MINIMUM_ENERGY = 100;
  * amount of time a popup message lasts before disappearing
  * @constant {number} POPUP_TIMER_LIMIT
  */
-global.POPUP_TIMER_LIMIT = 10;
+global.POPUP_TIMER_LIMIT = 30;
 /**
  * hash table for grabbing role constants using their id strings
  * @constant {Object.<string,Role>} ROLES

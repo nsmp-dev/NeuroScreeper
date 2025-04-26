@@ -10,6 +10,7 @@ global.NeuroRoom = {
      * @param {Boolean} is_global - flag to spawn globally
      */
     spawnRole: function (room_name, creep_memory, is_global = false) {
+        hlog("trying to spawn a " + creep_memory.role + " in room  " + room_name);
         // default success to false
         let success = false;
         /**
@@ -65,6 +66,7 @@ global.NeuroRoom = {
                     Visualizer.popup("Spawning a " + creep_memory.role);
                     // mark this as a success
                     success = true;
+                    break;
                 }
             }
         }
@@ -121,7 +123,7 @@ global.NeuroRoom = {
         }
 
         // check if an upgrader is needed
-        if (room_data.type == COLONY && pop.roles[UpgraderRole.name] < 1) {
+        if (room_data.type == COLONY && pop.roles[UpgraderRole.name] < 2) {
             // request an upgrader
             room_data.requested_creeps.push(new UpgraderMemory(room_data.room_name));
         }
@@ -211,17 +213,22 @@ global.NeuroRoom = {
             }
         }
 
-        // check if an attacker is needed
-        if (pop.roles[AttackerRole.name] < 1) {
-            // request an attacker
-            room_data.requested_creeps.push(new AttackerMemory(room_data.room_name));
+        if (room != null) {
+            let hostile_creeps = room.find(FIND_HOSTILE_CREEPS).length;
+            // check if an attacker is needed
+            if (hostile_creeps > 0 && pop.roles[AttackerRole.name] < 1) {
+                // request an attacker
+                room_data.requested_creeps.push(new AttackerMemory(room_data.room_name));
+            }
+
+            // check if a healer is needed
+            if (hostile_creeps > 0 && pop.roles[HealerRole.name] < 1) {
+                // request a healer
+                room_data.requested_creeps.push(new HealerMemory(room_data.room_name));
+            }
         }
 
-        // check if a healer is needed
-        if (pop.roles[HealerRole.name] < 1) {
-            // request a healer
-            room_data.requested_creeps.push(new HealerMemory(room_data.room_name));
-        }
+
 
         // count the highways we have seen
         let highway_count = Util.getHighwayRooms().length;
@@ -320,6 +327,7 @@ global.NeuroRoom = {
      * @param {Room|null} room - The Room we are running
      */
     run: function (room_data, room = null) {
+        hlog("running room " + room_data.room_name);
         // get the MainMemory object
         let main_memory = Util.getMainMemory();
         // if the population timer has gone off

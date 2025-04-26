@@ -33,22 +33,24 @@ global.Visualizer = {
         // keep track of the offset as we loop through the population
         let offset_y = 0;
 
-        // for each role in the population
-        for (let role in pop.roles) {
-            // if the role has any creeps
-            if (pop.roles[role] > 0) {
-                // draw the role and the population of it
-                room.visual.text(ROLES[role].emoji + ": " + pop.roles[role], 1, 1 + offset_y, {font: 0.8});
-                // increment the offset
-                offset_y++;
+        if (pop != undefined) {
+            // for each role in the population
+            for (let role in pop.roles) {
+                // if the role has any creeps
+                if (pop.roles[role] > 0) {
+                    // draw the role and the population of it
+                    room.visual.text(ROLES[role].emoji + ": " + pop.roles[role], 1, 1 + offset_y, {font: 0.8});
+                    // increment the offset
+                    offset_y++;
+                }
             }
+
+            // draw total population of the room
+            room.visual.text("total : " + pop.total, 1, 1 + offset_y, {font: 0.8});
         }
 
-        // draw total population of the room
-        room.visual.text("total : " + pop.total, 1, 1 + offset_y, {font: 0.8});
-
         // make a couple spaces for the popup messages
-        offset_y += 2;
+        offset_y = 0;
 
         // for each role in the population
         for (let i = 0; i < main_memory.popup_messages.length; i++) {
@@ -60,7 +62,7 @@ global.Visualizer = {
                 i--;
             }else{
                 // draw the popup message
-                room.visual.text(main_memory.popup_messages[i].text, 1, 1 + offset_y, {
+                room.visual.text(main_memory.popup_messages[i].text, 25, 1 + offset_y, {
                     font: 0.8,
                     // adjust the opacity based on how long it has been showing
                     opacity: (1 - (main_memory.popup_messages[i].timer / POPUP_TIMER_LIMIT)),
