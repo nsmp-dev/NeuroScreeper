@@ -15,6 +15,13 @@ class RoomData {
          * @type {number|null}
          */
         this.type = null;
+
+        // if any spawns are found in the room
+        if (room.find(FIND_MY_SPAWNS).length > 0) {
+            // set the type to a colony
+            this.type = COLONY;
+        }
+
         /**
          * name of the room
          * @type {string}

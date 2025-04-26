@@ -2,7 +2,8 @@
 The main challenge for Screeps is scoping out things and caching them in clever ways.
 There are 3 levels of scope we work with:
 - Prototype: Functions wrapped around built-in classes to enhance their functionality
-- Room: Handles running an individual room, spawning creeps, and creating construction sites
+- Data: Classes for data storage. No logic whatsoever to allow for serialization. We do this to leverage type safety and documentation.
+- Neuro: Holds the actual logic functions. Uses the data classes to store and pass data between each other.
 - Global: High level management that creates new rooms and counts the creeps
 
 We focus on role-based creep and structure behavior via extensive prototyping.
