@@ -1,50 +1,51 @@
 /**
- * Power Squad class, an object that stores data for a group of creeps that collect power
+ * Power Squad class represents a specialized team of creeps designed to harvest power from Power Banks.
+ * The squad consists of an attacker, healer, and transporter working together to efficiently collect power resources.
  * @class PowerSquad
  */
 class PowerSquad {
     /**
-     * Creates a PowerSquad Object
-     * @param {string} room_name - The name of the room this power squad is from
+     * Creates a new PowerSquad instance for coordinating power collection operations
+     * @param {string} room_name - The name of the home room where this squad originates and returns resources to
      */
     constructor(room_name) {
         /**
-         * stores the assigned Power Attacker creep
+         * ID of the assigned Power Attacker creep that deals damage to the Power Bank
          * @type {string|null}
          */
         this.power_attacker = null;
         /**
-         * stores the assigned power healer creep
+         * ID of the assigned Healer creep that keeps the Power Attacker alive
          * @type {string|null}
          */
         this.power_healer = null;
         /**
-         * stores the assigned power transporter creep
+         * ID of the assigned Transporter creep that collects and carries power resources
          * @type {string|null}
          */
         this.power_transporter = null;
         /**
-         * stores the room that owns this squad
+         * Name of the home room where the squad originates from
          * @type {string}
          */
         this.room_name = room_name;
         /**
-         * stores the room that we are returning to
+         * Name of the target room where the squad should return to after mission completion
          * @type {string|null}
          */
         this.return_room_name = null;
         /**
-         * stores the current state of the PowerSquad
+         * Current operational state of the PowerSquad (e.g., IDLE, MOVING, ATTACKING)
          * @type {number}
          */
         this.state = STATES.IDLE;
         /**
-         * stores the rooms that have already been visited
+         * Array of room names that the squad has already explored for power banks
          * @type {string[]}
          */
         this.highway_log = [];
         /**
-         * stores the rooms that need to be visited
+         * Array of unexplored room names that potentially contain power banks
          * @type {string[]}
          */
         this.highway_queue = [];

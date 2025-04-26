@@ -1,17 +1,20 @@
 /**
- * RoomData class, an object that contains all the memory for a room
+ * RoomData class represents a comprehensive data structure for managing and storing room-related information,
+ * including room type, construction plans, creep population, and other essential room state data.
+ * This class serves as the central memory management system for individual rooms in the game.
  * @class RoomData
  */
 class RoomData {
     /**
-     * creates a room data object, with an optional starter Spawn for the first room
-     * @param {Room} room - The room this data is for
-     * @param {StructureSpawn|null} initial_spawn - The initial spawn, if this is the first room
+     * Creates a RoomData object to manage and store room-related information and state.
+     * The constructor can handle both initial room setup with a spawn and later room initialization.
+     * @param {Room} room - The game room object this data instance will manage
+     * @param {StructureSpawn|null} initial_spawn - Optional spawn structure for initializing the first colony room
      */
     constructor(room, initial_spawn = null) {
         Timer.start("creating_room_data");
         /**
-         * type of the room
+         * Defines the category or classification of the room (e.g., COLONY, HIGHWAY, KEEPER_LAIR).
          * @type {number|null}
          */
         this.type = null;
@@ -23,72 +26,83 @@ class RoomData {
         }
 
         /**
-         * name of the room
+         * The unique room name identifier in the format 'W1N1' or similar coordinates
          * @type {string}
          */
         this.room_name = room.name;
         /**
-         * timer for when to do construction
+         * Timer that controls the scheduling of construction activities in the room. When it reaches zero, new construction tasks can be initiated
          * @type {number}
          */
         this.construction_timer = Math.floor(CONSTRUCTION_TIMER_LENGTH / 2);
         /**
-         * timer for when to spawn creeps
+         * Timer that controls the frequency of creep spawning operations. When it reaches zero, new creep spawn requests can be processed
          * @type {number}
          */
         this.population_timer = REQUEST_POPULATION_TIMER_LENGTH;
         /**
-         * timer for when to run the power squad
+         * Timer controlling when the power squad should be activated. When zero, the squad can begin operating
+         * to gather power from the environment. Measured in game ticks
          * @type {number}
          */
         this.power_squad_timer = 0;
         /**
-         * log of how satisfied the colony is
+         * An array tracking colony satisfaction levels over time. Each boolean entry represents whether
+         * the colony met its resource and operational requirements during that time period
          * @type {Boolean[]}
          */
         this.satisfaction_log = [];
         /**
-         * flag for whether the colony is satisfied
+         * Indicates whether the colony has met all its current resource and operational requirements,
+         * including having sufficient energy, creeps, and structures to function optimally
          * @type {Boolean}
          */
         this.satisfied = false;
         /**
-         * flag for when this room has died
+         * Indicates whether this room has become inactive or non-functional, typically due to loss of control or destruction of critical structures
          * @type {Boolean}
          */
         this.dead = false;
         /**
-         * list of creeps that need to be spawned for this colony
+         * An array of pending creep spawn requests for this colony, containing individual CreepMemory
+         * objects that define the attributes and roles for each creep waiting to be spawned
          * @type {CreepMemory[]}
          */
         this.requested_creeps = [];
         /**
-         * plans for construction
+         * Plans for all construction activities in the room, including positioning of buildings,
+         * roads, and other structures. Contains layout templates and blueprints managed by RoomPlans
          * @type {RoomPlans}
          */
         this.plans = new RoomPlans();
         /**
-         * flag for if this room can be a colony
+         * Indicates whether the room meets the necessary criteria to be established as a colony.
+         * A room is eligible for colony status when it contains multiple energy sources and suitable base locations.
          * @type {Boolean}
          */
         this.possible_colony = null;
         /**
-         * flag for if this room can be an expansion
+         * Determines if the room can be considered for expansion. A room is viable for expansion
+         * when it contains multiple energy sources and can sustain additional colony development.
          * @type {Boolean}
          */
         this.possible_expansion = null;
         /**
-         * data for all the reactions and production for the plant
+         * Data structure that manages chemical reactions and resource production facilities in the plant,
+         * including recipes, production queues, and resource allocation for laboratory operations
          * @type {PlantData|null}
          */
         this.plant_data = null;
         /**
-         * data for running a squad that collects power
+         * Data structure managing a squad that collects and harvests power resources from the environment.
+         * This includes squad member assignments, collection strategies, and operational status.
          * @type {PowerSquad}
          */
         this.power_squad = new PowerSquad(room.name);
         /**
-         * holds whether the room has been owned before for detecting room death
+         * Tracks whether the player previously owned this room. Used to detect room loss/death scenarios
+         * by comparing past ownership state with current control status. Essential for managing room lifecycle
+         * and responding to territory changes.
          * @type {Boolean}
          */
         this.has_been_owned = false;

@@ -1,4 +1,8 @@
-// loads all the files into global
+/**
+ * Data bootloader module responsible for requiring and loading all necessary game modules.
+ * This includes data structures, neural components, global utilities, prototypes, and role definitions
+ * needed for the game to function properly. Acts as a central loading point for the entire codebase.
+ */
 require('data.config');
 require('data.construction_plan');
 require('data.creep_memory');
@@ -16,13 +20,13 @@ require('data.reaction');
 require('data.role');
 require('data.room_data');
 require('data.room_plans');
+require('data.room_plans_factory');
 require('data.room_population');
 require('data.source_plan');
 require('data.source_population');
 require('data.tasks');
 require('data.timer_entry');
 require('data.timer_log');
-require('factory.room_plans');
 require('NeuroPlant');
 require('NeuroPower');
 require('NeuroPowerSquad');

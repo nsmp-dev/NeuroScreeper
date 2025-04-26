@@ -1,5 +1,8 @@
 /**
- * visualizer module that displays various stats and populations in the relevant rooms
+ * Visualizer namespace provides functionality for rendering game statistics and managing visual elements in rooms.
+ * It handles CPU usage visualization through bar graphs, population statistics display, and temporary popup messages.
+ * Works in conjunction with the Timer utility to display performance metrics and game state information.
+ * 
  * @namespace Visualizer
  */
 global.Visualizer = {

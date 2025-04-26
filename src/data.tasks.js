@@ -1,5 +1,7 @@
 /**
- * Task class, an object containing data for executing simple creep actions
+ * Base Task class that provides the foundation for all creep actions in the game.
+ * Defines common properties and structure used by all specialized task types,
+ * enabling consistent task management and execution across different creep roles.
  * @class Task
  */
 class Task {
@@ -25,7 +27,9 @@ class Task {
 global.Task = Task;
 
 /**
- * GatherTask class, an object that contains data for running a gather task
+ * GatherTask manages the collection of resources from containers, storage, or
+ * dropped resources in the game world. Provides specific targeting and amount
+ * tracking for efficient resource gathering operations.
  * @class GatherTask
  */
 class GatherTask extends Task {
@@ -58,7 +62,9 @@ class GatherTask extends Task {
 global.GatherTask = GatherTask;
 
 /**
- * DepositTask class, an object that contains data for running a deposit task
+ * DepositTask manages the storage of resources into containers, storage, or other
+ * structures. Controls the transfer of specific resource types and amounts from
+ * creeps into designated storage facilities.
  * @class DepositTask
  */
 class DepositTask extends Task {
@@ -91,7 +97,9 @@ class DepositTask extends Task {
 global.DepositTask = DepositTask;
 
 /**
- * BuildTask class, an object that contains data for running a build task
+ * BuildTask manages the construction of new structures at designated construction
+ * sites. Coordinates creep activities to transform construction sites into
+ * completed structures using available energy resources.
  * @class BuildTask
  */
 class BuildTask extends Task {
@@ -112,7 +120,9 @@ class BuildTask extends Task {
 global.BuildTask = BuildTask;
 
 /**
- * RepairTask class, an object that contains data for running a repair task
+ * RepairTask manages the maintenance and repair of damaged structures in the game.
+ * Coordinates creeps to restore hit points to structures, helping maintain
+ * infrastructure integrity and defensive capabilities.
  * @class RepairTask
  */
 class RepairTask extends Task {
@@ -133,7 +143,9 @@ class RepairTask extends Task {
 global.RepairTask = RepairTask;
 
 /**
- * UpgradeTask class, an object that contains data for running an upgrade task
+ * UpgradeTask manages the process of upgrading room controllers to unlock new
+ * capabilities. Coordinates creeps to transfer energy to controllers for room
+ * level progression and territory control.
  * @class UpgradeTask
  */
 class UpgradeTask extends Task {
@@ -149,7 +161,9 @@ class UpgradeTask extends Task {
 global.UpgradeTask = UpgradeTask;
 
 /**
- * ClaimTask class, an object that contains data for running a claim task
+ * ClaimTask manages the process of claiming ownership of neutral rooms through
+ * controller interaction. Enables territory expansion by coordinating creeps
+ * to establish control over new rooms.
  * @class ClaimTask
  */
 class ClaimTask extends Task {
@@ -165,7 +179,9 @@ class ClaimTask extends Task {
 global.ClaimTask = ClaimTask;
 
 /**
- * ReserveTask class, an object that contains data for running a reserve task
+ * ReserveTask manages the temporary control of neutral room controllers.
+ * Coordinates creeps to maintain reservation status on controllers, securing
+ * resource access without full room ownership.
  * @class ReserveTask
  */
 class ReserveTask extends Task {
@@ -181,7 +197,9 @@ class ReserveTask extends Task {
 global.ReserveTask = ReserveTask;
 
 /**
- * DrillTask class, an object that contains data for running a drill task
+ * DrillTask manages dedicated, continuous resource extraction operations at
+ * specific sources. Coordinates positioning and container usage for optimal
+ * resource gathering efficiency at a fixed location.
  * @class DrillTask
  */
 class DrillTask extends Task {
@@ -209,7 +227,9 @@ class DrillTask extends Task {
 global.DrillTask = DrillTask;
 
 /**
- * AttackTask class, an object that contains data for running an attack task
+ * AttackTask manages offensive operations against hostile creeps or structures.
+ * Coordinates combat actions to damage or destroy specified targets, supporting
+ * both defensive and offensive military operations.
  * @class AttackTask
  */
 class AttackTask extends Task {
@@ -230,7 +250,9 @@ class AttackTask extends Task {
 global.AttackTask = AttackTask;
 
 /**
- * HealTask class, an object that contains data for running a heal task
+ * HealTask manages the restoration of hit points to damaged creeps.
+ * Coordinates healing operations to maintain creep health during combat
+ * or other hazardous operations.
  * @class HealTask
  */
 class HealTask extends Task {
@@ -251,7 +273,9 @@ class HealTask extends Task {
 global.HealTask = HealTask;
 
 /**
- * MoveRoomTask class, an object that contains data for running a move room task
+ * MoveRoomTask manages creep navigation between different rooms.
+ * Coordinates inter-room travel with a built-in timer to ensure proper
+ * positioning and prevent premature task completion.
  * @class MoveRoomTask
  */
 class MoveRoomTask extends Task {
@@ -272,7 +296,9 @@ class MoveRoomTask extends Task {
 global.MoveRoomTask = MoveRoomTask;
 
 /**
- * RenewOperatorTask class, an object that contains data for running a renew operator task
+ * RenewOperatorTask manages the process of renewing power creeps at power spawns.
+ * Handles the temporary interruption of other tasks to maintain power creep
+ * operations, storing previous task state for restoration.
  * @class RenewOperatorTask
  */
 class RenewOperatorTask extends Task {
@@ -299,7 +325,9 @@ class RenewOperatorTask extends Task {
 global.RenewOperatorTask = RenewOperatorTask;
 
 /**
- * IdleTask class, an object that contains data for running an idle task
+ * IdleTask manages temporary pauses in creep activity with configurable duration.
+ * Provides controlled wait states for timing coordination or resource availability,
+ * automatically completing after the specified tick limit.
  * @class IdleTask
  */
 class IdleTask extends Task {
@@ -326,7 +354,9 @@ class IdleTask extends Task {
 global.IdleTask = IdleTask;
 
 /**
- * MoveResourceTask class, an object that contains data for running a move resource task
+ * MoveResourceTask manages the complete cycle of resource transportation between
+ * structures. Coordinates both withdrawal and deposit operations as a single task,
+ * tracking resource types and amounts for efficient logistics.
  * @class MoveResourceTask
  */
 class MoveResourceTask extends Task {
@@ -371,7 +401,9 @@ class MoveResourceTask extends Task {
 global.MoveResourceTask = MoveResourceTask;
 
 /**
- * HarvestTask class, an object that contains data for running a harvest task
+ * HarvestTask manages direct resource collection from sources or mineral deposits.
+ * Coordinates single-target harvesting operations, suitable for temporary or
+ * mobile resource gathering without fixed infrastructure requirements.
  * @class HarvestTask
  */
 class HarvestTask extends Task {

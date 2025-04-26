@@ -1,5 +1,9 @@
 /**
- * contains logic for running a power squad, using a PowerSquad object for storage
+ * This module manages a power squad team that collects power from power banks in highway rooms.
+ * Uses a PowerSquad object to track squad state and member information.
+ * Contains a state machine to systematically search highway rooms from a queue.
+ * Monitors squad member status - resets to idle if any member dies.
+ * Coordinates power collection and transport - returns to base when transporter is full.
  * @namepace NeuroPowerSquad
  */
 global.NeuroPowerSquad = {

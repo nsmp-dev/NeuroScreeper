@@ -1,7 +1,18 @@
 // load all the files using a bootloader script
 require('data.bootloader');
 
-// the main loop that gets run every tick
+/**
+ * Main loop function for the Screeps game simulation.
+ * This function is executed every game tick and serves as the entry point
+ * for your Screeps script. It contains the primary logic and flow control
+ * for your colony's operations.
+ *
+ * Responsibilities:
+ * - Manages and executes tasks for all creeps.
+ * - Oversees and optimizes the behavior of rooms and structures.
+ * - Updates memory and handles garbage collection for unused data.
+ * - Implements global control logic for colony management.
+ */
 module.exports.loop = function () {
     // grab the MainMemory object
     let main_memory = Util.getMainMemory();

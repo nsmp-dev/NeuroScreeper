@@ -1,64 +1,67 @@
 /**
- * MainMemory class, an object that contains all the data stored on the Memory object
+ * MainMemory class represents the main memory storage structure for the game.
+ * It maintains all essential game data, including room information, population statistics,
+ * timers, and system messages stored in the Memory object.
  * @class MainMemory
  */
 class MainMemory {
     /**
-     * creates a MainMemory object
+     * Initializes a new MainMemory instance with default values for all game-related data storage.
+     * This constructor sets up the core data structures needed for game state management.
      */
     constructor() {
         /**
-         * hash of all the RoomData objects with the room name as the key
+         * Collection of RoomData objects indexed by room name, storing detailed information about each game room
          * @type {Object.<string, RoomData>}
          */
         this.room_data = {};
         /**
-         * timer for recounting the population
+         * Countdown timer that triggers periodic population recounts, initialized with an offset from the standard count length
          * @type {number}
          */
         this.population_timer = COUNT_POPULATION_TIMER_LENGTH - 2;
         /**
-         * The output product resource
+         * Timer for tracking new room-related operations or expansions
          * @type {number}
          */
         this.new_room_timer = 0;
         /**
-         * hash of the RoomPopulation objects with the room name as the key
+         * Collection of RoomPopulation objects indexed by room name, tracking population statistics for each room
          * @type {Object.<string, RoomPopulation>}
          */
         this.populations = {};
         /**
-         * the name of the room that is the capitol, or null if there is not a capitol
+         * Identifier for the main control room (capitol). Stores the room name or null if no capitol is designated
          * @type {string|null}
          */
         this.capitol_room_name = null;
         /**
-         * hash of all the TimerLog objects with the id as the key
+         * Collection of TimerLog objects indexed by unique IDs, used for tracking various game events and cooldowns
          * @type {Object.<string, TimerLog>}
          */
         this.timers = {};
         /**
-         * counter for ensuring no id collisions occur
+         * Incremental counter used to generate unique IDs for various game objects and prevent identifier conflicts
          * @type {number}
          */
         this.id_counter = 0;
         /**
-         * build number of this MainMemory object
+         * Current build version number of the MainMemory system, used for version control and compatibility
          * @type {number}
          */
         this.build = BUILD;
         /**
-         * hash of all the ObserverLog objects with the room name as the key
+         * Collection of ObserverLog objects indexed by room name, storing room observation history and data
          * @type {Object.<string, ObserverLog>}
          */
         this.observer_log = {};
         /**
-         * hash of all the Terminal timers with the room name as the key
+         * Collection of terminal cooldown timers indexed by room name, managing terminal operation delays
          * @type {Object.<string, number>}
          */
         this.terminal_timers = {};
         /**
-         * list of popup messages
+         * Array of PopupMessage objects for displaying in-game notifications and alerts to the user
          * @type {PopupMessage[]}
          */
         this.popup_messages = [];

@@ -4,7 +4,7 @@ There are 3 levels of scope we work with:
 - Prototype: Functions wrapped around built-in classes to enhance their functionality
 - Data: Classes for data storage. No logic whatsoever to allow for serialization. We do this to leverage type safety and documentation.
 - Neuro: Holds the actual logic functions. Uses the data classes to store and pass data between each other.
-- Global: High level management that creates new rooms and counts the creeps
+- Global: Miscellaneous functions for utility, visualization, and timing.
 
 We focus on role-based creep and structure behavior via extensive prototyping.
 We put as much of the bulk of code into prototyped functions as we can to consolidate the code and improve stability.

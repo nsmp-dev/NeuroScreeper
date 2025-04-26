@@ -1,40 +1,43 @@
 /**
- * MineralPopulation class, an object that contains data for populating a mineral
+ * MineralPopulation class manages the active mining operations for a mineral deposit,
+ * tracking assigned workers and maintaining location data inherited from a MineralPlan.
+ * This class serves as a runtime representation of mineral extraction activities.
  * @class MineralPopulation
  */
 class MineralPopulation {
     /**
-     * Creates a MineralPopulation Object
-     * @param {MineralPlan} mineral_plan - the mineral plans this mineral population is for
+     * Initializes a new MineralPopulation instance based on a MineralPlan,
+     * setting up the necessary properties for managing mineral extraction operations.
+     * @param {MineralPlan} mineral_plan - The planning structure containing mineral location and resource information
      */
     constructor(mineral_plan) {
         /**
-         * id of the Mineral object
+         * Unique identifier for the mineral deposit in the game world
          * @type {string}
          */
         this.mineral_id = mineral_plan.mineral_id;
         /**
-         * location of the mineral
+         * Coordinate position of the mineral deposit in the room
          * @type {Point}
          */
         this.mineral_location = mineral_plan.mineral_location;
         /**
-         * location of the container
+         * Coordinate position of the container used for storing extracted minerals
          * @type {Point}
          */
         this.container_location = mineral_plan.container_location;
         /**
-         * the type of resource this mineral contains
+         * The type of mineral resource available at this deposit (e.g., 'H', 'O', 'K', etc.)
          * @type {string}
          */
         this.resource_type = mineral_plan.resource_type;
         /**
-         * the id of the mineral driller assigned to this mineral
+         * Unique identifier of the creep assigned to extract minerals from this deposit
          * @type {string|null}
          */
         this.mineral_driller = null;
         /**
-         * the id of the mineral transporter assigned to this mineral
+         * Unique identifier of the creep assigned to transport minerals from the container
          * @type {string|null}
          */
         this.mineral_transporter = null;

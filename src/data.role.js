@@ -1,39 +1,40 @@
 /**
- * Role class, an object containing constants for a role
+ * Role class defines the characteristics and capabilities of different creep roles in the game.
+ * It encapsulates properties that determine a creep's appearance, body composition, and scaling limits.
  * @class Role
  */
 class Role {
     /**
-     * creates a Role object
-     * @param {string} name - the name of the role, for id usage
-     * @param {string} emoji - set of emojis to represent the role
-     * @param {string[]} body - the standard body of the creep
-     * @param {number} energy_cost - energy cost of the standard body
-     * @param {number} max_body_multiplier - the max number of times the body can be multiplied
+     * Creates a new Role object with specified characteristics
+     * @param {string} name - Unique identifier for the role, used for reference and identification
+     * @param {string} emoji - Visual representation of the role using emoji characters
+     * @param {string[]} body - Array of body part constants defining the creep's basic structure
+     * @param {number} energy_cost - Total energy required to spawn a creep with the standard body
+     * @param {number} max_body_multiplier - Maximum allowed multiplier for scaling the body parts
      */
     constructor(name, emoji, body, energy_cost, max_body_multiplier) {
         /**
-         * the name of the role, for id usage
+         * Unique identifier for the role used in game logic and references
          * @type {string}
          */
         this.name = name;
         /**
-         * set of emojis to represent the role
+         * Visual emoji representation that helps identify the role in the game
          * @type {string}
          */
         this.emoji = emoji;
         /**
-         * the standard body of the creep
+         * Base configuration of body parts that defines the creep's capabilities
          * @type {string[]}
          */
         this.body = body;
         /**
-         * energy cost of the standard body
+         * Total energy points required to spawn a creep with the standard body configuration
          * @type {number}
          */
         this.energy_cost = energy_cost;
         /**
-         * the max number of times the body can be multiplied
+         * Maximum number of times the standard body can be repeated when scaling up the creep
          * @type {number}
          */
         this.max_body_multiplier = max_body_multiplier;

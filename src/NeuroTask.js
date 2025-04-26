@@ -1,6 +1,9 @@
 /**
- * runs a task attached to the provided creep
- * @namepace NeuroTask
+ * The NeuroTask namespace provides functionality for managing and executing different tasks for creeps in the game.
+ * It contains methods to handle various tasks like gathering resources, depositing items, repairing structures,
+ * building, upgrading controllers, claiming rooms, and more. Each task type has its own execution logic and
+ * movement handling.
+ * @namespace NeuroTask
  */
 global.NeuroTask = {
     /**

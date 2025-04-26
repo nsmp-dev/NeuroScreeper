@@ -1,5 +1,10 @@
 /**
- * Takes care of running power spawns and spawning, upgrading, and running the operator
+ * This module manages the operator power creep by handling:
+ * - Processing energy and power through PowerSpawns
+ * - Spawning a new operator when one is needed
+ * - Upgrading operator powers when possible
+ * - Running operator logic and actions when spawned
+ * - Managing operator power cooldowns and renewal
  * @namepace NeuroPower
  */
 global.NeuroPower = {

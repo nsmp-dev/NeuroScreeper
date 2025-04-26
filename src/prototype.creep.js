@@ -1,6 +1,7 @@
 /**
- * get a resource to gather for a transporter
- * @return {StructureContainer|Resource|null} The target, accounting for a not-yet-built container
+ * Locates and returns a resource target for a transporter creep to gather from.
+ * First checks for a container in memory, then looks for dropped resources at the container location.
+ * @return {StructureContainer|Resource|null} The container, dropped resource, or null if none found
  */
 let getTransporterTarget = function () {
     // grab the container from memory
@@ -42,8 +43,9 @@ let getTransporterTarget = function () {
 Creep.prototype.getTransporterTarget = getTransporterTarget;
 PowerCreep.prototype.getTransporterTarget = getTransporterTarget;
 /**
- * get a building target
- * @return {ConstructionSite} The closest construction site
+ * Finds the nearest construction site that needs to be built.
+ * Uses pathfinding to determine the closest site to the creep's current position.
+ * @return {ConstructionSite} The closest construction site by path
  */
 let getBuildTarget = function () {
     // find and return the closest construction site
@@ -52,8 +54,9 @@ let getBuildTarget = function () {
 Creep.prototype.getBuildTarget = getBuildTarget;
 PowerCreep.prototype.getBuildTarget = getBuildTarget;
 /**
- * gets a general dumping target
- * @return {Structure} The closest dumping target
+ * Finds a structure to deposit energy into, prioritizing extensions, then spawns, then terminals.
+ * Only returns the terminal if it has available energy capacity.
+ * @return {Structure} The closest valid structure that can receive energy
  */
 let getDumpTarget = function () {
     // find any extensions that are not full
@@ -81,8 +84,9 @@ let getDumpTarget = function () {
 Creep.prototype.getDumpTarget = getDumpTarget;
 PowerCreep.prototype.getDumpTarget = getDumpTarget;
 /**
- * gets a general filling target
- * @return {Structure|Resource} The closest target to get energy from
+ * Locates the nearest energy source, prioritizing dropped energy, then containers, then storage.
+ * Only returns storage if it contains energy and no other sources are available.
+ * @return {Structure|Resource} The closest available energy source
  */
 let getFillTarget = function () {
     // find any dropped energy
@@ -110,8 +114,9 @@ let getFillTarget = function () {
 Creep.prototype.getFillTarget = getFillTarget;
 PowerCreep.prototype.getFillTarget = getFillTarget;
 /**
- * get a repairing target
- * @return {Structure} the nearest damaged structure
+ * Finds the closest structure that needs repairs by comparing current hits to maximum hits.
+ * Uses pathfinding to determine the nearest damaged structure to repair.
+ * @return {Structure} The closest structure that has less than maximum hit points
  */
 let getRepairTarget = function () {
     // return the closest structure
@@ -123,8 +128,9 @@ let getRepairTarget = function () {
 Creep.prototype.getRepairTarget = getRepairTarget;
 PowerCreep.prototype.getRepairTarget = getRepairTarget;
 /**
- * gets a dumping target for a queen
- * @return {StructureTower|StructureExtension|StructureSpawn|StructurePowerSpawn|StructureTerminal} The nearest target for dumping energy
+ * Finds an energy storage target specifically for queen creeps, prioritizing towers, extensions, spawns, power spawn, and terminal.
+ * Checks capacity limits and terminal energy caps before returning a target.
+ * @return {StructureTower|StructureExtension|StructureSpawn|StructurePowerSpawn|StructureTerminal} The highest priority structure that needs energy
  */
 let getQueenDumpTarget = function () {
     // find all the towers that are not full
@@ -169,7 +175,8 @@ let getQueenDumpTarget = function () {
 Creep.prototype.getQueenDumpTarget = getQueenDumpTarget;
 PowerCreep.prototype.getQueenDumpTarget = getQueenDumpTarget;
 /**
- * move toward the idle location for the current room to get out of the way
+ * Directs the creep to move toward the designated idle location in its current room.
+ * Only moves if the creep is more than 3 tiles away from the idle position.
  */
 let idle = function () {
     // get the MainMemory object
@@ -186,8 +193,9 @@ let idle = function () {
 Creep.prototype.idle = idle;
 PowerCreep.prototype.idle = idle;
 /**
- * get the nearest storage or null
- * @return {StructureStorage|null} The nearest storage or null
+ * Locates the closest storage structure across all visible rooms.
+ * Returns current room's storage if present, otherwise finds the nearest storage in other rooms.
+ * @return {StructureStorage|null} The nearest accessible storage structure or null if none exist
  */
 let getNearestStorage = function () {
     // get the MainMemory object
@@ -234,8 +242,9 @@ let getNearestStorage = function () {
 Creep.prototype.getNearestStorage = getNearestStorage;
 PowerCreep.prototype.getNearestStorage = getNearestStorage;
 /**
- * returns the nearest colony room's name
- * @return {string|null} The nearest colony room's name
+ * Finds the closest room designated as a colony using linear distance calculation.
+ * Searches through all known rooms in memory to find the nearest colony type room.
+ * @return {string|null} The name of the nearest colony room, or null if none found
  */
 let getNearestColony = function () {
     // get the MainMemory object
@@ -260,8 +269,9 @@ let getNearestColony = function () {
 Creep.prototype.getNearestColony = getNearestColony;
 PowerCreep.prototype.getNearestColony = getNearestColony;
 /**
- * returns the squad this creep is assigned to
- * @return {PowerSquad} The nearest room's name
+ * Retrieves the power squad assignment for this creep from room memory.
+ * Uses the creep's assigned room to look up its associated power squad.
+ * @return {PowerSquad} The power squad this creep is currently assigned to
  */
 Creep.prototype.getPowerSquad = function () {
     // get the MainMemory object
@@ -270,7 +280,8 @@ Creep.prototype.getPowerSquad = function () {
     return main_memory.room_data[this.memory.room_name].power_squad;
 };
 /**
- * assign a standard gather task to just grab energy for various needs
+ * Creates and assigns an energy-gathering task to the creep.
+ * If no energy source is found, assigns an idle task instead.
  */
 let gatherEnergy = function () {
     // find a new fill target
@@ -283,7 +294,7 @@ let gatherEnergy = function () {
         this.announceTask();
     } else {
         // assign a new idle task
-        this.memory.task = new IdleTask(this.memory.room_name, 10);
+        this.memory.task = new IdleTask(this.memory.room_name);
         // announce the new task
         this.announceTask();
     }
@@ -291,7 +302,8 @@ let gatherEnergy = function () {
 Creep.prototype.gatherEnergy = gatherEnergy;
 PowerCreep.prototype.gatherEnergy = gatherEnergy;
 /**
- * announce the task that the creep is currently assigned
+ * Displays a visual message indicating the creep's current task type.
+ * Uses the creep's say() method to show different messages based on task enumeration.
  */
 let announceTask = function () {
     // grab the task
@@ -400,7 +412,8 @@ let announceTask = function () {
 Creep.prototype.announceTask = announceTask;
 PowerCreep.prototype.announceTask = announceTask;
 /**
- * run the relevant function for the role that this creep has
+ * Executes the appropriate role-specific behavior function based on the creep's assigned role.
+ * Uses a switch statement to determine and call the correct role implementation method.
  */
 Creep.prototype.run = function () {
     // switch based on the creep's role

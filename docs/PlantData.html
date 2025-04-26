@@ -49,7 +49,7 @@
 
 
 <div class="description">
-    PlantData class, an object that contains all the memory for a plant
+    PlantData class manages the memory and state for a plant structure in the game,including labs, factories, and their associated reactions and productions.This class coordinates the operations of resource processing facilities.
 </div>
 
 
@@ -149,7 +149,7 @@
 
 
 <div class="description">
-    the current production in progress
+    The currently active production task being processed in the factory.When null, no production is in progress.
 </div>
 
 
@@ -200,7 +200,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="data.plant_data.js.html">data.plant_data.js</a>, <a href="data.plant_data.js.html#line21">line 21</a>
+        <a href="data.plant_data.js.html">data.plant_data.js</a>, <a href="data.plant_data.js.html#line24">line 24</a>
     </li></ul></dd>
     
 
@@ -224,7 +224,7 @@
 
 
 <div class="description">
-    the current reaction in progress
+    The currently active chemical reaction being processed in the labs.When null, no reaction is in progress.
 </div>
 
 
@@ -275,7 +275,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="data.plant_data.js.html">data.plant_data.js</a>, <a href="data.plant_data.js.html#line16">line 16</a>
+        <a href="data.plant_data.js.html">data.plant_data.js</a>, <a href="data.plant_data.js.html#line18">line 18</a>
     </li></ul></dd>
     
 
@@ -299,7 +299,7 @@
 
 
 <div class="description">
-    factory id
+    Game ID of the factory structure.Used to reference the factory for production operations.
 </div>
 
 
@@ -350,7 +350,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="data.plant_data.js.html">data.plant_data.js</a>, <a href="data.plant_data.js.html#line76">line 76</a>
+        <a href="data.plant_data.js.html">data.plant_data.js</a>, <a href="data.plant_data.js.html#line90">line 90</a>
     </li></ul></dd>
     
 
@@ -374,7 +374,7 @@
 
 
 <div class="description">
-    factory location from the plans
+    Coordinate position of the factory used for commodity production.This location is defined in the room plans.
 </div>
 
 
@@ -422,7 +422,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="data.plant_data.js.html">data.plant_data.js</a>, <a href="data.plant_data.js.html#line56">line 56</a>
+        <a href="data.plant_data.js.html">data.plant_data.js</a>, <a href="data.plant_data.js.html#line66">line 66</a>
     </li></ul></dd>
     
 
@@ -446,7 +446,7 @@
 
 
 <div class="description">
-    state of the factory
+    Current operational state of the factory.Indicates whether the factory is idle, producing, or in error state.
 </div>
 
 
@@ -494,7 +494,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="data.plant_data.js.html">data.plant_data.js</a>, <a href="data.plant_data.js.html#line86">line 86</a>
+        <a href="data.plant_data.js.html">data.plant_data.js</a>, <a href="data.plant_data.js.html#line102">line 102</a>
     </li></ul></dd>
     
 
@@ -518,7 +518,445 @@
 
 
 <div class="description">
-    the timer for doing productions
+    Timer controlling the interval between factory production cycles.Initially set to half of the standard factory timer length.
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">number</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="data.plant_data.js.html">data.plant_data.js</a>, <a href="data.plant_data.js.html#line42">line 42</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="input_lab_1_id"><span class="type-signature"></span>input_lab_1_id<span class="type-signature"> :string|null</span></h4>
+
+
+
+
+<div class="description">
+    Game ID of the first input lab structure.Used to reference the lab in game operations.
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">string</span>
+|
+
+<span class="param-type">null</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="data.plant_data.js.html">data.plant_data.js</a>, <a href="data.plant_data.js.html#line72">line 72</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="input_lab_1_location"><span class="type-signature"></span>input_lab_1_location<span class="type-signature"> :<a href="Point.html">Point</a></span></h4>
+
+
+
+
+<div class="description">
+    Coordinate position of the first input lab used for reactions.This location is defined in the room plans.
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type"><a href="Point.html">Point</a></span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="data.plant_data.js.html">data.plant_data.js</a>, <a href="data.plant_data.js.html#line48">line 48</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="input_lab_2_id"><span class="type-signature"></span>input_lab_2_id<span class="type-signature"> :string|null</span></h4>
+
+
+
+
+<div class="description">
+    Game ID of the second input lab structure.Used to reference the lab in game operations.
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">string</span>
+|
+
+<span class="param-type">null</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="data.plant_data.js.html">data.plant_data.js</a>, <a href="data.plant_data.js.html#line78">line 78</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="input_lab_2_location"><span class="type-signature"></span>input_lab_2_location<span class="type-signature"> :<a href="Point.html">Point</a></span></h4>
+
+
+
+
+<div class="description">
+    Coordinate position of the second input lab used for reactions.This location is defined in the room plans.
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type"><a href="Point.html">Point</a></span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="data.plant_data.js.html">data.plant_data.js</a>, <a href="data.plant_data.js.html#line54">line 54</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="labs_state"><span class="type-signature"></span>labs_state<span class="type-signature"> :number</span></h4>
+
+
+
+
+<div class="description">
+    Current operational state of the lab system.Indicates whether labs are idle, processing, or in error state.
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">number</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="data.plant_data.js.html">data.plant_data.js</a>, <a href="data.plant_data.js.html#line96">line 96</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="labs_timer"><span class="type-signature"></span>labs_timer<span class="type-signature"> :number</span></h4>
+
+
+
+
+<div class="description">
+    Timer controlling the interval between lab reaction processing cycles.Initially set to 2 ticks.
 </div>
 
 
@@ -584,451 +1022,13 @@
 
         
             
-<h4 class="name" id="input_lab_1_id"><span class="type-signature"></span>input_lab_1_id<span class="type-signature"> :string|null</span></h4>
-
-
-
-
-<div class="description">
-    input lab 1 id
-</div>
-
-
-
-    <h5>Type:</h5>
-    <ul>
-        <li>
-            
-<span class="param-type">string</span>
-|
-
-<span class="param-type">null</span>
-
-
-        </li>
-    </ul>
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="data.plant_data.js.html">data.plant_data.js</a>, <a href="data.plant_data.js.html#line61">line 61</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-        
-            
-<h4 class="name" id="input_lab_1_location"><span class="type-signature"></span>input_lab_1_location<span class="type-signature"> :<a href="Point.html">Point</a></span></h4>
-
-
-
-
-<div class="description">
-    input lab 1 location from the plans
-</div>
-
-
-
-    <h5>Type:</h5>
-    <ul>
-        <li>
-            
-<span class="param-type"><a href="Point.html">Point</a></span>
-
-
-        </li>
-    </ul>
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="data.plant_data.js.html">data.plant_data.js</a>, <a href="data.plant_data.js.html#line41">line 41</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-        
-            
-<h4 class="name" id="input_lab_2_id"><span class="type-signature"></span>input_lab_2_id<span class="type-signature"> :string|null</span></h4>
-
-
-
-
-<div class="description">
-    input lab 2 id
-</div>
-
-
-
-    <h5>Type:</h5>
-    <ul>
-        <li>
-            
-<span class="param-type">string</span>
-|
-
-<span class="param-type">null</span>
-
-
-        </li>
-    </ul>
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="data.plant_data.js.html">data.plant_data.js</a>, <a href="data.plant_data.js.html#line66">line 66</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-        
-            
-<h4 class="name" id="input_lab_2_location"><span class="type-signature"></span>input_lab_2_location<span class="type-signature"> :<a href="Point.html">Point</a></span></h4>
-
-
-
-
-<div class="description">
-    input lab 2 location from the plans
-</div>
-
-
-
-    <h5>Type:</h5>
-    <ul>
-        <li>
-            
-<span class="param-type"><a href="Point.html">Point</a></span>
-
-
-        </li>
-    </ul>
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="data.plant_data.js.html">data.plant_data.js</a>, <a href="data.plant_data.js.html#line46">line 46</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-        
-            
-<h4 class="name" id="labs_state"><span class="type-signature"></span>labs_state<span class="type-signature"> :number</span></h4>
-
-
-
-
-<div class="description">
-    state of the labs
-</div>
-
-
-
-    <h5>Type:</h5>
-    <ul>
-        <li>
-            
-<span class="param-type">number</span>
-
-
-        </li>
-    </ul>
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="data.plant_data.js.html">data.plant_data.js</a>, <a href="data.plant_data.js.html#line81">line 81</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-        
-            
-<h4 class="name" id="labs_timer"><span class="type-signature"></span>labs_timer<span class="type-signature"> :number</span></h4>
-
-
-
-
-<div class="description">
-    the timer for doing reactions
-</div>
-
-
-
-    <h5>Type:</h5>
-    <ul>
-        <li>
-            
-<span class="param-type">number</span>
-
-
-        </li>
-    </ul>
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="data.plant_data.js.html">data.plant_data.js</a>, <a href="data.plant_data.js.html#line31">line 31</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-        
-            
 <h4 class="name" id="output_lab_id"><span class="type-signature"></span>output_lab_id<span class="type-signature"> :string|null</span></h4>
 
 
 
 
 <div class="description">
-    output lab id
+    Game ID of the output lab structure.Used to reference the lab where reaction products are stored.
 </div>
 
 
@@ -1079,7 +1079,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="data.plant_data.js.html">data.plant_data.js</a>, <a href="data.plant_data.js.html#line71">line 71</a>
+        <a href="data.plant_data.js.html">data.plant_data.js</a>, <a href="data.plant_data.js.html#line84">line 84</a>
     </li></ul></dd>
     
 
@@ -1103,7 +1103,7 @@
 
 
 <div class="description">
-    output lab location from the plans
+    Coordinate position of the output lab where reaction results are deposited.This location is defined in the room plans.
 </div>
 
 
@@ -1151,7 +1151,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="data.plant_data.js.html">data.plant_data.js</a>, <a href="data.plant_data.js.html#line51">line 51</a>
+        <a href="data.plant_data.js.html">data.plant_data.js</a>, <a href="data.plant_data.js.html#line60">line 60</a>
     </li></ul></dd>
     
 
@@ -1175,7 +1175,7 @@
 
 
 <div class="description">
-    the timer for re-checking cached structure ids
+    Timer controlling the frequency of structure ID validation and cache updates.When zero, triggers a recheck of all structure IDs.
 </div>
 
 
@@ -1223,7 +1223,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="data.plant_data.js.html">data.plant_data.js</a>, <a href="data.plant_data.js.html#line26">line 26</a>
+        <a href="data.plant_data.js.html">data.plant_data.js</a>, <a href="data.plant_data.js.html#line30">line 30</a>
     </li></ul></dd>
     
 
@@ -1375,7 +1375,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="data.plant_data.js.html">data.plant_data.js</a>, <a href="data.plant_data.js.html#line10">line 10</a>
+        <a href="data.plant_data.js.html">data.plant_data.js</a>, <a href="data.plant_data.js.html#line12">line 12</a>
     </li></ul></dd>
     
 
@@ -1431,7 +1431,7 @@
 
 
 <div class="description">
-    the current production in progress
+    The currently active production task being processed in the factory.When null, no production is in progress.
 </div>
 
 
@@ -1482,7 +1482,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="data.plant_data.js.html">data.plant_data.js</a>, <a href="data.plant_data.js.html#line21">line 21</a>
+        <a href="data.plant_data.js.html">data.plant_data.js</a>, <a href="data.plant_data.js.html#line24">line 24</a>
     </li></ul></dd>
     
 
@@ -1506,7 +1506,7 @@
 
 
 <div class="description">
-    the current reaction in progress
+    The currently active chemical reaction being processed in the labs.When null, no reaction is in progress.
 </div>
 
 
@@ -1557,7 +1557,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="data.plant_data.js.html">data.plant_data.js</a>, <a href="data.plant_data.js.html#line16">line 16</a>
+        <a href="data.plant_data.js.html">data.plant_data.js</a>, <a href="data.plant_data.js.html#line18">line 18</a>
     </li></ul></dd>
     
 
@@ -1581,7 +1581,7 @@
 
 
 <div class="description">
-    factory id
+    Game ID of the factory structure.Used to reference the factory for production operations.
 </div>
 
 
@@ -1632,7 +1632,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="data.plant_data.js.html">data.plant_data.js</a>, <a href="data.plant_data.js.html#line76">line 76</a>
+        <a href="data.plant_data.js.html">data.plant_data.js</a>, <a href="data.plant_data.js.html#line90">line 90</a>
     </li></ul></dd>
     
 
@@ -1656,7 +1656,7 @@
 
 
 <div class="description">
-    factory location from the plans
+    Coordinate position of the factory used for commodity production.This location is defined in the room plans.
 </div>
 
 
@@ -1704,7 +1704,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="data.plant_data.js.html">data.plant_data.js</a>, <a href="data.plant_data.js.html#line56">line 56</a>
+        <a href="data.plant_data.js.html">data.plant_data.js</a>, <a href="data.plant_data.js.html#line66">line 66</a>
     </li></ul></dd>
     
 
@@ -1728,7 +1728,7 @@
 
 
 <div class="description">
-    state of the factory
+    Current operational state of the factory.Indicates whether the factory is idle, producing, or in error state.
 </div>
 
 
@@ -1776,7 +1776,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="data.plant_data.js.html">data.plant_data.js</a>, <a href="data.plant_data.js.html#line86">line 86</a>
+        <a href="data.plant_data.js.html">data.plant_data.js</a>, <a href="data.plant_data.js.html#line102">line 102</a>
     </li></ul></dd>
     
 
@@ -1800,7 +1800,445 @@
 
 
 <div class="description">
-    the timer for doing productions
+    Timer controlling the interval between factory production cycles.Initially set to half of the standard factory timer length.
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">number</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="data.plant_data.js.html">data.plant_data.js</a>, <a href="data.plant_data.js.html#line42">line 42</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="input_lab_1_id"><span class="type-signature"></span>input_lab_1_id<span class="type-signature"> :string|null</span></h4>
+
+
+
+
+<div class="description">
+    Game ID of the first input lab structure.Used to reference the lab in game operations.
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">string</span>
+|
+
+<span class="param-type">null</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="data.plant_data.js.html">data.plant_data.js</a>, <a href="data.plant_data.js.html#line72">line 72</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="input_lab_1_location"><span class="type-signature"></span>input_lab_1_location<span class="type-signature"> :<a href="Point.html">Point</a></span></h4>
+
+
+
+
+<div class="description">
+    Coordinate position of the first input lab used for reactions.This location is defined in the room plans.
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type"><a href="Point.html">Point</a></span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="data.plant_data.js.html">data.plant_data.js</a>, <a href="data.plant_data.js.html#line48">line 48</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="input_lab_2_id"><span class="type-signature"></span>input_lab_2_id<span class="type-signature"> :string|null</span></h4>
+
+
+
+
+<div class="description">
+    Game ID of the second input lab structure.Used to reference the lab in game operations.
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">string</span>
+|
+
+<span class="param-type">null</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="data.plant_data.js.html">data.plant_data.js</a>, <a href="data.plant_data.js.html#line78">line 78</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="input_lab_2_location"><span class="type-signature"></span>input_lab_2_location<span class="type-signature"> :<a href="Point.html">Point</a></span></h4>
+
+
+
+
+<div class="description">
+    Coordinate position of the second input lab used for reactions.This location is defined in the room plans.
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type"><a href="Point.html">Point</a></span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="data.plant_data.js.html">data.plant_data.js</a>, <a href="data.plant_data.js.html#line54">line 54</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="labs_state"><span class="type-signature"></span>labs_state<span class="type-signature"> :number</span></h4>
+
+
+
+
+<div class="description">
+    Current operational state of the lab system.Indicates whether labs are idle, processing, or in error state.
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">number</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="data.plant_data.js.html">data.plant_data.js</a>, <a href="data.plant_data.js.html#line96">line 96</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="labs_timer"><span class="type-signature"></span>labs_timer<span class="type-signature"> :number</span></h4>
+
+
+
+
+<div class="description">
+    Timer controlling the interval between lab reaction processing cycles.Initially set to 2 ticks.
 </div>
 
 
@@ -1866,451 +2304,13 @@
 
         
             
-<h4 class="name" id="input_lab_1_id"><span class="type-signature"></span>input_lab_1_id<span class="type-signature"> :string|null</span></h4>
-
-
-
-
-<div class="description">
-    input lab 1 id
-</div>
-
-
-
-    <h5>Type:</h5>
-    <ul>
-        <li>
-            
-<span class="param-type">string</span>
-|
-
-<span class="param-type">null</span>
-
-
-        </li>
-    </ul>
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="data.plant_data.js.html">data.plant_data.js</a>, <a href="data.plant_data.js.html#line61">line 61</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-        
-            
-<h4 class="name" id="input_lab_1_location"><span class="type-signature"></span>input_lab_1_location<span class="type-signature"> :<a href="Point.html">Point</a></span></h4>
-
-
-
-
-<div class="description">
-    input lab 1 location from the plans
-</div>
-
-
-
-    <h5>Type:</h5>
-    <ul>
-        <li>
-            
-<span class="param-type"><a href="Point.html">Point</a></span>
-
-
-        </li>
-    </ul>
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="data.plant_data.js.html">data.plant_data.js</a>, <a href="data.plant_data.js.html#line41">line 41</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-        
-            
-<h4 class="name" id="input_lab_2_id"><span class="type-signature"></span>input_lab_2_id<span class="type-signature"> :string|null</span></h4>
-
-
-
-
-<div class="description">
-    input lab 2 id
-</div>
-
-
-
-    <h5>Type:</h5>
-    <ul>
-        <li>
-            
-<span class="param-type">string</span>
-|
-
-<span class="param-type">null</span>
-
-
-        </li>
-    </ul>
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="data.plant_data.js.html">data.plant_data.js</a>, <a href="data.plant_data.js.html#line66">line 66</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-        
-            
-<h4 class="name" id="input_lab_2_location"><span class="type-signature"></span>input_lab_2_location<span class="type-signature"> :<a href="Point.html">Point</a></span></h4>
-
-
-
-
-<div class="description">
-    input lab 2 location from the plans
-</div>
-
-
-
-    <h5>Type:</h5>
-    <ul>
-        <li>
-            
-<span class="param-type"><a href="Point.html">Point</a></span>
-
-
-        </li>
-    </ul>
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="data.plant_data.js.html">data.plant_data.js</a>, <a href="data.plant_data.js.html#line46">line 46</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-        
-            
-<h4 class="name" id="labs_state"><span class="type-signature"></span>labs_state<span class="type-signature"> :number</span></h4>
-
-
-
-
-<div class="description">
-    state of the labs
-</div>
-
-
-
-    <h5>Type:</h5>
-    <ul>
-        <li>
-            
-<span class="param-type">number</span>
-
-
-        </li>
-    </ul>
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="data.plant_data.js.html">data.plant_data.js</a>, <a href="data.plant_data.js.html#line81">line 81</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-        
-            
-<h4 class="name" id="labs_timer"><span class="type-signature"></span>labs_timer<span class="type-signature"> :number</span></h4>
-
-
-
-
-<div class="description">
-    the timer for doing reactions
-</div>
-
-
-
-    <h5>Type:</h5>
-    <ul>
-        <li>
-            
-<span class="param-type">number</span>
-
-
-        </li>
-    </ul>
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="data.plant_data.js.html">data.plant_data.js</a>, <a href="data.plant_data.js.html#line31">line 31</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-        
-            
 <h4 class="name" id="output_lab_id"><span class="type-signature"></span>output_lab_id<span class="type-signature"> :string|null</span></h4>
 
 
 
 
 <div class="description">
-    output lab id
+    Game ID of the output lab structure.Used to reference the lab where reaction products are stored.
 </div>
 
 
@@ -2361,7 +2361,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="data.plant_data.js.html">data.plant_data.js</a>, <a href="data.plant_data.js.html#line71">line 71</a>
+        <a href="data.plant_data.js.html">data.plant_data.js</a>, <a href="data.plant_data.js.html#line84">line 84</a>
     </li></ul></dd>
     
 
@@ -2385,7 +2385,7 @@
 
 
 <div class="description">
-    output lab location from the plans
+    Coordinate position of the output lab where reaction results are deposited.This location is defined in the room plans.
 </div>
 
 
@@ -2433,7 +2433,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="data.plant_data.js.html">data.plant_data.js</a>, <a href="data.plant_data.js.html#line51">line 51</a>
+        <a href="data.plant_data.js.html">data.plant_data.js</a>, <a href="data.plant_data.js.html#line60">line 60</a>
     </li></ul></dd>
     
 
@@ -2457,7 +2457,7 @@
 
 
 <div class="description">
-    the timer for re-checking cached structure ids
+    Timer controlling the frequency of structure ID validation and cache updates.When zero, triggers a recheck of all structure IDs.
 </div>
 
 
@@ -2505,7 +2505,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="data.plant_data.js.html">data.plant_data.js</a>, <a href="data.plant_data.js.html#line26">line 26</a>
+        <a href="data.plant_data.js.html">data.plant_data.js</a>, <a href="data.plant_data.js.html#line30">line 30</a>
     </li></ul></dd>
     
 
@@ -2539,13 +2539,13 @@
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-NeuroPlant.html">NeuroPlant</a></li><li><a href="module-NeuroPower.html">NeuroPower</a></li><li><a href="module-NeuroPowerSquad.html">NeuroPowerSquad</a></li><li><a href="module-NeuroRoom.html">NeuroRoom</a></li><li><a href="module-NeuroScreeper.html">NeuroScreeper</a></li><li><a href="module-NeuroTask.html">NeuroTask</a></li><li><a href="module-RoomPlansFactory.html">RoomPlansFactory</a></li><li><a href="module-Timer.html">Timer</a></li><li><a href="module-Util.html">Util</a></li><li><a href="module-Visualizer.html">Visualizer</a></li></ul><h3>Classes</h3><ul><li><a href="AttackTask.html">AttackTask</a></li><li><a href="AttackerMemory.html">AttackerMemory</a></li><li><a href="BuildTask.html">BuildTask</a></li><li><a href="BuilderMemory.html">BuilderMemory</a></li><li><a href="ClaimTask.html">ClaimTask</a></li><li><a href="ClaimerMemory.html">ClaimerMemory</a></li><li><a href="CommodityCollectorMemory.html">CommodityCollectorMemory</a></li><li><a href="ConstructionPlan.html">ConstructionPlan</a></li><li><a href="CreepMemory.html">CreepMemory</a></li><li><a href="DepositTask.html">DepositTask</a></li><li><a href="DrillTask.html">DrillTask</a></li><li><a href="DrillerMemory.html">DrillerMemory</a></li><li><a href="GatherTask.html">GatherTask</a></li><li><a href="HarvestTask.html">HarvestTask</a></li><li><a href="HealTask.html">HealTask</a></li><li><a href="HealerMemory.html">HealerMemory</a></li><li><a href="IdleTask.html">IdleTask</a></li><li><a href="MainMemory.html">MainMemory</a></li><li><a href="MineralDrillerMemory.html">MineralDrillerMemory</a></li><li><a href="MineralPlan.html">MineralPlan</a></li><li><a href="MineralPopulation.html">MineralPopulation</a></li><li><a href="MineralTransporterMemory.html">MineralTransporterMemory</a></li><li><a href="MoveResourceTask.html">MoveResourceTask</a></li><li><a href="MoveRoomTask.html">MoveRoomTask</a></li><li><a href="ObserverLog.html">ObserverLog</a></li><li><a href="PlantData.html">PlantData</a></li><li><a href="Point.html">Point</a></li><li><a href="PowerAttackerMemory.html">PowerAttackerMemory</a></li><li><a href="PowerHealerMemory.html">PowerHealerMemory</a></li><li><a href="PowerSquad.html">PowerSquad</a></li><li><a href="PowerSquadPopulation.html">PowerSquadPopulation</a></li><li><a href="PowerTransporterMemory.html">PowerTransporterMemory</a></li><li><a href="Production.html">Production</a></li><li><a href="QueenMemory.html">QueenMemory</a></li><li><a href="Reaction.html">Reaction</a></li><li><a href="RenewOperatorTask.html">RenewOperatorTask</a></li><li><a href="RepairTask.html">RepairTask</a></li><li><a href="RepairerMemory.html">RepairerMemory</a></li><li><a href="ReserveTask.html">ReserveTask</a></li><li><a href="Role.html">Role</a></li><li><a href="RoomData.html">RoomData</a></li><li><a href="RoomPlans.html">RoomPlans</a></li><li><a href="RoomPopulation.html">RoomPopulation</a></li><li><a href="ScoutMemory.html">ScoutMemory</a></li><li><a href="SourcePlan.html">SourcePlan</a></li><li><a href="SourcePopulation.html">SourcePopulation</a></li><li><a href="Task.html">Task</a></li><li><a href="TimerEntry.html">TimerEntry</a></li><li><a href="TimerLog.html">TimerLog</a></li><li><a href="TransporterMemory.html">TransporterMemory</a></li><li><a href="UpgradeTask.html">UpgradeTask</a></li><li><a href="UpgraderMemory.html">UpgraderMemory</a></li></ul><h3>Global</h3><ul><li><a href="global.html#BUILD">BUILD</a></li><li><a href="global.html#COLONY">COLONY</a></li><li><a href="global.html#CONSTRUCTION_TIMER_LENGTH">CONSTRUCTION_TIMER_LENGTH</a></li><li><a href="global.html#COUNT_POPULATION_TIMER_LENGTH">COUNT_POPULATION_TIMER_LENGTH</a></li><li><a href="global.html#DEBUG_MODE">DEBUG_MODE</a></li><li><a href="global.html#EXPANSION">EXPANSION</a></li><li><a href="global.html#FACTORY_TIMER_LENGTH">FACTORY_TIMER_LENGTH</a></li><li><a href="global.html#FINAL_PRODUCTS">FINAL_PRODUCTS</a></li><li><a href="global.html#HIGHWAY">HIGHWAY</a></li><li><a href="global.html#INGREDIENTS">INGREDIENTS</a></li><li><a href="global.html#KEEPER_LAIR">KEEPER_LAIR</a></li><li><a href="global.html#LABS_TIMER_LENGTH">LABS_TIMER_LENGTH</a></li><li><a href="global.html#LOG_SIZE">LOG_SIZE</a></li><li><a href="global.html#NEW_ROOM_TIMER_LENGTH">NEW_ROOM_TIMER_LENGTH</a></li><li><a href="global.html#PLANT_STRUCTURES_TIMER_LENGTH">PLANT_STRUCTURES_TIMER_LENGTH</a></li><li><a href="global.html#POWER_SQUAD_TIMER">POWER_SQUAD_TIMER</a></li><li><a href="global.html#REQUEST_POPULATION_TIMER_LENGTH">REQUEST_POPULATION_TIMER_LENGTH</a></li><li><a href="global.html#ROLES">ROLES</a></li><li><a href="global.html#ROOM_CONSTRUCTION_SITE_LIMIT">ROOM_CONSTRUCTION_SITE_LIMIT</a></li><li><a href="global.html#SATISFACTION_LOG_SIZE">SATISFACTION_LOG_SIZE</a></li><li><a href="global.html#SATISFACTION_THRESHOLD">SATISFACTION_THRESHOLD</a></li><li><a href="global.html#SIGNATURE">SIGNATURE</a></li><li><a href="global.html#STATES">STATES</a></li><li><a href="global.html#TASK_TYPES">TASK_TYPES</a></li><li><a href="global.html#TERMINAL_ENERGY_CAP">TERMINAL_ENERGY_CAP</a></li><li><a href="global.html#TERMINAL_TIMER_LENGTH">TERMINAL_TIMER_LENGTH</a></li><li><a href="global.html#TOWER_MINIMUM_ENERGY">TOWER_MINIMUM_ENERGY</a></li><li><a href="global.html#USERNAME">USERNAME</a></li><li><a href="global.html#announceTask">announceTask</a></li><li><a href="global.html#gatherEnergy">gatherEnergy</a></li><li><a href="global.html#getBuildTarget">getBuildTarget</a></li><li><a href="global.html#getDumpTarget">getDumpTarget</a></li><li><a href="global.html#getFillTarget">getFillTarget</a></li><li><a href="global.html#getNearestColony">getNearestColony</a></li><li><a href="global.html#getNearestStorage">getNearestStorage</a></li><li><a href="global.html#getQueenDumpTarget">getQueenDumpTarget</a></li><li><a href="global.html#getRepairTarget">getRepairTarget</a></li><li><a href="global.html#getTransporterTarget">getTransporterTarget</a></li><li><a href="global.html#hlog">hlog</a></li><li><a href="global.html#idle">idle</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Namespaces</h3><ul><li><a href="NeuroRoom.html">NeuroRoom</a></li><li><a href="NeuroTask.html">NeuroTask</a></li><li><a href="RoomPlansFactory.html">RoomPlansFactory</a></li><li><a href="Timer.html">Timer</a></li><li><a href="Util.html">Util</a></li><li><a href="Visualizer.html">Visualizer</a></li></ul><h3>Classes</h3><ul><li><a href="AttackTask.html">AttackTask</a></li><li><a href="AttackerMemory.html">AttackerMemory</a></li><li><a href="BuildTask.html">BuildTask</a></li><li><a href="BuilderMemory.html">BuilderMemory</a></li><li><a href="ClaimTask.html">ClaimTask</a></li><li><a href="ClaimerMemory.html">ClaimerMemory</a></li><li><a href="CommodityCollectorMemory.html">CommodityCollectorMemory</a></li><li><a href="ConstructionPlan.html">ConstructionPlan</a></li><li><a href="CreepMemory.html">CreepMemory</a></li><li><a href="DepositTask.html">DepositTask</a></li><li><a href="DrillTask.html">DrillTask</a></li><li><a href="DrillerMemory.html">DrillerMemory</a></li><li><a href="GatherTask.html">GatherTask</a></li><li><a href="HarvestTask.html">HarvestTask</a></li><li><a href="HealTask.html">HealTask</a></li><li><a href="HealerMemory.html">HealerMemory</a></li><li><a href="IdleTask.html">IdleTask</a></li><li><a href="MainMemory.html">MainMemory</a></li><li><a href="MineralDrillerMemory.html">MineralDrillerMemory</a></li><li><a href="MineralPlan.html">MineralPlan</a></li><li><a href="MineralPopulation.html">MineralPopulation</a></li><li><a href="MineralTransporterMemory.html">MineralTransporterMemory</a></li><li><a href="MoveResourceTask.html">MoveResourceTask</a></li><li><a href="MoveRoomTask.html">MoveRoomTask</a></li><li><a href="ObserverLog.html">ObserverLog</a></li><li><a href="PlantData.html">PlantData</a></li><li><a href="Point.html">Point</a></li><li><a href="PopupMessage.html">PopupMessage</a></li><li><a href="PowerAttackerMemory.html">PowerAttackerMemory</a></li><li><a href="PowerHealerMemory.html">PowerHealerMemory</a></li><li><a href="PowerSquad.html">PowerSquad</a></li><li><a href="PowerSquadPopulation.html">PowerSquadPopulation</a></li><li><a href="PowerTransporterMemory.html">PowerTransporterMemory</a></li><li><a href="Production.html">Production</a></li><li><a href="QueenMemory.html">QueenMemory</a></li><li><a href="Reaction.html">Reaction</a></li><li><a href="RenewOperatorTask.html">RenewOperatorTask</a></li><li><a href="RepairTask.html">RepairTask</a></li><li><a href="RepairerMemory.html">RepairerMemory</a></li><li><a href="ReserveTask.html">ReserveTask</a></li><li><a href="Role.html">Role</a></li><li><a href="RoomData.html">RoomData</a></li><li><a href="RoomPlans.html">RoomPlans</a></li><li><a href="RoomPopulation.html">RoomPopulation</a></li><li><a href="ScoutMemory.html">ScoutMemory</a></li><li><a href="SourcePlan.html">SourcePlan</a></li><li><a href="SourcePopulation.html">SourcePopulation</a></li><li><a href="Task.html">Task</a></li><li><a href="TimerEntry.html">TimerEntry</a></li><li><a href="TimerLog.html">TimerLog</a></li><li><a href="TransporterMemory.html">TransporterMemory</a></li><li><a href="UpgradeTask.html">UpgradeTask</a></li><li><a href="UpgraderMemory.html">UpgraderMemory</a></li></ul><h3>Global</h3><ul><li><a href="global.html#BUILD">BUILD</a></li><li><a href="global.html#COLONY">COLONY</a></li><li><a href="global.html#CONSTRUCTION_TIMER_LENGTH">CONSTRUCTION_TIMER_LENGTH</a></li><li><a href="global.html#COUNT_POPULATION_TIMER_LENGTH">COUNT_POPULATION_TIMER_LENGTH</a></li><li><a href="global.html#DEBUG_MODE">DEBUG_MODE</a></li><li><a href="global.html#EXPANSION">EXPANSION</a></li><li><a href="global.html#FACTORY_TIMER_LENGTH">FACTORY_TIMER_LENGTH</a></li><li><a href="global.html#FINAL_PRODUCTS">FINAL_PRODUCTS</a></li><li><a href="global.html#HIGHWAY">HIGHWAY</a></li><li><a href="global.html#INGREDIENTS">INGREDIENTS</a></li><li><a href="global.html#KEEPER_LAIR">KEEPER_LAIR</a></li><li><a href="global.html#LABS_TIMER_LENGTH">LABS_TIMER_LENGTH</a></li><li><a href="global.html#LOG_SIZE">LOG_SIZE</a></li><li><a href="global.html#NEW_ROOM_TIMER_LENGTH">NEW_ROOM_TIMER_LENGTH</a></li><li><a href="global.html#PLANT_STRUCTURES_TIMER_LENGTH">PLANT_STRUCTURES_TIMER_LENGTH</a></li><li><a href="global.html#POPUP_TIMER_LIMIT">POPUP_TIMER_LIMIT</a></li><li><a href="global.html#POWER_SQUAD_TIMER">POWER_SQUAD_TIMER</a></li><li><a href="global.html#REQUEST_POPULATION_TIMER_LENGTH">REQUEST_POPULATION_TIMER_LENGTH</a></li><li><a href="global.html#ROLES">ROLES</a></li><li><a href="global.html#ROOM_CONSTRUCTION_SITE_LIMIT">ROOM_CONSTRUCTION_SITE_LIMIT</a></li><li><a href="global.html#SATISFACTION_LOG_SIZE">SATISFACTION_LOG_SIZE</a></li><li><a href="global.html#SATISFACTION_THRESHOLD">SATISFACTION_THRESHOLD</a></li><li><a href="global.html#SIGNATURE">SIGNATURE</a></li><li><a href="global.html#STATES">STATES</a></li><li><a href="global.html#TASK_TYPES">TASK_TYPES</a></li><li><a href="global.html#TERMINAL_ENERGY_CAP">TERMINAL_ENERGY_CAP</a></li><li><a href="global.html#TERMINAL_TIMER_LENGTH">TERMINAL_TIMER_LENGTH</a></li><li><a href="global.html#TOWER_MINIMUM_ENERGY">TOWER_MINIMUM_ENERGY</a></li><li><a href="global.html#USERNAME">USERNAME</a></li><li><a href="global.html#announceTask">announceTask</a></li><li><a href="global.html#gatherEnergy">gatherEnergy</a></li><li><a href="global.html#getBuildTarget">getBuildTarget</a></li><li><a href="global.html#getDumpTarget">getDumpTarget</a></li><li><a href="global.html#getFillTarget">getFillTarget</a></li><li><a href="global.html#getNearestColony">getNearestColony</a></li><li><a href="global.html#getNearestStorage">getNearestStorage</a></li><li><a href="global.html#getQueenDumpTarget">getQueenDumpTarget</a></li><li><a href="global.html#getRepairTarget">getRepairTarget</a></li><li><a href="global.html#getTransporterTarget">getTransporterTarget</a></li><li><a href="global.html#hlog">hlog</a></li><li><a href="global.html#idle">idle</a></li><li><a href="global.html#loop">loop</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Fri Apr 25 2025 12:57:08 GMT-0500 (Central Daylight Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Sat Apr 26 2025 16:03:29 GMT-0500 (Central Daylight Time)
 </footer>
 
 <script> prettyPrint(); </script>

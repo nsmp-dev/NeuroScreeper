@@ -1,10 +1,15 @@
 /**
- * Handles scanning and adding new rooms
+ * Manages room population tracking and colony/expansion growth across the empire.
+ * Key responsibilities:
+ * - Scans and initializes data for newly discovered rooms
+ * - Tracks creep populations efficiently through periodic counting
+ * - Expands the empire by creating new colonies when existing rooms are stable
+ * - Balances growth between colonies and remote mining expansions
  * @namepace NeuroScreeper
  */
 global.NeuroScreeper = {
     /**
-     * scan for any new rooms and add their data if found
+     * scan for any new rooms and create RoomData for them if found
      */
     scanNewRooms: function () {
         // get the MainMemory object
@@ -31,6 +36,7 @@ global.NeuroScreeper = {
             if (main_memory.room_data[name].type == null && main_memory.room_data[name].possible_colony && Util.isRoomAvailable(name)) {
                 // set the room type to a colony
                 main_memory.room_data[name].type = COLONY;
+                Visualizer.popup("Created a new colony!");
                 // return true for success
                 return true;
             }
@@ -50,6 +56,7 @@ global.NeuroScreeper = {
             if (main_memory.room_data[name].type == null && main_memory.room_data[name].possible_expansion && Util.isRoomAvailable(name)) {
                 // set the room type to a colony
                 main_memory.room_data[name].type = EXPANSION;
+                Visualizer.popup("Created a new expansion!");
                 // return true for success
                 return true;
             }

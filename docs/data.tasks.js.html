@@ -27,7 +27,9 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>/**
- * Task class, an object containing data for executing simple creep actions
+ * Base Task class that provides the foundation for all creep actions in the game.
+ * Defines common properties and structure used by all specialized task types,
+ * enabling consistent task management and execution across different creep roles.
  * @class Task
  */
 class Task {
@@ -49,10 +51,13 @@ class Task {
         this.room_name = room_name;
     }
 }
+
 global.Task = Task;
 
 /**
- * GatherTask class, an object that contains data for running a gather task
+ * GatherTask manages the collection of resources from containers, storage, or
+ * dropped resources in the game world. Provides specific targeting and amount
+ * tracking for efficient resource gathering operations.
  * @class GatherTask
  */
 class GatherTask extends Task {
@@ -81,10 +86,13 @@ class GatherTask extends Task {
         this.amount = amount;
     }
 }
+
 global.GatherTask = GatherTask;
 
 /**
- * DepositTask class, an object that contains data for running a deposit task
+ * DepositTask manages the storage of resources into containers, storage, or other
+ * structures. Controls the transfer of specific resource types and amounts from
+ * creeps into designated storage facilities.
  * @class DepositTask
  */
 class DepositTask extends Task {
@@ -113,10 +121,13 @@ class DepositTask extends Task {
         this.amount = amount;
     }
 }
+
 global.DepositTask = DepositTask;
 
 /**
- * BuildTask class, an object that contains data for running a build task
+ * BuildTask manages the construction of new structures at designated construction
+ * sites. Coordinates creep activities to transform construction sites into
+ * completed structures using available energy resources.
  * @class BuildTask
  */
 class BuildTask extends Task {
@@ -133,10 +144,13 @@ class BuildTask extends Task {
         this.construction_site = construction_site.id;
     }
 }
+
 global.BuildTask = BuildTask;
 
 /**
- * RepairTask class, an object that contains data for running a repair task
+ * RepairTask manages the maintenance and repair of damaged structures in the game.
+ * Coordinates creeps to restore hit points to structures, helping maintain
+ * infrastructure integrity and defensive capabilities.
  * @class RepairTask
  */
 class RepairTask extends Task {
@@ -153,10 +167,13 @@ class RepairTask extends Task {
         this.structure = structure.id;
     }
 }
+
 global.RepairTask = RepairTask;
 
 /**
- * UpgradeTask class, an object that contains data for running an upgrade task
+ * UpgradeTask manages the process of upgrading room controllers to unlock new
+ * capabilities. Coordinates creeps to transfer energy to controllers for room
+ * level progression and territory control.
  * @class UpgradeTask
  */
 class UpgradeTask extends Task {
@@ -168,10 +185,13 @@ class UpgradeTask extends Task {
         super(TASK_TYPES.UPGRADE, room_name);
     }
 }
+
 global.UpgradeTask = UpgradeTask;
 
 /**
- * ClaimTask class, an object that contains data for running a claim task
+ * ClaimTask manages the process of claiming ownership of neutral rooms through
+ * controller interaction. Enables territory expansion by coordinating creeps
+ * to establish control over new rooms.
  * @class ClaimTask
  */
 class ClaimTask extends Task {
@@ -183,10 +203,13 @@ class ClaimTask extends Task {
         super(TASK_TYPES.CLAIM, room_name);
     }
 }
+
 global.ClaimTask = ClaimTask;
 
 /**
- * ReserveTask class, an object that contains data for running a reserve task
+ * ReserveTask manages the temporary control of neutral room controllers.
+ * Coordinates creeps to maintain reservation status on controllers, securing
+ * resource access without full room ownership.
  * @class ReserveTask
  */
 class ReserveTask extends Task {
@@ -198,10 +221,13 @@ class ReserveTask extends Task {
         super(TASK_TYPES.RESERVE, room_name);
     }
 }
+
 global.ReserveTask = ReserveTask;
 
 /**
- * DrillTask class, an object that contains data for running a drill task
+ * DrillTask manages dedicated, continuous resource extraction operations at
+ * specific sources. Coordinates positioning and container usage for optimal
+ * resource gathering efficiency at a fixed location.
  * @class DrillTask
  */
 class DrillTask extends Task {
@@ -225,10 +251,13 @@ class DrillTask extends Task {
         this.container_location = container_location;
     }
 }
+
 global.DrillTask = DrillTask;
 
 /**
- * AttackTask class, an object that contains data for running an attack task
+ * AttackTask manages offensive operations against hostile creeps or structures.
+ * Coordinates combat actions to damage or destroy specified targets, supporting
+ * both defensive and offensive military operations.
  * @class AttackTask
  */
 class AttackTask extends Task {
@@ -245,10 +274,13 @@ class AttackTask extends Task {
         this.target = target.id;
     }
 }
+
 global.AttackTask = AttackTask;
 
 /**
- * HealTask class, an object that contains data for running a heal task
+ * HealTask manages the restoration of hit points to damaged creeps.
+ * Coordinates healing operations to maintain creep health during combat
+ * or other hazardous operations.
  * @class HealTask
  */
 class HealTask extends Task {
@@ -265,10 +297,13 @@ class HealTask extends Task {
         this.creep = creep.id;
     }
 }
+
 global.HealTask = HealTask;
 
 /**
- * MoveRoomTask class, an object that contains data for running a move room task
+ * MoveRoomTask manages creep navigation between different rooms.
+ * Coordinates inter-room travel with a built-in timer to ensure proper
+ * positioning and prevent premature task completion.
  * @class MoveRoomTask
  */
 class MoveRoomTask extends Task {
@@ -285,10 +320,13 @@ class MoveRoomTask extends Task {
         this.timer = 0;
     }
 }
+
 global.MoveRoomTask = MoveRoomTask;
 
 /**
- * RenewOperatorTask class, an object that contains data for running a renew operator task
+ * RenewOperatorTask manages the process of renewing power creeps at power spawns.
+ * Handles the temporary interruption of other tasks to maintain power creep
+ * operations, storing previous task state for restoration.
  * @class RenewOperatorTask
  */
 class RenewOperatorTask extends Task {
@@ -311,10 +349,13 @@ class RenewOperatorTask extends Task {
         this.previous_task = previous_task;
     }
 }
+
 global.RenewOperatorTask = RenewOperatorTask;
 
 /**
- * IdleTask class, an object that contains data for running an idle task
+ * IdleTask manages temporary pauses in creep activity with configurable duration.
+ * Provides controlled wait states for timing coordination or resource availability,
+ * automatically completing after the specified tick limit.
  * @class IdleTask
  */
 class IdleTask extends Task {
@@ -337,10 +378,13 @@ class IdleTask extends Task {
         this.tick_counter = 0;
     }
 }
+
 global.IdleTask = IdleTask;
 
 /**
- * MoveResourceTask class, an object that contains data for running a move resource task
+ * MoveResourceTask manages the complete cycle of resource transportation between
+ * structures. Coordinates both withdrawal and deposit operations as a single task,
+ * tracking resource types and amounts for efficient logistics.
  * @class MoveResourceTask
  */
 class MoveResourceTask extends Task {
@@ -381,10 +425,13 @@ class MoveResourceTask extends Task {
         this.state = STATES.FILLING;
     }
 }
+
 global.MoveResourceTask = MoveResourceTask;
 
 /**
- * HarvestTask class, an object that contains data for running a harvest task
+ * HarvestTask manages direct resource collection from sources or mineral deposits.
+ * Coordinates single-target harvesting operations, suitable for temporary or
+ * mobile resource gathering without fixed infrastructure requirements.
  * @class HarvestTask
  */
 class HarvestTask extends Task {
@@ -402,6 +449,7 @@ class HarvestTask extends Task {
         this.target = target.id;
     }
 }
+
 global.HarvestTask = HarvestTask;</code></pre>
         </article>
     </section>
@@ -412,13 +460,13 @@ global.HarvestTask = HarvestTask;</code></pre>
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-NeuroPlant.html">NeuroPlant</a></li><li><a href="module-NeuroPower.html">NeuroPower</a></li><li><a href="module-NeuroPowerSquad.html">NeuroPowerSquad</a></li><li><a href="module-NeuroRoom.html">NeuroRoom</a></li><li><a href="module-NeuroScreeper.html">NeuroScreeper</a></li><li><a href="module-NeuroTask.html">NeuroTask</a></li><li><a href="module-RoomPlansFactory.html">RoomPlansFactory</a></li><li><a href="module-Timer.html">Timer</a></li><li><a href="module-Util.html">Util</a></li><li><a href="module-Visualizer.html">Visualizer</a></li></ul><h3>Classes</h3><ul><li><a href="AttackTask.html">AttackTask</a></li><li><a href="AttackerMemory.html">AttackerMemory</a></li><li><a href="BuildTask.html">BuildTask</a></li><li><a href="BuilderMemory.html">BuilderMemory</a></li><li><a href="ClaimTask.html">ClaimTask</a></li><li><a href="ClaimerMemory.html">ClaimerMemory</a></li><li><a href="CommodityCollectorMemory.html">CommodityCollectorMemory</a></li><li><a href="ConstructionPlan.html">ConstructionPlan</a></li><li><a href="CreepMemory.html">CreepMemory</a></li><li><a href="DepositTask.html">DepositTask</a></li><li><a href="DrillTask.html">DrillTask</a></li><li><a href="DrillerMemory.html">DrillerMemory</a></li><li><a href="GatherTask.html">GatherTask</a></li><li><a href="HarvestTask.html">HarvestTask</a></li><li><a href="HealTask.html">HealTask</a></li><li><a href="HealerMemory.html">HealerMemory</a></li><li><a href="IdleTask.html">IdleTask</a></li><li><a href="MainMemory.html">MainMemory</a></li><li><a href="MineralDrillerMemory.html">MineralDrillerMemory</a></li><li><a href="MineralPlan.html">MineralPlan</a></li><li><a href="MineralPopulation.html">MineralPopulation</a></li><li><a href="MineralTransporterMemory.html">MineralTransporterMemory</a></li><li><a href="MoveResourceTask.html">MoveResourceTask</a></li><li><a href="MoveRoomTask.html">MoveRoomTask</a></li><li><a href="ObserverLog.html">ObserverLog</a></li><li><a href="PlantData.html">PlantData</a></li><li><a href="Point.html">Point</a></li><li><a href="PowerAttackerMemory.html">PowerAttackerMemory</a></li><li><a href="PowerHealerMemory.html">PowerHealerMemory</a></li><li><a href="PowerSquad.html">PowerSquad</a></li><li><a href="PowerSquadPopulation.html">PowerSquadPopulation</a></li><li><a href="PowerTransporterMemory.html">PowerTransporterMemory</a></li><li><a href="Production.html">Production</a></li><li><a href="QueenMemory.html">QueenMemory</a></li><li><a href="Reaction.html">Reaction</a></li><li><a href="RenewOperatorTask.html">RenewOperatorTask</a></li><li><a href="RepairTask.html">RepairTask</a></li><li><a href="RepairerMemory.html">RepairerMemory</a></li><li><a href="ReserveTask.html">ReserveTask</a></li><li><a href="Role.html">Role</a></li><li><a href="RoomData.html">RoomData</a></li><li><a href="RoomPlans.html">RoomPlans</a></li><li><a href="RoomPopulation.html">RoomPopulation</a></li><li><a href="ScoutMemory.html">ScoutMemory</a></li><li><a href="SourcePlan.html">SourcePlan</a></li><li><a href="SourcePopulation.html">SourcePopulation</a></li><li><a href="Task.html">Task</a></li><li><a href="TimerEntry.html">TimerEntry</a></li><li><a href="TimerLog.html">TimerLog</a></li><li><a href="TransporterMemory.html">TransporterMemory</a></li><li><a href="UpgradeTask.html">UpgradeTask</a></li><li><a href="UpgraderMemory.html">UpgraderMemory</a></li></ul><h3>Global</h3><ul><li><a href="global.html#BUILD">BUILD</a></li><li><a href="global.html#COLONY">COLONY</a></li><li><a href="global.html#CONSTRUCTION_TIMER_LENGTH">CONSTRUCTION_TIMER_LENGTH</a></li><li><a href="global.html#COUNT_POPULATION_TIMER_LENGTH">COUNT_POPULATION_TIMER_LENGTH</a></li><li><a href="global.html#DEBUG_MODE">DEBUG_MODE</a></li><li><a href="global.html#EXPANSION">EXPANSION</a></li><li><a href="global.html#FACTORY_TIMER_LENGTH">FACTORY_TIMER_LENGTH</a></li><li><a href="global.html#FINAL_PRODUCTS">FINAL_PRODUCTS</a></li><li><a href="global.html#HIGHWAY">HIGHWAY</a></li><li><a href="global.html#INGREDIENTS">INGREDIENTS</a></li><li><a href="global.html#KEEPER_LAIR">KEEPER_LAIR</a></li><li><a href="global.html#LABS_TIMER_LENGTH">LABS_TIMER_LENGTH</a></li><li><a href="global.html#LOG_SIZE">LOG_SIZE</a></li><li><a href="global.html#NEW_ROOM_TIMER_LENGTH">NEW_ROOM_TIMER_LENGTH</a></li><li><a href="global.html#PLANT_STRUCTURES_TIMER_LENGTH">PLANT_STRUCTURES_TIMER_LENGTH</a></li><li><a href="global.html#POWER_SQUAD_TIMER">POWER_SQUAD_TIMER</a></li><li><a href="global.html#REQUEST_POPULATION_TIMER_LENGTH">REQUEST_POPULATION_TIMER_LENGTH</a></li><li><a href="global.html#ROLES">ROLES</a></li><li><a href="global.html#ROOM_CONSTRUCTION_SITE_LIMIT">ROOM_CONSTRUCTION_SITE_LIMIT</a></li><li><a href="global.html#SATISFACTION_LOG_SIZE">SATISFACTION_LOG_SIZE</a></li><li><a href="global.html#SATISFACTION_THRESHOLD">SATISFACTION_THRESHOLD</a></li><li><a href="global.html#SIGNATURE">SIGNATURE</a></li><li><a href="global.html#STATES">STATES</a></li><li><a href="global.html#TASK_TYPES">TASK_TYPES</a></li><li><a href="global.html#TERMINAL_ENERGY_CAP">TERMINAL_ENERGY_CAP</a></li><li><a href="global.html#TERMINAL_TIMER_LENGTH">TERMINAL_TIMER_LENGTH</a></li><li><a href="global.html#TOWER_MINIMUM_ENERGY">TOWER_MINIMUM_ENERGY</a></li><li><a href="global.html#USERNAME">USERNAME</a></li><li><a href="global.html#announceTask">announceTask</a></li><li><a href="global.html#gatherEnergy">gatherEnergy</a></li><li><a href="global.html#getBuildTarget">getBuildTarget</a></li><li><a href="global.html#getDumpTarget">getDumpTarget</a></li><li><a href="global.html#getFillTarget">getFillTarget</a></li><li><a href="global.html#getNearestColony">getNearestColony</a></li><li><a href="global.html#getNearestStorage">getNearestStorage</a></li><li><a href="global.html#getQueenDumpTarget">getQueenDumpTarget</a></li><li><a href="global.html#getRepairTarget">getRepairTarget</a></li><li><a href="global.html#getTransporterTarget">getTransporterTarget</a></li><li><a href="global.html#hlog">hlog</a></li><li><a href="global.html#idle">idle</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Namespaces</h3><ul><li><a href="NeuroRoom.html">NeuroRoom</a></li><li><a href="NeuroTask.html">NeuroTask</a></li><li><a href="RoomPlansFactory.html">RoomPlansFactory</a></li><li><a href="Timer.html">Timer</a></li><li><a href="Util.html">Util</a></li><li><a href="Visualizer.html">Visualizer</a></li></ul><h3>Classes</h3><ul><li><a href="AttackTask.html">AttackTask</a></li><li><a href="AttackerMemory.html">AttackerMemory</a></li><li><a href="BuildTask.html">BuildTask</a></li><li><a href="BuilderMemory.html">BuilderMemory</a></li><li><a href="ClaimTask.html">ClaimTask</a></li><li><a href="ClaimerMemory.html">ClaimerMemory</a></li><li><a href="CommodityCollectorMemory.html">CommodityCollectorMemory</a></li><li><a href="ConstructionPlan.html">ConstructionPlan</a></li><li><a href="CreepMemory.html">CreepMemory</a></li><li><a href="DepositTask.html">DepositTask</a></li><li><a href="DrillTask.html">DrillTask</a></li><li><a href="DrillerMemory.html">DrillerMemory</a></li><li><a href="GatherTask.html">GatherTask</a></li><li><a href="HarvestTask.html">HarvestTask</a></li><li><a href="HealTask.html">HealTask</a></li><li><a href="HealerMemory.html">HealerMemory</a></li><li><a href="IdleTask.html">IdleTask</a></li><li><a href="MainMemory.html">MainMemory</a></li><li><a href="MineralDrillerMemory.html">MineralDrillerMemory</a></li><li><a href="MineralPlan.html">MineralPlan</a></li><li><a href="MineralPopulation.html">MineralPopulation</a></li><li><a href="MineralTransporterMemory.html">MineralTransporterMemory</a></li><li><a href="MoveResourceTask.html">MoveResourceTask</a></li><li><a href="MoveRoomTask.html">MoveRoomTask</a></li><li><a href="ObserverLog.html">ObserverLog</a></li><li><a href="PlantData.html">PlantData</a></li><li><a href="Point.html">Point</a></li><li><a href="PopupMessage.html">PopupMessage</a></li><li><a href="PowerAttackerMemory.html">PowerAttackerMemory</a></li><li><a href="PowerHealerMemory.html">PowerHealerMemory</a></li><li><a href="PowerSquad.html">PowerSquad</a></li><li><a href="PowerSquadPopulation.html">PowerSquadPopulation</a></li><li><a href="PowerTransporterMemory.html">PowerTransporterMemory</a></li><li><a href="Production.html">Production</a></li><li><a href="QueenMemory.html">QueenMemory</a></li><li><a href="Reaction.html">Reaction</a></li><li><a href="RenewOperatorTask.html">RenewOperatorTask</a></li><li><a href="RepairTask.html">RepairTask</a></li><li><a href="RepairerMemory.html">RepairerMemory</a></li><li><a href="ReserveTask.html">ReserveTask</a></li><li><a href="Role.html">Role</a></li><li><a href="RoomData.html">RoomData</a></li><li><a href="RoomPlans.html">RoomPlans</a></li><li><a href="RoomPopulation.html">RoomPopulation</a></li><li><a href="ScoutMemory.html">ScoutMemory</a></li><li><a href="SourcePlan.html">SourcePlan</a></li><li><a href="SourcePopulation.html">SourcePopulation</a></li><li><a href="Task.html">Task</a></li><li><a href="TimerEntry.html">TimerEntry</a></li><li><a href="TimerLog.html">TimerLog</a></li><li><a href="TransporterMemory.html">TransporterMemory</a></li><li><a href="UpgradeTask.html">UpgradeTask</a></li><li><a href="UpgraderMemory.html">UpgraderMemory</a></li></ul><h3>Global</h3><ul><li><a href="global.html#BUILD">BUILD</a></li><li><a href="global.html#COLONY">COLONY</a></li><li><a href="global.html#CONSTRUCTION_TIMER_LENGTH">CONSTRUCTION_TIMER_LENGTH</a></li><li><a href="global.html#COUNT_POPULATION_TIMER_LENGTH">COUNT_POPULATION_TIMER_LENGTH</a></li><li><a href="global.html#DEBUG_MODE">DEBUG_MODE</a></li><li><a href="global.html#EXPANSION">EXPANSION</a></li><li><a href="global.html#FACTORY_TIMER_LENGTH">FACTORY_TIMER_LENGTH</a></li><li><a href="global.html#FINAL_PRODUCTS">FINAL_PRODUCTS</a></li><li><a href="global.html#HIGHWAY">HIGHWAY</a></li><li><a href="global.html#INGREDIENTS">INGREDIENTS</a></li><li><a href="global.html#KEEPER_LAIR">KEEPER_LAIR</a></li><li><a href="global.html#LABS_TIMER_LENGTH">LABS_TIMER_LENGTH</a></li><li><a href="global.html#LOG_SIZE">LOG_SIZE</a></li><li><a href="global.html#NEW_ROOM_TIMER_LENGTH">NEW_ROOM_TIMER_LENGTH</a></li><li><a href="global.html#PLANT_STRUCTURES_TIMER_LENGTH">PLANT_STRUCTURES_TIMER_LENGTH</a></li><li><a href="global.html#POPUP_TIMER_LIMIT">POPUP_TIMER_LIMIT</a></li><li><a href="global.html#POWER_SQUAD_TIMER">POWER_SQUAD_TIMER</a></li><li><a href="global.html#REQUEST_POPULATION_TIMER_LENGTH">REQUEST_POPULATION_TIMER_LENGTH</a></li><li><a href="global.html#ROLES">ROLES</a></li><li><a href="global.html#ROOM_CONSTRUCTION_SITE_LIMIT">ROOM_CONSTRUCTION_SITE_LIMIT</a></li><li><a href="global.html#SATISFACTION_LOG_SIZE">SATISFACTION_LOG_SIZE</a></li><li><a href="global.html#SATISFACTION_THRESHOLD">SATISFACTION_THRESHOLD</a></li><li><a href="global.html#SIGNATURE">SIGNATURE</a></li><li><a href="global.html#STATES">STATES</a></li><li><a href="global.html#TASK_TYPES">TASK_TYPES</a></li><li><a href="global.html#TERMINAL_ENERGY_CAP">TERMINAL_ENERGY_CAP</a></li><li><a href="global.html#TERMINAL_TIMER_LENGTH">TERMINAL_TIMER_LENGTH</a></li><li><a href="global.html#TOWER_MINIMUM_ENERGY">TOWER_MINIMUM_ENERGY</a></li><li><a href="global.html#USERNAME">USERNAME</a></li><li><a href="global.html#announceTask">announceTask</a></li><li><a href="global.html#gatherEnergy">gatherEnergy</a></li><li><a href="global.html#getBuildTarget">getBuildTarget</a></li><li><a href="global.html#getDumpTarget">getDumpTarget</a></li><li><a href="global.html#getFillTarget">getFillTarget</a></li><li><a href="global.html#getNearestColony">getNearestColony</a></li><li><a href="global.html#getNearestStorage">getNearestStorage</a></li><li><a href="global.html#getQueenDumpTarget">getQueenDumpTarget</a></li><li><a href="global.html#getRepairTarget">getRepairTarget</a></li><li><a href="global.html#getTransporterTarget">getTransporterTarget</a></li><li><a href="global.html#hlog">hlog</a></li><li><a href="global.html#idle">idle</a></li><li><a href="global.html#loop">loop</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Fri Apr 25 2025 12:57:07 GMT-0500 (Central Daylight Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Sat Apr 26 2025 16:03:29 GMT-0500 (Central Daylight Time)
 </footer>
 
 <script> prettyPrint(); </script>

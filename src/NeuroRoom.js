@@ -1,16 +1,26 @@
 /**
- * contains logic for running a room, using a room data object for storage
- * @namepace NeuroRoom
+ * Core module responsible for managing individual rooms within the colony network.
+ * This namespace provides comprehensive room management functionality including:
+ * - Creep spawning and population control
+ * - Room satisfaction level monitoring and tracking
+ * - Construction site management and building coordination
+ * - Resource gathering and processing plant operations
+ * - Power squad coordination for room defense and power bank harvesting
+ *
+ * Acts as the central nervous system for room-level operations, resource allocation,
+ * and strategic decision-making within the colony network.
+ * @namespace NeuroRoom
  */
 global.NeuroRoom = {
     /**
-     * attempt to spawn the specified creep, either locally or globally
-     * @param {string} room_name - name of the room this request is from
-     * @param {CreepMemory} creep_memory - creep memory to spawn
-     * @param {Boolean} is_global - flag to spawn globally
+     * Attempts to spawn a new creep with specified memory configuration either in the local room or globally.
+     * Will try to find available spawns and adjust body parts based on available energy and role requirements.
+     * @param {string} room_name - Name of the room requesting the spawn
+     * @param {CreepMemory} creep_memory - Memory configuration for the new creep, including role and task assignments
+     * @param {Boolean} is_global - When true, allows spawning in any room. When false, only spawns in the requesting room
+     * @returns {Boolean} True if spawning was successful, false otherwise
      */
     spawnRole: function (room_name, creep_memory, is_global = false) {
-        hlog("trying to spawn a " + creep_memory.role + " in room  " + room_name);
         // default success to false
         let success = false;
         /**
@@ -75,9 +85,15 @@ global.NeuroRoom = {
         return success;
     },
     /**
-     * recalculate the population needs and save the requested creeps to room_data
-     * @param {RoomData} room_data - The room data for the room.
-     * @param {Room|null} room - The Room we are running
+     * Analyzes current room conditions and population requirements to determine the necessary creeps.
+     * Evaluates multiple factors including:
+     * - Room ownership and control level
+     * - Resource gathering needs (energy and minerals)
+     * - Construction and repair requirements
+     * - Defense and power harvesting capabilities
+     * Updates the room_data.requested_creeps array with new spawn requests.
+     * @param {RoomData} room_data - Contains current room state and configuration data
+     * @param {Room|null} room - The Room object being evaluated, null if room is not visible
      */
     requestCreeps: function (room_data, room) {
         // get the MainMemory object
@@ -261,8 +277,11 @@ global.NeuroRoom = {
         }
     },
     /**
-     * attempt to spawn any creeps that are requested
-     * @param {RoomData} room_data - The room data for the room.
+     * Attempts to spawn creeps from the room's requested_creeps array.
+     * For colony rooms, spawning is attempted locally within the same room.
+     * For non-colony rooms, spawning is attempted globally across all available rooms.
+     * If spawning is successful, the spawned creep request is removed from the array.
+     * @param {RoomData} room_data - The room data containing spawn requests and room configuration
      */
     spawnRequestedCreeps: function (room_data) {
         // declare a success variable
@@ -283,9 +302,12 @@ global.NeuroRoom = {
         }
     },
     /**
-     * calculate to see if the room is satisfied
-     * @param {RoomData} room_data - The room data for the room.
-     * @param {Room|null} room - The Room we are running
+     * Evaluates the room's current state to determine if all essential needs are being met.
+     * Tracks satisfaction over time using a rolling log to maintain historical performance.
+     * A room is considered satisfied when all required creeps are present and operational.
+     * Also monitors room ownership status and marks rooms as dead if they become unowned.
+     * @param {RoomData} room_data - Contains room state data including satisfaction history
+     * @param {Room|null} room - The Room object being evaluated, null if room is not visible
      */
     calculateSatisfaction: function (room_data, room) {
         // if no creeps are needed
@@ -322,9 +344,16 @@ global.NeuroRoom = {
         }
     },
     /**
-     * run the colony, kicking off sub-functions for specific activities
-     * @param {RoomData} room_data - The room data for the room.
-     * @param {Room|null} room - The Room we are running
+     * Executes the main room management cycle, coordinating all room-level operations.
+     * Performs the following tasks on a scheduled basis:
+     * - Population management and creep spawning
+     * - Satisfaction level monitoring
+     * - Construction site creation and management
+     * - Plant operations for resource processing
+     * - Power squad coordination and deployment
+     * Each task runs on its own timer to optimize performance and CPU usage.
+     * @param {RoomData} room_data - Contains all room-specific data and configuration
+     * @param {Room|null} room - The Room object being managed, null if room is not visible
      */
     run: function (room_data, room = null) {
         hlog("running room " + room_data.room_name);

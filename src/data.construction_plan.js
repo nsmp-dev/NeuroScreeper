@@ -1,22 +1,23 @@
 /**
- * ConstructionPlan class, an object that contains data for planning a structure
+ * Represents a plan for constructing structures in the game world. This class encapsulates
+ * the necessary information needed to place a construction site at a specific location.
  * @class ConstructionPlan
  */
 class ConstructionPlan {
     /**
-     * Creates a ConstructionPlan Object
-     * @param {number} x - x coordinate to place the construction site
-     * @param {number} y - y coordinate to place the construction site
-     * @param {string} structure_type - type of structure that the construction site is for
+     * Creates a new ConstructionPlan instance with specified coordinates and structure type
+     * @param {number} x - The X coordinate in the game world where the construction site will be placed
+     * @param {number} y - The Y coordinate in the game world where the construction site will be placed
+     * @param {string} structure_type - The type of structure to be built (e.g., 'spawn', 'extension', 'road')
      */
     constructor(x, y, structure_type) {
         /**
-         * location of the construction site
+         * The position in the game world where the construction site will be placed
          * @type {Point}
          */
         this.location = new Point(x, y);
         /**
-         * type of structure that the construction site is for
+         * The type of structure that will be built at the construction site
          * @type {string}
          */
         this.type = structure_type;

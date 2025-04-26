@@ -1,35 +1,37 @@
 /**
- * RoomPopulation class, an object that contains all the creep counts for a room
+ * RoomPopulation manages and tracks the population of different creep types within a game room.
+ * This class maintains counts for various creep roles, source workers, mineral workers, and power squad members.
  * @class RoomPopulation
  */
 class RoomPopulation {
     /**
-     * creates an empty room population object
-     * @param {RoomPlans} plans - The room plans this population is for
+     * Initializes a new RoomPopulation instance with zero counts for all creep roles.
+     * Creates population trackers for sources, minerals, and power squad based on the provided room plans.
+     * @param {RoomPlans} plans - Room planning configuration containing source and mineral plans
      */
     constructor(plans) {
         /**
-         * total of all the creeps assigned to this room
+         * Tracks the total number of creeps currently assigned to this room across all roles
          * @type {number}
          */
         this.total = 0;
         /**
-         * hash with the population of each role
+         * Maps role identifiers to their respective population counts in the room
          * @type {Object.<string,number>}
          */
         this.roles = {};
         /**
-         * list of the source populations in the room
+         * Tracks population details for each energy source harvesting operation in the room
          * @type {SourcePopulation[]}
          */
         this.source_populations = [];
         /**
-         * list of the mineral populations in the room
+         * Tracks population details for each mineral harvesting operation in the room
          * @type {MineralPopulation[]}
          */
         this.mineral_populations = [];
         /**
-         * power squad population for counting the power spawn creeps
+         * Manages the population of creeps assigned to power processing operations
          * @type {PowerSquadPopulation}
          */
         this.power_squad = new PowerSquadPopulation();

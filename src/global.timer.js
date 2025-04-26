@@ -1,5 +1,7 @@
 /**
- * handles timing parts of code and logging the averages over time
+ * Timer utility that manages CPU time tracking for different operations.
+ * Provides functionality to start and stop timers, calculate average execution times,
+ * and maintain logs of CPU usage for performance monitoring.
  * @namespace Timer
  */
 global.Timer = {

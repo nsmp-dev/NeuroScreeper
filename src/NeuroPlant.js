@@ -1,10 +1,10 @@
 /**
- * This module handles the logic for the plant in a room.
- * Subroutines are done periodically and never on the same tick, reducing average cpu time.
- * It caches the ids of the labs and factory, accounting for losing structures and resetting the state.
- * The plant uses two independent state machines for the labs and the factory.
- * This allows them to work independently of each other, and the operator can load/unload one while the other is running.
- * The state machines automatically detect destroyed structures or incorrect ingredients, resetting the state to cleaning.
+ * This module controls the production facilities (labs and factory) in a room.
+ * To optimize CPU usage, subsystems run on different ticks to spread out processing.
+ * Structure IDs are cached and automatically updated if buildings are destroyed.
+ * Labs and factory operate as independent state machines to enable parallel processing.
+ * The operator can interact with either system independently without disrupting the other.
+ * If structures are destroyed or wrong materials are detected, systems automatically reset to cleaning state.
  * @namepace NeuroPlant
  */
 global.NeuroPlant = {
@@ -102,8 +102,11 @@ global.NeuroPlant = {
             if (output_lab.cooldown == 0) {
                 // if the output lab has the amount requested in the reaction
                 if (output_lab.store[reaction.output] == reaction.amount) {
+                    Visualizer.popup("Finished a reaction for " + plant_data.current_reaction.amount + " " + plant_data.current_reaction.output);
                     // set the labs to finished
                     plant_data.labs_state = STATES.FINISHED;
+                    // clear the current reaction
+                    plant_data.current_reaction = null;
                 } else {
                     // run the reaction
                     output_lab.runReaction(input_lab_1, input_lab_2);
@@ -244,6 +247,8 @@ global.NeuroPlant = {
             if (factory.cooldown == 0) {
                 // set the factory to finished
                 plant_data.factory_state = STATES.FINISHED;
+                Visualizer.popup("Finished a production of " + plant_data.current_reaction.output);
+                plant_data.current_production = null;
             }
         }
 

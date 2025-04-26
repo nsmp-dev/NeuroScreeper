@@ -1,5 +1,8 @@
 /**
- * commonly used helper functions
+ * A utility namespace that provides helper functions for managing memory,
+ * room coordinates conversion, array manipulation, ID generation, garbage collection,
+ * room management, statistics tracking, and general game state utilities.
+ * Contains functions for both basic operations and game-specific helper methods.
  * @namespace Util
  */
 global.Util = {
