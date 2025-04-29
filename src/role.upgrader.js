@@ -26,6 +26,7 @@ global.UpgraderMemory = UpgraderMemory;
  * room controllers. Controller upgrades increase room level, unlocking new building capabilities and
  * maintaining territory control. Upgraders gather energy when depleted and consistently upgrade their
  * assigned room's controller.
+ * @memberOf Creep#
  */
 Creep.prototype.runUpgrader = function () {
     // if we don't have a task currently assigned

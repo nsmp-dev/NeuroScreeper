@@ -25,6 +25,7 @@ global.HealerMemory = HealerMemory;
  * Specialized healer role responsible for restoring damaged creeps to full health.
  * Actively searches for injured friendly units within the room and prioritizes healing
  * based on proximity. If no damaged creeps are found, enters an idle state until needed.
+ * @memberOf Creep#
  */
 Creep.prototype.runHealer = function () {
     // if we don't have a task currently assigned

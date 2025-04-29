@@ -26,6 +26,7 @@ global.PowerTransporterMemory = PowerTransporterMemory;
  * Specialized creep behavior for transporting power resources in power collection squads.
  * Follows squad state machine transitions between searching, collecting and returning phases.
  * Efficiently gathers dropped power and delivers it to colony storage facilities.
+ * @memberOf Creep#
  */
 Creep.prototype.runPowerTransporter = function () {
     // if no task is assigned

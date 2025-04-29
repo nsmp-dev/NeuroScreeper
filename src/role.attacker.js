@@ -27,6 +27,7 @@ global.AttackerMemory = AttackerMemory;
  * Automatically searches for enemy creeps within the room, prioritizing the closest
  * targets for efficient combat engagement. When no hostiles are present, enters an
  * idle patrol state.
+ * @memberOf Creep#
  */
 Creep.prototype.runAttacker = function () {
     // if we don't have a task currently assigned

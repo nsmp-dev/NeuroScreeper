@@ -39,6 +39,7 @@ global.DrillerMemory = DrillerMemory;
  * Specialized creep role responsible for continuous energy harvesting from a designated source.
  * Operates by positioning itself at a fixed location next to the source and automatically
  * depositing harvested energy into an assigned container for efficient resource collection.
+ * @memberOf Creep#
  */
 Creep.prototype.runDriller = function () {
     // if we don't have a task currently assigned

@@ -28,6 +28,7 @@ global.QueenMemory = QueenMemory;
  * 2. Moving final products from storage to terminal in capitol rooms
  * 3. Moving ingredients from the terminal to storage in capitol rooms
  * 4. Transporting non-energy resources to the terminal in non-capitol rooms
+ * @memberOf Creep#
  */
 Creep.prototype.runQueen = function () {
     // get the MainMemory object

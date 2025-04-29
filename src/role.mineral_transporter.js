@@ -55,6 +55,7 @@ global.MineralTransporterMemory = MineralTransporterMemory;
  * A specialized creep that manages the transportation of minerals between containers and storage facilities.
  * It monitors container levels at mining sites, collects minerals when containers have sufficient resources,
  * and efficiently transfers them to the room's main storage structure for long-term storage and future use.
+ * @memberOf Creep#
  */
 Creep.prototype.runMineralTransporter = function () {
     // if we don't have a task currently assigned

@@ -27,6 +27,7 @@ global.PowerHealerMemory = PowerHealerMemory;
  * Follows squad state machine transitions and prioritizes healing damaged
  * squad members during power bank harvesting operations. Works in coordination
  * with power attackers to maintain squad sustainability.
+ * @memberOf Creep#
  */
 Creep.prototype.runPowerHealer = function () {
     // if no task is assigned

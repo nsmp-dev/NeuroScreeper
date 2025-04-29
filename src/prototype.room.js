@@ -1,6 +1,12 @@
 /**
+ * test description
+ * @class Room
+ */
+
+/**
  * Searches for a rectangular area in the room that is free of both terrain walls and planned structures.
  * The search prioritizes locations closer to the room center.
+ * @memberOf Room#
  * @param {number} width - The width of the rectangular area to search for
  * @param {number} height - The height of the rectangular area to search for
  * @param {RoomPlans} plans - Room planning data containing locations of existing and planned structures to avoid
@@ -75,6 +81,7 @@ Room.prototype.getClearArea = function (width, height, plans) {
 /**
  * Finds an unobstructed position adjacent to the specified coordinates.
  * Checks all 8 surrounding tiles for a valid position that is free of both terrain walls and planned structures.
+ * @memberOf Room#
  * @param {number} x - The x coordinate of the center position to check around
  * @param {number} y - The y coordinate of the center position to check around
  * @param {RoomPlans} plans - Room planning data containing existing and planned structure locations to avoid
@@ -142,6 +149,7 @@ Room.prototype.getClearAdjacentLocation = function (x, y, plans) {
  * Creates construction sites based on provided room plans, respecting the game limit of 5 active construction sites per room.
  * Construction sites are created in priority order: source containers first, followed by mineral structures,
  * then planned structures, roads, and finally ramparts. Stops creating new sites once the limit is reached.
+ * @memberOf Room#
  * @param {RoomPlans} plans - Room planning data containing coordinates and types of all structures to be built
  */
 Room.prototype.createConstructionSites = function (plans) {
@@ -297,6 +305,7 @@ Room.prototype.createConstructionSites = function (plans) {
 };
 /**
  * Checks if a specific type of structure exists at the given coordinates in the room.
+ * @memberOf Room#
  * @param {string} structure_type - The STRUCTURE_* constant defining which structure type to check for
  * @param {number} x - The X coordinate in the room (0-49)
  * @param {number} y - The Y coordinate in the room (0-49)
@@ -318,6 +327,7 @@ Room.prototype.checkFor = function (structure_type, x, y) {
 };
 /**
  * Searches the room for all tower structures with available energy capacity
+ * @memberOf Room#
  * @return {StructureTower[]} An array containing all towers that have space for more energy
  */
 Room.prototype.findLowTowers = function () {
@@ -329,6 +339,7 @@ Room.prototype.findLowTowers = function () {
 };
 /**
  * Finds and returns all extensions in the room that have available energy capacity.
+ * @memberOf Room#
  * @return {StructureExtension[]} Array of extensions that are not at full energy capacity
  */
 Room.prototype.findLowExtensions = function () {
@@ -340,6 +351,7 @@ Room.prototype.findLowExtensions = function () {
 };
 /**
  * Finds all spawn structures that have available energy capacity.
+ * @memberOf Room#
  * @return {StructureSpawn[]} Array of owned spawn structures that can receive additional energy
  */
 Room.prototype.findLowSpawns = function () {
@@ -351,6 +363,7 @@ Room.prototype.findLowSpawns = function () {
 };
 /**
  * Finds and returns all containers in the room that contain energy resources
+ * @memberOf Room#
  * @return {StructureContainer[]} Array of containers that have energy stored in them
  */
 Room.prototype.findFilledContainers = function () {
@@ -363,6 +376,7 @@ Room.prototype.findFilledContainers = function () {
 /**
  * Gets an array of room names that share a border with the current room.
  * These rooms can be accessed directly via any of the valid exits in the current room.
+ * @memberOf Room#
  * @return {string[]} Array containing the names of all adjacent rooms that are accessible through exits
  */
 Room.prototype.getAdjacentRooms = function () {
@@ -398,6 +412,7 @@ Room.prototype.getAdjacentRooms = function () {
 /**
  * Retrieves a specific structure type at the specified coordinates in the room.
  * If multiple structures exist at the location, only returns the first one matching the requested type.
+ * @memberOf Room#
  * @param {string} structure_type - The STRUCTURE_* constant defining which structure type to find
  * @param {number} x - The X coordinate in the room (0-49)
  * @param {number} y - The Y coordinate in the room (0-49)
@@ -420,6 +435,7 @@ Room.prototype.getStructureAt = function (structure_type, x, y) {
 /**
  * Locates and returns the room's power spawn structure if one exists.
  * Each room can have at most one power spawn structure.
+ * @memberOf Room#
  * @return {StructurePowerSpawn|null} Returns the room's power spawn structure, or null if no power spawn exists in the room
  */
 Room.prototype.getPowerSpawn = function () {

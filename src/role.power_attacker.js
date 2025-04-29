@@ -25,6 +25,7 @@ global.PowerAttackerMemory = PowerAttackerMemory;
  * Specialized creep class for attacking power banks in foreign rooms. Works as part of a power collection squad,
  * coordinating with healers and carriers to efficiently harvest power from banks. Executes attack tasks while
  * following squad state machine transitions between searching, collecting and returning phases.
+ * @memberOf Creep#
  */
 Creep.prototype.runPowerAttacker = function () {
     // if no task is assigned

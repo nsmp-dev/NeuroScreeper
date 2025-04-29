@@ -28,6 +28,7 @@ global.ClaimerMemory = ClaimerMemory;
  * and interact with the controller, either reserving it temporarily or claiming full
  * ownership based on colony settings. This function handles the core claiming/reserving
  * logic for expansion and territory control.
+ * @memberOf Creep#
  */
 Creep.prototype.runClaimer = function () {
     // get the MainMemory object

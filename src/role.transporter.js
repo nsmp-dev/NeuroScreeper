@@ -50,6 +50,7 @@ global.TransporterMemory = TransporterMemory;
  * Controls creep behavior for transporters, which are specialized units responsible for moving energy
  * from driller-adjacent containers to colony storage structures. These creeps form a crucial logistical
  * link in the resource supply chain, efficiently transferring gathered resources to where they're needed.
+ * @memberOf Creep#
  */
 Creep.prototype.runTransporter = function () {
     // if we don't have a task currently assigned
