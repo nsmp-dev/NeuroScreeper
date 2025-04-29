@@ -5,23 +5,28 @@ global.CommodityCollectorRole = new Role("commodity_collector", "💰⚖️", [W
 global.ROLES[CommodityCollectorRole.name] = CommodityCollectorRole;
 
 /**
- * CommodityCollectorMemory class, storing data for an attacker
+ * CommodityCollectorMemory class represents memory storage for creeps that collect commodities from deposits in highways.
+ * These creeps search for and harvest valuable resources found in highway rooms between sectors.
  * @class CommodityCollectorMemory
  */
 class CommodityCollectorMemory extends CreepMemory {
     /**
-     * creates an CommodityCollectorMemory object
-     * @param {string} room_name - The name of the room this creep is assigned to
+     * Creates a CommodityCollectorMemory object that manages memory for commodity collector creeps.
+     * These creeps specialize in harvesting deposits from highway rooms between sectors.
+     * @param {string} room_name - The identifier of the room where this collector will be based
      */
     constructor(room_name) {
         super(CommodityCollectorRole.name, room_name);
         /**
-         * stores the rooms that have already been visited
+         * Array of visited room names that the collector has previously scouted for deposits.
+         * Used to track exploration history and prevent revisiting rooms until a full cycle is completed.
          * @type {string[]}
          */
         this.highway_log = [];
         /**
-         * stores the rooms that need to be visited
+         * Queue of room names that have not yet been explored for deposits.
+         * This array serves as a list of highway rooms awaiting inspection.
+         * Once a room is visited, it is removed from this queue and added to the highway_log.
          * @type {string[]}
          */
         this.highway_queue = [];
@@ -30,6 +35,11 @@ class CommodityCollectorMemory extends CreepMemory {
 
 global.CommodityCollectorMemory = CommodityCollectorMemory;
 
+/**
+ * Controls behavior of a Commodity Collector creep that systematically explores highway rooms between sectors
+ * to find and harvest valuable deposits. When inventory is full, the creep automatically locates and travels
+ * to the nearest colony storage to deposit collected resources before resuming exploration and harvesting.
+ */
 Creep.prototype.runCommodityCollector = function () {
     // if we don't have a task currently assigned
     if (this.memory.task == null) {

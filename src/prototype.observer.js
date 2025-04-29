@@ -1,5 +1,10 @@
 /**
- * run the observer, keeping a log of rooms to be scanned and scanning the next one
+ * Executes the scanning routine for the Observer structure. The Observer systematically
+ * scans rooms in a rectangular grid pattern defined by its range. It maintains its
+ * scanning position in memory and advances through the grid one room at a time,
+ * moving from left to right and top to bottom. When it reaches the end of a row,
+ * it moves to the start of the next row. When it reaches the bottom-right corner,
+ * it resets to the top-left corner to start the cycle again.
  */
 StructureObserver.prototype.run = function () {
     // get the MainMemory object

@@ -3,7 +3,7 @@
  * It contains methods to handle various tasks like gathering resources, depositing items, repairing structures,
  * building, upgrading controllers, claiming rooms, and more. Each task type has its own execution logic and
  * movement handling.
- * @namespace NeuroTask
+ * @module NeuroTask
  */
 global.NeuroTask = {
     /**

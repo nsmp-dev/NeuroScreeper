@@ -1,5 +1,6 @@
 /**
- * move any ingredients to the capitol
+ * Transfers available ingredients from this terminal to the terminal in the capitol room.
+ * Processing is done one ingredient at a time to avoid exceeding energy limits.
  */
 StructureTerminal.prototype.moveIngredients = function () {
     // get the MainMemory object
@@ -42,7 +43,10 @@ StructureTerminal.prototype.moveIngredients = function () {
 };
 
 /**
- * sell any excess energy and commodities
+ * Sells excess energy and final product commodities on the in-game market.
+ * For energy, sells any amount above TERMINAL_ENERGY_CAP.
+ * For final products, sells all available quantities.
+ * Finds best market prices and executes trades when affordable.
  */
 StructureTerminal.prototype.sellFinalProducts = function () {
     // create a hash of the sellable resources
@@ -125,7 +129,10 @@ StructureTerminal.prototype.sellFinalProducts = function () {
     }
 };
 /**
- * buy any affordable subscription tokens
+ * Attempts to purchase subscription tokens from the market.
+ * Finds the lowest priced subscription token order and executes
+ * the purchase if there are enough credits available.
+ * Only buys one token at a time.
  */
 StructureTerminal.prototype.buySubToken = function () {
     // grab all the orders for selling a subscription token
@@ -156,7 +163,11 @@ StructureTerminal.prototype.buySubToken = function () {
     }
 };
 /**
- * run the terminal
+ * Executes the terminal's main operational cycle. This method manages periodic tasks including:
+ * - Selling excess resources and final products on the market
+ * - Purchasing subscription tokens when affordable
+ * - Transferring ingredients to the capitol room if this isn't the capitol
+ * The operations are performed based on cooldown timers and energy thresholds.
  */
 StructureTerminal.prototype.run = function () {
     // get the MainMemory object

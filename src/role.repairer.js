@@ -3,15 +3,15 @@ global.RepairerRole = new Role("repairer", "🔧🪛", [WORK, CARRY, MOVE, MOVE]
 
 // add the role to the roles hash
 global.ROLES[RepairerRole.name] = RepairerRole;
-
 /**
- * RepairerMemory class, storing data for an attacker
+ * RepairerMemory class represents memory structure for repair-focused creeps that maintain structures
+ * by identifying and fixing damaged buildings, walls, and other structures within their assigned room
  * @class RepairerMemory
  */
 class RepairerMemory extends CreepMemory {
     /**
-     * creates an RepairerMemory object
-     * @param {string} room_name - The name of the room this creep is assigned to
+     * Creates a new RepairerMemory instance to manage creeps dedicated to maintaining structures
+     * @param {string} room_name - The identifier of the room where the repairer creep will operate and repair structures
      */
     constructor(room_name) {
         super(RepairerRole.name, room_name);
@@ -21,7 +21,9 @@ class RepairerMemory extends CreepMemory {
 global.RepairerMemory = RepairerMemory;
 
 /**
- * repairer that repairs any damaged structures in the room
+ * Defines behavior for repair-focused creeps that actively maintain structures by identifying
+ * and fixing damaged buildings, walls, and other infrastructure. These creeps will gather energy
+ * when depleted and automatically switch to construction or upgrading tasks when no repairs are needed.
  */
 Creep.prototype.runRepairer = function () {
     // if we don't have a task currently assigned

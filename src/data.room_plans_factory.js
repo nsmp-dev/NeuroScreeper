@@ -3,7 +3,7 @@
  * roads, ramparts, and other game objects in rooms. Provides methods for initial room setup and
  * later room development planning, including source mining, mineral extraction, base construction,
  * and defensive structure positioning.
- * @namespace RoomPlansFactory
+ * @module RoomPlansFactory
  */
 global.RoomPlansFactory = {
     /**

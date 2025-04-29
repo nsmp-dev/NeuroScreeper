@@ -5,7 +5,7 @@
  * Labs and factory operate as independent state machines to enable parallel processing.
  * The operator can interact with either system independently without disrupting the other.
  * If structures are destroyed or wrong materials are detected, systems automatically reset to cleaning state.
- * @namepace NeuroPlant
+ * @module NeuroPlant
  */
 global.NeuroPlant = {
     /**

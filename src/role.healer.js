@@ -5,13 +5,14 @@ global.HealerRole = new Role("healer", "⚕️🌡️", [HEAL, TOUGH, MOVE, MOVE
 global.ROLES[HealerRole.name] = HealerRole;
 
 /**
- * HealerMemory class, storing data for a healer
+ * HealerMemory class represents the memory structure for healer creeps that specialize in healing damaged units.
+ * It maintains essential data required for healing operations and tracking assignments within a room.
  * @class HealerMemory
  */
 class HealerMemory extends CreepMemory {
     /**
-     * creates an HealerMemory object
-     * @param {string} room_name - The name of the room this creep is assigned to
+     * Creates a new HealerMemory instance to track the memory state of a healer creep
+     * @param {string} room_name - The identifier of the room where the healer will perform healing operations
      */
     constructor(room_name) {
         super(HealerRole.name, room_name);
@@ -21,7 +22,9 @@ class HealerMemory extends CreepMemory {
 global.HealerMemory = HealerMemory;
 
 /**
- * healer that heals any damaged creeps in the room
+ * Specialized healer role responsible for restoring damaged creeps to full health.
+ * Actively searches for injured friendly units within the room and prioritizes healing
+ * based on proximity. If no damaged creeps are found, enters an idle state until needed.
  */
 Creep.prototype.runHealer = function () {
     // if we don't have a task currently assigned

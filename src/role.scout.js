@@ -5,23 +5,27 @@ global.ScoutRole = new Role("scout", "🗺️🌐", [MOVE], 50, 1);
 global.ROLES[ScoutRole.name] = ScoutRole;
 
 /**
- * ScoutMemory class, storing data for an attacker
+ * ScoutMemory class that manages memory data for scout creeps. Scouts explore and gather
+ * intelligence about rooms using breadth-first search traversal of the game world.
  * @class ScoutMemory
  */
 class ScoutMemory extends CreepMemory {
     /**
-     * creates an ScoutMemory object
-     * @param {string} room_name - The name of the room this creep is assigned to
+     * Creates a new ScoutMemory instance for scout creeps that explore and gather
+     * intelligence about rooms using breadth-first search traversal.
+     * @param {string} room_name - The name of the room where this scout creep will begin its exploration
      */
     constructor(room_name) {
         super(ScoutRole.name, room_name);
         /**
-         * type of task being created
+         * Array of room names representing the queue of rooms to be explored by the scout.
+         * Rooms are processed in breadth-first search order for systematic exploration.
          * @type {string[]}
          */
         this.room_queue = [room_name];
         /**
-         * type of task being created
+         * Array of room names representing the history of explored rooms. Used to prevent
+         * re-visiting rooms and track exploration progress in breadth-first traversal.
          * @type {string[]}
          */
         this.room_log = [];
@@ -40,7 +44,9 @@ class ScoutMemory extends CreepMemory {
 global.ScoutMemory = ScoutMemory;
 
 /**
- * scout that explores rooms via a BFS search algorithm
+ * Implements a scout creep behavior that systematically explores adjacent rooms using
+ * a Breadth-First Search (BFS) algorithm. The scout maintains a queue of rooms to visit
+ * and logs explored rooms to optimize coverage and prevent revisiting rooms unnecessarily.
  */
 Creep.prototype.runScout = function () {
     // if we don't have a task currently assigned

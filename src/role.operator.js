@@ -1,6 +1,7 @@
 /**
- * run the operator
- * @param {PlantData} plant_data - the plant data of the room the operator is in
+ * Executes operational tasks for a PowerCreep operator, including resource management, factory operations, and lab control.
+ * Handles automated task assignment based on plant data state, and ensures proper resource distribution between structures.
+ * @param {PlantData} plant_data - Contains current state information and configuration for room facilities including factory and labs
  */
 PowerCreep.prototype.runOperator = function (plant_data) {
     // if the operator is close to death and not already renewing

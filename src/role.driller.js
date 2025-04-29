@@ -5,25 +5,28 @@ global.DrillerRole = new Role("driller", "⚡⛏️", [WORK, MOVE], 150, 25);
 global.ROLES[DrillerRole.name] = DrillerRole;
 
 /**
- * DrillerMemory class, storing data for a driller
+ * DrillerMemory class represents the memory structure for a specialized creep that harvests energy from sources.
+ * It stores essential data like source ID and container location needed for efficient resource gathering operations.
  * @class DrillerMemory
  */
 class DrillerMemory extends CreepMemory {
     /**
-     * creates an DrillerMemory object
-     * @param {string} room_name - The name of the room this creep is assigned to
-     * @param {string} source_id - The id of the assigned source
-     * @param {Point} container_location - The location of the assigned container
+     * Creates a new DrillerMemory instance to manage memory for a specialized harvesting creep
+     * @param {string} room_name - The identifier of the room where the driller will operate
+     * @param {string} source_id - The unique identifier of the energy source this driller is assigned to harvest
+     * @param {Point} container_location - The coordinates where the container is placed for energy storage
      */
     constructor(room_name, source_id, container_location) {
         super(DrillerRole.name, room_name);
         /**
-         * The id of the assigned source
+         * The unique identifier of the energy source assigned to this driller for harvesting.
+         * This ID corresponds to a specific source object in the game world.
          * @type {string}
          */
         this.source = source_id;
         /**
-         * The location of the assigned container
+         * The coordinates representing the position of the assigned container where harvested energy will be stored.
+         * This Point object contains both x and y coordinates in the game world's coordinate system.
          * @type {Point}
          */
         this.container_location = container_location;
@@ -33,7 +36,9 @@ class DrillerMemory extends CreepMemory {
 global.DrillerMemory = DrillerMemory;
 
 /**
- * driller that harvests energy from the assigned source, dropping the energy on the container
+ * Specialized creep role responsible for continuous energy harvesting from a designated source.
+ * Operates by positioning itself at a fixed location next to the source and automatically
+ * depositing harvested energy into an assigned container for efficient resource collection.
  */
 Creep.prototype.runDriller = function () {
     // if we don't have a task currently assigned

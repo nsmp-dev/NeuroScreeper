@@ -5,35 +5,39 @@ global.TransporterRole = new Role("transporter", "⚡🚛", [CARRY, MOVE], 100, 
 global.ROLES[TransporterRole.name] = TransporterRole;
 
 /**
- * TransporterMemory class, storing data for an attacker
+ * TransporterMemory class, storing data for transport creeps that move resources between containers
+ * Extends CreepMemory to manage memory state specific to transport operations
  * @class TransporterMemory
  */
 class TransporterMemory extends CreepMemory {
     /**
-     * creates an TransporterMemory object
-     * @param {string} room_name - The name of the room this creep is assigned to
-     * @param {string} source_id - The name of the room this creep is assigned to
-     * @param {Point} container_location - The name of the room this creep is assigned to
+     * Creates a new TransporterMemory object to manage memory state for transport creeps
+     * @param {string} room_name - The identifier of the room where this transporter will operate
+     * @param {string} source_id - The unique ID of the energy source this transporter is assigned to
+     * @param {Point} container_location - The coordinates of the container this transporter will gather from
      */
     constructor(room_name, source_id, container_location) {
         super(TransporterRole.name, room_name);
         /**
-         * type of task being created
+         * The ID of the energy source this transporter is assigned to collect from
          * @type {string}
          */
         this.source = source_id;
         /**
-         * type of task being created
+         * The coordinates for the container position where this transporter will pickup resources
          * @type {Point}
          */
         this.container_location = container_location;
         /**
-         * type of task being created
+         * Cached identifier of the container structure where resources are collected.
+         * This ID is stored to avoid repeated lookups and improve performance.
          * @type {string|null}
          */
         this.container_id = null;
         /**
-         * nearest colony for returning the energy
+         * Stores the name of the nearest colony where this transporter should deliver resources.
+         * When null, the transporter needs to determine a new destination colony.
+         * Used for efficient pathfinding and resource distribution between rooms.
          * @type {string|null}
          */
         this.nearest_colony_name = null;
@@ -43,7 +47,9 @@ class TransporterMemory extends CreepMemory {
 global.TransporterMemory = TransporterMemory;
 
 /**
- * transporter that takes energy from the containers under drillers and dumps the energy into the base
+ * Controls creep behavior for transporters, which are specialized units responsible for moving energy
+ * from driller-adjacent containers to colony storage structures. These creeps form a crucial logistical
+ * link in the resource supply chain, efficiently transferring gathered resources to where they're needed.
  */
 Creep.prototype.runTransporter = function () {
     // if we don't have a task currently assigned

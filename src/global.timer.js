@@ -2,11 +2,12 @@
  * Timer utility that manages CPU time tracking for different operations.
  * Provides functionality to start and stop timers, calculate average execution times,
  * and maintain logs of CPU usage for performance monitoring.
- * @namespace Timer
+ * @module Timer
  */
 global.Timer = {
     /**
      * where we store the timers that we are working with this tick
+     * @memberOf Timer
      * @type {Object.<string, TimerEntry>}
      */
     timers: {},

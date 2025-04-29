@@ -3,7 +3,7 @@
  * It handles CPU usage visualization through bar graphs, population statistics display, and temporary popup messages.
  * Works in conjunction with the Timer utility to display performance metrics and game state information.
  * 
- * @namespace Visualizer
+ * @module Visualizer
  */
 global.Visualizer = {
     /**

@@ -5,13 +5,15 @@ global.AttackerRole = new Role("attacker", "🗡️⚔️", [ATTACK, TOUGH, MOVE
 global.ROLES[AttackerRole.name] = AttackerRole;
 
 /**
- * AttackerMemory class, storing data for an attacker
+ * AttackerMemory class represents memory storage for offensive combat creeps.
+ * This class maintains essential data needed by attacker creeps including their
+ * target tracking, combat state, and patrol area assignments.
  * @class AttackerMemory
  */
 class AttackerMemory extends CreepMemory {
     /**
-     * creates an AttackerMemory object
-     * @param {string} room_name - The name of the room this creep is assigned to
+     * Creates a new AttackerMemory object to manage combat-focused creeps for offensive operations
+     * @param {string} room_name - The identifier of the room where the attacker will be based and patrol
      */
     constructor(room_name) {
         super(AttackerRole.name, room_name);
@@ -21,7 +23,10 @@ class AttackerMemory extends CreepMemory {
 global.AttackerMemory = AttackerMemory;
 
 /**
- * attacker that attacks hostile creeps in the room
+ * Controls an attacker creep's behavior to engage and eliminate hostile entities.
+ * Automatically searches for enemy creeps within the room, prioritizing the closest
+ * targets for efficient combat engagement. When no hostiles are present, enters an
+ * idle patrol state.
  */
 Creep.prototype.runAttacker = function () {
     // if we don't have a task currently assigned

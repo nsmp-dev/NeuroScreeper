@@ -5,13 +5,16 @@ global.ClaimerRole = new Role("claimer", "🚩🏰", [CLAIM, MOVE], 650, 25);
 global.ROLES[ClaimerRole.name] = ClaimerRole;
 
 /**
- * ClaimerMemory class, storing data for a claimer
+ * ClaimerMemory class represents memory storage for claimer creeps, which are responsible
+ * for claiming or reserving room controllers. This class extends CreepMemory to store
+ * specific data needed for claiming operations.
  * @class ClaimerMemory
  */
 class ClaimerMemory extends CreepMemory {
     /**
-     * creates an ClaimerMemory object
-     * @param {string} room_name - The name of the room this creep is assigned to
+     * Creates a new ClaimerMemory object that stores information for a claimer creep.
+     * Claimer creeps are specialized units responsible for claiming or reserving room controllers.
+     * @param {string} room_name - The identifier of the room where the claimer will operate
      */
     constructor(room_name) {
         super(ClaimerRole.name, room_name);
@@ -21,7 +24,10 @@ class ClaimerMemory extends CreepMemory {
 global.ClaimerMemory = ClaimerMemory;
 
 /**
- * claimer that moves toward the assigned room and either reserves or claims the controller
+ * Controls claimer creep behavior by directing it to travel to an assigned room
+ * and interact with the controller, either reserving it temporarily or claiming full
+ * ownership based on colony settings. This function handles the core claiming/reserving
+ * logic for expansion and territory control.
  */
 Creep.prototype.runClaimer = function () {
     // get the MainMemory object

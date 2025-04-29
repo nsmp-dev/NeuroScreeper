@@ -3,7 +3,7 @@
  * room coordinates conversion, array manipulation, ID generation, garbage collection,
  * room management, statistics tracking, and general game state utilities.
  * Contains functions for both basic operations and game-specific helper methods.
- * @namespace Util
+ * @module Util
  */
 global.Util = {
     /**

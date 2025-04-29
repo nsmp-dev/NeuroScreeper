@@ -5,13 +5,14 @@ global.UpgraderRole = new Role("upgrader", "📈⬆️", [WORK, CARRY, MOVE, MOV
 global.ROLES[UpgraderRole.name] = UpgraderRole;
 
 /**
- * UpgraderMemory class, storing data for an attacker
+ * UpgraderMemory class, storing data for creeps that specialize in upgrading room controllers
+ * Extends CreepMemory to manage memory state specific to controller upgrading operations
  * @class UpgraderMemory
  */
 class UpgraderMemory extends CreepMemory {
     /**
-     * creates an UpgraderMemory object
-     * @param {string} room_name - The name of the room this creep is assigned to
+     * Creates a new UpgraderMemory instance to manage the memory state for creeps focused on upgrading room controllers
+     * @param {string} room_name - The identifier of the room where this upgrader creep will perform its controller upgrade tasks
      */
     constructor(room_name) {
         super(UpgraderRole.name, room_name);
@@ -21,7 +22,10 @@ class UpgraderMemory extends CreepMemory {
 global.UpgraderMemory = UpgraderMemory;
 
 /**
- * upgrader that upgrades the room's controller
+ * Manages the behavior of upgrader creeps that are responsible for delivering energy to and upgrading
+ * room controllers. Controller upgrades increase room level, unlocking new building capabilities and
+ * maintaining territory control. Upgraders gather energy when depleted and consistently upgrade their
+ * assigned room's controller.
  */
 Creep.prototype.runUpgrader = function () {
     // if we don't have a task currently assigned

@@ -5,13 +5,15 @@ global.QueenRole = new Role("queen", "👑🚛", [CARRY, MOVE], 150, 25);
 global.ROLES[QueenRole.name] = QueenRole;
 
 /**
- * QueenMemory class, storing data for an attacker
+ * QueenMemory class represents memory structure for queen creeps that manage storage and resource distribution.
+ * Queens are responsible for transferring energy and resources between storage, terminals, towers, and extensions.
  * @class QueenMemory
  */
 class QueenMemory extends CreepMemory {
     /**
-     * creates an QueenMemory object
-     * @param {string} room_name - The name of the room this creep is assigned to
+     * Creates a new QueenMemory instance for managing queen creep's memory.
+     * Queen creeps are specialized units responsible for resource distribution and storage management within a room.
+     * @param {string} room_name - The identifier of the room where this queen creep will operate
      */
     constructor(room_name) {
         super(QueenRole.name, room_name);
@@ -21,7 +23,11 @@ class QueenMemory extends CreepMemory {
 global.QueenMemory = QueenMemory;
 
 /**
- * queen that takes energy from the storage and dumps it into the towers, terminal, and extensions
+ * Queen creeps manage resource distribution within their assigned room. They primarily handle:
+ * 1. Transferring energy from storage to towers, terminals, and extensions
+ * 2. Moving final products from storage to terminal in capitol rooms
+ * 3. Moving ingredients from the terminal to storage in capitol rooms
+ * 4. Transporting non-energy resources to the terminal in non-capitol rooms
  */
 Creep.prototype.runQueen = function () {
     // get the MainMemory object

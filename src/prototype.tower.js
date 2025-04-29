@@ -1,5 +1,11 @@
 /**
- * run the tower, shooting enemies, repairing structures and healing creeps
+ * Executes the tower's main operational cycle. The tower performs the following tasks in priority order:
+ * 1. Attacks hostile creeps in the room
+ * 2. Heals damaged friendly creeps
+ * 3. Repairs damaged structures (excluding roads and ramparts)
+ * 4. Repairs damaged roads
+ * 5. Repairs damaged ramparts
+ * Will only operate if energy levels are above a minimum threshold.
  */
 StructureTower.prototype.run = function () {
     // if the tower has less than 100 energy resources

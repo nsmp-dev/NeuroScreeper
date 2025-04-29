@@ -5,13 +5,16 @@ global.PowerHealerRole = new Role("power_healer", "🔴⚕️", [HEAL, TOUGH, MO
 global.ROLES[PowerHealerRole.name] = PowerHealerRole;
 
 /**
- * PowerHealerMemory class, storing data for an attacker
+ * PowerHealerMemory class represents memory storage for specialized creeps that heal power attackers.
+ * It extends CreepMemory to store state information for power healers working in squads.
  * @class PowerHealerMemory
+ * @extends CreepMemory
  */
 class PowerHealerMemory extends CreepMemory {
     /**
-     * creates an PowerHealerMemory object
-     * @param {string} room_name - The name of the room this creep is assigned to
+     * Creates a new PowerHealerMemory instance for a creep specialized in healing power squad members.
+     * This healer is essential for maintaining the health of power attackers during power bank operations.
+     * @param {string} room_name - The identifier of the spawn room where this power healer is created and operates from
      */
     constructor(room_name) {
         super(PowerHealerRole.name, room_name);
@@ -20,7 +23,10 @@ class PowerHealerMemory extends CreepMemory {
 
 global.PowerHealerMemory = PowerHealerMemory;
 /**
- * power healer that heals power attackers
+ * Specialized creep behavior for healing members of power bank squads.
+ * Follows squad state machine transitions and prioritizes healing damaged
+ * squad members during power bank harvesting operations. Works in coordination
+ * with power attackers to maintain squad sustainability.
  */
 Creep.prototype.runPowerHealer = function () {
     // if no task is assigned

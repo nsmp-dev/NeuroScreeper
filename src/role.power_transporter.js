@@ -5,13 +5,16 @@ global.PowerTransporterRole = new Role("power_transporter", "🔴🚛", [CARRY, 
 global.ROLES[PowerTransporterRole.name] = PowerTransporterRole;
 
 /**
- * PowerTransporterMemory class, storing data for an attacker
+ * PowerTransporterMemory class represents memory storage for specialized creeps that transport power resources.
+ * It extends CreepMemory to store state information for power transporters working in power collection squads.
  * @class PowerTransporterMemory
+ * @extends CreepMemory
  */
 class PowerTransporterMemory extends CreepMemory {
     /**
-     * creates an PowerTransporterMemory object
-     * @param {string} room_name - The name of the room this creep is assigned to
+     * Creates a new PowerTransporterMemory instance for a specialized creep that transports power resources.
+     * This creep operates as part of a power collection squad, collecting and delivering power to storage.
+     * @param {string} room_name - The identifier of the spawn room where this power transporter is created and operates from
      */
     constructor(room_name) {
         super(PowerTransporterRole.name, room_name);
@@ -20,7 +23,9 @@ class PowerTransporterMemory extends CreepMemory {
 
 global.PowerTransporterMemory = PowerTransporterMemory;
 /**
- * power transporter that carries power back to the colony
+ * Specialized creep behavior for transporting power resources in power collection squads.
+ * Follows squad state machine transitions between searching, collecting and returning phases.
+ * Efficiently gathers dropped power and delivers it to colony storage facilities.
  */
 Creep.prototype.runPowerTransporter = function () {
     // if no task is assigned

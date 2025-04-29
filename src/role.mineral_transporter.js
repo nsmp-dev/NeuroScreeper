@@ -5,36 +5,44 @@ global.MineralTransporterRole = new Role("mineral_transporter", "💎🚛", [CAR
 global.ROLES[MineralTransporterRole.name] = MineralTransporterRole;
 
 /**
- * MineralTransporterMemory class, storing data for a mineral transporter
+ * MineralTransporterMemory class represents the memory structure for creeps that transport minerals.
+ * It stores data needed for mineral transportation including source mineral ID, container locations,
+ * and resource types. This class extends CreepMemory to manage specialized mineral hauling creeps.
  * @class MineralTransporterMemory
  */
 class MineralTransporterMemory extends CreepMemory {
     /**
-     * creates an MineralTransporterMemory object
-     * @param {string} room_name - The name of the room this creep is assigned to
-     * @param {string} mineral_id - The id of the assigned mineral
-     * @param {Point} container_location - The location of the assigned container
-     * @param {string} resource_type - The type of resource this mineral produces
+     * Creates a new MineralTransporterMemory instance to manage transportation of minerals for a creep.
+     * This constructor initializes the memory structure needed for mining operations.
+     * @param {string} room_name - The identifier of the room where the transporter creep will operate
+     * @param {string} mineral_id - The unique identifier of the mineral deposit this creep is assigned to transport from
+     * @param {Point} container_location - The coordinates of the container where minerals are stored and collected from
+     * @param {string} resource_type - The specific type of mineral resource (e.g., H, O, K, etc.) that will be transported
      */
     constructor(room_name, mineral_id, container_location, resource_type) {
         super(MineralTransporterRole.name, room_name);
         /**
-         * The id of the assigned mineral
+         * The unique identifier (ID) of the assigned mineral deposit that this transporter creep will collect from.
+         * This ID is used to locate and track the specific mineral resource in the game world.
          * @type {string}
          */
         this.mineral = mineral_id;
         /**
-         * The location of the assigned container
+         * The coordinates (x, y) of the container designated for mineral collection and storage.
+         * This point indicates the exact position where the transporter should pick up minerals.
          * @type {Point}
          */
         this.container_location = container_location;
         /**
-         * The type of resource this mineral produces
+         * The specific type of mineral resource this transporter is designated to collect and transport.
+         * Valid values include game-defined mineral types such as 'H' (Hydrogen), 'O' (Oxygen), etc.
          * @type {string}
          */
         this.resource_type = resource_type;
         /**
-         * cached id of the container
+         * Cached unique identifier for the container where minerals are stored. This ID is used
+         * to quickly access the container structure without having to search through the game objects.
+         * Container IDs remain stable until the structure is destroyed and rebuilt.
          * @type {string|null}
          */
         this.container_id = null;
@@ -44,7 +52,9 @@ class MineralTransporterMemory extends CreepMemory {
 global.MineralTransporterMemory = MineralTransporterMemory;
 
 /**
- * mineral transporter that moves minerals from the assigned container to storage
+ * A specialized creep that manages the transportation of minerals between containers and storage facilities.
+ * It monitors container levels at mining sites, collects minerals when containers have sufficient resources,
+ * and efficiently transfers them to the room's main storage structure for long-term storage and future use.
  */
 Creep.prototype.runMineralTransporter = function () {
     // if we don't have a task currently assigned

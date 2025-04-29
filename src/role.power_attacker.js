@@ -5,13 +5,15 @@ global.PowerAttackerRole = new Role("power_attacker", "🔴⚔️", [ATTACK, TOU
 global.ROLES[PowerAttackerRole.name] = PowerAttackerRole;
 
 /**
- * PowerAttackerMemory class, storing data for an attacker
+ * PowerAttackerMemory class represents memory storage for specialized creeps that attack power banks.
+ * It extends CreepMemory to store state information for power attackers working in squads.
  * @class PowerAttackerMemory
+ * @extends CreepMemory
  */
 class PowerAttackerMemory extends CreepMemory {
     /**
-     * creates an PowerAttackerMemory object
-     * @param {string} room_name - The name of the room this creep is assigned to
+     * Creates a new PowerAttackerMemory instance for a creep specialized in attacking power banks.
+     * @param {string} room_name - The identifier of the spawn room where this power attacker is created and operates from
      */
     constructor(room_name) {
         super(PowerAttackerRole.name, room_name);
@@ -20,7 +22,9 @@ class PowerAttackerMemory extends CreepMemory {
 
 global.PowerAttackerMemory = PowerAttackerMemory;
 /**
- * power attacker that attacks power banks
+ * Specialized creep class for attacking power banks in foreign rooms. Works as part of a power collection squad,
+ * coordinating with healers and carriers to efficiently harvest power from banks. Executes attack tasks while
+ * following squad state machine transitions between searching, collecting and returning phases.
  */
 Creep.prototype.runPowerAttacker = function () {
     // if no task is assigned

@@ -5,13 +5,17 @@ global.BuilderRole = new Role("builder", "⚒️🛠️", [WORK, CARRY, MOVE, MO
 global.ROLES[BuilderRole.name] = BuilderRole;
 
 /**
- * BuilderMemory class, storing data for a builder
+ * BuilderMemory class represents the memory structure for builder creeps.
+ * Stores essential data needed by builder creeps to track construction targets,
+ * manage building tasks, and maintain their current work assignments.
  * @class BuilderMemory
  */
 class BuilderMemory extends CreepMemory {
     /**
-     * creates an BuilderMemory object
-     * @param {string} room_name - The name of the room this creep is assigned to
+     * Creates a new BuilderMemory instance to manage construction-focused creeps.
+     * Initializes memory structure for tracking building tasks, construction sites,
+     * and maintaining the creep's room assignment.
+     * @param {string} room_name - The identifier of the room where the builder will operate and construct
      */
     constructor(room_name) {
         super(BuilderRole.name, room_name);
@@ -21,7 +25,10 @@ class BuilderMemory extends CreepMemory {
 global.BuilderMemory = BuilderMemory;
 
 /**
- * builder that builds any construction sites that are found
+ * Controls a builder creep's behavior to construct and maintain structures.
+ * Automatically seeks out construction sites, repairs damaged structures, and upgrades
+ * room controllers when other tasks are complete. Manages energy gathering and task
+ * assignment to ensure efficient building operations.
  */
 Creep.prototype.runBuilder = function () {
     // if we don't have a task currently assigned

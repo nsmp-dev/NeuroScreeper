@@ -9,7 +9,7 @@
  *
  * Acts as the central nervous system for room-level operations, resource allocation,
  * and strategic decision-making within the colony network.
- * @namespace NeuroRoom
+ * @module NeuroRoom
  */
 global.NeuroRoom = {
     /**
