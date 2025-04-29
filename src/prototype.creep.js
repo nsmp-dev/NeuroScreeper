@@ -180,7 +180,7 @@ PowerCreep.prototype.getQueenDumpTarget = getQueenDumpTarget;
  */
 let idle = function () {
     // get the MainMemory object
-    let main_memory = Util.getMainMemory();
+    let main_memory = util.getMainMemory();
     // grab the room data
     let room_data = main_memory.room_data[this.room.name];
 
@@ -199,7 +199,7 @@ PowerCreep.prototype.idle = idle;
  */
 let getNearestStorage = function () {
     // get the MainMemory object
-    let main_memory = Util.getMainMemory();
+    let main_memory = util.getMainMemory();
     // create a list of storages
     let storages = [];
     // loop through all the rooms we have seen so far
@@ -248,7 +248,7 @@ PowerCreep.prototype.getNearestStorage = getNearestStorage;
  */
 let getNearestColony = function () {
     // get the MainMemory object
-    let main_memory = Util.getMainMemory();
+    let main_memory = util.getMainMemory();
     // variable for the nearest room name
     let nearest_room_name = null;
     // variable for the lowest distance
@@ -275,7 +275,7 @@ PowerCreep.prototype.getNearestColony = getNearestColony;
  */
 Creep.prototype.getPowerSquad = function () {
     // get the MainMemory object
-    let main_memory = Util.getMainMemory();
+    let main_memory = util.getMainMemory();
     // return the power squad this creep is assigned to
     return main_memory.room_data[this.memory.room_name].power_squad;
 };

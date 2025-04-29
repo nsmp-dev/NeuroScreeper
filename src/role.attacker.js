@@ -6,7 +6,7 @@ global.ROLES[AttackerRole.name] = AttackerRole;
 
 /**
  * AttackerMemory class represents memory storage for offensive combat creeps.
- * This class maintains essential data needed by attacker creeps including their
+ * This class maintains essential data needed by attacker creeps, including their
  * target tracking, combat state, and patrol area assignments.
  * @class AttackerMemory
  */
@@ -50,5 +50,5 @@ Creep.prototype.runAttacker = function () {
     }
 
     // run the task
-    NeuroTask.run(this);
+    neuro_task.run(this);
 };

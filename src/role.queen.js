@@ -31,7 +31,7 @@ global.QueenMemory = QueenMemory;
  */
 Creep.prototype.runQueen = function () {
     // get the MainMemory object
-    let main_memory = Util.getMainMemory();
+    let main_memory = util.getMainMemory();
     // if we don't have a task currently assigned
     if (this.memory.task == null) {
         // if we are out of energy
@@ -162,5 +162,5 @@ Creep.prototype.runQueen = function () {
         }
     }
     // run the task
-    NeuroTask.run(this);
+    neuro_task.run(this);
 };

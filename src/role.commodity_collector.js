@@ -74,7 +74,7 @@ Creep.prototype.runCommodityCollector = function () {
                 // if the highway queue is empty
                 if (this.memory.highway_queue.length == 0) {
                     // get all the highways in the game
-                    this.memory.highway_queue = Util.getHighwayRooms();
+                    this.memory.highway_queue = util.getHighwayRooms();
                     // clear the highway log
                     this.memory.highway_log = [];
                 }
@@ -98,5 +98,5 @@ Creep.prototype.runCommodityCollector = function () {
         }
     }
     // run the task
-    NeuroTask.run(this);
+    neuro_task.run(this);
 };

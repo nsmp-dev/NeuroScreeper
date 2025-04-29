@@ -3,24 +3,25 @@
  * room coordinates conversion, array manipulation, ID generation, garbage collection,
  * room management, statistics tracking, and general game state utilities.
  * Contains functions for both basic operations and game-specific helper methods.
- * @module Util
+ * @class Util
  */
-global.Util = {
+class Util {
+    constructor() {}
     /**
      * gets the MainMemory object, helping with type safety
      * @return {MainMemory} the MainMemory object
      */
-    getMainMemory: function () {
+    getMainMemory () {
         // return the MainMemory object
         return Memory.main_memory;
-    },
+    }
     /**
      * converts an x/y room coordinate to a string name
      * @param {number} x - x coordinate of the room in the world space
      * @param {number} y - y coordinate of the room in the world space
      * @return {string} the string name for the room
      */
-    worldXYToRoomName: function (x, y) {
+    worldXYToRoomName (x, y) {
         // get the size of the world
         let size = Game.map.getWorldSize();
         // calculate the max number the string name uses
@@ -48,13 +49,13 @@ global.Util = {
 
         // return the string name
         return str;
-    },
+    }
     /**
      * converts a string room name to x/y room coordinates
      * @param {string} name - The name of the room
      * @return {Point} the location of the room in world space
      */
-    roomNameToWorldXY: function (name) {
+    roomNameToWorldXY (name) {
         // get the size of the world
         let size = Game.map.getWorldSize();
         // calculate the max number the string name uses
@@ -99,14 +100,14 @@ global.Util = {
 
         // return the coordinates
         return coordinates;
-    },
+    }
     /**
      * multiplies an array a number of times
      * @param {Array} arr - The array that will be duplicated
      * @param {number} num - The number of times to repeat the array
      * @return {Array} the new resultant array
      */
-    multiArray: function (arr, num) {
+    multiArray (arr, num) {
         // create the array we are building
         let result = [];
         // loop num amount of times
@@ -116,14 +117,14 @@ global.Util = {
         }
         // return the new array
         return result;
-    },
+    }
     /**
      * generates an id, using a memory entry to ensure no collisions
      * @return {string} the guaranteed unique id
      */
-    generateId: function () {
+    generateId () {
         // get the MainMemory object
-        let main_memory = Util.getMainMemory();
+        let main_memory = util.getMainMemory();
         // the id we are building
         let id = "";
         // store the id counter
@@ -132,11 +133,11 @@ global.Util = {
         main_memory.id_counter++;
         // return the id
         return id;
-    },
+    }
     /**
      * delete old creep memories to free up memory and prevent leaks
      */
-    collectGarbage: function () {
+    collectGarbage () {
         // loop through all the creep's memories
         for (let name in Memory.creeps) {
             // if the creep is dead
@@ -151,13 +152,13 @@ global.Util = {
             // generate a pixel
             Game.cpu.generatePixel();
         }
-    },
+    }
     /**
      * calculates what percentage of the satisfaction log in the given room data is true
      * @param {RoomData} room_data - The room data that holds the satisfaction log
      * @return {number} the calculated ratio
      */
-    getSatisfiedRatio: function (room_data) {
+    getSatisfiedRatio (room_data) {
         // the total number of true values in the room satisfaction log
         let total = 0;
         // loop through the satisfaction log
@@ -171,13 +172,13 @@ global.Util = {
 
         // calculate the average and return it
         return (total / room_data.satisfaction_log.length);
-    },
+    }
     /**
      * see if a room is available
      * @param {string} room_name - The name of the room to test
      * @return {Boolean} true if the room is available
      */
-    isRoomAvailable: function (room_name) {
+    isRoomAvailable (room_name) {
         // grab the room
         let room = Game.rooms[room_name];
 
@@ -206,11 +207,11 @@ global.Util = {
 
         // return true if there are no hostile creeps in the room
         return hostile_creeps <= 0;
-    },
+    }
     /**
      * print a summary of some stats
      */
-    printSummary: function () {
+    printSummary () {
         // start a new string
         let str = "";
         // the current tick
@@ -221,13 +222,13 @@ global.Util = {
         str += " | bucket: " + Game.cpu.bucket;
         // print the summary
         hlog(str);
-    },
+    }
     /**
      * print all the timers we have
      */
-    printTimers: function () {
+    printTimers () {
         // get the MainMemory object
-        let main_memory = Util.getMainMemory();
+        let main_memory = util.getMainMemory();
         // draw a separator
         hlog("-----Average Times-----");
         // loop through all the timers
@@ -235,14 +236,14 @@ global.Util = {
             // print the id and average of this timer
             hlog(main_memory.timers[id].average_time.toString(), id);
         }
-    },
+    }
     /**
      * finds all highway rooms found so far
      * @return {string[]} array of all the highway room names
      */
-    getHighwayRooms: function () {
+    getHighwayRooms () {
         // get the MainMemory object
-        let main_memory = Util.getMainMemory();
+        let main_memory = util.getMainMemory();
         // create a list for the highways
         let highways = [];
 
@@ -256,11 +257,11 @@ global.Util = {
         }
         // return the list of highways
         return highways;
-    },
+    }
     /**
      * clear all the MainMemory object and suicide all creeps
      */
-    clearMemory: function () {
+    clearMemory () {
         // loop through all the entries in memory
         for (let name in Memory) {
             // delete the entry
@@ -272,7 +273,7 @@ global.Util = {
             // suicide this creep
             Game.creeps[name].suicide();
         }
-    },
+    }
     /**
      * converts RGB values to a hex code for drawing
      * @param {number} r - the red value
@@ -280,30 +281,30 @@ global.Util = {
      * @param {number} b - the blue value
      * @return {string} the resulting hex code, including the #
      */
-    rgbToHex: function (r, g, b) {
+    rgbToHex (r, g, b) {
         // return the string version of the rgb value
         return "#" + (1 << 24 | r << 16 | g << 8 | b).toString(16).slice(1);
-    },
+    }
     /**
      * distance between 2 Points
      * @param {Point} a - the first point
      * @param {Point} b - the second point
      * @return {number} the distance between the points
      */
-    distance: function (a, b) {
+    distance (a, b) {
         // get the distance between the x coordinates
         let x = a.x - b.x;
         // get the distance between the y coordinates
         let y = b.y - b.y;
         // return the hypotenuse of the two points
         return Math.sqrt((x * x) + (y * y));
-    },
+    }
     /**
      * gets a 2D grid of the blocking structures from a RoomPlans object
      * @param {RoomPlans} plans - The plans of the room
      * @return {Boolean[][]} the 2D grid describing the taken and open spots as booleans
      */
-    getStructureGrid: function (plans) {
+    getStructureGrid (plans) {
         // 2d array of all the spots in the room
         let structure_grid = [];
         // loop through the X coordinates
@@ -337,5 +338,9 @@ global.Util = {
 
         // return the final structure grid
         return structure_grid;
-    },
-};
+    }
+}
+
+global.Util = Util;
+
+global.util = new Util();

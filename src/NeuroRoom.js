@@ -9,9 +9,10 @@
  *
  * Acts as the central nervous system for room-level operations, resource allocation,
  * and strategic decision-making within the colony network.
- * @module NeuroRoom
+ * @class NeuroRoom
  */
-global.NeuroRoom = {
+class NeuroRoom {
+    constructor() {}
     /**
      * Attempts to spawn a new creep with specified memory configuration either in the local room or globally.
      * Will try to find available spawns and adjust body parts based on available energy and role requirements.
@@ -21,7 +22,7 @@ global.NeuroRoom = {
      * @param {Boolean} is_global - When true, allows spawning in any room. When false, only spawns in the requesting room
      * @returns {Boolean} True if spawning was successful, false otherwise
      */
-    spawnRole: function (room_name, creep_memory, is_global = false) {
+    spawnRole (room_name, creep_memory, is_global = false) {
         // default success to false
         let success = false;
         /**
@@ -60,7 +61,7 @@ global.NeuroRoom = {
             // loop down from the max size to the min size
             for (let i = role.max_body_multiplier; i > 0; i--) {
                 // do a test spawning
-                let result = spawns[0].spawnCreep(Util.multiArray(role.body, i), "test", {
+                let result = spawns[0].spawnCreep(util.multiArray(role.body, i), "test", {
                     // provide the given memory
                     memory: creep_memory,
                     // flag the spawn as a test run
@@ -70,11 +71,11 @@ global.NeuroRoom = {
                 // if the test run was a success
                 if (result == OK) {
                     // actually spawn the creep
-                    spawns[0].spawnCreep(Util.multiArray(role.body, i), role.emoji + Util.generateId(), {
+                    spawns[0].spawnCreep(util.multiArray(role.body, i), role.emoji + util.generateId(), {
                         // provide the given memory
                         memory: creep_memory,
                     });
-                    Visualizer.popup("Spawning a " + creep_memory.role);
+                    visualizer.popup("Spawning a " + creep_memory.role);
                     // mark this as a success
                     success = true;
                     break;
@@ -84,7 +85,7 @@ global.NeuroRoom = {
 
         // return the result
         return success;
-    },
+    }
     /**
      * Analyzes current room conditions and population requirements to determine the necessary creeps.
      * Evaluates multiple factors including:
@@ -96,9 +97,9 @@ global.NeuroRoom = {
      * @param {RoomData} room_data - Contains current room state and configuration data
      * @param {Room|null} room - The Room object being evaluated, null if room is not visible
      */
-    requestCreeps: function (room_data, room) {
+    requestCreeps (room_data, room) {
         // get the MainMemory object
-        let main_memory = Util.getMainMemory();
+        let main_memory = util.getMainMemory();
 
         // grab the population for this room
         let pop = main_memory.populations[room_data.room_name];
@@ -248,7 +249,7 @@ global.NeuroRoom = {
 
 
         // count the highways we have seen
-        let highway_count = Util.getHighwayRooms().length;
+        let highway_count = util.getHighwayRooms().length;
 
         // if we have seen at least one highway
         if (highway_count > 0) {
@@ -276,7 +277,7 @@ global.NeuroRoom = {
                 room_data.requested_creeps.push(new CommodityCollectorMemory(room_data.room_name));
             }
         }
-    },
+    }
     /**
      * Attempts to spawn creeps from the room's requested_creeps array.
      * For colony rooms, spawning is attempted locally within the same room.
@@ -284,7 +285,7 @@ global.NeuroRoom = {
      * If spawning is successful, the spawned creep request is removed from the array.
      * @param {RoomData} room_data - The room data containing spawn requests and room configuration
      */
-    spawnRequestedCreeps: function (room_data) {
+    spawnRequestedCreeps (room_data) {
         // declare a success variable
         let success;
 
@@ -301,7 +302,7 @@ global.NeuroRoom = {
             // remove the creep that was successfully spawned
             room_data.requested_creeps.shift();
         }
-    },
+    }
     /**
      * Evaluates the room's current state to determine if all essential needs are being met.
      * Tracks satisfaction over time using a rolling log to maintain historical performance.
@@ -310,7 +311,7 @@ global.NeuroRoom = {
      * @param {RoomData} room_data - Contains room state data including satisfaction history
      * @param {Room|null} room - The Room object being evaluated, null if room is not visible
      */
-    calculateSatisfaction: function (room_data, room) {
+    calculateSatisfaction (room_data, room) {
         // if no creeps are needed
         if (room_data.requested_creeps.length == 0) {
             // push true to the satisfaction log to show we were satisfied on this tick
@@ -327,7 +328,7 @@ global.NeuroRoom = {
         }
 
         // calculate the average satisfaction and see if it meets the threshold of satisfaction
-        room_data.satisfied = (Util.getSatisfiedRatio(room_data) > SATISFACTION_THRESHOLD);
+        room_data.satisfied = (util.getSatisfiedRatio(room_data) > SATISFACTION_THRESHOLD);
 
         // if we have owned the room before
         if (room_data.has_been_owned) {
@@ -343,7 +344,7 @@ global.NeuroRoom = {
                 room_data.has_been_owned = true;
             }
         }
-    },
+    }
     /**
      * Executes the main room management cycle, coordinating all room-level operations.
      * Performs the following tasks on a scheduled basis:
@@ -356,16 +357,16 @@ global.NeuroRoom = {
      * @param {RoomData} room_data - Contains all room-specific data and configuration
      * @param {Room|null} room - The Room object being managed, null if room is not visible
      */
-    run: function (room_data, room = null) {
+    run (room_data, room = null) {
         hlog("running room " + room_data.room_name);
         // get the MainMemory object
-        let main_memory = Util.getMainMemory();
+        let main_memory = util.getMainMemory();
         // if the population timer has gone off
         if (room_data.population_timer > REQUEST_POPULATION_TIMER_LENGTH) {
-            Timer.start("requesting_creeps");
+            timer.start("requesting_creeps");
             // request a new set of creeps
             this.requestCreeps(room_data, room);
-            Timer.stop("requesting_creeps");
+            timer.stop("requesting_creeps");
             // reset the population timer
             room_data.population_timer = 0;
         } else {
@@ -384,10 +385,10 @@ global.NeuroRoom = {
 
         // check if the construction timer has gone off
         if (room_data.construction_timer > CONSTRUCTION_TIMER_LENGTH && room != null) {
-            Timer.start("constructing_plans");
+            timer.start("constructing_plans");
             // try to create new construction sites
             room.createConstructionSites(room_data.plans);
-            Timer.stop("constructing_plans");
+            timer.stop("constructing_plans");
             // reset the construction timer
             room_data.construction_timer = 0;
         } else {
@@ -397,21 +398,33 @@ global.NeuroRoom = {
 
         // if the room has a plant
         if (room != null && room_data.plans.plant_location != null && room_data.room_name == main_memory.capitol_room_name) {
-            Timer.start("running_plant");
+            timer.start("running_plant");
             // run the plant
-            NeuroPlant.run(room_data.plant_data, room);
-            Timer.stop("running_plant");
+            neuro_plant.run(room_data.plant_data, room);
+            timer.stop("running_plant");
         }
 
         // if the power squad timer has gone off
         if (room_data.power_squad_timer > POWER_SQUAD_TIMER) {
             // run the power squad
-            NeuroPowerSquad.run(room_data.power_squad);
+            neuro_power_squad.run(room_data.power_squad);
             // reset the power squad timer
             room_data.power_squad_timer = 0;
         } else {
             // increment the power squad timer
             room_data.power_squad_timer++;
         }
-    },
-};
+    }
+}
+
+// export the NeuroRoom class
+global.NeuroRoom = NeuroRoom;
+
+/**
+ * Global singleton instance of NeuroRoom that manages all room-level operations
+ * across the colony network. Provides centralized access to room management
+ * functionality including spawning, construction, and resource processing.
+ * 
+ * @constant {NeuroRoom} neuro_room
+ */
+global.neuro_room = new NeuroRoom();

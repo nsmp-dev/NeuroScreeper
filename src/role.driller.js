@@ -49,5 +49,5 @@ Creep.prototype.runDriller = function () {
         this.announceTask();
     }
     // run the task
-    NeuroTask.run(this);
+    neuro_task.run(this);
 };

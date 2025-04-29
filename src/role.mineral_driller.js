@@ -6,7 +6,7 @@ global.ROLES[MineralDrillerRole.name] = MineralDrillerRole;
 
 /**
  * MineralDrillerMemory class represents memory storage for creeps assigned to mine minerals.
- * It maintains essential data for mineral mining operations including mineral ID and container location.
+ * It maintains essential data for mineral mining operations, including mineral ID and container location.
  * @class MineralDrillerMemory
  */
 class MineralDrillerMemory extends CreepMemory {
@@ -50,5 +50,5 @@ Creep.prototype.runMineralDriller = function () {
         this.announceTask();
     }
     // run the task
-    NeuroTask.run(this);
+    neuro_task.run(this);
 };

@@ -4,16 +4,16 @@
  * Contains a state machine to systematically search highway rooms from a queue.
  * Monitors squad member status - resets to idle if any member dies.
  * Coordinates power collection and transport - returns to base when transporter is full.
- * @namepace NeuroPowerSquad
+ * @class NeuroPowerSquad
  */
-global.NeuroPowerSquad = {
+class NeuroPowerSquad {
     /**
      * run the power squad, kicking off sub-functions for specific activities
      * @param {PowerSquad} power_squad - The power squad we are running
      */
-    run: function (power_squad) {
+    run (power_squad) {
         // get the MainMemory object
-        let main_memory = Util.getMainMemory();
+        let main_memory = util.getMainMemory();
 
         // loop through the rooms we have seen so far
         for (let room_name in main_memory.room_data) {
@@ -109,7 +109,7 @@ global.NeuroPowerSquad = {
                 // shift the next room in the queue onto the log
                 power_squad.highway_log.push(power_squad.highway_queue.shift());
                 // find any power banks in the room
-                let power_banks = this.room.find(FIND_STRUCTURES, {filter: {structureType: STRUCTURE_POWER_BANK}});
+                let power_banks = power_attacker.room.find(FIND_STRUCTURES, {filter: {structureType: STRUCTURE_POWER_BANK}});
                 // if any power banks are found
                 if (power_banks.length > 0) {
                     // set the power squad to collectins
@@ -126,7 +126,7 @@ global.NeuroPowerSquad = {
                 power_squad.state = STATES.RETURNING;
             } else {
                 // find any power banks in the room
-                let power_banks = this.room.find(FIND_STRUCTURES, {filter: {structureType: STRUCTURE_POWER_BANK}});
+                let power_banks = power_attacker.room.find(FIND_STRUCTURES, {filter: {structureType: STRUCTURE_POWER_BANK}});
                 // if any power banks are found
                 if (power_banks.length == 0) {
                     // set the power squad to searching
@@ -141,5 +141,8 @@ global.NeuroPowerSquad = {
                 power_squad.state = STATES.SEARCHING;
             }
         }
-    },
-};
+    }
+}
+
+global.NeuroPowerSquad = NeuroPowerSquad;
+global.neuro_power_squad = new NeuroPowerSquad();

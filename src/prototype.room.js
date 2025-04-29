@@ -10,7 +10,7 @@ Room.prototype.getClearArea = function (width, height, plans) {
     // grab the terrain for the room
     let terrain_grid = this.getTerrain();
     // create a structure grid to reference
-    let structure_grid = Util.getStructureGrid(plans);
+    let structure_grid = util.getStructureGrid(plans);
     // create a list of clear spots that pass the check
     let clear_spots = [];
 
@@ -84,7 +84,7 @@ Room.prototype.getClearAdjacentLocation = function (x, y, plans) {
     // grab the terrain for the room
     let terrain_grid = this.getTerrain();
     // create a structure grid to reference
-    let structure_grid = Util.getStructureGrid(plans);
+    let structure_grid = util.getStructureGrid(plans);
     // create a list of clear spots that pass the check
     let clear_spots = [];
 

@@ -4,7 +4,7 @@
  */
 StructureTerminal.prototype.moveIngredients = function () {
     // get the MainMemory object
-    let main_memory = Util.getMainMemory();
+    let main_memory = util.getMainMemory();
     // hash of ingredients and their amounts found in the terminal
     let ingredients = {};
     // grab the energy in the terminal
@@ -171,7 +171,7 @@ StructureTerminal.prototype.buySubToken = function () {
  */
 StructureTerminal.prototype.run = function () {
     // get the MainMemory object
-    let main_memory = Util.getMainMemory();
+    let main_memory = util.getMainMemory();
     // if this room's terminal timer has not been initialized
     if (main_memory.terminal_timers[this.room.name] == undefined) {
         // initialize it

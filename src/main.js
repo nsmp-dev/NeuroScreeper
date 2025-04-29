@@ -15,33 +15,33 @@ require('data.bootloader');
  */
 module.exports.loop = function () {
     // grab the MainMemory object
-    let main_memory = Util.getMainMemory();
+    let main_memory = util.getMainMemory();
 
     // if the main memory object is not defined or the build number has changed
     if (main_memory == undefined || main_memory.build != BUILD) {
         hlog("Build has changed, clearing memory...");
         // clear the old memory
-        Util.clearMemory();
+        util.clearMemory();
 
         hlog("initializing MainMemory...");
         // initialize the MainMemory object
         Memory.main_memory = new MainMemory();
         // store the main memory object for usage in main
-        main_memory = Util.getMainMemory();
+        main_memory = util.getMainMemory();
         // grab one of the names of the spawns
         let spawn_name = Object.keys(Game.spawns)[0];
         // grab the room that spawn is in
         let room = Game.spawns[spawn_name].room;
         // initialize the room data entry for the first room
         main_memory.room_data[room.name] = new RoomData(room, Game.spawns[spawn_name]);
-        Visualizer.popup("Recreated MainMemory!");
+        visualizer.popup("Recreated MainMemory!");
     }
 
     // start the main timer
-    Timer.start();
+    timer.start();
 
     // run the room manager
-    NeuroScreeper.run(main_memory);
+    neuro_screeper.run(main_memory);
 
     // loop through all the creeps
     for (let name in Game.creeps) {
@@ -50,7 +50,7 @@ module.exports.loop = function () {
     }
 
     // run the power manager
-    NeuroPower.run();
+    neuro_power.run();
 
     // loop through all the structures
     for (let id in Game.structures) {
@@ -71,18 +71,18 @@ module.exports.loop = function () {
             // if the room is currently visible
             if (Game.rooms[name] != undefined) {
                 // run the room with the room reference
-                NeuroRoom.run(room_data, Game.rooms[name]);
+                neuro_room.run(room_data, Game.rooms[name]);
                 // render the visuals for the room
-                Visualizer.render(Game.rooms[name]);
+                visualizer.render(Game.rooms[name]);
             } else {
                 // run the room without the room reference
-                NeuroRoom.run(room_data);
+                neuro_room.run(room_data);
             }
         }
 
         // if the room died
         if (main_memory.room_data[name].dead) {
-            Visualizer.popup("Room '" + name + "' died!");
+            visualizer.popup("Room '" + name + "' died!");
             // delete the room data
             delete main_memory.room_data[name];
             // if the room was the capitol
@@ -94,11 +94,11 @@ module.exports.loop = function () {
     }
 
     // collect the creep's garbage and generate pixels
-    Util.collectGarbage();
+    util.collectGarbage();
     // print a nice tick summary
-    Util.printSummary();
+    util.printSummary();
     // print all the average times from the timer
-    Util.printTimers();
+    util.printTimers();
     // stop the main timer
-    Timer.stop();
+    timer.stop();
 };

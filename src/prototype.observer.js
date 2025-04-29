@@ -8,12 +8,12 @@
  */
 StructureObserver.prototype.run = function () {
     // get the MainMemory object
-    let main_memory = Util.getMainMemory();
+    let main_memory = util.getMainMemory();
 
     // if the log for this room has not been initialized
     if (main_memory.observer_log[this.room.name] == undefined) {
         // get the coordinates of this room
-        let room_coords = Util.roomNameToWorldXY(this.room.name);
+        let room_coords = util.roomNameToWorldXY(this.room.name);
         // initialize the log data
         main_memory.observer_log[this.room.name] = new ObserverLog(room_coords);
     }
@@ -21,7 +21,7 @@ StructureObserver.prototype.run = function () {
     // grab this room's observer log
     let log = main_memory.observer_log[this.room.name];
     // scan the current target room
-    this.observeRoom(Util.worldXYToRoomName(log.current_location.x, log.current_location.y));
+    this.observeRoom(util.worldXYToRoomName(log.current_location.x, log.current_location.y));
     // increment the current X
     log.current_location.x++;
     // if the current room is outside the bounds

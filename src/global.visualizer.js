@@ -2,17 +2,17 @@
  * Visualizer namespace provides functionality for rendering game statistics and managing visual elements in rooms.
  * It handles CPU usage visualization through bar graphs, population statistics display, and temporary popup messages.
  * Works in conjunction with the Timer utility to display performance metrics and game state information.
- * 
- * @module Visualizer
+ * @class Visualizer
  */
-global.Visualizer = {
+class Visualizer {
+    constructor(){}
     /**
      * renders the stats in the given room
      * @param {Room} room - The room we are rendering on
      */
-    render: function (room) {
+    render (room) {
         // get the MainMemory object
-        let main_memory = Util.getMainMemory();
+        let main_memory = util.getMainMemory();
         // if the main timer is defined
         if (main_memory.timers["main"] != undefined) {
             // grab the times from the timer log
@@ -25,7 +25,7 @@ global.Visualizer = {
                 // get the ratio for calculating the color
                 let ratio = (times[i] / Game.cpu.limit) > 1 ? 1 : (times[i] / Game.cpu.limit);
                 // get the color to use from the ratio of cpu used
-                let color = Util.rgbToHex(Math.floor(ratio * 255), (255 - Math.floor(ratio * 255)), 0);
+                let color = util.rgbToHex(Math.floor(ratio * 255), (255 - Math.floor(ratio * 255)), 0);
                 // draw the bar for the bar graph
                 room.visual.rect(i, 49 - height, 1, height, {fill: color});
             }
@@ -76,15 +76,19 @@ global.Visualizer = {
                 offset_y++;
             }
         }
-    },
+    }
     /**
      * add a popup message to the list of popups
      * @param {string} text - the text to display
      */
-    popup: function (text) {
+    popup (text) {
         // get the MainMemory object
-        let main_memory = Util.getMainMemory();
+        let main_memory = util.getMainMemory();
         // add the popup message to the list of popups
         main_memory.popup_messages.push(new PopupMessage(text));
-    },
-};
+    }
+}
+
+global.Visualizer = Visualizer;
+
+global.visualizer = new Visualizer();

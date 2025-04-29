@@ -3,16 +3,17 @@
  * roads, ramparts, and other game objects in rooms. Provides methods for initial room setup and
  * later room development planning, including source mining, mineral extraction, base construction,
  * and defensive structure positioning.
- * @module RoomPlansFactory
+ * @class RoomPlansFactory
  */
-global.RoomPlansFactory = {
+class RoomPlansFactory{
+    constructor(){}
     /**
      * Plans the initial room, placing the base off the initial spawn's position
      * @param {Room} room - The Room we are planning
      * @param {RoomPlans} plans - The Plans for the room
      * @param {StructureSpawn} initial_spawn - The initial spawn in the room
      */
-    planFirstRoom: function (room, plans, initial_spawn) {
+    planFirstRoom (room, plans, initial_spawn) {
         // plan the sources in the room, if any, and their containers
         this.planSources(room, plans);
         // plan the minerals in the room, if any, and their containers
@@ -31,13 +32,13 @@ global.RoomPlansFactory = {
         this.planRamparts(room, plans);
         // find a location not around anything to send the idle creeps in the room
         this.planIdleLocation(room, plans);
-    },
+    }
     /**
      * start the planning of a room, the new plans will be added to the passed plans object
      * @param {Room} room - The Room we are planning
      * @param {RoomPlans} plans - The RoomPlans for the room.
      */
-    planRoom: function (room, plans) {
+    planRoom (room, plans) {
         // plan the sources in the room, if any, and their containers
         this.planSources(room, plans);
         // plan the minerals in the room, if any, and their containers
@@ -56,13 +57,13 @@ global.RoomPlansFactory = {
         this.planRamparts(room, plans);
         // find a location not around anything to send the idle creeps in the room
         this.planIdleLocation(room, plans);
-    },
+    }
     /**
      * plan the sources in the room, if any, and their containers
      * @param {Room} room - The Room we are planning
      * @param {RoomPlans} plans - The Plans for the room.
      */
-    planSources: function (room, plans) {
+    planSources (room, plans) {
         // find all the sources in the room
         /** @type {Source[]} */
         let sources = room.find(FIND_SOURCES);
@@ -78,13 +79,13 @@ global.RoomPlansFactory = {
                 plans.source_plans.push(new SourcePlan(source.id, container_location));
             }
         }
-    },
+    }
     /**
      * plan the minerals in the room, if any, and their containers
      * @param {Room} room - The Room we are planning
      * @param {RoomPlans} plans - The Plans for the room.
      */
-    planMinerals: function (room, plans) {
+    planMinerals (room, plans) {
         // find all the minerals in the room
         /** @type {Mineral[]} */
         let minerals = room.find(FIND_MINERALS);
@@ -100,13 +101,13 @@ global.RoomPlansFactory = {
                 plans.mineral_plans.push(new MineralPlan(mineral.id, new Point(mineral.pos.x, mineral.pos.y), container_location, mineral.mineralType));
             }
         }
-    },
+    }
     /**
      * locate a suitable location to place a base
      * @param {Room} room - The Room we are planning
      * @param {RoomPlans} plans - The Plans for the room.
      */
-    planBaseLocation: function (room, plans) {
+    planBaseLocation (room, plans) {
         // find a clear area of size 14 x 14
         let base_location = room.getClearArea(14, 14, plans);
         // if we were able to find a location
@@ -114,13 +115,13 @@ global.RoomPlansFactory = {
             // save the coordinates of the base
             plans.base_location = base_location;
         }
-    },
+    }
     /**
      * fill the base with plans for the structures based on the base location
      * @param {Room} room - The Room we are planning
      * @param {RoomPlans} plans - The Plans for the room.
      */
-    planBase: function (room, plans) {
+    planBase (room, plans) {
         // if we were unable to find a base location
         if (plans.base_location == null) {
             // exit the function
@@ -284,13 +285,13 @@ global.RoomPlansFactory = {
             new Point(x + 6, y + 12),
             new Point(x + 12, y + 12),
         ];
-    },
+    }
     /**
      * locate a suitable location to place a plant
      * @param {Room} room - The Room we are planning
      * @param {RoomPlans} plans - The Plans for the room.
      */
-    planPlantLocation: function (room, plans) {
+    planPlantLocation (room, plans) {
         // find a clear area of size 4 x 3
         let plant_location = room.getClearArea(4, 3, plans);
         // if we were able to find a location
@@ -298,13 +299,13 @@ global.RoomPlansFactory = {
             // save the coordinates of the plant
             plans.plant_location = plant_location;
         }
-    },
+    }
     /**
      * fill the plant with plans for the structures based on the plant location
      * @param {Room} room - The Room we are planning
      * @param {RoomPlans} plans - The Plans for the room.
      */
-    planPlant: function (room, plans) {
+    planPlant (room, plans) {
         // if we were unable to find a plant location
         if (plans.plant_location == null) {
             // exit the function
@@ -347,13 +348,13 @@ global.RoomPlansFactory = {
             new Point(x + 1, y + 2),
             new Point(x + 3, y + 2),
         ];
-    },
+    }
     /**
      * find a location not around anything to send the idle creeps in the room
      * @param {Room} room - The Room we are planning
      * @param {RoomPlans} plans - The Plans for the room.
      */
-    planIdleLocation: function (room, plans) {
+    planIdleLocation (room, plans) {
         // return a clear area of size 5 x 5
         let idle_location = room.getClearArea(5, 5, plans);
         // if an area is found
@@ -361,13 +362,13 @@ global.RoomPlansFactory = {
             // save the coordinates of the idle location
             plans.idle_location = idle_location;
         }
-    },
+    }
     /**
      * adds roads between the source and mineral containers and the road anchors
      * @param {Room} room - The Room we are planning
      * @param {RoomPlans} plans - The Plans for the room.
      */
-    planRoads: function (room, plans) {
+    planRoads (room, plans) {
         // if this room has a base
         if (plans.base_location != null) {
             // for each source plan
@@ -421,13 +422,13 @@ global.RoomPlansFactory = {
                 this.planRoadsBetween(plans.base_road_anchors, bottom_exits, room, plans);
             }
         }
-    },
+    }
     /**
      * add ramparts on top of all structures in the plans
      * @param {Room} room - The Room we are planning
      * @param {RoomPlans} plans - The Plans for the room.
      */
-    planRamparts: function (room, plans) {
+    planRamparts (room, plans) {
         // if the room has a base
         if (plans.base_location != null) {
             // loop through all the planned structures
@@ -448,7 +449,7 @@ global.RoomPlansFactory = {
                 plans.ramparts[mineral_plan.container_location.x][mineral_plan.container_location.y] = true;
             }
         }
-    },
+    }
     /**
      * adds roads on a path between two points chosen from the given arrays, using the closest two points in them
      * @param {Point[] | RoomPosition[]} first_points - first array of points to choose from when drawing the roads
@@ -456,25 +457,25 @@ global.RoomPlansFactory = {
      * @param {Room} room - The Room we are planning
      * @param {RoomPlans} plans - The Plans for the room.
      */
-    planRoadsBetween: function (first_points, second_points, room, plans) {
+    planRoadsBetween (first_points, second_points, room, plans) {
         // by default, the closest first point is the first in the array
         let closest_first_point = first_points[0];
         // by default, the closest second point is the first in the array
         let closest_second_point = second_points[0];
         // record the closest distance between the points
-        let closest_distance = Util.distance(closest_first_point, closest_second_point);
+        let closest_distance = util.distance(closest_first_point, closest_second_point);
         // loop through all the first points
         for (let first_point of first_points) {
             // loop through all the second points
             for (let second_point of second_points) {
                 // if the distance between the two points is lower than the closest
-                if (Util.distance(first_point, second_point) < closest_distance) {
+                if (util.distance(first_point, second_point) < closest_distance) {
                     // record the new closest first point
                     closest_first_point = first_point;
                     // record the new closest second point
                     closest_second_point = second_point;
                     // record the new closest distance
-                    closest_distance = Util.distance(first_point, second_point);
+                    closest_distance = util.distance(first_point, second_point);
                 }
             }
         }
@@ -491,5 +492,14 @@ global.RoomPlansFactory = {
             // mark that position as a road
             plans.roads[position.x][position.y] = true;
         }
-    },
-};
+    }
+}
+
+// export the RoomPlansFactory class
+global.RoomPlansFactory = RoomPlansFactory;
+
+/**
+ * Instance of the RoomPlansFactory class that provides centralized room planning services and is accessible globally throughout the code base
+ * @constant {RoomPlansFactory} room_plans_factory
+ */
+global.room_plans_factory = new RoomPlansFactory();

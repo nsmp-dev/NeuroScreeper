@@ -12,7 +12,7 @@ class RoomData {
      * @param {StructureSpawn|null} initial_spawn - Optional spawn structure for initializing the first colony room
      */
     constructor(room, initial_spawn = null) {
-        Timer.start("creating_room_data");
+        timer.start("creating_room_data");
         /**
          * Defines the category or classification of the room (e.g., COLONY, HIGHWAY, KEEPER_LAIR).
          * @type {number|null}
@@ -110,12 +110,12 @@ class RoomData {
         // if the initial spawn was provided
         if (initial_spawn != null) {
             // plan the first room
-            RoomPlansFactory.planFirstRoom(room, this.plans, initial_spawn);
+            room_plans_factory.planFirstRoom(room, this.plans, initial_spawn);
             // set it to be a colony
             this.type = COLONY;
         } else {
             // plan the room normally
-            RoomPlansFactory.planRoom(room, this.plans);
+            room_plans_factory.planRoom(room, this.plans);
         }
 
         // if this room doesn't have a controller
@@ -153,7 +153,7 @@ class RoomData {
             this.plant_data = new PlantData(this.plans);
         }
 
-        Timer.stop("creating_room_data");
+        timer.stop("creating_room_data");
     }
 }
 

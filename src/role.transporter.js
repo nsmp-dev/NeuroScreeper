@@ -24,7 +24,7 @@ class TransporterMemory extends CreepMemory {
          */
         this.source = source_id;
         /**
-         * The coordinates for the container position where this transporter will pickup resources
+         * The coordinates for the container position where this transporter will pick up resources
          * @type {Point}
          */
         this.container_location = container_location;
@@ -101,5 +101,5 @@ Creep.prototype.runTransporter = function () {
         }
     }
     // run the task
-    NeuroTask.run(this);
+    neuro_task.run(this);
 };

@@ -9,7 +9,7 @@ class RoomPlans {
      * Uses Timer for performance tracking during initialization.
      */
     constructor() {
-        Timer.start("creating_room_plans");
+        timer.start("creating_room_plans");
         /**
          * Coordinates where creeps will wait when not assigned to tasks
          * @type {Point|null}
@@ -94,7 +94,7 @@ class RoomPlans {
          * @type {Point|null}
          */
         this.factory_location = null;
-        Timer.stop("creating_room_plans");
+        timer.stop("creating_room_plans");
     }
 }
 

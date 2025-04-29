@@ -60,5 +60,5 @@ Creep.prototype.runRepairer = function () {
         }
     }
     // run the task
-    NeuroTask.run(this);
+    neuro_task.run(this);
 };

@@ -5,15 +5,16 @@
  * Labs and factory operate as independent state machines to enable parallel processing.
  * The operator can interact with either system independently without disrupting the other.
  * If structures are destroyed or wrong materials are detected, systems automatically reset to cleaning state.
- * @module NeuroPlant
+ * @class NeuroPlant
  */
-global.NeuroPlant = {
+class NeuroPlant {
+    constructor() {}
     /**
      * Checks if the required resources for a reaction are present and sets the requested reaction or cleanup reaction flag
      * @param {PlantData} plant_data - The plant data for storing in memory
      * @param {Room} room - The Room the plant is in
      */
-    runLabs: function (plant_data, room) {
+    runLabs (plant_data, room) {
         // grab input lab 1
         let input_lab_1 = Game.getObjectById(plant_data.input_lab_1_id);
         // grab input lab 2
@@ -74,7 +75,7 @@ global.NeuroPlant = {
                         }
                         // create and store the enw reaction
                         plant_data.current_reaction = new Reaction(reagent_1, reagent_2, REACTIONS[reagent_1][reagent_2], amount);
-                        Visualizer.popup("Requested a reaction for " + plant_data.current_reaction.amount + " " + plant_data.current_reaction.output);
+                        visualizer.popup("Requested a reaction for " + plant_data.current_reaction.amount + " " + plant_data.current_reaction.output);
                         // set the state of the labs to loading
                         plant_data.labs_state = STATES.LOADING;
                     }
@@ -102,7 +103,7 @@ global.NeuroPlant = {
             if (output_lab.cooldown == 0) {
                 // if the output lab has the amount requested in the reaction
                 if (output_lab.store[reaction.output] == reaction.amount) {
-                    Visualizer.popup("Finished a reaction for " + plant_data.current_reaction.amount + " " + plant_data.current_reaction.output);
+                    visualizer.popup("Finished a reaction for " + plant_data.current_reaction.amount + " " + plant_data.current_reaction.output);
                     // set the labs to finished
                     plant_data.labs_state = STATES.FINISHED;
                     // clear the current reaction
@@ -129,13 +130,13 @@ global.NeuroPlant = {
                 plant_data.labs_state = STATES.IDLE;
             }
         }
-    },
+    }
     /**
      * Checks if the required resources for a production are present and sets the requested production or cleanup production flag
      * @param {PlantData} plant_data - The plant data for storing in memory
      * @param {Room} room - The Room the plant is in
      */
-    runFactory: function (plant_data, room) {
+    runFactory (plant_data, room) {
         // grab the factory
         let factory = Game.getObjectById(plant_data.factory_id);
         // grab the storage
@@ -206,7 +207,7 @@ global.NeuroPlant = {
                 if (has_components) {
                     // create and store the new production
                     plant_data.current_production = new Production(recipe.components, commodity, recipe.amount);
-                    Visualizer.popup("Requested a production of " + plant_data.current_production.amount + " " + plant_data.current_reaction.output);
+                    visualizer.popup("Requested a production of " + plant_data.current_production.amount + " " + plant_data.current_reaction.output);
                     // set the factory to loading
                     plant_data.factory_state = STATES.LOADING;
                     // exit the loop
@@ -247,7 +248,7 @@ global.NeuroPlant = {
             if (factory.cooldown == 0) {
                 // set the factory to finished
                 plant_data.factory_state = STATES.FINISHED;
-                Visualizer.popup("Finished a production of " + plant_data.current_reaction.output);
+                visualizer.popup("Finished a production of " + plant_data.current_reaction.output);
                 plant_data.current_production = null;
             }
         }
@@ -260,13 +261,13 @@ global.NeuroPlant = {
                 plant_data.labs_state = STATES.IDLE;
             }
         }
-    },
+    }
     /**
      * caches the ids of the structures in the plant
      * @param {PlantData} plant_data - The plant data for storing in memory
      * @param {Room} room - The Room the plant is in
      */
-    getStructures: function (plant_data, room) {
+    getStructures (plant_data, room) {
         // attempt to grab the first input lab
         let input_lab_1 = room.getStructureAt(STRUCTURE_LAB, plant_data.input_lab_1_location.x, plant_data.input_lab_1_location.y);
         // attempt to grab the second input lab
@@ -303,13 +304,13 @@ global.NeuroPlant = {
             // store the factory id
             plant_data.factory_id = factory.id;
         }
-    },
+    }
     /**
      * runs the plant, occasionally caching ids and requesting reactions and productions
      * @param {PlantData} plant_data - The plant data for storing in memory
      * @param {Room|null} room - The Room the plant is in
      */
-    run: function (plant_data, room) {
+    run (plant_data, room) {
         // if the room is not visible
         if (room == null) {
             // exit the function
@@ -317,7 +318,7 @@ global.NeuroPlant = {
         }
 
         // if the structure timer has gone off
-        if (plant_data.structure_timer > this.PLANT_STRUCTURES_TIMER_LENGTH) {
+        if (plant_data.structure_timer > PLANT_STRUCTURES_TIMER_LENGTH) {
             // reset the structure timer
             plant_data.structure_timer = 0;
             // cache the structure ids
@@ -348,5 +349,9 @@ global.NeuroPlant = {
             // increment the production timer
             plant_data.factory_timer++;
         }
-    },
-};
+    }
+}
+
+global.NeuroPlant = NeuroPlant;
+
+global.neuro_plant = new NeuroPlant();

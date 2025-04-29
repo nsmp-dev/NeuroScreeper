@@ -31,24 +31,25 @@
  * room coordinates conversion, array manipulation, ID generation, garbage collection,
  * room management, statistics tracking, and general game state utilities.
  * Contains functions for both basic operations and game-specific helper methods.
- * @module Util
+ * @class Util
  */
-global.Util = {
+class Util {
+    constructor() {}
     /**
      * gets the MainMemory object, helping with type safety
      * @return {MainMemory} the MainMemory object
      */
-    getMainMemory: function () {
+    getMainMemory () {
         // return the MainMemory object
         return Memory.main_memory;
-    },
+    }
     /**
      * converts an x/y room coordinate to a string name
      * @param {number} x - x coordinate of the room in the world space
      * @param {number} y - y coordinate of the room in the world space
      * @return {string} the string name for the room
      */
-    worldXYToRoomName: function (x, y) {
+    worldXYToRoomName (x, y) {
         // get the size of the world
         let size = Game.map.getWorldSize();
         // calculate the max number the string name uses
@@ -76,13 +77,13 @@ global.Util = {
 
         // return the string name
         return str;
-    },
+    }
     /**
      * converts a string room name to x/y room coordinates
      * @param {string} name - The name of the room
      * @return {Point} the location of the room in world space
      */
-    roomNameToWorldXY: function (name) {
+    roomNameToWorldXY (name) {
         // get the size of the world
         let size = Game.map.getWorldSize();
         // calculate the max number the string name uses
@@ -127,14 +128,14 @@ global.Util = {
 
         // return the coordinates
         return coordinates;
-    },
+    }
     /**
      * multiplies an array a number of times
      * @param {Array} arr - The array that will be duplicated
      * @param {number} num - The number of times to repeat the array
      * @return {Array} the new resultant array
      */
-    multiArray: function (arr, num) {
+    multiArray (arr, num) {
         // create the array we are building
         let result = [];
         // loop num amount of times
@@ -144,14 +145,14 @@ global.Util = {
         }
         // return the new array
         return result;
-    },
+    }
     /**
      * generates an id, using a memory entry to ensure no collisions
      * @return {string} the guaranteed unique id
      */
-    generateId: function () {
+    generateId () {
         // get the MainMemory object
-        let main_memory = Util.getMainMemory();
+        let main_memory = util.getMainMemory();
         // the id we are building
         let id = "";
         // store the id counter
@@ -160,11 +161,11 @@ global.Util = {
         main_memory.id_counter++;
         // return the id
         return id;
-    },
+    }
     /**
      * delete old creep memories to free up memory and prevent leaks
      */
-    collectGarbage: function () {
+    collectGarbage () {
         // loop through all the creep's memories
         for (let name in Memory.creeps) {
             // if the creep is dead
@@ -179,13 +180,13 @@ global.Util = {
             // generate a pixel
             Game.cpu.generatePixel();
         }
-    },
+    }
     /**
      * calculates what percentage of the satisfaction log in the given room data is true
      * @param {RoomData} room_data - The room data that holds the satisfaction log
      * @return {number} the calculated ratio
      */
-    getSatisfiedRatio: function (room_data) {
+    getSatisfiedRatio (room_data) {
         // the total number of true values in the room satisfaction log
         let total = 0;
         // loop through the satisfaction log
@@ -199,13 +200,13 @@ global.Util = {
 
         // calculate the average and return it
         return (total / room_data.satisfaction_log.length);
-    },
+    }
     /**
      * see if a room is available
      * @param {string} room_name - The name of the room to test
      * @return {Boolean} true if the room is available
      */
-    isRoomAvailable: function (room_name) {
+    isRoomAvailable (room_name) {
         // grab the room
         let room = Game.rooms[room_name];
 
@@ -234,11 +235,11 @@ global.Util = {
 
         // return true if there are no hostile creeps in the room
         return hostile_creeps &lt;= 0;
-    },
+    }
     /**
      * print a summary of some stats
      */
-    printSummary: function () {
+    printSummary () {
         // start a new string
         let str = "";
         // the current tick
@@ -249,13 +250,13 @@ global.Util = {
         str += " | bucket: " + Game.cpu.bucket;
         // print the summary
         hlog(str);
-    },
+    }
     /**
      * print all the timers we have
      */
-    printTimers: function () {
+    printTimers () {
         // get the MainMemory object
-        let main_memory = Util.getMainMemory();
+        let main_memory = util.getMainMemory();
         // draw a separator
         hlog("-----Average Times-----");
         // loop through all the timers
@@ -263,14 +264,14 @@ global.Util = {
             // print the id and average of this timer
             hlog(main_memory.timers[id].average_time.toString(), id);
         }
-    },
+    }
     /**
      * finds all highway rooms found so far
      * @return {string[]} array of all the highway room names
      */
-    getHighwayRooms: function () {
+    getHighwayRooms () {
         // get the MainMemory object
-        let main_memory = Util.getMainMemory();
+        let main_memory = util.getMainMemory();
         // create a list for the highways
         let highways = [];
 
@@ -284,11 +285,11 @@ global.Util = {
         }
         // return the list of highways
         return highways;
-    },
+    }
     /**
      * clear all the MainMemory object and suicide all creeps
      */
-    clearMemory: function () {
+    clearMemory () {
         // loop through all the entries in memory
         for (let name in Memory) {
             // delete the entry
@@ -300,7 +301,7 @@ global.Util = {
             // suicide this creep
             Game.creeps[name].suicide();
         }
-    },
+    }
     /**
      * converts RGB values to a hex code for drawing
      * @param {number} r - the red value
@@ -308,30 +309,30 @@ global.Util = {
      * @param {number} b - the blue value
      * @return {string} the resulting hex code, including the #
      */
-    rgbToHex: function (r, g, b) {
+    rgbToHex (r, g, b) {
         // return the string version of the rgb value
         return "#" + (1 &lt;&lt; 24 | r &lt;&lt; 16 | g &lt;&lt; 8 | b).toString(16).slice(1);
-    },
+    }
     /**
      * distance between 2 Points
      * @param {Point} a - the first point
      * @param {Point} b - the second point
      * @return {number} the distance between the points
      */
-    distance: function (a, b) {
+    distance (a, b) {
         // get the distance between the x coordinates
         let x = a.x - b.x;
         // get the distance between the y coordinates
         let y = b.y - b.y;
         // return the hypotenuse of the two points
         return Math.sqrt((x * x) + (y * y));
-    },
+    }
     /**
      * gets a 2D grid of the blocking structures from a RoomPlans object
      * @param {RoomPlans} plans - The plans of the room
      * @return {Boolean[][]} the 2D grid describing the taken and open spots as booleans
      */
-    getStructureGrid: function (plans) {
+    getStructureGrid (plans) {
         // 2d array of all the spots in the room
         let structure_grid = [];
         // loop through the X coordinates
@@ -365,8 +366,12 @@ global.Util = {
 
         // return the final structure grid
         return structure_grid;
-    },
-};</code></pre>
+    }
+}
+
+global.Util = Util;
+
+global.util = new Util();</code></pre>
         </article>
     </section>
 
@@ -376,13 +381,13 @@ global.Util = {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-NeuroPlant.html">NeuroPlant</a></li><li><a href="module-NeuroRoom.html">NeuroRoom</a></li><li><a href="module-NeuroTask.html">NeuroTask</a></li><li><a href="module-RoomPlansFactory.html">RoomPlansFactory</a></li><li><a href="module-Timer.html">Timer</a></li><li><a href="module-Util.html">Util</a></li><li><a href="module-Visualizer.html">Visualizer</a></li></ul><h3>Classes</h3><ul><li><a href="AttackTask.html">AttackTask</a></li><li><a href="AttackerMemory.html">AttackerMemory</a></li><li><a href="BuildTask.html">BuildTask</a></li><li><a href="BuilderMemory.html">BuilderMemory</a></li><li><a href="ClaimTask.html">ClaimTask</a></li><li><a href="ClaimerMemory.html">ClaimerMemory</a></li><li><a href="CommodityCollectorMemory.html">CommodityCollectorMemory</a></li><li><a href="ConstructionPlan.html">ConstructionPlan</a></li><li><a href="CreepMemory.html">CreepMemory</a></li><li><a href="DepositTask.html">DepositTask</a></li><li><a href="DrillTask.html">DrillTask</a></li><li><a href="DrillerMemory.html">DrillerMemory</a></li><li><a href="GatherTask.html">GatherTask</a></li><li><a href="HarvestTask.html">HarvestTask</a></li><li><a href="HealTask.html">HealTask</a></li><li><a href="HealerMemory.html">HealerMemory</a></li><li><a href="IdleTask.html">IdleTask</a></li><li><a href="MainMemory.html">MainMemory</a></li><li><a href="MineralDrillerMemory.html">MineralDrillerMemory</a></li><li><a href="MineralPlan.html">MineralPlan</a></li><li><a href="MineralPopulation.html">MineralPopulation</a></li><li><a href="MineralTransporterMemory.html">MineralTransporterMemory</a></li><li><a href="MoveResourceTask.html">MoveResourceTask</a></li><li><a href="MoveRoomTask.html">MoveRoomTask</a></li><li><a href="ObserverLog.html">ObserverLog</a></li><li><a href="PlantData.html">PlantData</a></li><li><a href="Point.html">Point</a></li><li><a href="PopupMessage.html">PopupMessage</a></li><li><a href="PowerAttackerMemory.html">PowerAttackerMemory</a></li><li><a href="PowerHealerMemory.html">PowerHealerMemory</a></li><li><a href="PowerSquad.html">PowerSquad</a></li><li><a href="PowerSquadPopulation.html">PowerSquadPopulation</a></li><li><a href="PowerTransporterMemory.html">PowerTransporterMemory</a></li><li><a href="Production.html">Production</a></li><li><a href="QueenMemory.html">QueenMemory</a></li><li><a href="Reaction.html">Reaction</a></li><li><a href="RenewOperatorTask.html">RenewOperatorTask</a></li><li><a href="RepairTask.html">RepairTask</a></li><li><a href="RepairerMemory.html">RepairerMemory</a></li><li><a href="ReserveTask.html">ReserveTask</a></li><li><a href="Role.html">Role</a></li><li><a href="RoomData.html">RoomData</a></li><li><a href="RoomPlans.html">RoomPlans</a></li><li><a href="RoomPopulation.html">RoomPopulation</a></li><li><a href="ScoutMemory.html">ScoutMemory</a></li><li><a href="SourcePlan.html">SourcePlan</a></li><li><a href="SourcePopulation.html">SourcePopulation</a></li><li><a href="Task.html">Task</a></li><li><a href="TimerEntry.html">TimerEntry</a></li><li><a href="TimerLog.html">TimerLog</a></li><li><a href="TransporterMemory.html">TransporterMemory</a></li><li><a href="UpgradeTask.html">UpgradeTask</a></li><li><a href="UpgraderMemory.html">UpgraderMemory</a></li></ul><h3>Global</h3><ul><li><a href="global.html#BUILD">BUILD</a></li><li><a href="global.html#COLONY">COLONY</a></li><li><a href="global.html#CONSTRUCTION_TIMER_LENGTH">CONSTRUCTION_TIMER_LENGTH</a></li><li><a href="global.html#COUNT_POPULATION_TIMER_LENGTH">COUNT_POPULATION_TIMER_LENGTH</a></li><li><a href="global.html#DEBUG_MODE">DEBUG_MODE</a></li><li><a href="global.html#EXPANSION">EXPANSION</a></li><li><a href="global.html#FACTORY_TIMER_LENGTH">FACTORY_TIMER_LENGTH</a></li><li><a href="global.html#FINAL_PRODUCTS">FINAL_PRODUCTS</a></li><li><a href="global.html#HIGHWAY">HIGHWAY</a></li><li><a href="global.html#INGREDIENTS">INGREDIENTS</a></li><li><a href="global.html#KEEPER_LAIR">KEEPER_LAIR</a></li><li><a href="global.html#LABS_TIMER_LENGTH">LABS_TIMER_LENGTH</a></li><li><a href="global.html#LOG_SIZE">LOG_SIZE</a></li><li><a href="global.html#NEW_ROOM_TIMER_LENGTH">NEW_ROOM_TIMER_LENGTH</a></li><li><a href="global.html#PLANT_STRUCTURES_TIMER_LENGTH">PLANT_STRUCTURES_TIMER_LENGTH</a></li><li><a href="global.html#POPUP_TIMER_LIMIT">POPUP_TIMER_LIMIT</a></li><li><a href="global.html#POWER_SQUAD_TIMER">POWER_SQUAD_TIMER</a></li><li><a href="global.html#REQUEST_POPULATION_TIMER_LENGTH">REQUEST_POPULATION_TIMER_LENGTH</a></li><li><a href="global.html#ROLES">ROLES</a></li><li><a href="global.html#ROOM_CONSTRUCTION_SITE_LIMIT">ROOM_CONSTRUCTION_SITE_LIMIT</a></li><li><a href="global.html#SATISFACTION_LOG_SIZE">SATISFACTION_LOG_SIZE</a></li><li><a href="global.html#SATISFACTION_THRESHOLD">SATISFACTION_THRESHOLD</a></li><li><a href="global.html#SIGNATURE">SIGNATURE</a></li><li><a href="global.html#STATES">STATES</a></li><li><a href="global.html#TASK_TYPES">TASK_TYPES</a></li><li><a href="global.html#TERMINAL_ENERGY_CAP">TERMINAL_ENERGY_CAP</a></li><li><a href="global.html#TERMINAL_TIMER_LENGTH">TERMINAL_TIMER_LENGTH</a></li><li><a href="global.html#TOWER_MINIMUM_ENERGY">TOWER_MINIMUM_ENERGY</a></li><li><a href="global.html#USERNAME">USERNAME</a></li><li><a href="global.html#announceTask">announceTask</a></li><li><a href="global.html#gatherEnergy">gatherEnergy</a></li><li><a href="global.html#getBuildTarget">getBuildTarget</a></li><li><a href="global.html#getDumpTarget">getDumpTarget</a></li><li><a href="global.html#getFillTarget">getFillTarget</a></li><li><a href="global.html#getNearestColony">getNearestColony</a></li><li><a href="global.html#getNearestStorage">getNearestStorage</a></li><li><a href="global.html#getQueenDumpTarget">getQueenDumpTarget</a></li><li><a href="global.html#getRepairTarget">getRepairTarget</a></li><li><a href="global.html#getTransporterTarget">getTransporterTarget</a></li><li><a href="global.html#hlog">hlog</a></li><li><a href="global.html#idle">idle</a></li><li><a href="global.html#loop">loop</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="AttackTask.html">AttackTask</a></li><li><a href="AttackerMemory.html">AttackerMemory</a></li><li><a href="BuildTask.html">BuildTask</a></li><li><a href="BuilderMemory.html">BuilderMemory</a></li><li><a href="ClaimTask.html">ClaimTask</a></li><li><a href="ClaimerMemory.html">ClaimerMemory</a></li><li><a href="CommodityCollectorMemory.html">CommodityCollectorMemory</a></li><li><a href="ConstructionPlan.html">ConstructionPlan</a></li><li><a href="CreepMemory.html">CreepMemory</a></li><li><a href="DepositTask.html">DepositTask</a></li><li><a href="DrillTask.html">DrillTask</a></li><li><a href="DrillerMemory.html">DrillerMemory</a></li><li><a href="GatherTask.html">GatherTask</a></li><li><a href="HarvestTask.html">HarvestTask</a></li><li><a href="HealTask.html">HealTask</a></li><li><a href="HealerMemory.html">HealerMemory</a></li><li><a href="IdleTask.html">IdleTask</a></li><li><a href="MainMemory.html">MainMemory</a></li><li><a href="MineralDrillerMemory.html">MineralDrillerMemory</a></li><li><a href="MineralPlan.html">MineralPlan</a></li><li><a href="MineralPopulation.html">MineralPopulation</a></li><li><a href="MineralTransporterMemory.html">MineralTransporterMemory</a></li><li><a href="MoveResourceTask.html">MoveResourceTask</a></li><li><a href="MoveRoomTask.html">MoveRoomTask</a></li><li><a href="NeuroPlant.html">NeuroPlant</a></li><li><a href="NeuroPower.html">NeuroPower</a></li><li><a href="NeuroPowerSquad.html">NeuroPowerSquad</a></li><li><a href="NeuroRoom.html">NeuroRoom</a></li><li><a href="NeuroScreeper.html">NeuroScreeper</a></li><li><a href="NeuroTask.html">NeuroTask</a></li><li><a href="ObserverLog.html">ObserverLog</a></li><li><a href="PlantData.html">PlantData</a></li><li><a href="Point.html">Point</a></li><li><a href="PopupMessage.html">PopupMessage</a></li><li><a href="PowerAttackerMemory.html">PowerAttackerMemory</a></li><li><a href="PowerHealerMemory.html">PowerHealerMemory</a></li><li><a href="PowerSquad.html">PowerSquad</a></li><li><a href="PowerSquadPopulation.html">PowerSquadPopulation</a></li><li><a href="PowerTransporterMemory.html">PowerTransporterMemory</a></li><li><a href="Production.html">Production</a></li><li><a href="QueenMemory.html">QueenMemory</a></li><li><a href="Reaction.html">Reaction</a></li><li><a href="RenewOperatorTask.html">RenewOperatorTask</a></li><li><a href="RepairTask.html">RepairTask</a></li><li><a href="RepairerMemory.html">RepairerMemory</a></li><li><a href="ReserveTask.html">ReserveTask</a></li><li><a href="Role.html">Role</a></li><li><a href="RoomData.html">RoomData</a></li><li><a href="RoomPlans.html">RoomPlans</a></li><li><a href="RoomPlansFactory.html">RoomPlansFactory</a></li><li><a href="RoomPopulation.html">RoomPopulation</a></li><li><a href="ScoutMemory.html">ScoutMemory</a></li><li><a href="SourcePlan.html">SourcePlan</a></li><li><a href="SourcePopulation.html">SourcePopulation</a></li><li><a href="Task.html">Task</a></li><li><a href="Timer.html">Timer</a></li><li><a href="TimerEntry.html">TimerEntry</a></li><li><a href="TimerLog.html">TimerLog</a></li><li><a href="TransporterMemory.html">TransporterMemory</a></li><li><a href="UpgradeTask.html">UpgradeTask</a></li><li><a href="UpgraderMemory.html">UpgraderMemory</a></li><li><a href="Util.html">Util</a></li><li><a href="Visualizer.html">Visualizer</a></li></ul><h3>Global</h3><ul><li><a href="global.html#BUILD">BUILD</a></li><li><a href="global.html#COLONY">COLONY</a></li><li><a href="global.html#CONSTRUCTION_TIMER_LENGTH">CONSTRUCTION_TIMER_LENGTH</a></li><li><a href="global.html#COUNT_POPULATION_TIMER_LENGTH">COUNT_POPULATION_TIMER_LENGTH</a></li><li><a href="global.html#DEBUG_MODE">DEBUG_MODE</a></li><li><a href="global.html#EXPANSION">EXPANSION</a></li><li><a href="global.html#FACTORY_TIMER_LENGTH">FACTORY_TIMER_LENGTH</a></li><li><a href="global.html#FINAL_PRODUCTS">FINAL_PRODUCTS</a></li><li><a href="global.html#HIGHWAY">HIGHWAY</a></li><li><a href="global.html#INGREDIENTS">INGREDIENTS</a></li><li><a href="global.html#KEEPER_LAIR">KEEPER_LAIR</a></li><li><a href="global.html#LABS_TIMER_LENGTH">LABS_TIMER_LENGTH</a></li><li><a href="global.html#LOG_SIZE">LOG_SIZE</a></li><li><a href="global.html#NEW_ROOM_TIMER_LENGTH">NEW_ROOM_TIMER_LENGTH</a></li><li><a href="global.html#PLANT_STRUCTURES_TIMER_LENGTH">PLANT_STRUCTURES_TIMER_LENGTH</a></li><li><a href="global.html#POPUP_TIMER_LIMIT">POPUP_TIMER_LIMIT</a></li><li><a href="global.html#POWER_SQUAD_TIMER">POWER_SQUAD_TIMER</a></li><li><a href="global.html#REQUEST_POPULATION_TIMER_LENGTH">REQUEST_POPULATION_TIMER_LENGTH</a></li><li><a href="global.html#ROLES">ROLES</a></li><li><a href="global.html#ROOM_CONSTRUCTION_SITE_LIMIT">ROOM_CONSTRUCTION_SITE_LIMIT</a></li><li><a href="global.html#SATISFACTION_LOG_SIZE">SATISFACTION_LOG_SIZE</a></li><li><a href="global.html#SATISFACTION_THRESHOLD">SATISFACTION_THRESHOLD</a></li><li><a href="global.html#SIGNATURE">SIGNATURE</a></li><li><a href="global.html#STATES">STATES</a></li><li><a href="global.html#TASK_TYPES">TASK_TYPES</a></li><li><a href="global.html#TERMINAL_ENERGY_CAP">TERMINAL_ENERGY_CAP</a></li><li><a href="global.html#TERMINAL_TIMER_LENGTH">TERMINAL_TIMER_LENGTH</a></li><li><a href="global.html#TOWER_MINIMUM_ENERGY">TOWER_MINIMUM_ENERGY</a></li><li><a href="global.html#USERNAME">USERNAME</a></li><li><a href="global.html#announceTask">announceTask</a></li><li><a href="global.html#gatherEnergy">gatherEnergy</a></li><li><a href="global.html#getBuildTarget">getBuildTarget</a></li><li><a href="global.html#getDumpTarget">getDumpTarget</a></li><li><a href="global.html#getFillTarget">getFillTarget</a></li><li><a href="global.html#getNearestColony">getNearestColony</a></li><li><a href="global.html#getNearestStorage">getNearestStorage</a></li><li><a href="global.html#getQueenDumpTarget">getQueenDumpTarget</a></li><li><a href="global.html#getRepairTarget">getRepairTarget</a></li><li><a href="global.html#getTransporterTarget">getTransporterTarget</a></li><li><a href="global.html#hlog">hlog</a></li><li><a href="global.html#idle">idle</a></li><li><a href="global.html#loop">loop</a></li><li><a href="global.html#neuro_room">neuro_room</a></li><li><a href="global.html#room_plans_factory">room_plans_factory</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Tue Apr 29 2025 16:02:03 GMT-0500 (Central Daylight Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Tue Apr 29 2025 16:48:57 GMT-0500 (Central Daylight Time)
 </footer>
 
 <script> prettyPrint(); </script>

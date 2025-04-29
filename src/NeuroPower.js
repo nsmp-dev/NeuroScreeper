@@ -5,14 +5,15 @@
  * - Upgrading operator powers when possible
  * - Running operator logic and actions when spawned
  * - Managing operator power cooldowns and renewal
- * @namepace NeuroPower
+ * @class NeuroPower
  */
-global.NeuroPower = {
+class NeuroPower {
+    constructor() {}
     /**
      * upgrades the operator's lowest level power
      * @param {PowerCreep} operator - The operator we are upgrading
      */
-    upgradeLowestPower: function (operator) {
+    upgradeLowestPower (operator) {
         // variable for the lowest level power
         let lowest_power_id = null;
         // loop through every power
@@ -25,13 +26,13 @@ global.NeuroPower = {
         }
         // upgrade the lowest power
         operator.upgrade(lowest_power_id);
-    },
+    }
     /**
      * Manages the operator and handles spawning/upgrading/renewing the operator
      */
-    run: function () {
+    run () {
         // get the MainMemory object
-        let main_memory = Util.getMainMemory();
+        let main_memory = util.getMainMemory();
         // make a list for the power spawns
         let power_spawns = [];
         // loop through all the structures
@@ -51,7 +52,7 @@ global.NeuroPower = {
         }
         // if we have not created an operator before, and we have the level needed for it
         if (Game.powerCreeps["operator"] == undefined && Game.gpl.level > 0) {
-            Visualizer.popup("Created the operator!");
+            visualizer.popup("Created the operator!");
             // create the operator power creep
             PowerCreep.create("operator", POWER_CLASS.OPERATOR);
         }
@@ -79,7 +80,7 @@ global.NeuroPower = {
 
                 // if we found a PowerSpawn in the capitol
                 if (capitol_power_spawn != null) {
-                    Visualizer.popup("Spawned the operator!");
+                    visualizer.popup("Spawned the operator!");
                     // spawn the power creep
                     operator.spawn(capitol_power_spawn);
                 }
@@ -94,10 +95,14 @@ global.NeuroPower = {
                     // upgrade the lowest level power instead
                     this.upgradeLowestPower(operator);
                 }
-                Visualizer.popup("Upgraded the operator!");
+                visualizer.popup("Upgraded the operator!");
             }
             // run the operator, passing the appropriate plant data
             operator.runOperator(main_memory.room_data[operator.room.name].plant_data);
         }
-    },
-};
+    }
+}
+
+global.NeuroPower = NeuroPower;
+
+global.neuro_power = new NeuroPower();

@@ -5,71 +5,72 @@
  * - Tracks creep populations efficiently through periodic counting
  * - Expands the empire by creating new colonies when existing rooms are stable
  * - Balances growth between colonies and remote mining expansions
- * @namepace NeuroScreeper
+ * @class NeuroScreeper
  */
-global.NeuroScreeper = {
+class NeuroScreeper {
+    constructor() {}
     /**
      * scan for any new rooms and create RoomData for them if found
      */
-    scanNewRooms: function () {
+    scanNewRooms () {
         // get the MainMemory object
-        let main_memory = Util.getMainMemory();
+        let main_memory = util.getMainMemory();
         // loop through all the rooms
         for (let name in Game.rooms) {
             // if we have not scanned this room yet
             if (main_memory.room_data[name] == undefined) {
-                Visualizer.popup("Found a new room!");
+                visualizer.popup("Found a new room!");
                 // create a new RoomData object for the new room
                 main_memory.room_data[name] = new RoomData(Game.rooms[name]);
             }
         }
-    },
+    }
     /**
      * attempt to spawn a new colony
      */
-    spawnNewColony: function () {
+    spawnNewColony () {
         // get the MainMemory object
-        let main_memory = Util.getMainMemory();
+        let main_memory = util.getMainMemory();
         // loop through all the room data
         for (let name in main_memory.room_data) {
             // if this room is not used and is a possible colony
-            if (main_memory.room_data[name].type == null && main_memory.room_data[name].possible_colony && Util.isRoomAvailable(name)) {
+            if (main_memory.room_data[name].type == null && main_memory.room_data[name].possible_colony && util.isRoomAvailable(name)) {
                 // set the room type to a colony
                 main_memory.room_data[name].type = COLONY;
-                Visualizer.popup("Created a new colony!");
+                visualizer.popup("Created a new colony!");
                 // return true for success
                 return true;
             }
         }
         // no rooms were found, return false for failure
         return false;
-    },
+    }
     /**
      * attempt to spawn a new expansion
      */
-    spawnNewExpansion: function () {
+    spawnNewExpansion () {
         // get the MainMemory object
-        let main_memory = Util.getMainMemory();
+        let main_memory = util.getMainMemory();
         // loop through all the room data
         for (let name in main_memory.room_data) {
             // if this room is not used and is a possible expansion
-            if (main_memory.room_data[name].type == null && main_memory.room_data[name].possible_expansion && Util.isRoomAvailable(name)) {
+            if (main_memory.room_data[name].type == null && main_memory.room_data[name].possible_expansion && util.isRoomAvailable(name)) {
                 // set the room type to a colony
                 main_memory.room_data[name].type = EXPANSION;
-                Visualizer.popup("Created a new expansion!");
+                visualizer.popup("Created a new expansion!");
                 // return true for success
                 return true;
             }
         }
         // no rooms were found, return false for failure
         return false;
-    },
+    }
     /**
      * count up all the creeps in the game
      */
-    countPopulation: function () {
+    countPopulation () {
         // get the MainMemory object
-        let main_memory = Util.getMainMemory();
+        let main_memory = util.getMainMemory();
         // create our population object
         /** @type {Object.<string,RoomPopulation>} */
         let pop = {};
@@ -158,12 +159,12 @@ global.NeuroScreeper = {
         }
         // store the populations
         main_memory.populations = pop;
-    },
+    }
     /**
      * rescan the population occasionally and adds colonies/expansions if stable, and scans new rooms
      * @param {MainMemory} main_memory - The plans of the room
      */
-    run: function (main_memory) {
+    run (main_memory) {
         // if the population timer has gone off
         if (main_memory.population_timer > COUNT_POPULATION_TIMER_LENGTH) {
             // recount the population
@@ -241,5 +242,9 @@ global.NeuroScreeper = {
 
         // scan for new rooms
         this.scanNewRooms();
-    },
-};
+    }
+}
+
+global.NeuroScreeper = NeuroScreeper;
+
+global.neuro_screeper = new NeuroScreeper();

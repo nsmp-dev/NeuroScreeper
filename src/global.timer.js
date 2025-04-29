@@ -2,30 +2,31 @@
  * Timer utility that manages CPU time tracking for different operations.
  * Provides functionality to start and stop timers, calculate average execution times,
  * and maintain logs of CPU usage for performance monitoring.
- * @module Timer
+ * @class Timer
  */
-global.Timer = {
-    /**
-     * where we store the timers that we are working with this tick
-     * @memberOf Timer
-     * @type {Object.<string, TimerEntry>}
-     */
-    timers: {},
+class Timer {
+    constructor() {
+        /**
+         * where we store the timers that we are working with this tick
+         * @type {Object.<string, TimerEntry>}
+         */
+        this.timers = {};
+    }
     /**
      * start a timer, defaults to the main timer
      * @param {string} id - the id of the timer
      */
-    start: function (id = "main") {
+    start (id = "main") {
         // set the start of the timer
         this.timers[id] = new TimerEntry(Game.cpu.getUsed());
-    },
+    }
     /**
      * stop a timer, defaults to the main timer, logs the result to a TimerLog
      * @param {string} id - the id of the timer
      */
-    stop: function (id = "main") {
+    stop (id = "main") {
         // get the MainMemory object
-        let main_memory = Util.getMainMemory();
+        let main_memory = util.getMainMemory();
         // set the end time of the timer
         this.timers[id].end = Game.cpu.getUsed();
         // if we have not initialized the id's log and average
@@ -51,5 +52,9 @@ global.Timer = {
         });
         // calculate and store the average time
         main_memory.timers[id].average_time = total / main_memory.timers[id].log.length;
-    },
-};
+    }
+}
+
+global.Timer = Timer;
+
+global.timer = new Timer();

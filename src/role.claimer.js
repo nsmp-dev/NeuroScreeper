@@ -31,7 +31,7 @@ global.ClaimerMemory = ClaimerMemory;
  */
 Creep.prototype.runClaimer = function () {
     // get the MainMemory object
-    let main_memory = Util.getMainMemory();
+    let main_memory = util.getMainMemory();
     // if we don't have a task currently assigned
     if (this.memory.task == null) {
         // if this room is a colony
@@ -48,5 +48,5 @@ Creep.prototype.runClaimer = function () {
         }
     }
     // run the task
-    NeuroTask.run(this);
+    neuro_task.run(this);
 };

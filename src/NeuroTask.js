@@ -3,15 +3,16 @@
  * It contains methods to handle various tasks like gathering resources, depositing items, repairing structures,
  * building, upgrading controllers, claiming rooms, and more. Each task type has its own execution logic and
  * movement handling.
- * @module NeuroTask
+ * @class NeuroTask
  */
-global.NeuroTask = {
+class NeuroTask {
+    constructor() {}
     /**
      * run the gather task on the creep
      * @param {Creep|PowerCreep} creep - The Creep doing the task
      * @param {GatherTask} task - the task being run
      */
-    runGather: function (creep, task) {
+    runGather (creep, task) {
         // if the creep is not in the room for the task
         if (creep.room.name != task.room_name) {
             // move to the room for the task
@@ -60,13 +61,13 @@ global.NeuroTask = {
                 }
             }
         }
-    },
+    }
     /**
      * run the deposit task on the creep
      * @param {Creep|PowerCreep} creep - The Creep doing the task
      * @param {DepositTask} task - the task being run
      */
-    runDeposit: function (creep, task) {
+    runDeposit (creep, task) {
         // if the creep is not in the room for the task
         if (creep.room.name != task.room_name) {
             // move to the room for the task
@@ -99,13 +100,13 @@ global.NeuroTask = {
                 }
             }
         }
-    },
+    }
     /**
      * run the repair task on the creep
      * @param {Creep|PowerCreep} creep - The Creep doing the task
      * @param {RepairTask} task - the task being run
      */
-    runRepair: function (creep, task) {
+    runRepair (creep, task) {
         // if the creep is not in the room for the task
         if (creep.room.name != task.room_name) {
             // move to the room for the task
@@ -129,13 +130,13 @@ global.NeuroTask = {
                 }
             }
         }
-    },
+    }
     /**
      * run the gather task on the creep
      * @param {Creep|PowerCreep} creep - The Creep doing the task
      * @param {BuildTask} task - the task being run
      */
-    runBuild: function (creep, task) {
+    runBuild (creep, task) {
         // if the creep is not in the room for the task
         if (creep.room.name != task.room_name) {
             // move to the room for the task
@@ -159,13 +160,13 @@ global.NeuroTask = {
                 }
             }
         }
-    },
+    }
     /**
      * run the upgrade task on the creep
      * @param {Creep|PowerCreep} creep - The Creep doing the task
      * @param {UpgradeTask} task - the task being run
      */
-    runUpgrade: function (creep, task) {
+    runUpgrade (creep, task) {
         // if the creep is not in the room for the task
         if (creep.room.name != task.room_name) {
             // move to the room for the task
@@ -190,13 +191,13 @@ global.NeuroTask = {
                 }
             }
         }
-    },
+    }
     /**
      * run the claim task on the creep
      * @param {Creep|PowerCreep} creep - The Creep doing the task
      * @param {ClaimTask} task - the task being run
      */
-    runClaim: function (creep, task) {
+    runClaim (creep, task) {
         // if the creep is not in the room for the task
         if (creep.room.name != task.room_name) {
             // move to the room for the task
@@ -217,13 +218,13 @@ global.NeuroTask = {
                 }
             }
         }
-    },
+    }
     /**
      * run the reserve task on the creep
      * @param {Creep|PowerCreep} creep - The Creep doing the task
      * @param {ReserveTask} task - the task being run
      */
-    runReserve: function (creep, task) {
+    runReserve (creep, task) {
         // if the creep is not in the room for the task
         if (creep.room.name != task.room_name) {
             // move to the room for the task
@@ -244,13 +245,13 @@ global.NeuroTask = {
                 }
             }
         }
-    },
+    }
     /**
      * run the drill task on the creep
      * @param {Creep|PowerCreep} creep - The Creep doing the task
      * @param {DrillTask} task - the task being run
      */
-    runDrill: function (creep, task) {
+    runDrill (creep, task) {
         // if the creep is not in the room for the task
         if (creep.room.name != task.room_name) {
             // move to the room for the task
@@ -267,13 +268,13 @@ global.NeuroTask = {
                 creep.moveTo(task.container_location.x, task.container_location.y);
             }
         }
-    },
+    }
     /**
      * run the attack task on the creep
      * @param {Creep|PowerCreep} creep - The Creep doing the task
      * @param {AttackTask} task - the task being run
      */
-    runAttack: function (creep, task) {
+    runAttack (creep, task) {
         // if the creep is not in the room for the task
         if (creep.room.name != task.room_name) {
             // move to the room for the task
@@ -293,13 +294,13 @@ global.NeuroTask = {
                 }
             }
         }
-    },
+    }
     /**
      * run the heal task on the creep
      * @param {Creep|PowerCreep} creep - The Creep doing the task
      * @param {HealTask} task - the task being run
      */
-    runHeal: function (creep, task) {
+    runHeal (creep, task) {
         // if the creep is not in the room for the task
         if (creep.room.name != task.room_name) {
             // move to the room for the task
@@ -319,13 +320,13 @@ global.NeuroTask = {
                 }
             }
         }
-    },
+    }
     /**
      * run the move room task on the creep
      * @param {Creep|PowerCreep} creep - The Creep doing the task
      * @param {MoveRoomTask} task - the task being run
      */
-    runMoveRoom: function (creep, task) {
+    runMoveRoom (creep, task) {
         // if the creep is not in the room for the task
         if (creep.room.name != task.room_name) {
             // move to the room for the task
@@ -342,13 +343,13 @@ global.NeuroTask = {
                 creep.moveTo(new RoomPosition(25, 25, task.room_name));
             }
         }
-    },
+    }
     /**
      * run the idle task on the creep
      * @param {Creep|PowerCreep} creep - The Creep doing the task
      * @param {IdleTask} task - the task being run
      */
-    runIdle: function (creep, task) {
+    runIdle (creep, task) {
         // if the creep is not in the room for the task
         if (creep.room.name != task.room_name) {
             // move to the room for the task
@@ -365,13 +366,13 @@ global.NeuroTask = {
                 creep.idle();
             }
         }
-    },
+    }
     /**
      * run the renew operator task on the creep
      * @param {PowerCreep} creep - The Creep doing the task
      * @param {RenewOperatorTask} task - the task being run
      */
-    runRenewOperator: function (creep, task) {
+    runRenewOperator (creep, task) {
         // if the creep is not in the room for the task
         if (creep.room.name != task.room_name) {
             // move to the room for the task
@@ -389,7 +390,7 @@ global.NeuroTask = {
                 // if the creep is not in range
                 if (result == ERR_NOT_IN_RANGE) {
                     // move to the power spawn
-                    this.moveTo(power_spawn);
+                    creep.moveTo(power_spawn);
                 }
                 // if the result was successful
                 if (result == OK) {
@@ -398,13 +399,13 @@ global.NeuroTask = {
                 }
             }
         }
-    },
+    }
     /**
      * run the move resource task on the creep
      * @param {Creep|PowerCreep} creep - The Creep doing the task
      * @param {MoveResourceTask} task - the task being run
      */
-    runMoveResource: function (creep, task) {
+    runMoveResource (creep, task) {
         // if the task is filling
         if (task.state == STATES.FILLING) {
             // if the creep has the requested amount of the resource
@@ -449,13 +450,13 @@ global.NeuroTask = {
                 }
             }
         }
-    },
+    }
     /**
      * run the harvest task on the creep
      * @param {Creep|PowerCreep} creep - The Creep doing the task
      * @param {HarvestTask} task - the task being run
      */
-    runHarvest: function (creep, task) {
+    runHarvest (creep, task) {
         // if the creep is not in the room for the task
         if (creep.room.name != task.room_name) {
             // move to the room for the task
@@ -475,12 +476,12 @@ global.NeuroTask = {
                 }
             }
         }
-    },
+    }
     /**
      * run the task on the creep
      * @param {Creep|PowerCreep} creep - The Creep doing the task
      */
-    run: function (creep) {
+    run (creep) {
         /**
          * grab the task from the creep
          * @type {Task}
@@ -562,5 +563,9 @@ global.NeuroTask = {
             // run the appropriate function
             this.runMoveResource(creep, creep.memory.task);
         }
-    },
-};
+    }
+}
+
+global.NeuroTask = NeuroTask;
+
+global.neuro_task = new NeuroTask();
