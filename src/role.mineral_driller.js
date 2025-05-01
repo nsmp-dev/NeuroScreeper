@@ -41,6 +41,7 @@ global.MineralDrillerMemory = MineralDrillerMemory;
  * systematically extract resources, depositing them into nearby containers for
  * collection and processing.
  * @memberOf Creep#
+ * @member {function} runMineralDriller
  */
 Creep.prototype.runMineralDriller = function () {
     // if we don't have a task currently assigned

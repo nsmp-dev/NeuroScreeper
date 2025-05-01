@@ -424,7 +424,6 @@ global.NeuroRoom = NeuroRoom;
  * Global singleton instance of NeuroRoom that manages all room-level operations
  * across the colony network. Provides centralized access to room management
  * functionality including spawning, construction, and resource processing.
- * 
  * @constant {NeuroRoom} neuro_room
  */
 global.neuro_room = new NeuroRoom();

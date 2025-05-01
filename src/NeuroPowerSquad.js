@@ -151,5 +151,11 @@ class NeuroPowerSquad {
     }
 }
 
+// export the NeuroPowerSquad class
 global.NeuroPowerSquad = NeuroPowerSquad;
+
+/**
+ * Global singleton instance of NeuroPowerSquad class.
+ * @constant {NeuroPowerSquad} neuro_power_squad
+ */
 global.neuro_power_squad = new NeuroPowerSquad();

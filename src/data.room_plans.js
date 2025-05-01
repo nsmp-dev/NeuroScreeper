@@ -1,27 +1,25 @@
 /**
  * RoomPlans represents a comprehensive blueprint for room construction and structure placement.
- * It manages coordinates for various structures, road networks, defensive positions, and resource management facilities.
+ * It manages coordinates for the base structures, plant structures, roads, and ramparts.
  * @class RoomPlans
  */
 class RoomPlans {
     /**
      * Initializes a new RoomPlans object with empty structure lists and 50x50 boolean grids for roads and ramparts.
-     * Uses Timer for performance tracking during initialization.
      */
     constructor() {
-        timer.start("creating_room_plans");
         /**
          * Coordinates where creeps will wait when not assigned to tasks
          * @type {Point|null}
          */
         this.idle_location = null;
         /**
-         * Central coordinates for the main base operations and structures
+         * Top left coordinates for the main base structures
          * @type {Point|null}
          */
         this.base_location = null;
         /**
-         * Coordinates for the power plant or energy generation facilities
+         * Top left coordinates for the power plant or energy generation facilities
          * @type {Point|null}
          */
         this.plant_location = null;
@@ -50,6 +48,7 @@ class RoomPlans {
          * @type {Boolean[][]}
          */
         this.ramparts = [];
+
         // loop through all the room positions
         for (let x = 0; x < ROOM_SIZE; x++) {
             // push a new row onto the road grid
@@ -94,7 +93,6 @@ class RoomPlans {
          * @type {Point|null}
          */
         this.factory_location = null;
-        timer.stop("creating_room_plans");
     }
 }
 

@@ -30,6 +30,7 @@ global.BuilderMemory = BuilderMemory;
  * room controllers when other tasks are complete. Manages energy gathering and task
  * assignment to ensure efficient building operations.
  * @memberOf Creep#
+ * @member {function} runBuilder
  */
 Creep.prototype.runBuilder = function () {
     // if we don't have a task currently assigned

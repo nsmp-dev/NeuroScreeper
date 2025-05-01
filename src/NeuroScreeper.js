@@ -245,6 +245,11 @@ class NeuroScreeper {
     }
 }
 
+// export the NeuroScreeper class
 global.NeuroScreeper = NeuroScreeper;
 
+/**
+ * Global singleton instance of NeuroScreeper class.
+ * @constant {NeuroScreeper} neuro_screeper
+ */
 global.neuro_screeper = new NeuroScreeper();

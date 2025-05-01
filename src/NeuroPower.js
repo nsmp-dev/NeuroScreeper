@@ -109,6 +109,11 @@ class NeuroPower {
     }
 }
 
+// export the NeuroPower class
 global.NeuroPower = NeuroPower;
 
+/**
+ * Global singleton instance of NeuroPower class.
+ * @constant {NeuroPower} neuro_power
+ */
 global.neuro_power = new NeuroPower();

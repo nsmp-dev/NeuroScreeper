@@ -26,6 +26,7 @@ global.PowerAttackerMemory = PowerAttackerMemory;
  * coordinating with healers and carriers to efficiently harvest power from banks. Executes attack tasks while
  * following squad state machine transitions between searching, collecting and returning phases.
  * @memberOf Creep#
+ * @member {function} runPowerAttacker
  */
 Creep.prototype.runPowerAttacker = function () {
     // if no task is assigned

@@ -412,6 +412,11 @@ class NeuroPlant {
     }
 }
 
+// export the NeuroPlant class
 global.NeuroPlant = NeuroPlant;
 
+/**
+ * Global singleton instance of NeuroPlant class.
+ * @constant {NeuroPlant} neuro_plant
+ */
 global.neuro_plant = new NeuroPlant();

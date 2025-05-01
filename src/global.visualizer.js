@@ -89,6 +89,11 @@ class Visualizer {
     }
 }
 
+// export the Visualizer class
 global.Visualizer = Visualizer;
 
+/**
+ * Global singleton instance of Visualizer class.
+ * @constant {Visualizer} visualizer
+ */
 global.visualizer = new Visualizer();

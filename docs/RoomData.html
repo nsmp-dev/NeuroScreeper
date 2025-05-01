@@ -49,7 +49,7 @@
 
 
 <div class="description">
-    RoomData class represents a comprehensive data structure for managing and storing room-related information,including room type, construction plans, creep population, and other essential room state data.This class serves as the central memory management system for individual rooms in the game.
+    RoomData class represents a comprehensive data structure for managing and storing room-related information,including room type, construction plans, creep requests, and other essential room state data.This class serves as the central memory management system for individual rooms in the game.
 </div>
 
 
@@ -149,7 +149,7 @@
 
 
 <div class="description">
-    Timer that controls the scheduling of construction activities in the room. When it reaches zero, new construction tasks can be initiated
+    Timer that controls the scheduling of construction activities in the room. When it reaches the limit, new construction tasks can be initiated
 </div>
 
 
@@ -269,7 +269,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="data.room_data.js.html">data.room_data.js</a>, <a href="data.room_data.js.html#line65">line 65</a>
+        <a href="data.room_data.js.html">data.room_data.js</a>, <a href="data.room_data.js.html#line63">line 63</a>
     </li></ul></dd>
     
 
@@ -293,7 +293,7 @@
 
 
 <div class="description">
-    Tracks whether the player previously owned this room. Used to detect room loss/death scenariosby comparing past ownership state with current control status. Essential for managing room lifecycleand responding to territory changes.
+    Tracks whether the player previously owned this room. Used to detect initial room claiming and death
 </div>
 
 
@@ -341,7 +341,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="data.room_data.js.html">data.room_data.js</a>, <a href="data.room_data.js.html#line108">line 108</a>
+        <a href="data.room_data.js.html">data.room_data.js</a>, <a href="data.room_data.js.html#line97">line 97</a>
     </li></ul></dd>
     
 
@@ -413,7 +413,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="data.room_data.js.html">data.room_data.js</a>, <a href="data.room_data.js.html#line77">line 77</a>
+        <a href="data.room_data.js.html">data.room_data.js</a>, <a href="data.room_data.js.html#line105">line 105</a>
     </li></ul></dd>
     
 
@@ -437,7 +437,7 @@
 
 
 <div class="description">
-    Data structure that manages chemical reactions and resource production facilities in the plant,including recipes, production queues, and resource allocation for laboratory operations
+    Data structure that manages chemical reactions and resource production facilities in the plant,including recipes, and lab and factory state
 </div>
 
 
@@ -488,7 +488,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="data.room_data.js.html">data.room_data.js</a>, <a href="data.room_data.js.html#line95">line 95</a>
+        <a href="data.room_data.js.html">data.room_data.js</a>, <a href="data.room_data.js.html#line87">line 87</a>
     </li></ul></dd>
     
 
@@ -512,7 +512,7 @@
 
 
 <div class="description">
-    Timer that controls the frequency of creep spawning operations. When it reaches zero, new creep spawn requests can be processed
+    Timer that controls the frequency of creep spawning operations. When it reaches the limit, new creep spawn requests can be processed
 </div>
 
 
@@ -584,7 +584,7 @@
 
 
 <div class="description">
-    Indicates whether the room meets the necessary criteria to be established as a colony.A room is eligible for colony status when it contains multiple energy sources and suitable base locations.
+    Indicates whether the room meets the necessary criteria to be established as a colony.A room is eligible for colony status when it contains multiple energy sources and a suitable base location.
 </div>
 
 
@@ -632,7 +632,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="data.room_data.js.html">data.room_data.js</a>, <a href="data.room_data.js.html#line83">line 83</a>
+        <a href="data.room_data.js.html">data.room_data.js</a>, <a href="data.room_data.js.html#line75">line 75</a>
     </li></ul></dd>
     
 
@@ -656,7 +656,7 @@
 
 
 <div class="description">
-    Determines if the room can be considered for expansion. A room is viable for expansionwhen it contains multiple energy sources and can sustain additional colony development.
+    Determines if the room can be considered for expansion. A room is viable for expansionwhen it contains multiple energy sources.
 </div>
 
 
@@ -704,7 +704,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="data.room_data.js.html">data.room_data.js</a>, <a href="data.room_data.js.html#line89">line 89</a>
+        <a href="data.room_data.js.html">data.room_data.js</a>, <a href="data.room_data.js.html#line81">line 81</a>
     </li></ul></dd>
     
 
@@ -728,7 +728,7 @@
 
 
 <div class="description">
-    Data structure managing a squad that collects and harvests power resources from the environment.This includes squad member assignments, collection strategies, and operational status.
+    Data structure managing a squad that collects and harvests power resources from highway rooms.
 </div>
 
 
@@ -776,7 +776,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="data.room_data.js.html">data.room_data.js</a>, <a href="data.room_data.js.html#line101">line 101</a>
+        <a href="data.room_data.js.html">data.room_data.js</a>, <a href="data.room_data.js.html#line92">line 92</a>
     </li></ul></dd>
     
 
@@ -800,7 +800,7 @@
 
 
 <div class="description">
-    Timer controlling when the power squad should be activated. When zero, the squad can begin operatingto gather power from the environment. Measured in game ticks
+    Timer controlling when the power squad should be activated. When it reaches the limit, the NeuroPowerSquad will run
 </div>
 
 
@@ -848,7 +848,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="data.room_data.js.html">data.room_data.js</a>, <a href="data.room_data.js.html#line48">line 48</a>
+        <a href="data.room_data.js.html">data.room_data.js</a>, <a href="data.room_data.js.html#line47">line 47</a>
     </li></ul></dd>
     
 
@@ -920,7 +920,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="data.room_data.js.html">data.room_data.js</a>, <a href="data.room_data.js.html#line71">line 71</a>
+        <a href="data.room_data.js.html">data.room_data.js</a>, <a href="data.room_data.js.html#line69">line 69</a>
     </li></ul></dd>
     
 
@@ -1016,7 +1016,7 @@
 
 
 <div class="description">
-    An array tracking colony satisfaction levels over time. Each boolean entry represents whetherthe colony met its resource and operational requirements during that time period
+    An array tracking colony satisfaction levels over time. Each boolean entry represents whetherthe colony has no creep requests during that tick
 </div>
 
 
@@ -1064,7 +1064,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="data.room_data.js.html">data.room_data.js</a>, <a href="data.room_data.js.html#line54">line 54</a>
+        <a href="data.room_data.js.html">data.room_data.js</a>, <a href="data.room_data.js.html#line53">line 53</a>
     </li></ul></dd>
     
 
@@ -1088,7 +1088,7 @@
 
 
 <div class="description">
-    Indicates whether the colony has met all its current resource and operational requirements,including having sufficient energy, creeps, and structures to function optimally
+    Indicates whether the colony has met all its current population requirements
 </div>
 
 
@@ -1136,7 +1136,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="data.room_data.js.html">data.room_data.js</a>, <a href="data.room_data.js.html#line60">line 60</a>
+        <a href="data.room_data.js.html">data.room_data.js</a>, <a href="data.room_data.js.html#line58">line 58</a>
     </li></ul></dd>
     
 
@@ -1270,7 +1270,7 @@
 
 
 <div class="description">
-    Creates a RoomData object to manage and store room-related information and state.The constructor can handle both initial room setup with a spawn and later room initialization.
+    Creates a RoomData object to manage and store room-related information and state.The constructor can handle both initial room setup with an initial spawn and later room initialization.
 </div>
 
 
@@ -1328,7 +1328,7 @@
                 </td>
             
 
-            <td class="description last">The game room object this data instance will manage</td>
+            <td class="description last">The Room object this data instance will manage</td>
         </tr>
 
     
@@ -1457,7 +1457,7 @@
 
 
 <div class="description">
-    Timer that controls the scheduling of construction activities in the room. When it reaches zero, new construction tasks can be initiated
+    Timer that controls the scheduling of construction activities in the room. When it reaches the limit, new construction tasks can be initiated
 </div>
 
 
@@ -1577,7 +1577,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="data.room_data.js.html">data.room_data.js</a>, <a href="data.room_data.js.html#line65">line 65</a>
+        <a href="data.room_data.js.html">data.room_data.js</a>, <a href="data.room_data.js.html#line63">line 63</a>
     </li></ul></dd>
     
 
@@ -1601,7 +1601,7 @@
 
 
 <div class="description">
-    Tracks whether the player previously owned this room. Used to detect room loss/death scenariosby comparing past ownership state with current control status. Essential for managing room lifecycleand responding to territory changes.
+    Tracks whether the player previously owned this room. Used to detect initial room claiming and death
 </div>
 
 
@@ -1649,7 +1649,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="data.room_data.js.html">data.room_data.js</a>, <a href="data.room_data.js.html#line108">line 108</a>
+        <a href="data.room_data.js.html">data.room_data.js</a>, <a href="data.room_data.js.html#line97">line 97</a>
     </li></ul></dd>
     
 
@@ -1721,7 +1721,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="data.room_data.js.html">data.room_data.js</a>, <a href="data.room_data.js.html#line77">line 77</a>
+        <a href="data.room_data.js.html">data.room_data.js</a>, <a href="data.room_data.js.html#line105">line 105</a>
     </li></ul></dd>
     
 
@@ -1745,7 +1745,7 @@
 
 
 <div class="description">
-    Data structure that manages chemical reactions and resource production facilities in the plant,including recipes, production queues, and resource allocation for laboratory operations
+    Data structure that manages chemical reactions and resource production facilities in the plant,including recipes, and lab and factory state
 </div>
 
 
@@ -1796,7 +1796,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="data.room_data.js.html">data.room_data.js</a>, <a href="data.room_data.js.html#line95">line 95</a>
+        <a href="data.room_data.js.html">data.room_data.js</a>, <a href="data.room_data.js.html#line87">line 87</a>
     </li></ul></dd>
     
 
@@ -1820,7 +1820,7 @@
 
 
 <div class="description">
-    Timer that controls the frequency of creep spawning operations. When it reaches zero, new creep spawn requests can be processed
+    Timer that controls the frequency of creep spawning operations. When it reaches the limit, new creep spawn requests can be processed
 </div>
 
 
@@ -1892,7 +1892,7 @@
 
 
 <div class="description">
-    Indicates whether the room meets the necessary criteria to be established as a colony.A room is eligible for colony status when it contains multiple energy sources and suitable base locations.
+    Indicates whether the room meets the necessary criteria to be established as a colony.A room is eligible for colony status when it contains multiple energy sources and a suitable base location.
 </div>
 
 
@@ -1940,7 +1940,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="data.room_data.js.html">data.room_data.js</a>, <a href="data.room_data.js.html#line83">line 83</a>
+        <a href="data.room_data.js.html">data.room_data.js</a>, <a href="data.room_data.js.html#line75">line 75</a>
     </li></ul></dd>
     
 
@@ -1964,7 +1964,7 @@
 
 
 <div class="description">
-    Determines if the room can be considered for expansion. A room is viable for expansionwhen it contains multiple energy sources and can sustain additional colony development.
+    Determines if the room can be considered for expansion. A room is viable for expansionwhen it contains multiple energy sources.
 </div>
 
 
@@ -2012,7 +2012,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="data.room_data.js.html">data.room_data.js</a>, <a href="data.room_data.js.html#line89">line 89</a>
+        <a href="data.room_data.js.html">data.room_data.js</a>, <a href="data.room_data.js.html#line81">line 81</a>
     </li></ul></dd>
     
 
@@ -2036,7 +2036,7 @@
 
 
 <div class="description">
-    Data structure managing a squad that collects and harvests power resources from the environment.This includes squad member assignments, collection strategies, and operational status.
+    Data structure managing a squad that collects and harvests power resources from highway rooms.
 </div>
 
 
@@ -2084,7 +2084,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="data.room_data.js.html">data.room_data.js</a>, <a href="data.room_data.js.html#line101">line 101</a>
+        <a href="data.room_data.js.html">data.room_data.js</a>, <a href="data.room_data.js.html#line92">line 92</a>
     </li></ul></dd>
     
 
@@ -2108,7 +2108,7 @@
 
 
 <div class="description">
-    Timer controlling when the power squad should be activated. When zero, the squad can begin operatingto gather power from the environment. Measured in game ticks
+    Timer controlling when the power squad should be activated. When it reaches the limit, the NeuroPowerSquad will run
 </div>
 
 
@@ -2156,7 +2156,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="data.room_data.js.html">data.room_data.js</a>, <a href="data.room_data.js.html#line48">line 48</a>
+        <a href="data.room_data.js.html">data.room_data.js</a>, <a href="data.room_data.js.html#line47">line 47</a>
     </li></ul></dd>
     
 
@@ -2228,7 +2228,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="data.room_data.js.html">data.room_data.js</a>, <a href="data.room_data.js.html#line71">line 71</a>
+        <a href="data.room_data.js.html">data.room_data.js</a>, <a href="data.room_data.js.html#line69">line 69</a>
     </li></ul></dd>
     
 
@@ -2324,7 +2324,7 @@
 
 
 <div class="description">
-    An array tracking colony satisfaction levels over time. Each boolean entry represents whetherthe colony met its resource and operational requirements during that time period
+    An array tracking colony satisfaction levels over time. Each boolean entry represents whetherthe colony has no creep requests during that tick
 </div>
 
 
@@ -2372,7 +2372,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="data.room_data.js.html">data.room_data.js</a>, <a href="data.room_data.js.html#line54">line 54</a>
+        <a href="data.room_data.js.html">data.room_data.js</a>, <a href="data.room_data.js.html#line53">line 53</a>
     </li></ul></dd>
     
 
@@ -2396,7 +2396,7 @@
 
 
 <div class="description">
-    Indicates whether the colony has met all its current resource and operational requirements,including having sufficient energy, creeps, and structures to function optimally
+    Indicates whether the colony has met all its current population requirements
 </div>
 
 
@@ -2444,7 +2444,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="data.room_data.js.html">data.room_data.js</a>, <a href="data.room_data.js.html#line60">line 60</a>
+        <a href="data.room_data.js.html">data.room_data.js</a>, <a href="data.room_data.js.html#line58">line 58</a>
     </li></ul></dd>
     
 
@@ -2553,13 +2553,13 @@
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="AttackTask.html">AttackTask</a></li><li><a href="AttackerMemory.html">AttackerMemory</a></li><li><a href="BuildTask.html">BuildTask</a></li><li><a href="BuilderMemory.html">BuilderMemory</a></li><li><a href="ClaimTask.html">ClaimTask</a></li><li><a href="ClaimerMemory.html">ClaimerMemory</a></li><li><a href="CommodityCollectorMemory.html">CommodityCollectorMemory</a></li><li><a href="ConstructionPlan.html">ConstructionPlan</a></li><li><a href="Creep.html">Creep</a></li><li><a href="CreepMemory.html">CreepMemory</a></li><li><a href="DepositTask.html">DepositTask</a></li><li><a href="DrillTask.html">DrillTask</a></li><li><a href="DrillerMemory.html">DrillerMemory</a></li><li><a href="GatherTask.html">GatherTask</a></li><li><a href="HarvestTask.html">HarvestTask</a></li><li><a href="HealTask.html">HealTask</a></li><li><a href="HealerMemory.html">HealerMemory</a></li><li><a href="IdleTask.html">IdleTask</a></li><li><a href="MainMemory.html">MainMemory</a></li><li><a href="MineralDrillerMemory.html">MineralDrillerMemory</a></li><li><a href="MineralPlan.html">MineralPlan</a></li><li><a href="MineralPopulation.html">MineralPopulation</a></li><li><a href="MineralTransporterMemory.html">MineralTransporterMemory</a></li><li><a href="MoveResourceTask.html">MoveResourceTask</a></li><li><a href="MoveRoomTask.html">MoveRoomTask</a></li><li><a href="NeuroPlant.html">NeuroPlant</a></li><li><a href="NeuroPower.html">NeuroPower</a></li><li><a href="NeuroPowerSquad.html">NeuroPowerSquad</a></li><li><a href="NeuroRoom.html">NeuroRoom</a></li><li><a href="NeuroScreeper.html">NeuroScreeper</a></li><li><a href="NeuroTask.html">NeuroTask</a></li><li><a href="ObserverLog.html">ObserverLog</a></li><li><a href="PlantData.html">PlantData</a></li><li><a href="Point.html">Point</a></li><li><a href="PopupMessage.html">PopupMessage</a></li><li><a href="PowerAttackerMemory.html">PowerAttackerMemory</a></li><li><a href="PowerCreep.html">PowerCreep</a></li><li><a href="PowerHealerMemory.html">PowerHealerMemory</a></li><li><a href="PowerSquad.html">PowerSquad</a></li><li><a href="PowerSquadPopulation.html">PowerSquadPopulation</a></li><li><a href="PowerTransporterMemory.html">PowerTransporterMemory</a></li><li><a href="Production.html">Production</a></li><li><a href="QueenMemory.html">QueenMemory</a></li><li><a href="Reaction.html">Reaction</a></li><li><a href="RenewOperatorTask.html">RenewOperatorTask</a></li><li><a href="RepairTask.html">RepairTask</a></li><li><a href="RepairerMemory.html">RepairerMemory</a></li><li><a href="ReserveTask.html">ReserveTask</a></li><li><a href="Role.html">Role</a></li><li><a href="Room.html">Room</a></li><li><a href="RoomData.html">RoomData</a></li><li><a href="RoomPlans.html">RoomPlans</a></li><li><a href="RoomPlansFactory.html">RoomPlansFactory</a></li><li><a href="RoomPopulation.html">RoomPopulation</a></li><li><a href="ScoutMemory.html">ScoutMemory</a></li><li><a href="SourcePlan.html">SourcePlan</a></li><li><a href="SourcePopulation.html">SourcePopulation</a></li><li><a href="StructureObserver.html">StructureObserver</a></li><li><a href="StructureTerminal.html">StructureTerminal</a></li><li><a href="StructureTower.html">StructureTower</a></li><li><a href="Task.html">Task</a></li><li><a href="Timer.html">Timer</a></li><li><a href="TimerEntry.html">TimerEntry</a></li><li><a href="TimerLog.html">TimerLog</a></li><li><a href="TransporterMemory.html">TransporterMemory</a></li><li><a href="UpgradeTask.html">UpgradeTask</a></li><li><a href="UpgraderMemory.html">UpgraderMemory</a></li><li><a href="Util.html">Util</a></li><li><a href="Visualizer.html">Visualizer</a></li></ul><h3>Global</h3><ul><li><a href="global.html#BUILD">BUILD</a></li><li><a href="global.html#COLONY">COLONY</a></li><li><a href="global.html#CONSTRUCTION_TIMER_LENGTH">CONSTRUCTION_TIMER_LENGTH</a></li><li><a href="global.html#COUNT_POPULATION_TIMER_LENGTH">COUNT_POPULATION_TIMER_LENGTH</a></li><li><a href="global.html#DEBUG_MODE">DEBUG_MODE</a></li><li><a href="global.html#EXPANSION">EXPANSION</a></li><li><a href="global.html#FACTORY_TIMER_LENGTH">FACTORY_TIMER_LENGTH</a></li><li><a href="global.html#FINAL_PRODUCTS">FINAL_PRODUCTS</a></li><li><a href="global.html#HIGHWAY">HIGHWAY</a></li><li><a href="global.html#INGREDIENTS">INGREDIENTS</a></li><li><a href="global.html#KEEPER_LAIR">KEEPER_LAIR</a></li><li><a href="global.html#LABS_TIMER_LENGTH">LABS_TIMER_LENGTH</a></li><li><a href="global.html#LOG_SIZE">LOG_SIZE</a></li><li><a href="global.html#NEW_ROOM_TIMER_LENGTH">NEW_ROOM_TIMER_LENGTH</a></li><li><a href="global.html#PLANT_STRUCTURES_TIMER_LENGTH">PLANT_STRUCTURES_TIMER_LENGTH</a></li><li><a href="global.html#POPUP_TIMER_LIMIT">POPUP_TIMER_LIMIT</a></li><li><a href="global.html#POWER_SQUAD_TIMER">POWER_SQUAD_TIMER</a></li><li><a href="global.html#REQUEST_POPULATION_TIMER_LENGTH">REQUEST_POPULATION_TIMER_LENGTH</a></li><li><a href="global.html#ROLES">ROLES</a></li><li><a href="global.html#ROOM_CONSTRUCTION_SITE_LIMIT">ROOM_CONSTRUCTION_SITE_LIMIT</a></li><li><a href="global.html#SATISFACTION_LOG_SIZE">SATISFACTION_LOG_SIZE</a></li><li><a href="global.html#SATISFACTION_THRESHOLD">SATISFACTION_THRESHOLD</a></li><li><a href="global.html#SIGNATURE">SIGNATURE</a></li><li><a href="global.html#STATES">STATES</a></li><li><a href="global.html#TASK_TYPES">TASK_TYPES</a></li><li><a href="global.html#TERMINAL_ENERGY_CAP">TERMINAL_ENERGY_CAP</a></li><li><a href="global.html#TERMINAL_TIMER_LENGTH">TERMINAL_TIMER_LENGTH</a></li><li><a href="global.html#TOWER_MINIMUM_ENERGY">TOWER_MINIMUM_ENERGY</a></li><li><a href="global.html#USERNAME">USERNAME</a></li><li><a href="global.html#hlog">hlog</a></li><li><a href="global.html#loop">loop</a></li><li><a href="global.html#neuro_room">neuro_room</a></li><li><a href="global.html#room_plans_factory">room_plans_factory</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="AttackTask.html">AttackTask</a></li><li><a href="AttackerMemory.html">AttackerMemory</a></li><li><a href="BuildTask.html">BuildTask</a></li><li><a href="BuilderMemory.html">BuilderMemory</a></li><li><a href="ClaimTask.html">ClaimTask</a></li><li><a href="ClaimerMemory.html">ClaimerMemory</a></li><li><a href="CommodityCollectorMemory.html">CommodityCollectorMemory</a></li><li><a href="ConstructionPlan.html">ConstructionPlan</a></li><li><a href="Creep.html">Creep</a></li><li><a href="CreepMemory.html">CreepMemory</a></li><li><a href="DepositTask.html">DepositTask</a></li><li><a href="DrillTask.html">DrillTask</a></li><li><a href="DrillerMemory.html">DrillerMemory</a></li><li><a href="GatherTask.html">GatherTask</a></li><li><a href="HarvestTask.html">HarvestTask</a></li><li><a href="HealTask.html">HealTask</a></li><li><a href="HealerMemory.html">HealerMemory</a></li><li><a href="IdleTask.html">IdleTask</a></li><li><a href="MainMemory.html">MainMemory</a></li><li><a href="MineralDrillerMemory.html">MineralDrillerMemory</a></li><li><a href="MineralPlan.html">MineralPlan</a></li><li><a href="MineralPopulation.html">MineralPopulation</a></li><li><a href="MineralTransporterMemory.html">MineralTransporterMemory</a></li><li><a href="MoveResourceTask.html">MoveResourceTask</a></li><li><a href="MoveRoomTask.html">MoveRoomTask</a></li><li><a href="NeuroPlant.html">NeuroPlant</a></li><li><a href="NeuroPower.html">NeuroPower</a></li><li><a href="NeuroPowerSquad.html">NeuroPowerSquad</a></li><li><a href="NeuroRoom.html">NeuroRoom</a></li><li><a href="NeuroScreeper.html">NeuroScreeper</a></li><li><a href="NeuroTask.html">NeuroTask</a></li><li><a href="ObserverLog.html">ObserverLog</a></li><li><a href="PlantData.html">PlantData</a></li><li><a href="PlantFactoryStructures.html">PlantFactoryStructures</a></li><li><a href="PlantLabStructures.html">PlantLabStructures</a></li><li><a href="Point.html">Point</a></li><li><a href="PopupMessage.html">PopupMessage</a></li><li><a href="PowerAttackerMemory.html">PowerAttackerMemory</a></li><li><a href="PowerCreep.html">PowerCreep</a></li><li><a href="PowerHealerMemory.html">PowerHealerMemory</a></li><li><a href="PowerSquad.html">PowerSquad</a></li><li><a href="PowerSquadCreeps.html">PowerSquadCreeps</a></li><li><a href="PowerSquadPopulation.html">PowerSquadPopulation</a></li><li><a href="PowerTransporterMemory.html">PowerTransporterMemory</a></li><li><a href="Production.html">Production</a></li><li><a href="QueenMemory.html">QueenMemory</a></li><li><a href="Reaction.html">Reaction</a></li><li><a href="RenewOperatorTask.html">RenewOperatorTask</a></li><li><a href="RepairTask.html">RepairTask</a></li><li><a href="RepairerMemory.html">RepairerMemory</a></li><li><a href="ReserveTask.html">ReserveTask</a></li><li><a href="Role.html">Role</a></li><li><a href="Room.html">Room</a></li><li><a href="RoomData.html">RoomData</a></li><li><a href="RoomPlans.html">RoomPlans</a></li><li><a href="RoomPlansFactory.html">RoomPlansFactory</a></li><li><a href="RoomPopulation.html">RoomPopulation</a></li><li><a href="ScoutMemory.html">ScoutMemory</a></li><li><a href="SourcePlan.html">SourcePlan</a></li><li><a href="SourcePopulation.html">SourcePopulation</a></li><li><a href="StructureObserver.html">StructureObserver</a></li><li><a href="StructureTerminal.html">StructureTerminal</a></li><li><a href="StructureTower.html">StructureTower</a></li><li><a href="Task.html">Task</a></li><li><a href="Timer.html">Timer</a></li><li><a href="TimerEntry.html">TimerEntry</a></li><li><a href="TimerLog.html">TimerLog</a></li><li><a href="TransporterMemory.html">TransporterMemory</a></li><li><a href="UpgradeTask.html">UpgradeTask</a></li><li><a href="UpgraderMemory.html">UpgraderMemory</a></li><li><a href="Util.html">Util</a></li><li><a href="Visualizer.html">Visualizer</a></li></ul><h3>Global</h3><ul><li><a href="global.html#BUILD">BUILD</a></li><li><a href="global.html#COLONY">COLONY</a></li><li><a href="global.html#CONSTRUCTION_TIMER_LENGTH">CONSTRUCTION_TIMER_LENGTH</a></li><li><a href="global.html#COUNT_POPULATION_TIMER_LENGTH">COUNT_POPULATION_TIMER_LENGTH</a></li><li><a href="global.html#DEBUG_MODE">DEBUG_MODE</a></li><li><a href="global.html#EXPANSION">EXPANSION</a></li><li><a href="global.html#FACTORY_TIMER_LENGTH">FACTORY_TIMER_LENGTH</a></li><li><a href="global.html#FINAL_PRODUCTS">FINAL_PRODUCTS</a></li><li><a href="global.html#HIGHWAY">HIGHWAY</a></li><li><a href="global.html#INGREDIENTS">INGREDIENTS</a></li><li><a href="global.html#KEEPER_LAIR">KEEPER_LAIR</a></li><li><a href="global.html#LABS_TIMER_LENGTH">LABS_TIMER_LENGTH</a></li><li><a href="global.html#LOG_SIZE">LOG_SIZE</a></li><li><a href="global.html#NEW_ROOM_TIMER_LENGTH">NEW_ROOM_TIMER_LENGTH</a></li><li><a href="global.html#PLANT_STRUCTURES_TIMER_LENGTH">PLANT_STRUCTURES_TIMER_LENGTH</a></li><li><a href="global.html#POPUP_TIMER_LIMIT">POPUP_TIMER_LIMIT</a></li><li><a href="global.html#POWER_SQUAD_TIMER">POWER_SQUAD_TIMER</a></li><li><a href="global.html#REQUEST_POPULATION_TIMER_LENGTH">REQUEST_POPULATION_TIMER_LENGTH</a></li><li><a href="global.html#ROLES">ROLES</a></li><li><a href="global.html#ROOM_CONSTRUCTION_SITE_LIMIT">ROOM_CONSTRUCTION_SITE_LIMIT</a></li><li><a href="global.html#ROOM_SIZE">ROOM_SIZE</a></li><li><a href="global.html#SATISFACTION_LOG_SIZE">SATISFACTION_LOG_SIZE</a></li><li><a href="global.html#SATISFACTION_THRESHOLD">SATISFACTION_THRESHOLD</a></li><li><a href="global.html#SIGNATURE">SIGNATURE</a></li><li><a href="global.html#STATES">STATES</a></li><li><a href="global.html#TASK_TYPES">TASK_TYPES</a></li><li><a href="global.html#TERMINAL_ENERGY_CAP">TERMINAL_ENERGY_CAP</a></li><li><a href="global.html#TERMINAL_TIMER_LENGTH">TERMINAL_TIMER_LENGTH</a></li><li><a href="global.html#TOWER_MINIMUM_ENERGY">TOWER_MINIMUM_ENERGY</a></li><li><a href="global.html#hlog">hlog</a></li><li><a href="global.html#loop">loop</a></li><li><a href="global.html#neuro_plant">neuro_plant</a></li><li><a href="global.html#neuro_power">neuro_power</a></li><li><a href="global.html#neuro_power_squad">neuro_power_squad</a></li><li><a href="global.html#neuro_room">neuro_room</a></li><li><a href="global.html#neuro_screeper">neuro_screeper</a></li><li><a href="global.html#neuro_task">neuro_task</a></li><li><a href="global.html#room_plans_factory">room_plans_factory</a></li><li><a href="global.html#timer">timer</a></li><li><a href="global.html#util">util</a></li><li><a href="global.html#visualizer">visualizer</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Tue Apr 29 2025 17:27:20 GMT-0500 (Central Daylight Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Thu May 01 2025 11:21:10 GMT-0500 (Central Daylight Time)
 </footer>
 
 <script> prettyPrint(); </script>

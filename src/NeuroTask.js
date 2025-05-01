@@ -571,6 +571,11 @@ class NeuroTask {
     }
 }
 
+// export the NeuroTask class
 global.NeuroTask = NeuroTask;
 
+/**
+ * Global singleton instance of NeuroTask class.
+ * @constant {NeuroTask} neuro_task
+ */
 global.neuro_task = new NeuroTask();

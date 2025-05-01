@@ -40,6 +40,7 @@ global.CommodityCollectorMemory = CommodityCollectorMemory;
  * to find and harvest valuable deposits. When inventory is full, the creep automatically locates and travels
  * to the nearest colony storage to deposit collected resources before resuming exploration and harvesting.
  * @memberOf Creep#
+ * @member {function} runCommodityCollector
  */
 Creep.prototype.runCommodityCollector = function () {
     // if we don't have a task currently assigned

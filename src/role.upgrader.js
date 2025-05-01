@@ -27,6 +27,7 @@ global.UpgraderMemory = UpgraderMemory;
  * maintaining territory control. Upgraders gather energy when depleted and consistently upgrade their
  * assigned room's controller.
  * @memberOf Creep#
+ * @member {function} runUpgrader
  */
 Creep.prototype.runUpgrader = function () {
     // if we don't have a task currently assigned

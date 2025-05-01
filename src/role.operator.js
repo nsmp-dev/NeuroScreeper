@@ -1,12 +1,8 @@
 /**
- * test description
- * @class PowerCreep
- */
-
-/**
  * Executes operational tasks for a PowerCreep operator, including resource management, factory operations, and lab control.
  * Handles automated task assignment based on plant data state and ensures proper resource distribution between structures.
  * @memberOf PowerCreep#
+ * @member {function} runOperator
  * @param {PlantData} plant_data - Contains current state information and configuration for room facilities including factory and labs
  */
 PowerCreep.prototype.runOperator = function (plant_data) {
@@ -18,8 +14,6 @@ PowerCreep.prototype.runOperator = function (plant_data) {
         if (power_spawn != null) {
             // assign a new RenewOperatorTask
             this.memory.task = new RenewOperatorTask(power_spawn, this.memory.task);
-            // announce the RenewOperatorTask
-            this.announceTask();
         }
     }
 
@@ -37,8 +31,6 @@ PowerCreep.prototype.runOperator = function (plant_data) {
                     if (factory.store[resource] > 0) {
                         // assign a new MoveResourceTask
                         this.memory.task = new MoveResourceTask(this.room.name, factory, this.room.storage, resource, factory.store[resource]);
-                        // announce the MoveResourceTask
-                        this.announceTask();
                         // break the loop
                         break;
                     }
@@ -60,8 +52,6 @@ PowerCreep.prototype.runOperator = function (plant_data) {
                         if (lab.store[resource] > 0) {
                             // assign a MoveResourceTask
                             this.memory.task = new MoveResourceTask(this.room.name, lab, this.room.storage, resource, lab.store[resource]);
-                            // announce the MoveResourceTask
-                            this.announceTask();
                             // break the loop
                             break;
                         }
@@ -88,8 +78,6 @@ PowerCreep.prototype.runOperator = function (plant_data) {
                     if (factory.store[resource] == undefined || factory.store[resource] < production.inputs[resource]) {
                         // assign a MoveResourceTask
                         this.memory.task = new MoveResourceTask(this.room.name, this.room.storage, factory, resource, (production.inputs[resource] - factory.store[resource]));
-                        // announce the MoveResourceTask
-                        this.announceTask();
                         // break the loop
                         break;
                     }
@@ -109,21 +97,15 @@ PowerCreep.prototype.runOperator = function (plant_data) {
                 if (input_lab_1.store[reaction.input_1] == undefined || input_lab_1.store[reaction.input_1] < reaction.amount) {
                     // assign a MoveResourceTask
                     this.memory.task = new MoveResourceTask(this.room.name, this.room.storage, input_lab_1, reaction.input_1, (reaction.amount - input_lab_1.store[reaction.input_1]));
-                    // announce the MoveResourceTask
-                    this.announceTask();
                     // if the second input lab does not have enough of the required resource
                 } else if (input_lab_2.store[reaction.input_2] == undefined || input_lab_2.store[reaction.input_2] < reaction.amount) {
                     // assign a MoveResourceTask
                     this.memory.task = new MoveResourceTask(this.room.name, this.room.storage, input_lab_2, reaction.input_2, (reaction.amount - input_lab_2.store[reaction.input_2]));
-                    // announce the MoveResourceTask
-                    this.announceTask();
                 }
             }
         } else {
             // assign a new IdleTask
             this.memory.task = new IdleTask(this.room.name);
-            // announce the IdleTask
-            this.announceTask();
         }
     }
     // run the task

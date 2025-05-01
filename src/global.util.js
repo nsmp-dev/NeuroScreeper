@@ -340,6 +340,11 @@ class Util {
     }
 }
 
+// export the Util class
 global.Util = Util;
 
+/**
+ * Global singleton instance of Util class.
+ * @constant {Util} util
+ */
 global.util = new Util();

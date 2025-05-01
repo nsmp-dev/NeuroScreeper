@@ -1,5 +1,5 @@
 /**
- * test description
+ * The base game StructureObserver class. Custom properties and functions are listed below.
  * @class StructureObserver
  */
 
@@ -11,8 +11,9 @@
  * it moves to the start of the next row. When it reaches the bottom-right corner,
  * it resets to the top-left corner to start the cycle again.
  * @memberOf StructureObserver#
+ * @member {function} run
  */
-let run = function () {
+StructureObserver.prototype.run = function () {
     // get the MainMemory object
     let main_memory = util.getMainMemory();
 
@@ -43,5 +44,3 @@ let run = function () {
         log.current_location.y = log.top_left.y;
     }
 };
-
-StructureObserver.prototype.run = run;

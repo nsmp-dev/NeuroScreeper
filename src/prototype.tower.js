@@ -1,5 +1,5 @@
 /**
- * test description
+ * The base game StructureTower class. Custom properties and functions are listed below.
  * @class StructureTower
  */
 
@@ -12,6 +12,7 @@
  * 5. Repairs damaged ramparts
  * Will only operate if energy levels are above a minimum threshold.
  * @memberOf StructureTower#
+ * @member {function} run
  */
 StructureTower.prototype.run = function () {
     // if the tower has less than 100 energy resources

@@ -54,6 +54,11 @@ class Timer {
     }
 }
 
+// export the Timer class
 global.Timer = Timer;
 
+/**
+ * Global singleton instance of Timer class.
+ * @constant {Timer} timer
+ */
 global.timer = new Timer();

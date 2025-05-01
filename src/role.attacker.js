@@ -28,6 +28,7 @@ global.AttackerMemory = AttackerMemory;
  * targets for efficient combat engagement. When no hostiles are present, enters an
  * idle patrol state.
  * @memberOf Creep#
+ * @member {function} runAttacker
  */
 Creep.prototype.runAttacker = function () {
     // if we don't have a task currently assigned

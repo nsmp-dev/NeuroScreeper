@@ -41,6 +41,7 @@ require('NeuroScreeper');
 require('NeuroTask');
 require('prototype.creep');
 require('prototype.observer');
+require('prototype.power_creep');
 require('prototype.room');
 require('prototype.terminal');
 require('prototype.tower');

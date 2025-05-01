@@ -1,5 +1,5 @@
 /**
- * test description
+ * The base game StructureTerminal class. Custom properties and functions are listed below.
  * @class StructureTerminal
  */
 
@@ -7,6 +7,7 @@
  * Transfers available ingredients from this terminal to the terminal in the capitol room.
  * Processing is done one ingredient at a time to avoid exceeding energy limits.
  * @memberOf StructureTerminal#
+ * @member {function} moveIngredients
  */
 StructureTerminal.prototype.moveIngredients = function () {
     // get the MainMemory object
@@ -47,13 +48,13 @@ StructureTerminal.prototype.moveIngredients = function () {
         }
     }
 };
-
 /**
  * Sells excess energy and final product commodities on the in-game market.
  * For energy, sells any amount above TERMINAL_ENERGY_CAP.
  * For final products, sells all available quantities.
  * Finds best market prices and executes trades when affordable.
  * @memberOf StructureTerminal#
+ * @member {function} sellFinalProducts
  */
 StructureTerminal.prototype.sellFinalProducts = function () {
     // create a hash of the sellable resources
@@ -141,6 +142,7 @@ StructureTerminal.prototype.sellFinalProducts = function () {
  * the purchase if there are enough credits available.
  * Only buys one token at a time.
  * @memberOf StructureTerminal#
+ * @member {function} buySubToken
  */
 StructureTerminal.prototype.buySubToken = function () {
     // grab all the orders for selling a subscription token
@@ -177,6 +179,7 @@ StructureTerminal.prototype.buySubToken = function () {
  * - Transferring ingredients to the capitol room if this isn't the capitol
  * The operations are performed based on cooldown timers and energy thresholds.
  * @memberOf StructureTerminal#
+ * @member {function} run
  */
 StructureTerminal.prototype.run = function () {
     // get the MainMemory object

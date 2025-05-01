@@ -68,12 +68,6 @@ class RoomData {
          */
         this.requested_creeps = [];
         /**
-         * Plans for all construction activities in the room, including positioning of buildings,
-         * roads, and other structures. Contains layout templates and blueprints managed by RoomPlans
-         * @type {RoomPlans}
-         */
-        this.plans = new RoomPlans();
-        /**
          * Indicates whether the room meets the necessary criteria to be established as a colony.
          * A room is eligible for colony status when it contains multiple energy sources and a suitable base location.
          * @type {Boolean}
@@ -102,6 +96,14 @@ class RoomData {
          */
         this.has_been_owned = false;
 
+        timer.start("creating_room_plans");
+        /**
+         * Plans for all construction activities in the room, including positioning of buildings,
+         * roads, and other structures. Contains layout templates and blueprints managed by RoomPlans
+         * @type {RoomPlans}
+         */
+        this.plans = new RoomPlans();
+
         // if the initial spawn was provided
         if (initial_spawn == null) {
             // plan the room normally
@@ -112,6 +114,7 @@ class RoomData {
             // set it to be a colony
             this.type = COLONY;
         }
+        timer.stop("creating_room_plans");
 
         // if this room doesn't have a controller
         if (room.controller == undefined) {

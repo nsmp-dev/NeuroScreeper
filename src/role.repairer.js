@@ -25,6 +25,7 @@ global.RepairerMemory = RepairerMemory;
  * and fixing damaged buildings, walls, and other infrastructure. These creeps will gather energy
  * when depleted and automatically switch to construction or upgrading tasks when no repairs are needed.
  * @memberOf Creep#
+ * @member {function} runRepairer
  */
 Creep.prototype.runRepairer = function () {
     // if we don't have a task currently assigned

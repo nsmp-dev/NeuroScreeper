@@ -44,7 +44,7 @@ class NeuroTask {
         // if the creep is not in the room for the task
         if (creep.room.name != task.room_name) {
             // move to the room for the task
-            creep.moveTo(new RoomPosition(25, 25, task.room_name));
+            creep.moveToRoom(task.room_name);
             // if the creep has enough of the requested resource or is full
         } else if ((task.amount != null &amp;&amp; creep.store[task.resource] >= task.amount) || creep.store.getFreeCapacity(task.resource) == 0) {
             // clear the task
@@ -99,7 +99,7 @@ class NeuroTask {
         // if the creep is not in the room for the task
         if (creep.room.name != task.room_name) {
             // move to the room for the task
-            creep.moveTo(new RoomPosition(25, 25, task.room_name));
+            creep.moveToRoom(task.room_name);
             // if the creep is empty
         } else if (creep.store[task.resource] == 0) {
             // clear the task
@@ -113,15 +113,15 @@ class NeuroTask {
                 creep.memory.task = null;
             } else {
                 // if the amount is specified
-                if (task.amount != null) {
+                if (task.amount == null) {
                     // if transferring to the target results in not being in range
-                    if (creep.transfer(target, task.resource, task.amount) == ERR_NOT_IN_RANGE) {
+                    if (creep.transfer(target, task.resource) == ERR_NOT_IN_RANGE) {
                         // move to the target
                         creep.moveTo(target);
                     }
                 } else {
                     // if transferring to the target results in not being in range
-                    if (creep.transfer(target, task.resource) == ERR_NOT_IN_RANGE) {
+                    if (creep.transfer(target, task.resource, task.amount) == ERR_NOT_IN_RANGE) {
                         // move to the target
                         creep.moveTo(target);
                     }
@@ -138,7 +138,7 @@ class NeuroTask {
         // if the creep is not in the room for the task
         if (creep.room.name != task.room_name) {
             // move to the room for the task
-            creep.moveTo(new RoomPosition(25, 25, task.room_name));
+            creep.moveToRoom(task.room_name);
             // if the creep is empty
         } else if (creep.store[RESOURCE_ENERGY] == 0) {
             // clear the task
@@ -168,7 +168,7 @@ class NeuroTask {
         // if the creep is not in the room for the task
         if (creep.room.name != task.room_name) {
             // move to the room for the task
-            creep.moveTo(new RoomPosition(25, 25, task.room_name));
+            creep.moveToRoom(task.room_name);
             // if the creep is empty
         } else if (creep.store[RESOURCE_ENERGY] == 0) {
             // clear the task
@@ -198,22 +198,22 @@ class NeuroTask {
         // if the creep is not in the room for the task
         if (creep.room.name != task.room_name) {
             // move to the room for the task
-            creep.moveTo(new RoomPosition(25, 25, task.room_name));
+            creep.moveToRoom(task.room_name);
             // if the creep is empty
         } else if (creep.store[RESOURCE_ENERGY] == 0) {
             // clear the task
             creep.memory.task = null;
         } else {
             // if the controller's sign does not match the signature
-            if (creep.room.controller.sign.text != SIGNATURE) {
-                // if signing the controller results in not being in range
-                if (creep.signController(creep.room.controller, SIGNATURE) == ERR_NOT_IN_RANGE) {
+            if (creep.room.controller.sign.text == SIGNATURE) {
+                // if upgrading the controller results in not being in range
+                if (creep.upgradeController(creep.room.controller) == ERR_NOT_IN_RANGE) {
                     // move to the controller
                     creep.moveTo(creep.room.controller);
                 }
             } else {
-                // if upgrading the controller results in not being in range
-                if (creep.upgradeController(creep.room.controller) == ERR_NOT_IN_RANGE) {
+                // if signing the controller results in not being in range
+                if (creep.signController(creep.room.controller, SIGNATURE) == ERR_NOT_IN_RANGE) {
                     // move to the controller
                     creep.moveTo(creep.room.controller);
                 }
@@ -227,24 +227,24 @@ class NeuroTask {
      */
     runClaim (creep, task) {
         // if the creep is not in the room for the task
-        if (creep.room.name != task.room_name) {
-            // move to the room for the task
-            creep.moveTo(new RoomPosition(25, 25, task.room_name));
-        } else {
+        if (creep.room.name == task.room_name) {
             // if the controller's sign does not match the signature
-            if (creep.room.controller.sign.text != SIGNATURE) {
-                // if signing the controller results in not being in range
-                if (creep.signController(creep.room.controller, SIGNATURE) == ERR_NOT_IN_RANGE) {
-                    // move to the controller
-                    creep.moveTo(creep.room.controller);
-                }
-            } else {
+            if (creep.room.controller.sign.text == SIGNATURE) {
                 // if claiming the controller results in not being in range
                 if (creep.claimController(creep.room.controller) == ERR_NOT_IN_RANGE) {
                     // move to the controller
                     creep.moveTo(creep.room.controller);
                 }
+            } else {
+                // if signing the controller results in not being in range
+                if (creep.signController(creep.room.controller, SIGNATURE) == ERR_NOT_IN_RANGE) {
+                    // move to the controller
+                    creep.moveTo(creep.room.controller);
+                }
             }
+        } else {
+            // move to the room for the task
+            creep.moveToRoom(task.room_name);
         }
     }
     /**
@@ -254,24 +254,24 @@ class NeuroTask {
      */
     runReserve (creep, task) {
         // if the creep is not in the room for the task
-        if (creep.room.name != task.room_name) {
-            // move to the room for the task
-            creep.moveTo(new RoomPosition(25, 25, task.room_name));
-        } else {
+        if (creep.room.name == task.room_name) {
             // if the controller's sign does not match the signature
-            if (creep.room.controller.sign.text != SIGNATURE) {
-                // if signing the controller results in not being in range
-                if (creep.signController(creep.room.controller, SIGNATURE) == ERR_NOT_IN_RANGE) {
-                    // move to the controller
-                    creep.moveTo(creep.room.controller);
-                }
-            } else {
+            if (creep.room.controller.sign.text == SIGNATURE) {
                 // if reserving the controller results in not being in range
                 if (creep.reserveController(creep.room.controller) == ERR_NOT_IN_RANGE) {
                     // move to the controller
                     creep.moveTo(creep.room.controller);
                 }
+            } else {
+                // if signing the controller results in not being in range
+                if (creep.signController(creep.room.controller, SIGNATURE) == ERR_NOT_IN_RANGE) {
+                    // move to the controller
+                    creep.moveTo(creep.room.controller);
+                }
             }
+        } else {
+            // move to the room for the task
+            creep.moveToRoom(task.room_name);
         }
     }
     /**
@@ -281,10 +281,7 @@ class NeuroTask {
      */
     runDrill (creep, task) {
         // if the creep is not in the room for the task
-        if (creep.room.name != task.room_name) {
-            // move to the room for the task
-            creep.moveTo(new RoomPosition(25, 25, task.room_name));
-        } else {
+        if (creep.room.name == task.room_name) {
             // grab the target
             let target = Game.getObjectById(task.source_id);
             // if we are at the location of the container
@@ -295,6 +292,9 @@ class NeuroTask {
                 // move to the location of the container
                 creep.moveTo(task.container_location.x, task.container_location.y);
             }
+        } else {
+            // move to the room for the task
+            creep.moveToRoom(task.room_name);
         }
     }
     /**
@@ -304,10 +304,7 @@ class NeuroTask {
      */
     runAttack (creep, task) {
         // if the creep is not in the room for the task
-        if (creep.room.name != task.room_name) {
-            // move to the room for the task
-            creep.moveTo(new RoomPosition(25, 25, task.room_name));
-        } else {
+        if (creep.room.name == task.room_name) {
             // grab the target
             let target = Game.getObjectById(task.target);
             // if the target is null
@@ -321,6 +318,9 @@ class NeuroTask {
                     creep.moveTo(target);
                 }
             }
+        } else {
+            // move to the room for the task
+            creep.moveToRoom(task.room_name);
         }
     }
     /**
@@ -330,10 +330,7 @@ class NeuroTask {
      */
     runHeal (creep, task) {
         // if the creep is not in the room for the task
-        if (creep.room.name != task.room_name) {
-            // move to the room for the task
-            creep.moveTo(new RoomPosition(25, 25, task.room_name));
-        } else {
+        if (creep.room.name == task.room_name) {
             // grab the target
             let target = Game.getObjectById(task.creep);
             // if the target is invalid or at max health
@@ -347,6 +344,9 @@ class NeuroTask {
                     creep.moveTo(target);
                 }
             }
+        } else {
+            // move to the room for the task
+            creep.moveToRoom(task.room_name);
         }
     }
     /**
@@ -356,10 +356,7 @@ class NeuroTask {
      */
     runMoveRoom (creep, task) {
         // if the creep is not in the room for the task
-        if (creep.room.name != task.room_name) {
-            // move to the room for the task
-            creep.moveTo(new RoomPosition(25, 25, task.room_name));
-        } else {
+        if (creep.room.name == task.room_name) {
             // if the timer has gone off
             if (task.timer >= 5) {
                 // clear the task
@@ -368,8 +365,11 @@ class NeuroTask {
                 // increment the timer
                 task.timer++;
                 // move to the room for the task
-                creep.moveTo(new RoomPosition(25, 25, task.room_name));
+                creep.moveToRoom(task.room_name);
             }
+        } else {
+            // move to the room for the task
+            creep.moveToRoom(task.room_name);
         }
     }
     /**
@@ -379,10 +379,7 @@ class NeuroTask {
      */
     runIdle (creep, task) {
         // if the creep is not in the room for the task
-        if (creep.room.name != task.room_name) {
-            // move to the room for the task
-            creep.moveTo(new RoomPosition(25, 25, task.room_name));
-        } else {
+        if (creep.room.name == task.room_name) {
             // if the task has reached the tick limit
             if (task.tick_counter > task.tick_limit) {
                 // clear the task
@@ -393,6 +390,9 @@ class NeuroTask {
                 // idle the creep
                 creep.idle();
             }
+        } else {
+            // move to the room for the task
+            creep.moveToRoom(task.room_name);
         }
     }
     /**
@@ -402,10 +402,7 @@ class NeuroTask {
      */
     runRenewOperator (creep, task) {
         // if the creep is not in the room for the task
-        if (creep.room.name != task.room_name) {
-            // move to the room for the task
-            creep.moveTo(new RoomPosition(25, 25, task.room_name));
-        } else {
+        if (creep.room.name == task.room_name) {
             // grab the power spawn
             let power_spawn = Game.getObjectById(task.power_spawn);
             // if the power spawn is invalid
@@ -426,6 +423,9 @@ class NeuroTask {
                     creep.memory.task = task.previous_task;
                 }
             }
+        } else {
+            // move to the room for the task
+            creep.moveToRoom(task.room_name);
         }
     }
     /**
@@ -444,15 +444,15 @@ class NeuroTask {
                 // grab the source structure
                 let source_structure = Game.getObjectById(task.source_structure);
                 // if the source structure is valid
-                if (source_structure != null) {
+                if (source_structure == null) {
+                    // clear the task
+                    creep.memory.task = null;
+                } else {
                     // if attempting to withdraw from the source structure results in not being in range
                     if (creep.withdraw(source_structure, task.resource, task.amount) == ERR_NOT_IN_RANGE) {
                         // move to the source structure
                         creep.moveTo(source_structure);
                     }
-                } else {
-                    // clear the task
-                    creep.memory.task = null;
                 }
             }
         }
@@ -466,15 +466,15 @@ class NeuroTask {
                 // grab the target structure
                 let target_structure = Game.getObjectById(task.target_structure);
                 // if the target structure is valid
-                if (target_structure != null) {
+                if (target_structure == null) {
+                    // clear the task
+                    creep.memory.task = null;
+                } else {
                     // if attempting to transfer to the target structure results in not being in range
                     if (creep.transfer(target_structure, task.resource, task.amount) == ERR_NOT_IN_RANGE) {
                         // move to the target structure
                         creep.moveTo(target_structure);
                     }
-                } else {
-                    // clear the task
-                    creep.memory.task = null;
                 }
             }
         }
@@ -486,10 +486,7 @@ class NeuroTask {
      */
     runHarvest (creep, task) {
         // if the creep is not in the room for the task
-        if (creep.room.name != task.room_name) {
-            // move to the room for the task
-            creep.moveTo(new RoomPosition(25, 25, task.room_name));
-        } else {
+        if (creep.room.name == task.room_name) {
             // if the creep is full
             if (creep.store.getFreeCapacity() == 0) {
                 // clear the task
@@ -503,6 +500,9 @@ class NeuroTask {
                     creep.moveTo(target);
                 }
             }
+        } else {
+            // move to the room for the task
+            creep.moveToRoom(task.room_name);
         }
     }
     /**
@@ -591,11 +591,21 @@ class NeuroTask {
             // run the appropriate function
             this.runMoveResource(creep, creep.memory.task);
         }
+        // if the task matches
+        if (task.type == TASK_TYPES.HARVEST) {
+            // run the appropriate function
+            this.runHarvest(creep, creep.memory.task);
+        }
     }
 }
 
+// export the NeuroTask class
 global.NeuroTask = NeuroTask;
 
+/**
+ * Global singleton instance of NeuroTask class.
+ * @constant {NeuroTask} neuro_task
+ */
 global.neuro_task = new NeuroTask();</code></pre>
         </article>
     </section>
@@ -606,13 +616,13 @@ global.neuro_task = new NeuroTask();</code></pre>
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="AttackTask.html">AttackTask</a></li><li><a href="AttackerMemory.html">AttackerMemory</a></li><li><a href="BuildTask.html">BuildTask</a></li><li><a href="BuilderMemory.html">BuilderMemory</a></li><li><a href="ClaimTask.html">ClaimTask</a></li><li><a href="ClaimerMemory.html">ClaimerMemory</a></li><li><a href="CommodityCollectorMemory.html">CommodityCollectorMemory</a></li><li><a href="ConstructionPlan.html">ConstructionPlan</a></li><li><a href="Creep.html">Creep</a></li><li><a href="CreepMemory.html">CreepMemory</a></li><li><a href="DepositTask.html">DepositTask</a></li><li><a href="DrillTask.html">DrillTask</a></li><li><a href="DrillerMemory.html">DrillerMemory</a></li><li><a href="GatherTask.html">GatherTask</a></li><li><a href="HarvestTask.html">HarvestTask</a></li><li><a href="HealTask.html">HealTask</a></li><li><a href="HealerMemory.html">HealerMemory</a></li><li><a href="IdleTask.html">IdleTask</a></li><li><a href="MainMemory.html">MainMemory</a></li><li><a href="MineralDrillerMemory.html">MineralDrillerMemory</a></li><li><a href="MineralPlan.html">MineralPlan</a></li><li><a href="MineralPopulation.html">MineralPopulation</a></li><li><a href="MineralTransporterMemory.html">MineralTransporterMemory</a></li><li><a href="MoveResourceTask.html">MoveResourceTask</a></li><li><a href="MoveRoomTask.html">MoveRoomTask</a></li><li><a href="NeuroPlant.html">NeuroPlant</a></li><li><a href="NeuroPower.html">NeuroPower</a></li><li><a href="NeuroPowerSquad.html">NeuroPowerSquad</a></li><li><a href="NeuroRoom.html">NeuroRoom</a></li><li><a href="NeuroScreeper.html">NeuroScreeper</a></li><li><a href="NeuroTask.html">NeuroTask</a></li><li><a href="ObserverLog.html">ObserverLog</a></li><li><a href="PlantData.html">PlantData</a></li><li><a href="Point.html">Point</a></li><li><a href="PopupMessage.html">PopupMessage</a></li><li><a href="PowerAttackerMemory.html">PowerAttackerMemory</a></li><li><a href="PowerCreep.html">PowerCreep</a></li><li><a href="PowerHealerMemory.html">PowerHealerMemory</a></li><li><a href="PowerSquad.html">PowerSquad</a></li><li><a href="PowerSquadPopulation.html">PowerSquadPopulation</a></li><li><a href="PowerTransporterMemory.html">PowerTransporterMemory</a></li><li><a href="Production.html">Production</a></li><li><a href="QueenMemory.html">QueenMemory</a></li><li><a href="Reaction.html">Reaction</a></li><li><a href="RenewOperatorTask.html">RenewOperatorTask</a></li><li><a href="RepairTask.html">RepairTask</a></li><li><a href="RepairerMemory.html">RepairerMemory</a></li><li><a href="ReserveTask.html">ReserveTask</a></li><li><a href="Role.html">Role</a></li><li><a href="Room.html">Room</a></li><li><a href="RoomData.html">RoomData</a></li><li><a href="RoomPlans.html">RoomPlans</a></li><li><a href="RoomPlansFactory.html">RoomPlansFactory</a></li><li><a href="RoomPopulation.html">RoomPopulation</a></li><li><a href="ScoutMemory.html">ScoutMemory</a></li><li><a href="SourcePlan.html">SourcePlan</a></li><li><a href="SourcePopulation.html">SourcePopulation</a></li><li><a href="StructureObserver.html">StructureObserver</a></li><li><a href="StructureTerminal.html">StructureTerminal</a></li><li><a href="StructureTower.html">StructureTower</a></li><li><a href="Task.html">Task</a></li><li><a href="Timer.html">Timer</a></li><li><a href="TimerEntry.html">TimerEntry</a></li><li><a href="TimerLog.html">TimerLog</a></li><li><a href="TransporterMemory.html">TransporterMemory</a></li><li><a href="UpgradeTask.html">UpgradeTask</a></li><li><a href="UpgraderMemory.html">UpgraderMemory</a></li><li><a href="Util.html">Util</a></li><li><a href="Visualizer.html">Visualizer</a></li></ul><h3>Global</h3><ul><li><a href="global.html#BUILD">BUILD</a></li><li><a href="global.html#COLONY">COLONY</a></li><li><a href="global.html#CONSTRUCTION_TIMER_LENGTH">CONSTRUCTION_TIMER_LENGTH</a></li><li><a href="global.html#COUNT_POPULATION_TIMER_LENGTH">COUNT_POPULATION_TIMER_LENGTH</a></li><li><a href="global.html#DEBUG_MODE">DEBUG_MODE</a></li><li><a href="global.html#EXPANSION">EXPANSION</a></li><li><a href="global.html#FACTORY_TIMER_LENGTH">FACTORY_TIMER_LENGTH</a></li><li><a href="global.html#FINAL_PRODUCTS">FINAL_PRODUCTS</a></li><li><a href="global.html#HIGHWAY">HIGHWAY</a></li><li><a href="global.html#INGREDIENTS">INGREDIENTS</a></li><li><a href="global.html#KEEPER_LAIR">KEEPER_LAIR</a></li><li><a href="global.html#LABS_TIMER_LENGTH">LABS_TIMER_LENGTH</a></li><li><a href="global.html#LOG_SIZE">LOG_SIZE</a></li><li><a href="global.html#NEW_ROOM_TIMER_LENGTH">NEW_ROOM_TIMER_LENGTH</a></li><li><a href="global.html#PLANT_STRUCTURES_TIMER_LENGTH">PLANT_STRUCTURES_TIMER_LENGTH</a></li><li><a href="global.html#POPUP_TIMER_LIMIT">POPUP_TIMER_LIMIT</a></li><li><a href="global.html#POWER_SQUAD_TIMER">POWER_SQUAD_TIMER</a></li><li><a href="global.html#REQUEST_POPULATION_TIMER_LENGTH">REQUEST_POPULATION_TIMER_LENGTH</a></li><li><a href="global.html#ROLES">ROLES</a></li><li><a href="global.html#ROOM_CONSTRUCTION_SITE_LIMIT">ROOM_CONSTRUCTION_SITE_LIMIT</a></li><li><a href="global.html#SATISFACTION_LOG_SIZE">SATISFACTION_LOG_SIZE</a></li><li><a href="global.html#SATISFACTION_THRESHOLD">SATISFACTION_THRESHOLD</a></li><li><a href="global.html#SIGNATURE">SIGNATURE</a></li><li><a href="global.html#STATES">STATES</a></li><li><a href="global.html#TASK_TYPES">TASK_TYPES</a></li><li><a href="global.html#TERMINAL_ENERGY_CAP">TERMINAL_ENERGY_CAP</a></li><li><a href="global.html#TERMINAL_TIMER_LENGTH">TERMINAL_TIMER_LENGTH</a></li><li><a href="global.html#TOWER_MINIMUM_ENERGY">TOWER_MINIMUM_ENERGY</a></li><li><a href="global.html#USERNAME">USERNAME</a></li><li><a href="global.html#hlog">hlog</a></li><li><a href="global.html#loop">loop</a></li><li><a href="global.html#neuro_room">neuro_room</a></li><li><a href="global.html#room_plans_factory">room_plans_factory</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="AttackTask.html">AttackTask</a></li><li><a href="AttackerMemory.html">AttackerMemory</a></li><li><a href="BuildTask.html">BuildTask</a></li><li><a href="BuilderMemory.html">BuilderMemory</a></li><li><a href="ClaimTask.html">ClaimTask</a></li><li><a href="ClaimerMemory.html">ClaimerMemory</a></li><li><a href="CommodityCollectorMemory.html">CommodityCollectorMemory</a></li><li><a href="ConstructionPlan.html">ConstructionPlan</a></li><li><a href="Creep.html">Creep</a></li><li><a href="CreepMemory.html">CreepMemory</a></li><li><a href="DepositTask.html">DepositTask</a></li><li><a href="DrillTask.html">DrillTask</a></li><li><a href="DrillerMemory.html">DrillerMemory</a></li><li><a href="GatherTask.html">GatherTask</a></li><li><a href="HarvestTask.html">HarvestTask</a></li><li><a href="HealTask.html">HealTask</a></li><li><a href="HealerMemory.html">HealerMemory</a></li><li><a href="IdleTask.html">IdleTask</a></li><li><a href="MainMemory.html">MainMemory</a></li><li><a href="MineralDrillerMemory.html">MineralDrillerMemory</a></li><li><a href="MineralPlan.html">MineralPlan</a></li><li><a href="MineralPopulation.html">MineralPopulation</a></li><li><a href="MineralTransporterMemory.html">MineralTransporterMemory</a></li><li><a href="MoveResourceTask.html">MoveResourceTask</a></li><li><a href="MoveRoomTask.html">MoveRoomTask</a></li><li><a href="NeuroPlant.html">NeuroPlant</a></li><li><a href="NeuroPower.html">NeuroPower</a></li><li><a href="NeuroPowerSquad.html">NeuroPowerSquad</a></li><li><a href="NeuroRoom.html">NeuroRoom</a></li><li><a href="NeuroScreeper.html">NeuroScreeper</a></li><li><a href="NeuroTask.html">NeuroTask</a></li><li><a href="ObserverLog.html">ObserverLog</a></li><li><a href="PlantData.html">PlantData</a></li><li><a href="PlantFactoryStructures.html">PlantFactoryStructures</a></li><li><a href="PlantLabStructures.html">PlantLabStructures</a></li><li><a href="Point.html">Point</a></li><li><a href="PopupMessage.html">PopupMessage</a></li><li><a href="PowerAttackerMemory.html">PowerAttackerMemory</a></li><li><a href="PowerCreep.html">PowerCreep</a></li><li><a href="PowerHealerMemory.html">PowerHealerMemory</a></li><li><a href="PowerSquad.html">PowerSquad</a></li><li><a href="PowerSquadCreeps.html">PowerSquadCreeps</a></li><li><a href="PowerSquadPopulation.html">PowerSquadPopulation</a></li><li><a href="PowerTransporterMemory.html">PowerTransporterMemory</a></li><li><a href="Production.html">Production</a></li><li><a href="QueenMemory.html">QueenMemory</a></li><li><a href="Reaction.html">Reaction</a></li><li><a href="RenewOperatorTask.html">RenewOperatorTask</a></li><li><a href="RepairTask.html">RepairTask</a></li><li><a href="RepairerMemory.html">RepairerMemory</a></li><li><a href="ReserveTask.html">ReserveTask</a></li><li><a href="Role.html">Role</a></li><li><a href="Room.html">Room</a></li><li><a href="RoomData.html">RoomData</a></li><li><a href="RoomPlans.html">RoomPlans</a></li><li><a href="RoomPlansFactory.html">RoomPlansFactory</a></li><li><a href="RoomPopulation.html">RoomPopulation</a></li><li><a href="ScoutMemory.html">ScoutMemory</a></li><li><a href="SourcePlan.html">SourcePlan</a></li><li><a href="SourcePopulation.html">SourcePopulation</a></li><li><a href="StructureObserver.html">StructureObserver</a></li><li><a href="StructureTerminal.html">StructureTerminal</a></li><li><a href="StructureTower.html">StructureTower</a></li><li><a href="Task.html">Task</a></li><li><a href="Timer.html">Timer</a></li><li><a href="TimerEntry.html">TimerEntry</a></li><li><a href="TimerLog.html">TimerLog</a></li><li><a href="TransporterMemory.html">TransporterMemory</a></li><li><a href="UpgradeTask.html">UpgradeTask</a></li><li><a href="UpgraderMemory.html">UpgraderMemory</a></li><li><a href="Util.html">Util</a></li><li><a href="Visualizer.html">Visualizer</a></li></ul><h3>Global</h3><ul><li><a href="global.html#BUILD">BUILD</a></li><li><a href="global.html#COLONY">COLONY</a></li><li><a href="global.html#CONSTRUCTION_TIMER_LENGTH">CONSTRUCTION_TIMER_LENGTH</a></li><li><a href="global.html#COUNT_POPULATION_TIMER_LENGTH">COUNT_POPULATION_TIMER_LENGTH</a></li><li><a href="global.html#DEBUG_MODE">DEBUG_MODE</a></li><li><a href="global.html#EXPANSION">EXPANSION</a></li><li><a href="global.html#FACTORY_TIMER_LENGTH">FACTORY_TIMER_LENGTH</a></li><li><a href="global.html#FINAL_PRODUCTS">FINAL_PRODUCTS</a></li><li><a href="global.html#HIGHWAY">HIGHWAY</a></li><li><a href="global.html#INGREDIENTS">INGREDIENTS</a></li><li><a href="global.html#KEEPER_LAIR">KEEPER_LAIR</a></li><li><a href="global.html#LABS_TIMER_LENGTH">LABS_TIMER_LENGTH</a></li><li><a href="global.html#LOG_SIZE">LOG_SIZE</a></li><li><a href="global.html#NEW_ROOM_TIMER_LENGTH">NEW_ROOM_TIMER_LENGTH</a></li><li><a href="global.html#PLANT_STRUCTURES_TIMER_LENGTH">PLANT_STRUCTURES_TIMER_LENGTH</a></li><li><a href="global.html#POPUP_TIMER_LIMIT">POPUP_TIMER_LIMIT</a></li><li><a href="global.html#POWER_SQUAD_TIMER">POWER_SQUAD_TIMER</a></li><li><a href="global.html#REQUEST_POPULATION_TIMER_LENGTH">REQUEST_POPULATION_TIMER_LENGTH</a></li><li><a href="global.html#ROLES">ROLES</a></li><li><a href="global.html#ROOM_CONSTRUCTION_SITE_LIMIT">ROOM_CONSTRUCTION_SITE_LIMIT</a></li><li><a href="global.html#ROOM_SIZE">ROOM_SIZE</a></li><li><a href="global.html#SATISFACTION_LOG_SIZE">SATISFACTION_LOG_SIZE</a></li><li><a href="global.html#SATISFACTION_THRESHOLD">SATISFACTION_THRESHOLD</a></li><li><a href="global.html#SIGNATURE">SIGNATURE</a></li><li><a href="global.html#STATES">STATES</a></li><li><a href="global.html#TASK_TYPES">TASK_TYPES</a></li><li><a href="global.html#TERMINAL_ENERGY_CAP">TERMINAL_ENERGY_CAP</a></li><li><a href="global.html#TERMINAL_TIMER_LENGTH">TERMINAL_TIMER_LENGTH</a></li><li><a href="global.html#TOWER_MINIMUM_ENERGY">TOWER_MINIMUM_ENERGY</a></li><li><a href="global.html#hlog">hlog</a></li><li><a href="global.html#loop">loop</a></li><li><a href="global.html#neuro_plant">neuro_plant</a></li><li><a href="global.html#neuro_power">neuro_power</a></li><li><a href="global.html#neuro_power_squad">neuro_power_squad</a></li><li><a href="global.html#neuro_room">neuro_room</a></li><li><a href="global.html#neuro_screeper">neuro_screeper</a></li><li><a href="global.html#neuro_task">neuro_task</a></li><li><a href="global.html#room_plans_factory">room_plans_factory</a></li><li><a href="global.html#timer">timer</a></li><li><a href="global.html#util">util</a></li><li><a href="global.html#visualizer">visualizer</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Tue Apr 29 2025 17:27:20 GMT-0500 (Central Daylight Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Thu May 01 2025 11:21:10 GMT-0500 (Central Daylight Time)
 </footer>
 
 <script> prettyPrint(); </script>

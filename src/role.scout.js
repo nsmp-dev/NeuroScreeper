@@ -48,6 +48,7 @@ global.ScoutMemory = ScoutMemory;
  * a Breadth-First Search (BFS) algorithm. The scout maintains a queue of rooms to visit
  * and logs explored rooms to optimize coverage and prevent revisiting rooms unnecessarily.
  * @memberOf Creep#
+ * @member {function} runScout
  */
 Creep.prototype.runScout = function () {
     // if we don't have a task currently assigned

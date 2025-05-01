@@ -1,6 +1,6 @@
 /**
- * Factory for creating and managing room plans. Handles the planning and placement of structures,
- * roads, ramparts, and other game objects in rooms. Provides methods for initial room setup and
+ * Factory for creating room plans. Handles the planning and placement of structures,
+ * roads, and ramparts. Provides methods for initial room setup and
  * later room development planning, including source mining, mineral extraction, base construction,
  * and defensive structure positioning.
  * @class RoomPlansFactory
