@@ -62,24 +62,24 @@ Creep.prototype.runMineralTransporter = function () {
     if (this.memory.task == null) {
         // if the store is empty
         if (this.store.getUsedCapacity() == 0) {
-            if (this.room.name != this.memory.room_name) {
-                // assign a new move room task
-                this.memory.task = new MoveRoomTask(this.memory.room_name);
-                // announce the move room task
-                this.announceTask();
-            } else {
+            if (this.room.name == this.memory.room_name) {
                 let target = this.getTransporterTarget();
-                if (target != null) {
-                    // assign a new gather task
-                    this.memory.task = new GatherTask(target, this.memory.resource_type);
-                    // announce the gather task
-                    this.announceTask();
-                } else {
+                if (target == null) {
                     // assign a new idle task
                     this.memory.task = new IdleTask(this.memory.room_name, 10);
                     // announce the idle task
                     this.announceTask();
+                } else {
+                    // assign a new gather task
+                    this.memory.task = new GatherTask(target, this.memory.resource_type);
+                    // announce the gather task
+                    this.announceTask();
                 }
+            } else {
+                // assign a new move room task
+                this.memory.task = new MoveRoomTask(this.memory.room_name);
+                // announce the move room task
+                this.announceTask();
             }
         } else {
             // grab the storage

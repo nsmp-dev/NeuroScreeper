@@ -80,15 +80,15 @@ Creep.prototype.runTransporter = function () {
                 // find a new dump target
                 let target = this.getDumpTarget();
                 // if a new target was found
-                if (target != null) {
-                    // assign a new deposit task
-                    this.memory.task = new DepositTask(target, RESOURCE_ENERGY);
-                    // announce the deposit task
-                    this.announceTask();
-                } else {
+                if (target == null) {
                     // assign a new idle task
                     this.memory.task = new IdleTask(this.memory.room_name, 10);
                     // announce the idle task
+                    this.announceTask();
+                } else {
+                    // assign a new deposit task
+                    this.memory.task = new DepositTask(target, RESOURCE_ENERGY);
+                    // announce the deposit task
                     this.announceTask();
                 }
             } else {

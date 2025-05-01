@@ -49,29 +49,24 @@ Creep.prototype.runCommodityCollector = function () {
             // find the nearest storage
             let nearest_storage = this.getNearestStorage();
             // if a storage is found
-            if (nearest_storage != null) {
+            if (nearest_storage == null) {
+                // assign a new idle task
+                this.memory.task = new IdleTask(this.room.name);
+                // announce the idle task
+                this.announceTask();
+            } else {
                 // grab the first resource in the store
                 let resource = Object.keys(this.store)[0];
                 // assign a new deposit task
                 this.memory.task = new DepositTask(nearest_storage, resource, this.store[resource]);
                 // announce the deposit task
                 this.announceTask();
-            } else {
-                // assign a new idle task
-                this.memory.task = new IdleTask(this.room.name);
-                // announce the idle task
-                this.announceTask();
             }
         } else {
             // grab the deposit in the room
             let deposit = this.pos.findClosestByPath(FIND_DEPOSITS);
             // if a deposit was found
-            if (deposit != null) {
-                // assign a new harvest task
-                this.memory.task = new HarvestTask(this.room.name, deposit);
-                // announce the harvest task
-                this.announceTask();
-            } else {
+            if (deposit == null) {
                 // if the highway queue is empty
                 if (this.memory.highway_queue.length == 0) {
                     // get all the highways in the game
@@ -95,6 +90,11 @@ Creep.prototype.runCommodityCollector = function () {
                     // announce the move room task
                     this.announceTask();
                 }
+            } else {
+                // assign a new harvest task
+                this.memory.task = new HarvestTask(this.room.name, deposit);
+                // announce the harvest task
+                this.announceTask();
             }
         }
     }

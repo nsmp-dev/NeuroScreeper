@@ -83,7 +83,12 @@ Creep.prototype.runQueen = function () {
                     }
                 } else {
                     // if the terminal is built
-                    if (terminal != undefined) {
+                    if (terminal == undefined) {
+                        // assign a new idle task
+                        this.memory.task = new IdleTask(this.room.name);
+                        // announce the idle task
+                        this.announceTask();
+                    } else {
                         // loop through the resources in the storage
                         for (let resource in storage.store) {
                             // if the resource is not energy
@@ -94,11 +99,6 @@ Creep.prototype.runQueen = function () {
                                 this.announceTask();
                             }
                         }
-                    } else {
-                        // assign a new idle task
-                        this.memory.task = new IdleTask(this.room.name);
-                        // announce the idle task
-                        this.announceTask();
                     }
                 }
 
@@ -107,7 +107,12 @@ Creep.prototype.runQueen = function () {
                     // grab a target for dumping
                     let target = this.getQueenDumpTarget();
                     // if a target was found
-                    if (target != null) {
+                    if (target == null) {
+                        // assign a new idle task
+                        this.memory.task = new IdleTask(this.room.name);
+                        // announce the idle task
+                        this.announceTask();
+                    } else {
                         // get the amount of free space on the creep
                         let amount = this.store.getFreeCapacity();
                         // if the target has less free capacity than the amount
@@ -124,11 +129,6 @@ Creep.prototype.runQueen = function () {
                         this.memory.task = new MoveResourceTask(this.room.name, storage, target, RESOURCE_ENERGY, amount);
                         // announce the MoveResourceTask
                         this.announceTask();
-                    } else {
-                        // assign a new idle task
-                        this.memory.task = new IdleTask(this.room.name);
-                        // announce the idle task
-                        this.announceTask();
                     }
                 }
             }
@@ -136,7 +136,12 @@ Creep.prototype.runQueen = function () {
             // grab the storage
             let storage = this.room.storage;
             // if the storage is built
-            if (storage != undefined) {
+            if (storage == undefined) {
+                // assign a new idle task
+                this.memory.task = new IdleTask(this.room.name);
+                // announce the idle task
+                this.announceTask();
+            } else {
                 // loop through the resources in this creep's store
                 for (let resource in this.store) {
                     // if the creep has any of the resource
@@ -154,11 +159,6 @@ Creep.prototype.runQueen = function () {
                     // announce the idle task
                     this.announceTask();
                 }
-            } else {
-                // assign a new idle task
-                this.memory.task = new IdleTask(this.room.name);
-                // announce the idle task
-                this.announceTask();
             }
         }
     }

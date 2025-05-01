@@ -1,6 +1,6 @@
 /**
  * Role class defines the characteristics and capabilities of different creep roles in the game.
- * It encapsulates properties that determine a creep's appearance, body composition, and scaling limits.
+ * It encapsulates properties that determine a creep's name, body composition, and scaling limits.
  * @class Role
  */
 class Role {

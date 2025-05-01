@@ -1,5 +1,5 @@
-# general approach
-The main challenge for Screeps is scoping out things and caching them in clever ways.
+# General Approach
+The main challenge for Screeps is scoping out things and caching data in clever ways.
 There are 3 levels of scope we work with:
 - Prototype: Functions wrapped around built-in classes to enhance their functionality
 - Data: Classes for data storage. No logic whatsoever to allow for serialization. We do this to leverage type safety and documentation.
@@ -11,7 +11,7 @@ We put as much of the bulk of code into prototyped functions as we can to consol
 We should never be repeating ourselves much.
 Higher level functions like population and construction are handled on a room-by-room basis, with tailored behavior for
 their type.
-The Capitol room is a room that all non-energy resources are concentrated at.
+The Capitol room is a special Colony room that all non-energy resources are concentrated at.
 Colony rooms are normal bases that have all the major structures.
 Expansion rooms harvest extra energy and are not fully owned but reserved.
 We focus on making polished features like time statistics, visuals, loggers, memory wiping, and commands.
@@ -27,15 +27,15 @@ No libraries, TypeScript, syntactic sugar, or compilation allows the code to be 
 Nearly every single line of code is commented and explained.
 The code should be self-explaining, with documentation being optional to understand it.
 Documentation is optional but extensive, containing design notes as well as usage guides.
+An API sit is included that shows the details of all classes, constants, and prototype extensions.
 
-# file structure
+# File Structure
 Files are labeled in a `scope.name.js` format.
 The scope specifies the type of file and is one of the following:
-- data—Class file that is serializable and storable in memory
-- factory—Module that has methods for creating complex data objects
-- runner—Module with methods to run a data object, effectively holding its logic
+- data—Class file that is serializable and storable in memory, or a factory that assists in creating a class.
+- Neuro—Module with methods to run a data object, effectively holding its logic
 - global—Module that is globally available and consistent, providing high-level and common operations
-- role—Creep role logic for assigning and running their tasks
+- role—Creep role logic for assigning and running their tasks, added via prototyping the Creep class.
 - prototype—extra functions that get added to game classes, cutting down on bloat
 
 # Task system
@@ -49,7 +49,7 @@ Only catastrophic events such as a colony dying cause broken states, which have 
 
 # JSDoc usage
 All systems have JSDoc type hints to use IDE features for debugging.
-Also helps with autocomplete and forcing documentation standards.
+This also helps with autocomplete and forcing documentation standards.
 You can re-generate the documentation site using `npm run generate`.
 
 # Roles
@@ -67,7 +67,7 @@ Builds any construction sites in the room
 Claims or reserves the room it is assigned to, depending on the room's type
 
 ## commodity collector
-Finds commodities and returns them to the capitol
+Finds commodities in highway rooms and returns them to the capitol
 
 ## driller
 Harvests a given energy source, standing over its assigned container

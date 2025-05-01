@@ -1,13 +1,11 @@
 /**
- * PowerSquadPopulation class manages the assignment of specialized creeps to a power squad.
- * It tracks which creeps are currently assigned to specific roles within the squad,
- * serving as a data structure for power squad organization and management.
+ * PowerSquadPopulation class manages the population of creeps in a power squad.
  * @class PowerSquadPopulation
  */
 class PowerSquadPopulation {
     /**
      * Creates a new PowerSquadPopulation instance to track creep assignments for a power squad.
-     * Initially, all role assignments are null until creeps are assigned to the squad.
+     * Initially, all role assignments are null until creeps are found.
      */
     constructor() {
         /**
@@ -24,7 +22,7 @@ class PowerSquadPopulation {
         this.power_healer = null;
         /**
          * The unique ID of the transport creep assigned to this power squad.
-         * This creep is responsible for collecting and carrying power resources back to base.
+         * This creep is responsible for collecting and carrying power resources back to the colony.
          * @type {string|null}
          */
         this.power_transporter = null;

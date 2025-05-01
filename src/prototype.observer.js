@@ -12,7 +12,7 @@
  * it resets to the top-left corner to start the cycle again.
  * @memberOf StructureObserver#
  */
-StructureObserver.prototype.run = function () {
+let run = function () {
     // get the MainMemory object
     let main_memory = util.getMainMemory();
 
@@ -43,3 +43,5 @@ StructureObserver.prototype.run = function () {
         log.current_location.y = log.top_left.y;
     }
 };
+
+StructureObserver.prototype.run = run;

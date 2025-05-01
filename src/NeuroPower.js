@@ -27,12 +27,7 @@ class NeuroPower {
         // upgrade the lowest power
         operator.upgrade(lowest_power_id);
     }
-    /**
-     * Manages the operator and handles spawning/upgrading/renewing the operator
-     */
-    run () {
-        // get the MainMemory object
-        let main_memory = util.getMainMemory();
+    runPowerSpawns () {
         // make a list for the power spawns
         let power_spawns = [];
         // loop through all the structures
@@ -44,12 +39,23 @@ class NeuroPower {
                 // add it to the list of PowerSpawns
                 power_spawns.push(power_spawn);
                 // if the PowerSpawn has enough power and energy to process it
-                if (power_spawn.store[RESOURCE_POWER] > 0 && power_spawn.store[RESOURCE_ENERGY] >= 50) {
+                if (power_spawn.store[RESOURCE_POWER] > 0 && power_spawn.store[RESOURCE_ENERGY] >= POWER_SPAWN_ENERGY_RATIO) {
                     // process the power in the PowerSpawn
                     power_spawn.processPower();
                 }
             }
         }
+
+        return power_spawns;
+    }
+    /**
+     * Manages the operator and handles spawning/upgrading/renewing the operator
+     */
+    run () {
+        // get the MainMemory object
+        let main_memory = util.getMainMemory();
+        // make a list for the power spawns
+        let power_spawns = this.runPowerSpawns();
         // if we have not created an operator before, and we have the level needed for it
         if (Game.powerCreeps["operator"] == undefined && Game.gpl.level > 0) {
             visualizer.popup("Created the operator!");

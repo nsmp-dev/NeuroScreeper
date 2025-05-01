@@ -208,4 +208,4 @@ StructureTerminal.prototype.run = function () {
         // increment the sell timer
         main_memory.terminal_timers[this.room.name]++;
     }
-}
+};

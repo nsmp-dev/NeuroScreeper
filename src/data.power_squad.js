@@ -48,18 +48,7 @@ class PowerSquad {
          * Array of unexplored room names that potentially contain power banks
          * @type {string[]}
          */
-        this.highway_queue = [];
-
-        // get the MainMemory object
-        let main_memory = util.getMainMemory();
-        // loop through the rooms we have discovered so far
-        for (let room_name in main_memory.room_data) {
-            // if the room is a highway
-            if (main_memory.room_data[room_name].type == HIGHWAY) {
-                // add the room name to the highway queue
-                this.highway_queue.push(room_name);
-            }
-        }
+        this.highway_queue = util.getHighwayRooms();
     }
 }
 

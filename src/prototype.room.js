@@ -21,9 +21,9 @@ Room.prototype.getClearArea = function (width, height, plans) {
     let clear_spots = [];
 
     // loop through all the X coordinates
-    for (let x = 0; x < 50 - width; x++) {
+    for (let x = 0; x < ROOM_SIZE - width; x++) {
         // loop through all the y coordinates
-        for (let y = 0; y < 50 - height; y++) {
+        for (let y = 0; y < ROOM_SIZE - height; y++) {
 
             // default to clear
             let clear = true;
@@ -42,9 +42,9 @@ Room.prototype.getClearArea = function (width, height, plans) {
             // if the entire area is clear
             if (clear) {
                 // get the center X coordinate
-                let tx = (x + Math.floor(width / 2)) - 25;
+                let tx = (x + Math.floor(width / 2)) - (ROOM_SIZE/2);
                 // get the center Y coordinate
-                let ty = (y + Math.floor(height / 2)) - 25;
+                let ty = (y + Math.floor(height / 2)) - (ROOM_SIZE/2);
                 // add the location to the list of clear spots
                 clear_spots.push({
                     // the X coordinate of the area

@@ -6,13 +6,13 @@
 class ConstructionPlan {
     /**
      * Creates a new ConstructionPlan instance with specified coordinates and structure type
-     * @param {number} x - The X coordinate in the game world where the construction site will be placed
-     * @param {number} y - The Y coordinate in the game world where the construction site will be placed
-     * @param {string} structure_type - The type of structure to be built (e.g., 'spawn', 'extension', 'road')
+     * @param {number} x - The X coordinate in room where the construction site will be placed
+     * @param {number} y - The Y coordinate in room where the construction site will be placed
+     * @param {string} structure_type - The type of structure to be built
      */
     constructor(x, y, structure_type) {
         /**
-         * The position in the game world where the construction site will be placed
+         * The position in the room where the construction site will be placed
          * @type {Point}
          */
         this.location = new Point(x, y);

@@ -13,7 +13,7 @@ require('data.bootloader');
  * - Updates memory and handles garbage collection for unused data.
  * - Implements global control logic for colony management.
  */
-module.exports.loop = function () {
+let loop = function () {
     // grab the MainMemory object
     let main_memory = util.getMainMemory();
 
@@ -69,14 +69,14 @@ module.exports.loop = function () {
         // if the room is a colony or expansion, run it
         if (room_data.type == COLONY || room_data.type == EXPANSION) {
             // if the room is currently visible
-            if (Game.rooms[name] != undefined) {
+            if (Game.rooms[name] == undefined) {
+                // run the room without the room reference
+                neuro_room.run(room_data);
+            } else {
                 // run the room with the room reference
                 neuro_room.run(room_data, Game.rooms[name]);
                 // render the visuals for the room
                 visualizer.render(Game.rooms[name]);
-            } else {
-                // run the room without the room reference
-                neuro_room.run(room_data);
             }
         }
 
@@ -102,3 +102,5 @@ module.exports.loop = function () {
     // stop the main timer
     timer.stop();
 };
+
+module.exports.loop = loop;

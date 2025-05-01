@@ -16,7 +16,7 @@ class NeuroTask {
         // if the creep is not in the room for the task
         if (creep.room.name != task.room_name) {
             // move to the room for the task
-            creep.moveTo(new RoomPosition(25, 25, task.room_name));
+            creep.moveToRoom(task.room_name);
             // if the creep has enough of the requested resource or is full
         } else if ((task.amount != null && creep.store[task.resource] >= task.amount) || creep.store.getFreeCapacity(task.resource) == 0) {
             // clear the task
@@ -71,7 +71,7 @@ class NeuroTask {
         // if the creep is not in the room for the task
         if (creep.room.name != task.room_name) {
             // move to the room for the task
-            creep.moveTo(new RoomPosition(25, 25, task.room_name));
+            creep.moveToRoom(task.room_name);
             // if the creep is empty
         } else if (creep.store[task.resource] == 0) {
             // clear the task
@@ -85,15 +85,15 @@ class NeuroTask {
                 creep.memory.task = null;
             } else {
                 // if the amount is specified
-                if (task.amount != null) {
+                if (task.amount == null) {
                     // if transferring to the target results in not being in range
-                    if (creep.transfer(target, task.resource, task.amount) == ERR_NOT_IN_RANGE) {
+                    if (creep.transfer(target, task.resource) == ERR_NOT_IN_RANGE) {
                         // move to the target
                         creep.moveTo(target);
                     }
                 } else {
                     // if transferring to the target results in not being in range
-                    if (creep.transfer(target, task.resource) == ERR_NOT_IN_RANGE) {
+                    if (creep.transfer(target, task.resource, task.amount) == ERR_NOT_IN_RANGE) {
                         // move to the target
                         creep.moveTo(target);
                     }
@@ -110,7 +110,7 @@ class NeuroTask {
         // if the creep is not in the room for the task
         if (creep.room.name != task.room_name) {
             // move to the room for the task
-            creep.moveTo(new RoomPosition(25, 25, task.room_name));
+            creep.moveToRoom(task.room_name);
             // if the creep is empty
         } else if (creep.store[RESOURCE_ENERGY] == 0) {
             // clear the task
@@ -140,7 +140,7 @@ class NeuroTask {
         // if the creep is not in the room for the task
         if (creep.room.name != task.room_name) {
             // move to the room for the task
-            creep.moveTo(new RoomPosition(25, 25, task.room_name));
+            creep.moveToRoom(task.room_name);
             // if the creep is empty
         } else if (creep.store[RESOURCE_ENERGY] == 0) {
             // clear the task
@@ -170,22 +170,22 @@ class NeuroTask {
         // if the creep is not in the room for the task
         if (creep.room.name != task.room_name) {
             // move to the room for the task
-            creep.moveTo(new RoomPosition(25, 25, task.room_name));
+            creep.moveToRoom(task.room_name);
             // if the creep is empty
         } else if (creep.store[RESOURCE_ENERGY] == 0) {
             // clear the task
             creep.memory.task = null;
         } else {
             // if the controller's sign does not match the signature
-            if (creep.room.controller.sign.text != SIGNATURE) {
-                // if signing the controller results in not being in range
-                if (creep.signController(creep.room.controller, SIGNATURE) == ERR_NOT_IN_RANGE) {
+            if (creep.room.controller.sign.text == SIGNATURE) {
+                // if upgrading the controller results in not being in range
+                if (creep.upgradeController(creep.room.controller) == ERR_NOT_IN_RANGE) {
                     // move to the controller
                     creep.moveTo(creep.room.controller);
                 }
             } else {
-                // if upgrading the controller results in not being in range
-                if (creep.upgradeController(creep.room.controller) == ERR_NOT_IN_RANGE) {
+                // if signing the controller results in not being in range
+                if (creep.signController(creep.room.controller, SIGNATURE) == ERR_NOT_IN_RANGE) {
                     // move to the controller
                     creep.moveTo(creep.room.controller);
                 }
@@ -199,24 +199,24 @@ class NeuroTask {
      */
     runClaim (creep, task) {
         // if the creep is not in the room for the task
-        if (creep.room.name != task.room_name) {
-            // move to the room for the task
-            creep.moveTo(new RoomPosition(25, 25, task.room_name));
-        } else {
+        if (creep.room.name == task.room_name) {
             // if the controller's sign does not match the signature
-            if (creep.room.controller.sign.text != SIGNATURE) {
-                // if signing the controller results in not being in range
-                if (creep.signController(creep.room.controller, SIGNATURE) == ERR_NOT_IN_RANGE) {
-                    // move to the controller
-                    creep.moveTo(creep.room.controller);
-                }
-            } else {
+            if (creep.room.controller.sign.text == SIGNATURE) {
                 // if claiming the controller results in not being in range
                 if (creep.claimController(creep.room.controller) == ERR_NOT_IN_RANGE) {
                     // move to the controller
                     creep.moveTo(creep.room.controller);
                 }
+            } else {
+                // if signing the controller results in not being in range
+                if (creep.signController(creep.room.controller, SIGNATURE) == ERR_NOT_IN_RANGE) {
+                    // move to the controller
+                    creep.moveTo(creep.room.controller);
+                }
             }
+        } else {
+            // move to the room for the task
+            creep.moveToRoom(task.room_name);
         }
     }
     /**
@@ -226,24 +226,24 @@ class NeuroTask {
      */
     runReserve (creep, task) {
         // if the creep is not in the room for the task
-        if (creep.room.name != task.room_name) {
-            // move to the room for the task
-            creep.moveTo(new RoomPosition(25, 25, task.room_name));
-        } else {
+        if (creep.room.name == task.room_name) {
             // if the controller's sign does not match the signature
-            if (creep.room.controller.sign.text != SIGNATURE) {
-                // if signing the controller results in not being in range
-                if (creep.signController(creep.room.controller, SIGNATURE) == ERR_NOT_IN_RANGE) {
-                    // move to the controller
-                    creep.moveTo(creep.room.controller);
-                }
-            } else {
+            if (creep.room.controller.sign.text == SIGNATURE) {
                 // if reserving the controller results in not being in range
                 if (creep.reserveController(creep.room.controller) == ERR_NOT_IN_RANGE) {
                     // move to the controller
                     creep.moveTo(creep.room.controller);
                 }
+            } else {
+                // if signing the controller results in not being in range
+                if (creep.signController(creep.room.controller, SIGNATURE) == ERR_NOT_IN_RANGE) {
+                    // move to the controller
+                    creep.moveTo(creep.room.controller);
+                }
             }
+        } else {
+            // move to the room for the task
+            creep.moveToRoom(task.room_name);
         }
     }
     /**
@@ -253,10 +253,7 @@ class NeuroTask {
      */
     runDrill (creep, task) {
         // if the creep is not in the room for the task
-        if (creep.room.name != task.room_name) {
-            // move to the room for the task
-            creep.moveTo(new RoomPosition(25, 25, task.room_name));
-        } else {
+        if (creep.room.name == task.room_name) {
             // grab the target
             let target = Game.getObjectById(task.source_id);
             // if we are at the location of the container
@@ -267,6 +264,9 @@ class NeuroTask {
                 // move to the location of the container
                 creep.moveTo(task.container_location.x, task.container_location.y);
             }
+        } else {
+            // move to the room for the task
+            creep.moveToRoom(task.room_name);
         }
     }
     /**
@@ -276,10 +276,7 @@ class NeuroTask {
      */
     runAttack (creep, task) {
         // if the creep is not in the room for the task
-        if (creep.room.name != task.room_name) {
-            // move to the room for the task
-            creep.moveTo(new RoomPosition(25, 25, task.room_name));
-        } else {
+        if (creep.room.name == task.room_name) {
             // grab the target
             let target = Game.getObjectById(task.target);
             // if the target is null
@@ -293,6 +290,9 @@ class NeuroTask {
                     creep.moveTo(target);
                 }
             }
+        } else {
+            // move to the room for the task
+            creep.moveToRoom(task.room_name);
         }
     }
     /**
@@ -302,10 +302,7 @@ class NeuroTask {
      */
     runHeal (creep, task) {
         // if the creep is not in the room for the task
-        if (creep.room.name != task.room_name) {
-            // move to the room for the task
-            creep.moveTo(new RoomPosition(25, 25, task.room_name));
-        } else {
+        if (creep.room.name == task.room_name) {
             // grab the target
             let target = Game.getObjectById(task.creep);
             // if the target is invalid or at max health
@@ -319,6 +316,9 @@ class NeuroTask {
                     creep.moveTo(target);
                 }
             }
+        } else {
+            // move to the room for the task
+            creep.moveToRoom(task.room_name);
         }
     }
     /**
@@ -328,10 +328,7 @@ class NeuroTask {
      */
     runMoveRoom (creep, task) {
         // if the creep is not in the room for the task
-        if (creep.room.name != task.room_name) {
-            // move to the room for the task
-            creep.moveTo(new RoomPosition(25, 25, task.room_name));
-        } else {
+        if (creep.room.name == task.room_name) {
             // if the timer has gone off
             if (task.timer >= 5) {
                 // clear the task
@@ -340,8 +337,11 @@ class NeuroTask {
                 // increment the timer
                 task.timer++;
                 // move to the room for the task
-                creep.moveTo(new RoomPosition(25, 25, task.room_name));
+                creep.moveToRoom(task.room_name);
             }
+        } else {
+            // move to the room for the task
+            creep.moveToRoom(task.room_name);
         }
     }
     /**
@@ -351,10 +351,7 @@ class NeuroTask {
      */
     runIdle (creep, task) {
         // if the creep is not in the room for the task
-        if (creep.room.name != task.room_name) {
-            // move to the room for the task
-            creep.moveTo(new RoomPosition(25, 25, task.room_name));
-        } else {
+        if (creep.room.name == task.room_name) {
             // if the task has reached the tick limit
             if (task.tick_counter > task.tick_limit) {
                 // clear the task
@@ -365,6 +362,9 @@ class NeuroTask {
                 // idle the creep
                 creep.idle();
             }
+        } else {
+            // move to the room for the task
+            creep.moveToRoom(task.room_name);
         }
     }
     /**
@@ -374,10 +374,7 @@ class NeuroTask {
      */
     runRenewOperator (creep, task) {
         // if the creep is not in the room for the task
-        if (creep.room.name != task.room_name) {
-            // move to the room for the task
-            creep.moveTo(new RoomPosition(25, 25, task.room_name));
-        } else {
+        if (creep.room.name == task.room_name) {
             // grab the power spawn
             let power_spawn = Game.getObjectById(task.power_spawn);
             // if the power spawn is invalid
@@ -398,6 +395,9 @@ class NeuroTask {
                     creep.memory.task = task.previous_task;
                 }
             }
+        } else {
+            // move to the room for the task
+            creep.moveToRoom(task.room_name);
         }
     }
     /**
@@ -416,15 +416,15 @@ class NeuroTask {
                 // grab the source structure
                 let source_structure = Game.getObjectById(task.source_structure);
                 // if the source structure is valid
-                if (source_structure != null) {
+                if (source_structure == null) {
+                    // clear the task
+                    creep.memory.task = null;
+                } else {
                     // if attempting to withdraw from the source structure results in not being in range
                     if (creep.withdraw(source_structure, task.resource, task.amount) == ERR_NOT_IN_RANGE) {
                         // move to the source structure
                         creep.moveTo(source_structure);
                     }
-                } else {
-                    // clear the task
-                    creep.memory.task = null;
                 }
             }
         }
@@ -438,15 +438,15 @@ class NeuroTask {
                 // grab the target structure
                 let target_structure = Game.getObjectById(task.target_structure);
                 // if the target structure is valid
-                if (target_structure != null) {
+                if (target_structure == null) {
+                    // clear the task
+                    creep.memory.task = null;
+                } else {
                     // if attempting to transfer to the target structure results in not being in range
                     if (creep.transfer(target_structure, task.resource, task.amount) == ERR_NOT_IN_RANGE) {
                         // move to the target structure
                         creep.moveTo(target_structure);
                     }
-                } else {
-                    // clear the task
-                    creep.memory.task = null;
                 }
             }
         }
@@ -458,10 +458,7 @@ class NeuroTask {
      */
     runHarvest (creep, task) {
         // if the creep is not in the room for the task
-        if (creep.room.name != task.room_name) {
-            // move to the room for the task
-            creep.moveTo(new RoomPosition(25, 25, task.room_name));
-        } else {
+        if (creep.room.name == task.room_name) {
             // if the creep is full
             if (creep.store.getFreeCapacity() == 0) {
                 // clear the task
@@ -475,6 +472,9 @@ class NeuroTask {
                     creep.moveTo(target);
                 }
             }
+        } else {
+            // move to the room for the task
+            creep.moveToRoom(task.room_name);
         }
     }
     /**
@@ -562,6 +562,11 @@ class NeuroTask {
         if (task.type == TASK_TYPES.MOVE_RESOURCE) {
             // run the appropriate function
             this.runMoveResource(creep, creep.memory.task);
+        }
+        // if the task matches
+        if (task.type == TASK_TYPES.HARVEST) {
+            // run the appropriate function
+            this.runHarvest(creep, creep.memory.task);
         }
     }
 }

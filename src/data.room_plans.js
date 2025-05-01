@@ -51,13 +51,13 @@ class RoomPlans {
          */
         this.ramparts = [];
         // loop through all the room positions
-        for (let x = 0; x < 50; x++) {
+        for (let x = 0; x < ROOM_SIZE; x++) {
             // push a new row onto the road grid
             this.roads.push([]);
             // push a new row onto the rampart grid
             this.ramparts.push([]);
             // loop through all positions on the row
-            for (let y = 0; y < 50; y++) {
+            for (let y = 0; y < ROOM_SIZE; y++) {
                 // push a false onto the road grid
                 this.roads[x].push(false);
                 // push a false onto the rampart grid

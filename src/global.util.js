@@ -162,13 +162,12 @@ class Util {
         // the total number of true values in the room satisfaction log
         let total = 0;
         // loop through the satisfaction log
-        room_data.satisfaction_log.forEach(function (satisfied) {
-            // if satisfied on that tick
+        for (let satisfied of room_data.satisfaction_log) {
             if (satisfied) {
                 // increment the total
                 total++;
             }
-        });
+        }
 
         // calculate the average and return it
         return (total / room_data.satisfaction_log.length);
@@ -197,7 +196,7 @@ class Util {
         }
 
         // if the owner of the room is not the player
-        if (room.controller.owner != undefined && room.controller.owner != USERNAME) {
+        if (room.controller.owner != undefined && !room.controller.my) {
             // mark room as unavailable
             return false;
         }
@@ -308,11 +307,11 @@ class Util {
         // 2d array of all the spots in the room
         let structure_grid = [];
         // loop through the X coordinates
-        for (let x = 0; x < 50; x++) {
+        for (let x = 0; x < ROOM_SIZE; x++) {
             // add a column to the structure grid
             structure_grid.push([]);
             // loop through the Y coordinates
-            for (let y = 0; y < 50; y++) {
+            for (let y = 0; y < ROOM_SIZE; y++) {
                 // place a false for that position
                 structure_grid[x].push(false);
             }

@@ -11,7 +11,7 @@
  */
 PowerCreep.prototype.runOperator = function (plant_data) {
     // if the operator is close to death and not already renewing
-    if (this.ticksToLive < 50 && this.memory.task.type != TASK_TYPES.RENEW_OPERATOR) {
+    if (this.ticksToLive < 10 && this.memory.task.type != TASK_TYPES.RENEW_OPERATOR) {
         // grab the power spawn in the room
         let power_spawn = this.room.getPowerSpawn();
         // if a PowerSpawn was found

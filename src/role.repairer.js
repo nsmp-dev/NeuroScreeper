@@ -37,26 +37,26 @@ Creep.prototype.runRepairer = function () {
             // find a new repair target
             let target = this.getRepairTarget();
             // if a target was found
-            if (target != null) {
-                // assign a new repair task
-                this.memory.task = new RepairTask(target);
-                // announce the repair task
-                this.announceTask();
-            } else {
+            if (target == null) {
                 // find a new build target
                 let build_target = this.getBuildTarget();
                 // if a target was found
-                if (build_target != null) {
-                    // assign a new build task
-                    this.memory.task = new BuildTask(build_target);
-                    // announce the build task
-                    this.announceTask();
-                } else {
+                if (build_target == null) {
                     // assign a new upgrade task
                     this.memory.task = new UpgradeTask(this.memory.room_name);
                     // announce the upgrade task
                     this.announceTask();
+                } else {
+                    // assign a new build task
+                    this.memory.task = new BuildTask(build_target);
+                    // announce the build task
+                    this.announceTask();
                 }
+            } else {
+                // assign a new repair task
+                this.memory.task = new RepairTask(target);
+                // announce the repair task
+                this.announceTask();
             }
         }
     }

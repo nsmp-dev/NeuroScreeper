@@ -42,27 +42,34 @@ Creep.prototype.runBuilder = function () {
             // find a new build target
             let target = this.getBuildTarget();
             // if we found a target
-            if (target != null) {
-                // assign a new build task
-                this.memory.task = new BuildTask(target);
-                // announce the new build task
-                this.announceTask();
-            } else {
+            if (target == null) {
                 // find a new repair target
                 let repair_target = this.getRepairTarget();
                 // if we found a target
-                if (repair_target != null) {
+                if (repair_target == null) {
+                    let main_memory = util.getMainMemory();
+                    if (main_memory.room_data[this.memory.room_name].type == COLONY) {
+                        // assign a new upgrade task
+                        this.memory.task = new UpgradeTask(this.memory.room_name);
+                        // announce the upgrade task
+                        this.announceTask();
+                    }else{
+                        // assign a new idle task
+                        this.memory.task = new IdleTask(this.memory.room_name);
+                        // announce the idle task
+                        this.announceTask();
+                    }
+                } else {
                     // assign a new repair task
                     this.memory.task = new RepairTask(repair_target);
                     // announce the repair task
                     this.announceTask();
-                } else {
-                    // assign a new upgrade task
-                    this.memory.task = new UpgradeTask(this.memory.room_name);
-                    // announce the upgrade task
-                    this.announceTask();
                 }
-
+            } else {
+                // assign a new build task
+                this.memory.task = new BuildTask(target);
+                // announce the new build task
+                this.announceTask();
             }
         }
     }

@@ -90,13 +90,13 @@ class PlantData {
         this.factory_id = null;
         /**
          * Current operational state of the lab system.
-         * Indicates whether labs are idle, processing, or in error state.
+         * Indicates whether labs are idle, loading, running, finished, or cleaning.
          * @type {number}
          */
         this.labs_state = STATES.IDLE;
         /**
          * Current operational state of the factory.
-         * Indicates whether the factory is idle, producing, or in error state.
+         * Indicates whether the factory is idle, loading, running, finished, or cleaning.
          * @type {number}
          */
         this.factory_state = STATES.IDLE;

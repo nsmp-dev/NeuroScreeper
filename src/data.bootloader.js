@@ -1,7 +1,7 @@
 /**
- * Data bootloader module responsible for requiring and loading all necessary game modules.
- * This includes data structures, neural components, global utilities, prototypes, and role definitions
- * needed for the game to function properly. Acts as a central loading point for the entire codebase.
+ * Data bootloader file responsible for requiring and loading all necessary classes and prototypes.
+ * This includes data classes, logic objects, global utilities, prototypes, and role definitions
+ * needed for the AI to function properly. Acts as a central loading point for the entire codebase.
  */
 require('data.config');
 require('data.construction_plan');
@@ -11,9 +11,12 @@ require('data.mineral_plan');
 require('data.mineral_population');
 require('data.observer_log');
 require('data.plant_data');
+require('data.plant_factory_structures');
+require('data.plant_lab_structures');
 require('data.point');
 require('data.popup_message');
 require('data.power_squad');
+require('data.power_squad_creeps');
 require('data.power_squad_population');
 require('data.production');
 require('data.reaction');
@@ -27,15 +30,15 @@ require('data.source_population');
 require('data.tasks');
 require('data.timer_entry');
 require('data.timer_log');
+require('global.timer');
+require('global.util');
+require('global.visualizer');
 require('NeuroPlant');
 require('NeuroPower');
 require('NeuroPowerSquad');
 require('NeuroRoom');
 require('NeuroScreeper');
 require('NeuroTask');
-require('global.timer');
-require('global.util');
-require('global.visualizer');
 require('prototype.creep');
 require('prototype.observer');
 require('prototype.room');

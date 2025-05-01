@@ -1,6 +1,6 @@
 /**
  * MainMemory class represents the main memory storage structure for the game.
- * It maintains all essential game data, including room information, population statistics,
+ * It maintains all essential game data, including room data objects, population statistics,
  * timers, and system messages stored in the Memory object.
  * @class MainMemory
  */
@@ -19,7 +19,7 @@ class MainMemory {
          * Countdown timer that triggers periodic population recounts, initialized with an offset from the standard count length
          * @type {number}
          */
-        this.population_timer = COUNT_POPULATION_TIMER_LENGTH - 2;
+        this.population_timer = COUNT_POPULATION_TIMER_LENGTH - 1;
         /**
          * Timer for tracking new room-related operations or expansions
          * @type {number}
@@ -31,12 +31,12 @@ class MainMemory {
          */
         this.populations = {};
         /**
-         * Identifier for the main control room (capitol). Stores the room name or null if no capitol is designated
+         * Identifier for the main capitol room. Stores the room name or null if no capitol is designated
          * @type {string|null}
          */
         this.capitol_room_name = null;
         /**
-         * Collection of TimerLog objects indexed by unique IDs, used for tracking various game events and cooldowns
+         * Collection of TimerLog objects indexed by unique IDs, used for tracking how long certain sections of code take
          * @type {Object.<string, TimerLog>}
          */
         this.timers = {};

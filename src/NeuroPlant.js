@@ -10,11 +10,13 @@
 class NeuroPlant {
     constructor() {}
     /**
-     * Checks if the required resources for a reaction are present and sets the requested reaction or cleanup reaction flag
-     * @param {PlantData} plant_data - The plant data for storing in memory
-     * @param {Room} room - The Room the plant is in
+     * description
+     * @param {PlantData} plant_data
+     * @param {Room} room
+     * @returns {PlantLabStructures|null}
      */
-    runLabs (plant_data, room) {
+    validateLabs (plant_data, room) {
+        let is_valid = true;
         // grab input lab 1
         let input_lab_1 = Game.getObjectById(plant_data.input_lab_1_id);
         // grab input lab 2
@@ -28,17 +30,16 @@ class NeuroPlant {
         if (input_lab_1 == null || input_lab_2 == null || output_lab == null || storage == undefined) {
             // clear the current reaction
             plant_data.current_reaction = null;
+            is_valid = false;
 
             // if any of the labs have anything in them,
-            if ((input_lab_1 != null && input_lab_1.store.getUsedCapacity() > 0) || (input_lab_2 != null && input_lab_2.store.getUsedCapacity() > 0) || (output_lab != null && output_lab.store.getUsedCapacity() > 0)) {
+            if (input_lab_1?.store.getUsedCapacity() > 0 || input_lab_2?.store.getUsedCapacity() > 0 || output_lab?.store.getUsedCapacity() > 0) {
                 // set the plant to clean up the reaction
                 plant_data.labs_state = STATES.CLEANING;
             } else {
                 // set the plant to idle
                 plant_data.labs_state = STATES.IDLE;
             }
-            // exit the function early
-            return;
         }
 
         // if we have a reaction in progress
@@ -47,96 +48,123 @@ class NeuroPlant {
             let reaction = plant_data.current_reaction;
 
             // if any of the labs have incorrect resources
-            if ((input_lab_1.mineralType != undefined && input_lab_1.mineralType != reaction.input_1) || (input_lab_2.mineralType != undefined && input_lab_2.mineralType != reaction.input_2) || (output_lab.mineralType != undefined && output_lab.mineralType != reaction.output)) {
+            if (input_lab_1.mineralType != reaction.input_1 || input_lab_2.mineralType != reaction.input_2 || output_lab.mineralType != reaction.output) {
                 // clear the current reaction
                 plant_data.current_reaction = null;
+                is_valid = false;
                 // set the plant to clean up the reaction
                 plant_data.labs_state = STATES.CLEANING;
-                // exit the function early
-                return;
             }
         }
-        // if the labs are idle
-        if (plant_data.labs_state == STATES.IDLE) {
-            // loop through all the reagents in all the reactions in the game
-            for (let reagent_1 in REACTIONS) {
-                // loop through all the other reagents for the current reagent
-                for (let reagent_2 in REACTIONS[reagent_1]) {
-                    // if the storage has both required ingredients
-                    if (storage.store[reagent_1] != undefined && storage.store[reagent_1] > 5 && storage.store[reagent_2] != undefined && storage.store[reagent_2] > 5) {
-                        // find which amount is lower to use it for the amount
-                        let amount = storage.store[reagent_1] > storage.store[reagent_2] ? storage.store[reagent_2] : storage.store[reagent_1];
-                        // round the amount down to the nearest 5
-                        amount = Math.floor(amount / 5) * 5;
-                        // if the amount is greater than the capacity of a lab
-                        if (amount > (LAB_MINERAL_CAPACITY / 2)) {
-                            // set the amount to the capacity of a lab
-                            amount = (LAB_MINERAL_CAPACITY / 2);
-                        }
-                        // create and store the enw reaction
-                        plant_data.current_reaction = new Reaction(reagent_1, reagent_2, REACTIONS[reagent_1][reagent_2], amount);
-                        visualizer.popup("Requested a reaction for " + plant_data.current_reaction.amount + " " + plant_data.current_reaction.output);
-                        // set the state of the labs to loading
-                        plant_data.labs_state = STATES.LOADING;
+
+        if (is_valid) {
+            return new PlantLabStructures(input_lab_1, input_lab_2, output_lab, storage);
+        }else{
+            return null;
+        }
+    }
+    /**
+     * description
+     * @param {PlantData} plant_data
+     * @param {Room} room
+     * @param {PlantLabStructures} structures
+     * @returns {null|Reaction}
+     */
+    getLabReaction (plant_data, room, structures) {
+        // grab the storage
+        let storage = structures.storage;
+
+        // loop through all the reagents in all the reactions in the game
+        for (let reagent_1 in REACTIONS) {
+            // loop through all the other reagents for the current reagent
+            for (let reagent_2 in REACTIONS[reagent_1]) {
+                // if the storage has both required ingredients
+                if (storage.store[reagent_1] != undefined && storage.store[reagent_1] > 5 && storage.store[reagent_2] != undefined && storage.store[reagent_2] > 5) {
+                    // find which amount is lower to use it for the amount
+                    let amount = storage.store[reagent_1] > storage.store[reagent_2] ? storage.store[reagent_2] : storage.store[reagent_1];
+                    // round the amount down to the nearest 5
+                    amount = Math.floor(amount / 5) * 5;
+                    // if the amount is greater than the capacity of a lab
+                    if (amount > (LAB_MINERAL_CAPACITY / 2)) {
+                        // set the amount to the capacity of a lab
+                        amount = (LAB_MINERAL_CAPACITY / 2);
+                    }
+                    // create and store the enw reaction
+                    return new Reaction(reagent_1, reagent_2, REACTIONS[reagent_1][reagent_2], amount);
+                }
+            }
+        }
+        return null;
+    }
+    /**
+     * Checks if the required resources for a reaction are present and sets the requested reaction or cleanup reaction flag
+     * @param {PlantData} plant_data - The plant data for storing in memory
+     * @param {Room} room - The Room the plant is in
+     */
+    runLabs (plant_data, room) {
+        let structures = this.validateLabs(plant_data, room);
+
+        if (structures != null) {
+            // if the labs are idle
+            if (plant_data.labs_state == STATES.IDLE) {
+                let reaction = this.getLabReaction(plant_data, room, structures);
+                if (reaction != null) {
+                    plant_data.current_reaction = reaction;
+                    visualizer.popup("Requested a reaction for " + plant_data.current_reaction.amount + " " + plant_data.current_reaction.output);
+                    // set the state of the labs to loading
+                    plant_data.labs_state = STATES.LOADING;
+                }
+            }
+            // if the labs are loading
+            if (plant_data.labs_state == STATES.LOADING) {
+                // grab the current reaction
+                let reaction = plant_data.current_reaction;
+
+                // if both input labs have the required resource amounts
+                if (structures.input_lab_1.store[reaction.input_1] == reaction.amount && structures.input_lab_2.store[reaction.input_2] == reaction.amount) {
+                    // set the state of the labs to running
+                    plant_data.labs_state = STATES.RUNNING;
+                    // start the reaction
+                    structures.output_lab.runReaction(structures.input_lab_1, structures.input_lab_2);
+                }
+            }
+            // if the labs are running
+            if (plant_data.labs_state == STATES.RUNNING) {
+                // grab the current reaction
+                let reaction = plant_data.current_reaction;
+                // if the output lab is off cooldown
+                if (structures.output_lab.cooldown == 0) {
+                    // if the output lab has the amount requested in the reaction
+                    if (structures.output_lab.store[reaction.output] == reaction.amount) {
+                        visualizer.popup("Finished a reaction for " + plant_data.current_reaction.amount + " " + plant_data.current_reaction.output);
+                        // set the labs to finished
+                        plant_data.labs_state = STATES.FINISHED;
+                        // clear the current reaction
+                        plant_data.current_reaction = null;
+                    } else {
+                        // run the reaction
+                        structures.output_lab.runReaction(structures.input_lab_1, structures.input_lab_2);
                     }
                 }
             }
-        }
-        // if the labs are loading
-        if (plant_data.labs_state == STATES.LOADING) {
-            // grab the current reaction
-            let reaction = plant_data.current_reaction;
-
-            // if both input labs have the required resource amounts
-            if (input_lab_1.store[reaction.input_1] == reaction.amount && input_lab_2.store[reaction.input_2] == reaction.amount) {
-                // set the state of the labs to running
-                plant_data.labs_state = STATES.RUNNING;
-                // start the reaction
-                output_lab.runReaction(input_lab_1, input_lab_2);
-            }
-        }
-        // if the labs are running
-        if (plant_data.labs_state == STATES.RUNNING) {
-            // grab the current reaction
-            let reaction = plant_data.current_reaction;
-            // if the output lab is off cooldown
-            if (output_lab.cooldown == 0) {
-                // if the output lab has the amount requested in the reaction
-                if (output_lab.store[reaction.output] == reaction.amount) {
-                    visualizer.popup("Finished a reaction for " + plant_data.current_reaction.amount + " " + plant_data.current_reaction.output);
-                    // set the labs to finished
-                    plant_data.labs_state = STATES.FINISHED;
-                    // clear the current reaction
-                    plant_data.current_reaction = null;
-                } else {
-                    // run the reaction
-                    output_lab.runReaction(input_lab_1, input_lab_2);
+            // if the labs are cleaning or finished
+            if (plant_data.labs_state == STATES.CLEANING || plant_data.labs_state == STATES.FINISHED) {
+                // if all the labs are empty
+                if (structures.input_lab_1.store.getUsedCapacity() == 0 && structures.input_lab_2.store.getUsedCapacity() == 0 && structures.output_lab.store.getUsedCapacity() == 0) {
+                    // set the labs to idle
+                    plant_data.labs_state = STATES.IDLE;
                 }
-            }
-        }
-        // if the labs are finished
-        if (plant_data.labs_state == STATES.FINISHED) {
-            // if the output lab is empty
-            if (output_lab.store.getUsedCapacity() == 0) {
-                // set the labs to idle
-                plant_data.labs_state = STATES.IDLE;
-            }
-        }
-        // if the labs are cleaning
-        if (plant_data.labs_state == STATES.CLEANING) {
-            // if all the labs are empty
-            if (input_lab_1.store.getUsedCapacity() == 0 && input_lab_2.store.getUsedCapacity() == 0 && output_lab.store.getUsedCapacity() == 0) {
-                // set the labs to idle
-                plant_data.labs_state = STATES.IDLE;
             }
         }
     }
     /**
-     * Checks if the required resources for a production are present and sets the requested production or cleanup production flag
-     * @param {PlantData} plant_data - The plant data for storing in memory
-     * @param {Room} room - The Room the plant is in
+     * description
+     * @param {PlantData} plant_data
+     * @param {Room} room
+     * @returns {PlantFactoryStructures|null}
      */
-    runFactory (plant_data, room) {
+    validateFactory (plant_data, room) {
+        let is_valid = true;
         // grab the factory
         let factory = Game.getObjectById(plant_data.factory_id);
         // grab the storage
@@ -146,6 +174,7 @@ class NeuroPlant {
         if (factory == null || storage == undefined) {
             // clear the current production
             plant_data.current_production = null;
+            is_valid = false;
             // if the factory is built, and it has resources in it
             if (factory != null && factory.store.getUsedCapacity() > 0) {
                 // set the factory to clean up the production
@@ -178,15 +207,29 @@ class NeuroPlant {
             if (!correct_contents) {
                 // clear the current production
                 plant_data.current_production = null;
+                is_valid = false;
                 // set the plant to clean up the production
                 plant_data.factory_state = STATES.CLEANING;
             }
         }
-
+        if (is_valid) {
+            return new PlantFactoryStructures(factory, storage);
+        }else{
+            return null;
+        }
+    }
+    /**
+     * description
+     * @param {PlantData} plant_data
+     * @param {Room} room
+     * @param {PlantFactoryStructures} structures
+     * @returns {Production|null}
+     */
+    getFactoryProduction (plant_data, room, structures) {
         // if there is no current production
-        if (plant_data.factory_state == STATES.IDLE && storage != undefined) {
+        if (plant_data.factory_state == STATES.IDLE) {
             // grab the store of the storage
-            let store = storage.store;
+            let store = structures.storage.store;
             // loop through all the producible commodities
             for (let commodity in COMMODITIES) {
                 // assume we have the components
@@ -206,59 +249,76 @@ class NeuroPlant {
                 // if we have enough components for this recipe
                 if (has_components) {
                     // create and store the new production
-                    plant_data.current_production = new Production(recipe.components, commodity, recipe.amount);
+                    return new Production(recipe.components, commodity, recipe.amount);
+                }
+            }
+        }
+        return null;
+    }
+    /**
+     * Checks if the required resources for a production are present and sets the requested production or cleanup production flag
+     * @param {PlantData} plant_data - The plant data for storing in memory
+     * @param {Room} room - The Room the plant is in
+     */
+    runFactory (plant_data, room) {
+        let structures = this.validateFactory(plant_data, room);
+
+        if (structures != null) {
+            if (plant_data.factory_state == STATES.IDLE) {
+                let production = this.getFactoryProduction(plant_data, room, structures);
+
+                if (production != null) {
+                    plant_data.current_production = production;
                     visualizer.popup("Requested a production of " + plant_data.current_production.amount + " " + plant_data.current_reaction.output);
                     // set the factory to loading
                     plant_data.factory_state = STATES.LOADING;
-                    // exit the loop
-                    break;
-                }
-            }
-        }
-
-        // if the factory is loading
-        if (plant_data.factory_state == STATES.LOADING) {
-            // grab the current production
-            let production = plant_data.current_production;
-            // assume we are ready for the production
-            let ready = true;
-            // loop through the ingredients of the production
-            for (let ingredient in production.inputs) {
-                // if the factory does not have enough of that resource
-                if (factory.store[ingredient] == undefined || factory.store[ingredient] < production.inputs[ingredient]) {
-                    // mark the factory as not ready
-                    ready = false;
-                    // break the loop
-                    break;
                 }
             }
 
-            // if the factory is ready
-            if (ready) {
-                // set the factory to running
-                plant_data.factory_state = STATES.RUNNING;
-                // start the production
-                factory.produce(production.output);
-            }
-        }
+            // if the factory is loading
+            if (plant_data.factory_state == STATES.LOADING) {
+                // grab the current production
+                let production = plant_data.current_production;
+                // assume we are ready for the production
+                let ready = true;
+                // loop through the ingredients of the production
+                for (let ingredient in production.inputs) {
+                    // if the factory does not have enough of that resource
+                    if (structures.factory.store[ingredient] == undefined || structures.factory.store[ingredient] < production.inputs[ingredient]) {
+                        // mark the factory as not ready
+                        ready = false;
+                        // break the loop
+                        break;
+                    }
+                }
 
-        // if the factory is running
-        if (plant_data.factory_state == STATES.RUNNING) {
-            // if the factory is off of cooldown
-            if (factory.cooldown == 0) {
-                // set the factory to finished
-                plant_data.factory_state = STATES.FINISHED;
-                visualizer.popup("Finished a production of " + plant_data.current_reaction.output);
-                plant_data.current_production = null;
+                // if the factory is ready
+                if (ready) {
+                    // set the factory to running
+                    plant_data.factory_state = STATES.RUNNING;
+                    // start the production
+                    structures.factory.produce(production.output);
+                }
             }
-        }
 
-        // if the factory is finished or cleaning
-        if (plant_data.factory_state == STATES.FINISHED || plant_data.factory_state == STATES.CLEANING) {
-            // if the factory is empty
-            if (factory.store.getUsedCapacity() == 0) {
-                // set the factory to idle
-                plant_data.labs_state = STATES.IDLE;
+            // if the factory is running
+            if (plant_data.factory_state == STATES.RUNNING) {
+                // if the factory is off of cooldown
+                if (structures.factory.cooldown == 0) {
+                    // set the factory to finished
+                    plant_data.factory_state = STATES.FINISHED;
+                    visualizer.popup("Finished a production of " + plant_data.current_reaction.output);
+                    plant_data.current_production = null;
+                }
+            }
+
+            // if the factory is finished or cleaning
+            if (plant_data.factory_state == STATES.FINISHED || plant_data.factory_state == STATES.CLEANING) {
+                // if the factory is empty
+                if (structures.factory.store.getUsedCapacity() == 0) {
+                    // set the factory to idle
+                    plant_data.labs_state = STATES.IDLE;
+                }
             }
         }
     }

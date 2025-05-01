@@ -7,7 +7,7 @@ class CreepMemory {
     /**
      * Creates a new CreepMemory instance to manage a creep's memory state
      * @param {string} role - The behavioral role that defines the creep's functions and responsibilities
-     * @param {string} room_name - The identifier of the room where the creep will operate
+     * @param {string} room_name - The identifier of the room where the creep was requested from
      */
     constructor(role, room_name) {
         /**
@@ -16,7 +16,7 @@ class CreepMemory {
          */
         this.role = role;
         /**
-         * The identifier of the room where this creep was spawned or is assigned to operate
+         * The identifier of the room where this creep was requested from
          * @type {string}
          */
         this.room_name = room_name;

@@ -5,7 +5,7 @@
  */
 class Reaction {
     /**
-     * Creates a new Reaction instance defining a specific chemical transformation process
+     * Creates a new Reaction instance defining a specific chemical recipe
      * @param {string} input_1 - The resource type of the first reagent required for the reaction
      * @param {string} input_2 - The resource type of the second reagent required for the reaction
      * @param {String} output - The resource type that will be produced from the reaction

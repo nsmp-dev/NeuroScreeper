@@ -17,12 +17,12 @@ let getTransporterTarget = function () {
         // grab all the structures at the container's location
         target = this.room.getStructureAt(STRUCTURE_CONTAINER, this.memory.container_location.x, this.memory.container_location.y);
         // if a container is found there
-        if (target != null) {
-            // save the container id in memory
-            this.memory.container_id = target.id;
-        } else {
+        if (target == null) {
             // remove the container id from memory
             this.memory.container_id = null;
+        } else {
+            // save the container id in memory
+            this.memory.container_id = target.id;
         }
     }
 
@@ -282,6 +282,11 @@ let getNearestColony = function () {
 };
 Creep.prototype.getNearestColony = getNearestColony;
 PowerCreep.prototype.getNearestColony = getNearestColony;
+let moveToRoom = function (room_name) {
+    this.moveTo(new RoomPosition(ROOM_SIZE/2, ROOM_SIZE/2, room_name));
+};
+Creep.prototype.moveToRoom = moveToRoom;
+PowerCreep.prototype.moveToRoom = moveToRoom;
 /**
  * Retrieves the power squad assignment for this creep from room memory.
  * Uses the creep's assigned room to look up its associated power squad.
@@ -303,14 +308,14 @@ let gatherEnergy = function () {
     // find a new fill target
     let target = this.getFillTarget();
     // if a new target was found
-    if (target != null) {
-        // assign a new gather task
-        this.memory.task = new GatherTask(target, RESOURCE_ENERGY);
+    if (target == null) {
+        // assign a new idle task
+        this.memory.task = new IdleTask(this.memory.room_name);
         // announce the new task
         this.announceTask();
     } else {
-        // assign a new idle task
-        this.memory.task = new IdleTask(this.memory.room_name);
+        // assign a new gather task
+        this.memory.task = new GatherTask(target, RESOURCE_ENERGY);
         // announce the new task
         this.announceTask();
     }
@@ -433,7 +438,7 @@ PowerCreep.prototype.announceTask = announceTask;
  * Uses a switch statement to determine and call the correct role implementation method.
  * @memberOf Creep#
  */
-Creep.prototype.run = function () {
+let run = function () {
     // switch based on the creep's role
     switch (this.memory.role) {
         // if the role matches
@@ -489,3 +494,4 @@ Creep.prototype.run = function () {
             break;
     }
 };
+Creep.prototype.run = run;

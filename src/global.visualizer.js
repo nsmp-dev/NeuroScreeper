@@ -27,7 +27,7 @@ class Visualizer {
                 // get the color to use from the ratio of cpu used
                 let color = util.rgbToHex(Math.floor(ratio * 255), (255 - Math.floor(ratio * 255)), 0);
                 // draw the bar for the bar graph
-                room.visual.rect(i, 49 - height, 1, height, {fill: color});
+                room.visual.rect(i, ROOM_SIZE - 1 - height, 1, height, {fill: color});
             }
         }
 

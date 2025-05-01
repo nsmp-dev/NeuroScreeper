@@ -46,10 +46,9 @@ class Timer {
         let total = 0;
 
         // loop through each time in the timer log
-        main_memory.timers[id].log.forEach(function (time) {
-            // increment the total time
+        for (let time of main_memory.timers[id].log) {
             total += time;
-        });
+        }
         // calculate and store the average time
         main_memory.timers[id].average_time = total / main_memory.timers[id].log.length;
     }

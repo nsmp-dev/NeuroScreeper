@@ -8,9 +8,9 @@ class MineralPlan {
     /**
      * Creates a new MineralPlan instance for managing mineral extraction operations
      * @param {string} mineral_id - Unique identifier of the Mineral object in the game world
-     * @param {Point} mineral_location - Coordinate position of the mineral deposit in the room
-     * @param {Point} container_location - Coordinate position where the container should be placed for mineral storage
-     * @param {string} resource_type - Type of resource contained in this mineral deposit (e.g., 'H', 'O', 'K', etc.)
+     * @param {Point} mineral_location - Coordinates of the mineral deposit in the room
+     * @param {Point} container_location - Coordinates where the container should be placed for mineral storage
+     * @param {string} resource_type - Type of resource contained in this mineral deposit
      */
     constructor(mineral_id, mineral_location, container_location, resource_type) {
         /**
@@ -19,17 +19,17 @@ class MineralPlan {
          */
         this.mineral_id = mineral_id;
         /**
-         * Coordinate position of the mineral deposit in the room
+         * Coordinates of the Mineral in the room
          * @type {Point}
          */
         this.mineral_location = mineral_location;
         /**
-         * Coordinate position where the storage container should be placed
+         * Coordinates where the storage container should be placed
          * @type {Point}
          */
         this.container_location = container_location;
         /**
-         * The type of mineral resource available at this location (e.g., 'H', 'O', 'K', etc.)
+         * The type of mineral resource produced by this Mineral
          * @type {string}
          */
         this.resource_type = resource_type;

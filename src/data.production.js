@@ -1,11 +1,10 @@
 /**
  * Represents a production process that transforms input resources into output resources.
- * This class maintains the relationship between input materials and their corresponding output products.
  * @class Production
  */
 class Production {
     /**
-     * Creates a new Production instance defining a specific resource transformation process
+     * Creates a new Production instance defining a specific recipe
      * @param {Object.<string,number>} inputs - A mapping of resource types to their required quantities for production
      * @param {String} output - The type of resource that will be produced
      * @param {number} amount - The quantity of output resource that will be produced

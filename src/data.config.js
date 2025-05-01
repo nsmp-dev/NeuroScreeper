@@ -1,8 +1,9 @@
 /**
- * The unique username used for comparing ownership of room controllers with other player controllers
- * @constant {string} USERNAME
+ * Current software build version number. Incrementing this value will trigger a complete memory reset
+ * and initiate a controlled termination of all existing creeps to start fresh with new code.
+ * @constant {number} BUILD
  */
-global.USERNAME = "uhhyea";
+global.BUILD = 12;
 /**
  * Signature message used to sign claimed room controllers, identifying ownership and intent to other players
  * @constant {string} SIGNATURE
@@ -14,11 +15,10 @@ global.SIGNATURE = "Purely defensive, still debugging";
  */
 global.DEBUG_MODE = true;
 /**
- * Current software build version number. Incrementing this value will trigger a complete memory reset
- * and initiate a controlled termination of all existing creeps to start fresh with new code.
- * @constant {number} BUILD
+ * Size of a room in tiles
+ * @constant {number} ROOM_SIZE
  */
-global.BUILD = 11;
+global.ROOM_SIZE = 50;
 /**
  * Specifies the number of recent game ticks to store in memory for calculating average CPU usage statistics.
  * @constant {number} LOG_SIZE
@@ -31,12 +31,12 @@ global.LOG_SIZE = 50;
  */
 global.COLONY = "colony";
 /**
- * Used to identify and categorize rooms designated for controlled territorial expansion from main colony rooms - rooms lacking controller ownership but targeted for future control
+ * Used to identify and categorize rooms designated for energy collection
  * @constant {string} EXPANSION
  */
 global.EXPANSION = "expansion";
 /**
- * Identifies and categorizes specialized source keeper lair rooms that contain hostile NPCs guarding valuable resources
+ * Identifies and categorizes source keeper lair rooms that contain hostile NPCs guarding resources
  * @constant {string} KEEPER_LAIR
  */
 global.KEEPER_LAIR = "keeper_lair";
@@ -46,13 +46,13 @@ global.KEEPER_LAIR = "keeper_lair";
  */
 global.HIGHWAY = "highway";
 /**
- * Delay interval in game ticks between creation of new construction sites to prevent overwhelming room building queues
+ * Delay interval in game ticks between creation of new construction sites to save CPU
  * @constant {number} CONSTRUCTION_TIMER_LENGTH
  */
 global.CONSTRUCTION_TIMER_LENGTH = 50;
 /**
- * Number of game ticks to wait between recalculating creep population requirements for each room.
- * Controls how frequently the AI evaluates and adjusts creep spawning needs.
+ * Number of game ticks to wait between requesting creeps for each room.
+ * Controls how frequently the AI evaluates and adjusts creep spawning needs to conserve CPU.
  * @constant {number} REQUEST_POPULATION_TIMER_LENGTH
  */
 global.REQUEST_POPULATION_TIMER_LENGTH = 10;
@@ -109,7 +109,7 @@ global.TERMINAL_ENERGY_CAP = 5000;
  */
 global.ROOM_CONSTRUCTION_SITE_LIMIT = 5;
 /**
- * The minimum proportion of ticks where satisfaction criteria were met, used as a threshold to determine if overall game state requirements are being satisfied over time
+ * The minimum proportion of ticks where a room's population needs are met to be considered satisfied.
  * @constant {number} SATISFACTION_THRESHOLD
  */
 global.SATISFACTION_THRESHOLD = 0.9;
@@ -153,12 +153,12 @@ let hlog = function (value, label = null) {
             str = JSON.stringify(value);
         }
         // if a label was provided
-        if (label != null) {
-            // print the variable with a label
-            console.log(label + ": " + str);
-        } else {
+        if (label == null) {
             // print the variable
             console.log(str);
+        } else {
+            // print the variable with a label
+            console.log(label + ": " + str);
         }
     }
 };
