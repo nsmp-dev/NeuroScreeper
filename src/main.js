@@ -2,11 +2,8 @@
 require('data.bootloader');
 
 /**
- * Main loop function for the Screeps game simulation.
- * This function is executed every game tick and serves as the entry point
- * for your Screeps script. It contains the primary logic and flow control
- * for your colony's operations.
- *
+ * Main loop function for the bot.
+ * This function is executed every game tick and serves as the entry point. *
  * Responsibilities:
  * - Manages and executes tasks for all creeps.
  * - Oversees and optimizes the behavior of rooms and structures.
@@ -49,7 +46,7 @@ let loop = function () {
         Game.creeps[name].run();
     }
 
-    // run the power manager
+    // run the NeuroPower object
     neuro_power.run();
 
     // loop through all the structures

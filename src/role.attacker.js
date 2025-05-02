@@ -34,10 +34,12 @@ Creep.prototype.runAttacker = function () {
     // if we don't have a task currently assigned
     if (this.memory.task == null) {
         // find all hostile creeps in the room
+        /** @type {Creep[]} */
         let creeps = this.room.find(FIND_HOSTILE_CREEPS);
         // if any hostile creeps are found
         if (creeps.length > 0) {
             // find the closest hostile creep
+            /** @type {Creep} */
             let target = this.pos.findClosestByPath(creeps);
             // assign a new attack task
             this.memory.task = new AttackTask(target);

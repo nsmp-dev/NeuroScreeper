@@ -30,4 +30,4 @@ NeuroScreeper
 - flesh out the documentation Markdown files
 
 ## Visualizer overhaul
-- add in tons to the visualizer
+- add in estimator for how long until the controller's level increases

@@ -67,6 +67,7 @@ Creep.prototype.getBuildTarget = function () {
  */
 Creep.prototype.getDumpTarget = function () {
     // find any extensions that are not full
+    /** @type {Structure[]} */
     let targets = this.room.findLowExtensions();
 
     // if no extensions are found
@@ -97,6 +98,7 @@ Creep.prototype.getDumpTarget = function () {
  */
 Creep.prototype.getFillTarget = function () {
     // find any dropped energy
+    /** @type {Resource|Structure[]} */
     let targets = this.room.find(FIND_DROPPED_RESOURCES, {filter: {resourceType: RESOURCE_ENERGY}});
 
     // if no dropped energy is found
@@ -141,6 +143,7 @@ Creep.prototype.getRepairTarget = function () {
  */
 Creep.prototype.getQueenDumpTarget = function () {
     // find all the towers that are not full
+    /** @type {Structure[]} */
     let targets = this.room.findLowTowers();
 
     // if no towers are found

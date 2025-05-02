@@ -4,18 +4,19 @@
  * Structure IDs are cached and automatically updated if buildings are destroyed.
  * Labs and factory operate as independent state machines to enable parallel processing.
  * The operator can interact with either system independently without disrupting the other.
- * If structures are destroyed or wrong materials are detected, systems automatically reset to cleaning state.
+ * If structures are destroyed or wrong materials are detected, systems automatically reset to a cleaning state.
  * @class NeuroPlant
  */
 class NeuroPlant {
     constructor() {}
     /**
-     * description
+     * validates that the labs are still present and have the correct resources, returning the structure references.
      * @param {PlantData} plant_data
      * @param {Room} room
-     * @returns {PlantLabStructures|null}
+     * @returns {PlantLabStructures|null} the lab structures for easy access
      */
     validateLabs (plant_data, room) {
+        // assume the labs are valid
         let is_valid = true;
         // grab input lab 1
         let input_lab_1 = Game.getObjectById(plant_data.input_lab_1_id);
@@ -30,10 +31,11 @@ class NeuroPlant {
         if (input_lab_1 == null || input_lab_2 == null || output_lab == null || storage == undefined) {
             // clear the current reaction
             plant_data.current_reaction = null;
+            // mark the labs as invalid
             is_valid = false;
 
             // if any of the labs have anything in them,
-            if (input_lab_1?.store.getUsedCapacity() > 0 || input_lab_2?.store.getUsedCapacity() > 0 || output_lab?.store.getUsedCapacity() > 0) {
+            if ((input_lab_1 != null && input_lab_1.store.getUsedCapacity() > 0) || (input_lab_2 != null && input_lab_2.store.getUsedCapacity() > 0) || (output_lab != null && output_lab.store.getUsedCapacity() > 0)) {
                 // set the plant to clean up the reaction
                 plant_data.labs_state = STATES.CLEANING;
             } else {
@@ -48,27 +50,31 @@ class NeuroPlant {
             let reaction = plant_data.current_reaction;
 
             // if any of the labs have incorrect resources
-            if (input_lab_1.mineralType != reaction.input_1 || input_lab_2.mineralType != reaction.input_2 || output_lab.mineralType != reaction.output) {
+            if ((input_lab_1 != null && input_lab_1.store[reaction.input_1] != undefined && input_lab_1.store[reaction.input_1] > 0) || (input_lab_2 != null && input_lab_2.store[reaction.input_2] != undefined && input_lab_2.store[reaction.input_2] > 0) || (output_lab != null && output_lab.store[reaction.output] != undefined && output_lab.store[reaction.output] > 0)) {
                 // clear the current reaction
                 plant_data.current_reaction = null;
+                // mark the labs as invalid
                 is_valid = false;
                 // set the plant to clean up the reaction
                 plant_data.labs_state = STATES.CLEANING;
             }
         }
 
+        // if the labs are valid
         if (is_valid) {
+            // return the labs
             return new PlantLabStructures(input_lab_1, input_lab_2, output_lab, storage);
         }else{
+            // return null for failure
             return null;
         }
     }
     /**
-     * description
-     * @param {PlantData} plant_data
-     * @param {Room} room
-     * @param {PlantLabStructures} structures
-     * @returns {null|Reaction}
+     * returns a Reaction if the storage has the ingredients for one.
+     * @param {PlantData} plant_data - the plant data for storing in memory.
+     * @param {Room} room - the room the plant is in.
+     * @param {PlantLabStructures} structures - the labs and storage for easy access.
+     * @returns {null|Reaction} the reaction that was found, or null if none was found.
      */
     getLabReaction (plant_data, room, structures) {
         // grab the storage

@@ -123,6 +123,7 @@ class RoomData {
             // set this room as not a possible colony
             this.possible_colony = false;
             // find any source keeper lairs
+            /** @type {StructureKeeperLair[]} */
             let source_keeper_lairs = room.find(FIND_STRUCTURES, {
                 // that are source keeper lairs
                 filter: (structure) => structure.structureType == STRUCTURE_KEEPER_LAIR

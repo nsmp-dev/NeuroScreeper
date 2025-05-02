@@ -1,5 +1,5 @@
 /**
- * Visualizer namespace provides functionality for rendering game statistics and managing visual elements in rooms.
+ * Visualizer object that provides functionality for rendering game statistics and managing visual elements in rooms.
  * It handles CPU usage visualization through bar graphs, population statistics display, and temporary popup messages.
  * Works in conjunction with the Timer utility to display performance metrics and game state information.
  * @class Visualizer
@@ -36,6 +36,7 @@ class Visualizer {
         // keep track of the offset as we loop through the population
         let offset_y = 0;
 
+        // if the population is defined
         if (pop != undefined) {
             // for each role in the population
             for (let role in pop.roles) {
@@ -55,7 +56,7 @@ class Visualizer {
         // make a couple spaces for the popup messages
         offset_y = 0;
 
-        // for each role in the population
+        // for each popup message in the list of popups
         for (let i = 0; i < main_memory.popup_messages.length; i++) {
             // if this popup message has expired
             if (main_memory.popup_messages[i].timer > POPUP_TIMER_LIMIT) {

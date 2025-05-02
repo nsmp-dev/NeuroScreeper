@@ -22,6 +22,7 @@ StructureTower.prototype.run = function () {
     }
 
     // find all the creeps in the room
+    /** @type {Creep[]} */
     let creeps = this.room.find(FIND_CREEPS);
     // create a list of targets
     let targets = [];
@@ -65,6 +66,7 @@ StructureTower.prototype.run = function () {
     }
 
     // find all the structures in the room
+    /** @type {Structure[]} */
     let structures = this.room.find(FIND_MY_STRUCTURES);
 
     // loop through the structures

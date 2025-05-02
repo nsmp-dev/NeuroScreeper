@@ -56,6 +56,7 @@ Creep.prototype.runPowerAttacker = function () {
             // if the power squad is collecting
         } else if (squad.state == STATES.COLLECTING) {
             // grab any power banks in the room
+            /** @type {StructurePowerBank[]} */
             let power_banks = this.room.find(FIND_STRUCTURES, {filter: {structureType: STRUCTURE_POWER_BANK}});
             // if any power banks were found
             if (power_banks.length > 0) {

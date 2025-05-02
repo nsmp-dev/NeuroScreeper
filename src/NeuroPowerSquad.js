@@ -111,6 +111,7 @@ class NeuroPowerSquad {
                     // shift the next room in the queue onto the log
                     power_squad.highway_log.push(power_squad.highway_queue.shift());
                     // find any power banks in the room
+                    /** @type {StructurePowerBank[]} */
                     let power_banks = creeps.power_attacker.room.find(FIND_STRUCTURES, {filter: {structureType: STRUCTURE_POWER_BANK}});
                     // if any power banks are found
                     if (power_banks.length > 0) {
@@ -130,6 +131,7 @@ class NeuroPowerSquad {
                     power_squad.state = STATES.RETURNING;
                 } else {
                     // find any power banks in the room
+                    /** @type {StructurePowerBank[]} */
                     let power_banks = creeps.power_attacker.room.find(FIND_STRUCTURES, {filter: {structureType: STRUCTURE_POWER_BANK}});
                     // if any power banks are found
                     if (power_banks.length == 0) {

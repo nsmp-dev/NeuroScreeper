@@ -57,10 +57,12 @@ Creep.prototype.runPowerTransporter = function () {
             // if the power squad is collecting
         } else if (squad.state == STATES.COLLECTING) {
             // find any power piles in the room
+            /** @type {Resource[]} */
             let power_piles = this.room.find(FIND_DROPPED_RESOURCES, {filter: {resourceType: RESOURCE_POWER}});
             // if any power piles were found
             if (power_piles.length > 0) {
                 // find the closest pile
+                /** @type {Resource} */
                 let target = this.pos.findClosestByPath(power_piles);
                 // assign a new gather task
                 this.memory.task = new GatherTask(target, RESOURCE_POWER);

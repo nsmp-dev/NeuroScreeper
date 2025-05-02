@@ -27,7 +27,7 @@ class SourcePopulation {
          */
         this.driller = null;
         /**
-         * Identifier of the assigned carrier creep that moves energy from the container to storage
+         * Identifier of the transporter carrier creep that moves energy from the container to storage
          * @type {string|null}
          */
         this.transporter = null;

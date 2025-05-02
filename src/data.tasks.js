@@ -1,6 +1,6 @@
 /**
  * Base Task class that provides the foundation for all creep actions in the game.
- * Defines common properties and structure used by all specialized task types,
+ * Defines common properties used by all specialized task types,
  * enabling consistent task management and execution across different creep roles.
  * @class Task
  */
@@ -64,7 +64,7 @@ global.GatherTask = GatherTask;
 /**
  * DepositTask manages the storage of resources into containers, storage, or other
  * structures. Controls the transfer of specific resource types and amounts from
- * creeps into designated storage facilities.
+ * the creep into designated storage facilities.
  * @class DepositTask
  */
 class DepositTask extends Task {

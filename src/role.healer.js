@@ -32,6 +32,7 @@ Creep.prototype.runHealer = function () {
     // if we don't have a task currently assigned
     if (this.memory.task == null) {
         // find my creeps
+        /** @type {Creep[]} */
         let creeps = this.room.find(FIND_MY_CREEPS, {
             // that are damaged
             filter: creep => creep.hits < creep.hitsMax,
@@ -39,6 +40,7 @@ Creep.prototype.runHealer = function () {
         // if we found any
         if (creeps.length > 0) {
             // find the closest one
+            /** @type {Creep} */
             let target = this.pos.findClosestByPath(creeps);
             // assign a new heal task
             this.memory.task = new HealTask(target);

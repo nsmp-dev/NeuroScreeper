@@ -31,7 +31,7 @@ class RoomPopulation {
          */
         this.mineral_populations = [];
         /**
-         * Manages the population of creeps assigned to power processing operations
+         * Manages the population of creeps assigned to power collection operations
          * @type {PowerSquadPopulation}
          */
         this.power_squad = new PowerSquadPopulation();

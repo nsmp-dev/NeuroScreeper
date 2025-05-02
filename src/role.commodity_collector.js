@@ -65,6 +65,7 @@ Creep.prototype.runCommodityCollector = function () {
             }
         } else {
             // grab the deposit in the room
+            /** @type {Deposit} */
             let deposit = this.pos.findClosestByPath(FIND_DEPOSITS);
             // if a deposit was found
             if (deposit == null) {

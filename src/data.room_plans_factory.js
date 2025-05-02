@@ -1,8 +1,8 @@
 /**
  * Factory for creating room plans. Handles the planning and placement of structures,
  * roads, and ramparts. Provides methods for initial room setup and
- * later room development planning, including source mining, mineral extraction, base construction,
- * and defensive structure positioning.
+ * later new room planning, including source mining, mineral extraction, base construction,
+ * and plant construction.
  * @class RoomPlansFactory
  */
 class RoomPlansFactory{
@@ -387,6 +387,7 @@ class RoomPlansFactory{
                 this.planRoadsBetween(plans.base_road_anchors, plans.plant_road_anchors, room, plans);
             }
             // grab the left exits
+            /** @type {RoomPosition[]} */
             let left_exits = room.find(FIND_EXIT_LEFT);
 
             // if any were found
@@ -396,6 +397,7 @@ class RoomPlansFactory{
             }
 
             // grab the top exits
+            /** @type {RoomPosition[]} */
             let top_exits = room.find(FIND_EXIT_TOP);
 
             // if any were found
@@ -405,6 +407,7 @@ class RoomPlansFactory{
             }
 
             // grab the right exits
+            /** @type {RoomPosition[]} */
             let right_exits = room.find(FIND_EXIT_RIGHT);
 
             // if any were found
@@ -414,6 +417,7 @@ class RoomPlansFactory{
             }
 
             // grab the bottom exits
+            /** @type {RoomPosition[]} */
             let bottom_exits = room.find(FIND_EXIT_BOTTOM);
 
             // if any were found
@@ -485,6 +489,7 @@ class RoomPlansFactory{
         // create a second position for pathfinding
         let b_pos = new RoomPosition(closest_second_point.x, closest_second_point.y, room.name);
         // find the path between the points
+        /** @type {RoomPosition[]} */
         let path = room.findPath(a_pos, b_pos);
 
         // loop through all the positions of the path
@@ -499,7 +504,7 @@ class RoomPlansFactory{
 global.RoomPlansFactory = RoomPlansFactory;
 
 /**
- * Instance of the RoomPlansFactory class that provides centralized room planning services and is accessible globally throughout the code base
+ * Instance of the RoomPlansFactory class that provides centralized room planning functions
  * @constant {RoomPlansFactory} room_plans_factory
  */
 global.room_plans_factory = new RoomPlansFactory();

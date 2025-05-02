@@ -469,6 +469,7 @@ Room.prototype.getStructureAt = function (structure_type, x, y) {
  */
 Room.prototype.getPowerSpawn = function () {
     // find all the structures
+    /** @type {StructurePowerSpawn[]} */
     let power_spawns = this.find(FIND_MY_STRUCTURES, {
         // filter out the power spawns
         filter: structure => structure.structureType == STRUCTURE_POWER_SPAWN,
