@@ -8,10 +8,11 @@
  */
 class NeuroPowerSquad {
     /**
-     * description
+     * find any new highways and add them to the queue
      * @param power_squad
      */
     getNewHighways (power_squad) {
+        // grab the main memory
         let main_memory = util.getMainMemory();
         // loop through the rooms we have seen so far
         for (let room_name in main_memory.room_data) {
@@ -23,7 +24,7 @@ class NeuroPowerSquad {
         }
     }
     /**
-     * description
+     * validate that the creeps are still alive and valid
      * @param {PowerSquad} power_squad
      * @returns {PowerSquadCreeps|null}
      */
@@ -65,6 +66,7 @@ class NeuroPowerSquad {
 
             // if all the creeps are found
             if (found_power_attacker != null && found_power_healer != null && found_power_transporter != null) {
+                // return the creeps
                 return new PowerSquadCreeps(found_power_attacker, found_power_healer, found_power_transporter);
             } else {
                 // invalidate the power attacker cache
@@ -85,10 +87,13 @@ class NeuroPowerSquad {
      * @param {PowerSquad} power_squad - The power squad we are running
      */
     run (power_squad) {
+        // check for any new highways
         this.getNewHighways(power_squad);
 
+        // grab the creeps and validate them
         let creeps = this.validateCreeps(power_squad);
 
+        // if the creeps were found
         if (creeps != null) {
             // if the power squad is searching
             if (power_squad.state == STATES.SEARCHING) {
@@ -105,13 +110,16 @@ class NeuroPowerSquad {
                         return;
                     }
                 }
-                // if all the creeps are in the next room in the queue
+                // grab the next room in the queue
                 let next_room = power_squad.highway_queue[0];
+                // if all the creeps are in the next room in the queue
                 if (creeps.power_attacker.room.name == next_room && creeps.power_healer.room.name == next_room && creeps.power_transporter.room.name == next_room) {
                     // shift the next room in the queue onto the log
                     power_squad.highway_log.push(power_squad.highway_queue.shift());
-                    // find any power banks in the room
-                    /** @type {StructurePowerBank[]} */
+                    /**
+                     * find any power banks in the room
+                     * @type {StructurePowerBank[]}
+                     */
                     let power_banks = creeps.power_attacker.room.find(FIND_STRUCTURES, {filter: {structureType: STRUCTURE_POWER_BANK}});
                     // if any power banks are found
                     if (power_banks.length > 0) {
@@ -130,8 +138,10 @@ class NeuroPowerSquad {
                     // set the power squad to returning
                     power_squad.state = STATES.RETURNING;
                 } else {
-                    // find any power banks in the room
-                    /** @type {StructurePowerBank[]} */
+                    /**
+                     * find any power banks in the room
+                     * @type {StructurePowerBank[]}
+                     */
                     let power_banks = creeps.power_attacker.room.find(FIND_STRUCTURES, {filter: {structureType: STRUCTURE_POWER_BANK}});
                     // if any power banks are found
                     if (power_banks.length == 0) {
@@ -139,7 +149,6 @@ class NeuroPowerSquad {
                         power_squad.state = STATES.SEARCHING;
                     }
                 }
-
             }
             // if the power squad is returning
             if (power_squad.state == STATES.RETURNING) {

@@ -1,14 +1,11 @@
 /**
  * Core module responsible for managing individual rooms within the colony network.
- * This namespace provides comprehensive room management functionality including:
+ * This class provides comprehensive room management functionality including
  * - Creep spawning and population control
  * - Room satisfaction level monitoring and tracking
  * - Construction site management and building coordination
  * - Resource gathering and processing plant operations
  * - Power squad coordination for room defense and power bank harvesting
- *
- * Acts as the central nervous system for room-level operations, resource allocation,
- * and strategic decision-making within the colony network.
  * @class NeuroRoom
  */
 class NeuroRoom {
@@ -16,7 +13,6 @@ class NeuroRoom {
     /**
      * Attempts to spawn a new creep with specified memory configuration either in the local room or globally.
      * Will try to find available spawns and adjust body parts based on available energy and role requirements.
-     * @memberOf NeuroRoom
      * @param {string} room_name - Name of the room requesting the spawn
      * @param {CreepMemory} creep_memory - Memory configuration for the new creep, including role and task assignments
      * @param {Boolean} is_global - When true, allows spawning in any room. When false, only spawns in the requesting room

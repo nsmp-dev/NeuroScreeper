@@ -35,7 +35,9 @@ class NeuroPlant {
             is_valid = false;
 
             // if any of the labs have anything in them,
-            if ((input_lab_1 != null && input_lab_1.store.getUsedCapacity() > 0) || (input_lab_2 != null && input_lab_2.store.getUsedCapacity() > 0) || (output_lab != null && output_lab.store.getUsedCapacity() > 0)) {
+            if ((input_lab_1 != null && input_lab_1.store.getUsedCapacity() > 0) ||
+                (input_lab_2 != null && input_lab_2.store.getUsedCapacity() > 0) ||
+                (output_lab != null && output_lab.store.getUsedCapacity() > 0)) {
                 // set the plant to clean up the reaction
                 plant_data.labs_state = STATES.CLEANING;
             } else {
@@ -50,7 +52,9 @@ class NeuroPlant {
             let reaction = plant_data.current_reaction;
 
             // if any of the labs have incorrect resources
-            if ((input_lab_1 != null && input_lab_1.store[reaction.input_1] != undefined && input_lab_1.store[reaction.input_1] > 0) || (input_lab_2 != null && input_lab_2.store[reaction.input_2] != undefined && input_lab_2.store[reaction.input_2] > 0) || (output_lab != null && output_lab.store[reaction.output] != undefined && output_lab.store[reaction.output] > 0)) {
+            if ((input_lab_1 != null && input_lab_1.store[reaction.input_1] != undefined && input_lab_1.store[reaction.input_1] > 0) ||
+                (input_lab_2 != null && input_lab_2.store[reaction.input_2] != undefined && input_lab_2.store[reaction.input_2] > 0) ||
+                (output_lab != null && output_lab.store[reaction.output] != undefined && output_lab.store[reaction.output] > 0)) {
                 // clear the current reaction
                 plant_data.current_reaction = null;
                 // mark the labs as invalid
@@ -74,7 +78,7 @@ class NeuroPlant {
      * @param {PlantData} plant_data - the plant data for storing in memory.
      * @param {Room} room - the room the plant is in.
      * @param {PlantLabStructures} structures - the labs and storage for easy access.
-     * @returns {null|Reaction} the reaction that was found, or null if none was found.
+     * @returns {null|Reaction} the Reaction that was found or null if none was found.
      */
     getLabReaction (plant_data, room, structures) {
         // grab the storage
@@ -100,6 +104,7 @@ class NeuroPlant {
                 }
             }
         }
+        // return null for failure
         return null;
     }
     /**
@@ -108,13 +113,18 @@ class NeuroPlant {
      * @param {Room} room - The Room the plant is in
      */
     runLabs (plant_data, room) {
+        // grab the structures and validate them
         let structures = this.validateLabs(plant_data, room);
 
+        // if the structures are valid
         if (structures != null) {
             // if the labs are idle
             if (plant_data.labs_state == STATES.IDLE) {
+                // get a new reaction
                 let reaction = this.getLabReaction(plant_data, room, structures);
+                // if a reaction is found
                 if (reaction != null) {
+                    // set the reaction
                     plant_data.current_reaction = reaction;
                     visualizer.popup("Requested a reaction for " + plant_data.current_reaction.amount + " " + plant_data.current_reaction.output);
                     // set the state of the labs to loading
@@ -164,12 +174,13 @@ class NeuroPlant {
         }
     }
     /**
-     * description
+     * validates that the factory is still present and has the correct resources, returning the structure references.
      * @param {PlantData} plant_data
      * @param {Room} room
      * @returns {PlantFactoryStructures|null}
      */
     validateFactory (plant_data, room) {
+        // assume the factory is valid
         let is_valid = true;
         // grab the factory
         let factory = Game.getObjectById(plant_data.factory_id);
@@ -180,6 +191,7 @@ class NeuroPlant {
         if (factory == null || storage == undefined) {
             // clear the current production
             plant_data.current_production = null;
+            // set the factory as invalid
             is_valid = false;
             // if the factory is built, and it has resources in it
             if (factory != null && factory.store.getUsedCapacity() > 0) {
@@ -213,19 +225,23 @@ class NeuroPlant {
             if (!correct_contents) {
                 // clear the current production
                 plant_data.current_production = null;
+                // set the factory as invalid
                 is_valid = false;
                 // set the plant to clean up the production
                 plant_data.factory_state = STATES.CLEANING;
             }
         }
+        // if the factory is valid
         if (is_valid) {
+            // return the structures
             return new PlantFactoryStructures(factory, storage);
         }else{
+            // return null for failure
             return null;
         }
     }
     /**
-     * description
+     * returns a Production if the storage has the ingredients for one.
      * @param {PlantData} plant_data
      * @param {Room} room
      * @param {PlantFactoryStructures} structures
@@ -259,6 +275,7 @@ class NeuroPlant {
                 }
             }
         }
+        // return null for failure
         return null;
     }
     /**
@@ -267,13 +284,19 @@ class NeuroPlant {
      * @param {Room} room - The Room the plant is in
      */
     runFactory (plant_data, room) {
+        // grab the structures and validate them
         let structures = this.validateFactory(plant_data, room);
 
+        // if the structures are valid
         if (structures != null) {
+            // if the factory is idle
             if (plant_data.factory_state == STATES.IDLE) {
+                // find a new production
                 let production = this.getFactoryProduction(plant_data, room, structures);
 
+                // if a production is found
                 if (production != null) {
+                    // store the production on the plant data
                     plant_data.current_production = production;
                     visualizer.popup("Requested a production of " + plant_data.current_production.amount + " " + plant_data.current_reaction.output);
                     // set the factory to loading
@@ -314,6 +337,7 @@ class NeuroPlant {
                     // set the factory to finished
                     plant_data.factory_state = STATES.FINISHED;
                     visualizer.popup("Finished a production of " + plant_data.current_reaction.output);
+                    // clear the current production
                     plant_data.current_production = null;
                 }
             }

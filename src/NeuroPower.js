@@ -19,7 +19,7 @@ class NeuroPower {
         // loop through every power
         for (let power_id of POWER_INFO) {
             // if this is the first power, or the operator doesn't have this power, or it's a lower level than the lowest
-            if (lowest_power_id == null || operator.powers[lowest_power_id] == null || operator.powers[lowest_power_id].level < operator.powers[power_id].level) {
+            if (lowest_power_id == null || operator.powers[lowest_power_id] == undefined || operator.powers[lowest_power_id].level < operator.powers[power_id].level) {
                 // save the new lowest power id
                 lowest_power_id = power_id;
             }
@@ -27,25 +27,33 @@ class NeuroPower {
         // upgrade the lowest power
         operator.upgrade(lowest_power_id);
     }
+    /**
+     * runs the power spawns, processing power and returning a list of the PowerSpawns
+     * @returns {StructurePowerSpawn[]} the power spawns that were found
+     */
     runPowerSpawns () {
         // make a list for the power spawns
+        /**
+         * list of power spawns
+         * @type {StructurePowerSpawn[]}
+         */
         let power_spawns = [];
         // loop through all the structures
         for (let id in Game.structures) {
+            let structure = Game.structures[id];
             // if this structure is a PowerSpawn
-            if (Game.structures[id].structureType == STRUCTURE_POWER_SPAWN) {
-                // grab the PowerSpawn
-                let power_spawn = Game.structures[id];
+            if (structure instanceof StructurePowerSpawn) {
                 // add it to the list of PowerSpawns
-                power_spawns.push(power_spawn);
+                power_spawns.push(structure);
                 // if the PowerSpawn has enough power and energy to process it
-                if (power_spawn.store[RESOURCE_POWER] > 0 && power_spawn.store[RESOURCE_ENERGY] >= POWER_SPAWN_ENERGY_RATIO) {
+                if (structure.store[RESOURCE_POWER] > 0 && structure.store[RESOURCE_ENERGY] >= POWER_SPAWN_ENERGY_RATIO) {
                     // process the power in the PowerSpawn
-                    power_spawn.processPower();
+                    structure.processPower();
                 }
             }
         }
 
+        // return the list of power spawns
         return power_spawns;
     }
     /**
@@ -92,8 +100,8 @@ class NeuroPower {
                 }
             }
         } else {
-            // if the operator is lower level than the GPL
-            if (operator.level < Game.gpl.level) {
+            // if the operator is lower level than the GPL (minus one for the power used to create the operator)
+            if (operator.level < Game.gpl.level - 1) {
                 // attempt to upgrade the factory power
                 let result = operator.upgrade(PWR_OPERATE_FACTORY);
                 // if the upgrade failed due to the factory power being full
