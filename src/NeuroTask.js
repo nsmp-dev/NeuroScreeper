@@ -1,5 +1,5 @@
 /**
- * The NeuroTask namespace provides functionality for managing and executing different tasks for creeps in the game.
+ * The NeuroTask class provides functionality for managing and executing different tasks for creeps in the game.
  * It contains methods to handle various tasks like gathering resources, depositing items, repairing structures,
  * building, upgrading controllers, claiming rooms, and more. Each task type has its own execution logic and
  * movement handling.
@@ -132,7 +132,7 @@ class NeuroTask {
         }
     }
     /**
-     * run the gather task on the creep
+     * run the build task on the creep
      * @param {Creep|PowerCreep} creep - The Creep doing the task
      * @param {BuildTask} task - the task being run
      */
@@ -198,9 +198,9 @@ class NeuroTask {
      * @param {ClaimTask} task - the task being run
      */
     runClaim (creep, task) {
-        // if the creep is not in the room for the task
+        // if the creep is in the room for the task
         if (creep.room.name == task.room_name) {
-            // if the controller's sign does not match the signature
+            // if the controller's sign matches the signature
             if (creep.room.controller.sign.text == SIGNATURE) {
                 // if claiming the controller results in not being in range
                 if (creep.claimController(creep.room.controller) == ERR_NOT_IN_RANGE) {
@@ -225,9 +225,9 @@ class NeuroTask {
      * @param {ReserveTask} task - the task being run
      */
     runReserve (creep, task) {
-        // if the creep is not in the room for the task
+        // if the creep is in the room for the task
         if (creep.room.name == task.room_name) {
-            // if the controller's sign does not match the signature
+            // if the controller's sign matches the signature
             if (creep.room.controller.sign.text == SIGNATURE) {
                 // if reserving the controller results in not being in range
                 if (creep.reserveController(creep.room.controller) == ERR_NOT_IN_RANGE) {
@@ -252,7 +252,7 @@ class NeuroTask {
      * @param {DrillTask} task - the task being run
      */
     runDrill (creep, task) {
-        // if the creep is not in the room for the task
+        // if the creep is in the room for the task
         if (creep.room.name == task.room_name) {
             // grab the target
             let target = Game.getObjectById(task.source_id);
@@ -275,7 +275,7 @@ class NeuroTask {
      * @param {AttackTask} task - the task being run
      */
     runAttack (creep, task) {
-        // if the creep is not in the room for the task
+        // if the creep is in the room for the task
         if (creep.room.name == task.room_name) {
             // grab the target
             let target = Game.getObjectById(task.target);
@@ -301,7 +301,7 @@ class NeuroTask {
      * @param {HealTask} task - the task being run
      */
     runHeal (creep, task) {
-        // if the creep is not in the room for the task
+        // if the creep is in the room for the task
         if (creep.room.name == task.room_name) {
             // grab the target
             let target = Game.getObjectById(task.creep);
@@ -327,7 +327,7 @@ class NeuroTask {
      * @param {MoveRoomTask} task - the task being run
      */
     runMoveRoom (creep, task) {
-        // if the creep is not in the room for the task
+        // if the creep is in the room for the task
         if (creep.room.name == task.room_name) {
             // if the timer has gone off
             if (task.timer >= 5) {
@@ -350,7 +350,7 @@ class NeuroTask {
      * @param {IdleTask} task - the task being run
      */
     runIdle (creep, task) {
-        // if the creep is not in the room for the task
+        // if the creep is in the room for the task
         if (creep.room.name == task.room_name) {
             // if the task has reached the tick limit
             if (task.tick_counter > task.tick_limit) {
@@ -373,7 +373,7 @@ class NeuroTask {
      * @param {RenewOperatorTask} task - the task being run
      */
     runRenewOperator (creep, task) {
-        // if the creep is not in the room for the task
+        // if the creep is in the room for the task
         if (creep.room.name == task.room_name) {
             // grab the power spawn
             let power_spawn = Game.getObjectById(task.power_spawn);
@@ -406,49 +406,55 @@ class NeuroTask {
      * @param {MoveResourceTask} task - the task being run
      */
     runMoveResource (creep, task) {
-        // if the task is filling
-        if (task.state == STATES.FILLING) {
-            // if the creep has the requested amount of the resource
-            if (creep.store[task.resource] == task.amount) {
-                // set the task to dumping
-                task.state = STATES.DUMPING;
-            } else {
-                // grab the source structure
-                let source_structure = Game.getObjectById(task.source_structure);
-                // if the source structure is valid
-                if (source_structure == null) {
-                    // clear the task
-                    creep.memory.task = null;
+        // if the creep is in the room for the task
+        if (creep.room.name == task.room_name) {
+            // if the task is filling
+            if (task.state == STATES.FILLING) {
+                // if the creep has the requested amount of the resource
+                if (creep.store[task.resource] == task.amount) {
+                    // set the task to dumping
+                    task.state = STATES.DUMPING;
                 } else {
-                    // if attempting to withdraw from the source structure results in not being in range
-                    if (creep.withdraw(source_structure, task.resource, task.amount) == ERR_NOT_IN_RANGE) {
-                        // move to the source structure
-                        creep.moveTo(source_structure);
+                    // grab the source structure
+                    let source_structure = Game.getObjectById(task.source_structure);
+                    // if the source structure is valid
+                    if (source_structure == null) {
+                        // clear the task
+                        creep.memory.task = null;
+                    } else {
+                        // if attempting to withdraw from the source structure results in not being in range
+                        if (creep.withdraw(source_structure, task.resource, task.amount) == ERR_NOT_IN_RANGE) {
+                            // move to the source structure
+                            creep.moveTo(source_structure);
+                        }
                     }
                 }
             }
-        }
-        // if the task is dumping
-        if (task.state == STATES.DUMPING) {
-            // if the creep is empty
-            if (creep.store.getUsedCapacity() == 0) {
-                // clear the task
-                creep.memory.task = null;
-            } else {
-                // grab the target structure
-                let target_structure = Game.getObjectById(task.target_structure);
-                // if the target structure is valid
-                if (target_structure == null) {
+            // if the task is dumping
+            if (task.state == STATES.DUMPING) {
+                // if the creep is empty
+                if (creep.store.getUsedCapacity() == 0) {
                     // clear the task
                     creep.memory.task = null;
                 } else {
-                    // if attempting to transfer to the target structure results in not being in range
-                    if (creep.transfer(target_structure, task.resource, task.amount) == ERR_NOT_IN_RANGE) {
-                        // move to the target structure
-                        creep.moveTo(target_structure);
+                    // grab the target structure
+                    let target_structure = Game.getObjectById(task.target_structure);
+                    // if the target structure is valid
+                    if (target_structure == null) {
+                        // clear the task
+                        creep.memory.task = null;
+                    } else {
+                        // if attempting to transfer to the target structure results in not being in range
+                        if (creep.transfer(target_structure, task.resource, task.amount) == ERR_NOT_IN_RANGE) {
+                            // move to the target structure
+                            creep.moveTo(target_structure);
+                        }
                     }
                 }
             }
+        }else{
+            // move to the room for the task
+            creep.moveToRoom(task.room_name);
         }
     }
     /**
@@ -457,7 +463,7 @@ class NeuroTask {
      * @param {HarvestTask} task - the task being run
      */
     runHarvest (creep, task) {
-        // if the creep is not in the room for the task
+        // if the creep is in the room for the task
         if (creep.room.name == task.room_name) {
             // if the creep is full
             if (creep.store.getFreeCapacity() == 0) {

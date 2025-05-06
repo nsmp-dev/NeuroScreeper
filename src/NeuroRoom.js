@@ -242,8 +242,6 @@ class NeuroRoom {
             }
         }
 
-
-
         // count the highways we have seen
         let highway_count = util.getHighwayRooms().length;
 
@@ -300,10 +298,9 @@ class NeuroRoom {
         }
     }
     /**
-     * Evaluates the room's current state to determine if all essential needs are being met.
+     * Evaluates the room's current state to determine if all creep needs are being met.
      * Tracks satisfaction over time using a rolling log to maintain historical performance.
-     * A room is considered satisfied when all required creeps are present and operational.
-     * Also monitors room ownership status and marks rooms as dead if they become unowned.
+     * Also monitors room ownership status and marks the room as dead if it has become unowned.
      * @param {RoomData} room_data - Contains room state data including satisfaction history
      * @param {Room|null} room - The Room object being evaluated, null if room is not visible
      */
@@ -325,6 +322,17 @@ class NeuroRoom {
 
         // calculate the average satisfaction and see if it meets the threshold of satisfaction
         room_data.satisfied = (util.getSatisfiedRatio(room_data) > SATISFACTION_THRESHOLD);
+
+        // if the room is visible
+        if (room != null) {
+            // push a new progress amount onto the progress log
+            room_data.progress_log.push(room.controller.progress);
+            // check if the progress log is too big
+            while (room_data.progress_log.length > PROGRESS_LOG_SIZE) {
+                // remove the first element
+                room_data.progress_log.shift();
+            }
+        }
 
         // if we have owned the room before
         if (room_data.has_been_owned) {
@@ -402,8 +410,10 @@ class NeuroRoom {
 
         // if the power squad timer has gone off
         if (room_data.power_squad_timer > POWER_SQUAD_TIMER) {
+            timer.start("running_power_spawn");
             // run the power squad
             neuro_power_squad.run(room_data.power_squad);
+            timer.stop("running_power_spawn");
             // reset the power squad timer
             room_data.power_squad_timer = 0;
         } else {
@@ -417,9 +427,7 @@ class NeuroRoom {
 global.NeuroRoom = NeuroRoom;
 
 /**
- * Global singleton instance of NeuroRoom that manages all room-level operations
- * across the colony network. Provides centralized access to room management
- * functionality including spawning, construction, and resource processing.
+ * Global singleton instance of NeuroRoom.
  * @constant {NeuroRoom} neuro_room
  */
 global.neuro_room = new NeuroRoom();

@@ -49,7 +49,6 @@ Creep.prototype.getTransporterTarget = function () {
 };
 /**
  * Finds the nearest construction site that needs to be built.
- * Uses pathfinding to determine the closest site to the creep's current position.
  * @memberOf Creep#
  * @member {function} getBuildTarget
  * @return {ConstructionSite} The closest construction site by path
@@ -122,7 +121,6 @@ Creep.prototype.getFillTarget = function () {
 };
 /**
  * Finds the closest structure that needs repairs by comparing current hits to maximum hits.
- * Uses pathfinding to determine the nearest damaged structure to repair.
  * @memberOf Creep#
  * @member {function} getRepairTarget
  * @return {Structure} The closest structure that has less than maximum hit points

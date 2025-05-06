@@ -10,7 +10,7 @@
 class NeuroScreeper {
     constructor() {}
     /**
-     * scan for any new rooms and create RoomData for them if found
+     * scan for any new rooms and create RoomData objects for them if found
      */
     scanNewRooms () {
         // get the MainMemory object
@@ -105,6 +105,8 @@ class NeuroScreeper {
                     if (source_pop.source_id == creep.memory.source) {
                         // mark this source population's driller as spawned
                         source_pop.driller = creep.id;
+                        // break the loop
+                        break;
                     }
                 }
             }
@@ -116,6 +118,8 @@ class NeuroScreeper {
                     if (source_pop.source_id == creep.memory.source) {
                         // mark this source population's transporter as spawned
                         source_pop.transporter = creep.id;
+                        // break the loop
+                        break;
                     }
                 }
             }
@@ -127,6 +131,8 @@ class NeuroScreeper {
                     if (mineral_pop.mineral_id == creep.memory.mineral) {
                         // mark this mineral population's mineral transporter as spawned
                         mineral_pop.mineral_driller = creep.id;
+                        // break the loop
+                        break;
                     }
                 }
             }
@@ -138,6 +144,8 @@ class NeuroScreeper {
                     if (mineral_pop.mineral_id == creep.memory.mineral) {
                         // mark this mineral population's mineral driller as spawned
                         mineral_pop.mineral_transporter = creep.id;
+                        // break the loop
+                        break;
                     }
                 }
             }

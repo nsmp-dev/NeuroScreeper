@@ -25,10 +25,8 @@ let loop = function () {
         Memory.main_memory = new MainMemory();
         // store the main memory object for usage in main
         main_memory = util.getMainMemory();
-        // grab one of the names of the spawns
-        let spawn_name = Object.keys(Game.spawns)[0];
         // grab the room that spawn is in
-        let room = Game.spawns[spawn_name].room;
+        let room = Game.spawns[INITIAL_SPAWN].room;
         // initialize the room data entry for the first room
         main_memory.room_data[room.name] = new RoomData(room, Game.spawns[spawn_name]);
         visualizer.popup("Recreated MainMemory!");

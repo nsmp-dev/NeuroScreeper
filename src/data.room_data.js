@@ -18,13 +18,6 @@ class RoomData {
          * @type {number|null}
          */
         this.type = null;
-
-        // if any spawns are found in the room
-        if (room.find(FIND_MY_SPAWNS).length > 0) {
-            // set the type to a colony
-            this.type = COLONY;
-        }
-
         /**
          * The unique room name identifier in the format 'W1N1' or similar coordinates
          * @type {string}
@@ -95,6 +88,17 @@ class RoomData {
          * @type {Boolean}
          */
         this.has_been_owned = false;
+        /**
+         * The average progress log
+         * @type {number[]}
+         */
+        this.progress_log = [room.controller.progress];
+
+        // if any spawns are found in the room
+        if (room.find(FIND_MY_SPAWNS).length > 0) {
+            // set the type to a colony
+            this.type = COLONY;
+        }
 
         timer.start("creating_room_plans");
         /**

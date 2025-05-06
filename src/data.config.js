@@ -3,7 +3,7 @@
  * and initiate a controlled termination of all existing creeps to start fresh with new code.
  * @constant {number} BUILD
  */
-global.BUILD = 12;
+global.BUILD = 15;
 /**
  * Signature message used to sign claimed room controllers, identifying ownership and intent to other players
  * @constant {string} SIGNATURE
@@ -14,6 +14,11 @@ global.SIGNATURE = "Purely defensive, still debugging";
  * @constant {Boolean} DEBUG_MODE
  */
 global.DEBUG_MODE = true;
+/**
+ * the name of the initial spawn
+ * @constant {string} INITIAL_SPAWN
+ */
+global.INITIAL_SPAWN = "Spawn1";
 /**
  * Size of a room in tiles
  * @constant {number} ROOM_SIZE
@@ -118,6 +123,11 @@ global.SATISFACTION_THRESHOLD = 0.9;
  * @constant {number} SATISFACTION_LOG_SIZE
  */
 global.SATISFACTION_LOG_SIZE = 100;
+/**
+ * Defines the number of historical entries to maintain in the satisfaction log, used for calculating average satisfaction metrics and trends over time
+ * @constant {number} PROGRESS_LOG_SIZE
+ */
+global.PROGRESS_LOG_SIZE = 100;
 /**
  * Specifies the minimum energy threshold required for a tower to perform defensive and maintenance operations such as attacking hostiles, healing creeps, or repairing structures
  * @constant {number} TOWER_MINIMUM_ENERGY

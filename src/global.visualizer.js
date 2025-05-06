@@ -50,10 +50,22 @@ class Visualizer {
             }
 
             // draw total population of the room
-            room.visual.text("total : " + pop.total, 1, 1 + offset_y, {font: 0.8});
+            room.visual.text("total: " + pop.total, 1, 1 + offset_y, {font: 0.8});
         }
 
-        // make a couple spaces for the popup messages
+        // grab the progress log
+        let progress_log = room.room_data.progress_log;
+        // calculate the progress per tick
+        let progress_per_tick = (progress_log[progress_log.length] - progress_log[0]) / progress_log.length;
+        // calculate the ticks until the controller levels up
+        let ticks_until_level_up = (room.controller.progressTotal - room.controller.progress) / progress_per_tick;
+        // render the progress per tick
+        room.visual.text("progress per tick: " + progress_per_tick, 1, 1 + offset_y, {font: 0.8});
+        // increment the offset
+        offset_y++;
+        // render the ticks until level up
+        room.visual.text("ticks until level up: " + ticks_until_level_up, 1, 1 + offset_y, {font: 0.8});
+        // reset the offset
         offset_y = 0;
 
         // for each popup message in the list of popups

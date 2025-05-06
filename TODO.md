@@ -2,18 +2,6 @@
 
 ## recheck documentation after rewrite
 
-## new room prototype
-make a getter for the room_data
-
-## memory reset recovery
-rework the initial spawn usage
-loop through all rooms on reset, checking for colonies
-also check for old expansions by checking the controller
-make sure to account for 3 scenarios
-- initial spawning
-- memory reset with the original initial spawn still alive
-- memory reset with the original initial spawn destroyed
-
 ## Base Building 2.0
 create a new base building system to account for cramped rooms
 when a base location can't be found, use an outward spiral search to find locations for all necessary structures
