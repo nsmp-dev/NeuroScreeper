@@ -55,7 +55,7 @@ global.TransporterMemory = TransporterMemory;
  */
 Creep.prototype.runTransporter = function () {
     // if we don't have a task currently assigned
-    if (this.memory.task == null) {
+    if (this.task == null) {
         // if the creep is out of energy
         if (this.store[RESOURCE_ENERGY] == 0) {
             // find the gather target for the transporter
@@ -64,14 +64,10 @@ Creep.prototype.runTransporter = function () {
             // if the target is still null or empty
             if (target == null || (target.store != undefined && target.store[RESOURCE_ENERGY] == 0)) {
                 // assign a new task
-                this.memory.task = new IdleTask(this.memory.room_name, 10);
-                // announce the new task
-                this.announceTask();
+                this.task = new IdleTask(this.memory.room_name, 10);
             } else {
                 // assign a new gather task
-                this.memory.task = new GatherTask(target, RESOURCE_ENERGY);
-                // announce the gather task
-                this.announceTask();
+                this.task = new GatherTask(target, RESOURCE_ENERGY);
             }
         } else {
             // if we are in the room of the nearest colony
@@ -83,22 +79,16 @@ Creep.prototype.runTransporter = function () {
                 // if a new target was found
                 if (target == null) {
                     // assign a new idle task
-                    this.memory.task = new IdleTask(this.memory.room_name, 10);
-                    // announce the idle task
-                    this.announceTask();
+                    this.task = new IdleTask(this.memory.room_name, 10);
                 } else {
                     // assign a new deposit task
-                    this.memory.task = new DepositTask(target, RESOURCE_ENERGY);
-                    // announce the deposit task
-                    this.announceTask();
+                    this.task = new DepositTask(target, RESOURCE_ENERGY);
                 }
             } else {
                 // store the nearest colony name
                 this.memory.nearest_colony_name = this.getNearestColony();
                 // assign a new MoveRoomTask
-                this.memory.task = new MoveRoomTask(this.memory.nearest_colony_name);
-                // announce the MoveRoomTask
-                this.announceTask();
+                this.task = new MoveRoomTask(this.memory.nearest_colony_name);
             }
         }
     }

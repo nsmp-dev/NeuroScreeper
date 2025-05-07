@@ -8,7 +8,7 @@ class Util {
     constructor() {}
     /**
      * gets the MainMemory object, helping with type safety
-     * @return {MainMemory} the MainMemory object
+     * @returns {MainMemory} the MainMemory object
      */
     getMainMemory () {
         // return the MainMemory object
@@ -18,7 +18,7 @@ class Util {
      * converts an x/y room coordinate to a string name
      * @param {number} x - x coordinate of the room in the world space
      * @param {number} y - y coordinate of the room in the world space
-     * @return {string} the string name for the room
+     * @returns {string} the string name for the room
      */
     worldXYToRoomName (x, y) {
         // get the size of the world
@@ -52,7 +52,7 @@ class Util {
     /**
      * converts a string room name to x/y room coordinates
      * @param {string} name - The name of the room
-     * @return {Point} the location of the room in world space
+     * @returns {Point} the location of the room in world space
      */
     roomNameToWorldXY (name) {
         // get the size of the world
@@ -104,7 +104,7 @@ class Util {
      * multiplies an array a number of times
      * @param {Array} arr - The array that will be duplicated
      * @param {number} num - The number of times to repeat the array
-     * @return {Array} the new resultant array
+     * @returns {Array} the new resultant array
      */
     multiArray (arr, num) {
         // create the array we are building
@@ -119,7 +119,7 @@ class Util {
     }
     /**
      * generates an id, using a memory entry to ensure no collisions
-     * @return {string} the guaranteed unique id
+     * @returns {string} the guaranteed unique id
      */
     generateId () {
         // get the MainMemory object
@@ -155,7 +155,7 @@ class Util {
     /**
      * calculates what percentage of the satisfaction log in the given room data is true
      * @param {RoomData} room_data - The room data that holds the satisfaction log
-     * @return {number} the calculated ratio
+     * @returns {number} the calculated ratio
      */
     getSatisfiedRatio (room_data) {
         // the total number of true values in the room satisfaction log
@@ -175,7 +175,7 @@ class Util {
     /**
      * see if a room is available
      * @param {string} room_name - The name of the room to test
-     * @return {Boolean} true if the room is available
+     * @returns {Boolean} true if the room is available
      */
     isRoomAvailable (room_name) {
         // grab the room
@@ -238,7 +238,7 @@ class Util {
     }
     /**
      * finds all highway rooms found so far
-     * @return {string[]} array of all the highway room names
+     * @returns {string[]} array of all the highway room names
      */
     getHighwayRooms () {
         // get the MainMemory object
@@ -278,7 +278,7 @@ class Util {
      * @param {number} r - the red value
      * @param {number} g - the green value
      * @param {number} b - the blue value
-     * @return {string} the resulting hex code, including the #
+     * @returns {string} the resulting hex code, including the #
      */
     rgbToHex (r, g, b) {
         // return the string version of the rgb value
@@ -288,7 +288,7 @@ class Util {
      * distance between 2 Points
      * @param {Point} a - the first point
      * @param {Point} b - the second point
-     * @return {number} the distance between the points
+     * @returns {number} the distance between the points
      */
     distance (a, b) {
         // get the distance between the x coordinates
@@ -301,7 +301,7 @@ class Util {
     /**
      * gets a 2D grid of the blocking structures from a RoomPlans object
      * @param {RoomPlans} plans - The plans of the room
-     * @return {Boolean[][]} the 2D grid describing the taken and open spots as booleans
+     * @returns {Boolean[][]} the 2D grid describing the taken and open spots as booleans
      */
     getStructureGrid (plans) {
         // 2d array of all the spots in the room

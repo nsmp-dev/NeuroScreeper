@@ -20,14 +20,14 @@ class NeuroTask {
             // if the creep has enough of the requested resource or is full
         } else if ((task.amount != null && creep.store[task.resource] >= task.amount) || creep.store.getFreeCapacity(task.resource) == 0) {
             // clear the task
-            creep.memory.task = null;
+            creep.task = null;
         } else {
             // grab the target
             let target = Game.getObjectById(task.target);
             // if the target is no longer valid
             if (target == null) {
                 // clear the task
-                creep.memory.task = null;
+                creep.task = null;
                 // if the target is a resource
             } else if (target instanceof Resource) {
                 // if attempting to pick up the resource results in not being in range
@@ -44,7 +44,7 @@ class NeuroTask {
                 // if the target is empty
                 if (target.store[task.resource] == 0) {
                     // clear the task
-                    creep.memory.task = null;
+                    creep.task = null;
                     // if the task has an amount
                 } else if (task.amount != null) {
                     // if attempting to withdraw the resource results in not being in range
@@ -75,14 +75,14 @@ class NeuroTask {
             // if the creep is empty
         } else if (creep.store[task.resource] == 0) {
             // clear the task
-            creep.memory.task = null;
+            creep.task = null;
         } else {
             // grab the target
             let target = Game.getObjectById(task.target);
             // if the target is not valid or empty
             if (target == null || target.store.getFreeCapacity(task.resource) == 0) {
                 // clear the task
-                creep.memory.task = null;
+                creep.task = null;
             } else {
                 // if the amount is specified
                 if (task.amount == null) {
@@ -114,14 +114,14 @@ class NeuroTask {
             // if the creep is empty
         } else if (creep.store[RESOURCE_ENERGY] == 0) {
             // clear the task
-            creep.memory.task = null;
+            creep.task = null;
         } else {
             // grab the target
             let target = Game.getObjectById(task.structure);
             // if the target is invalid or at max health
             if (target == null || target.hits == target.hitsMax) {
                 // clear the task
-                creep.memory.task = null;
+                creep.task = null;
             } else {
                 // if repairing the target results in not being in range
                 if (creep.repair(target) == ERR_NOT_IN_RANGE) {
@@ -144,14 +144,14 @@ class NeuroTask {
             // if the creep is empty
         } else if (creep.store[RESOURCE_ENERGY] == 0) {
             // clear the task
-            creep.memory.task = null;
+            creep.task = null;
         } else {
             // grab the target
             let target = Game.getObjectById(task.construction_site);
             // if the target is invalid
             if (target == null) {
                 // clear the task
-                creep.memory.task = null;
+                creep.task = null;
             } else {
                 // if building the target results in not being in range
                 if (creep.build(target) == ERR_NOT_IN_RANGE) {
@@ -174,7 +174,7 @@ class NeuroTask {
             // if the creep is empty
         } else if (creep.store[RESOURCE_ENERGY] == 0) {
             // clear the task
-            creep.memory.task = null;
+            creep.task = null;
         } else {
             // if the controller's sign does not match the signature
             if (creep.room.controller.sign.text == SIGNATURE) {
@@ -282,7 +282,7 @@ class NeuroTask {
             // if the target is null
             if (target == null) {
                 // clear the task
-                creep.memory.task = null;
+                creep.task = null;
             } else {
                 // if attacking the target results in not being in range
                 if (creep.attack(target) == ERR_NOT_IN_RANGE) {
@@ -308,7 +308,7 @@ class NeuroTask {
             // if the target is invalid or at max health
             if (target == null || target.hits == target.hitsMax) {
                 // clear the task
-                creep.memory.task = null;
+                creep.task = null;
             } else {
                 // if healing the target results in not being in range
                 if (creep.heal(target) == ERR_NOT_IN_RANGE) {
@@ -332,7 +332,7 @@ class NeuroTask {
             // if the timer has gone off
             if (task.timer >= 5) {
                 // clear the task
-                creep.memory.task = null;
+                creep.task = null;
             } else {
                 // increment the timer
                 task.timer++;
@@ -355,7 +355,7 @@ class NeuroTask {
             // if the task has reached the tick limit
             if (task.tick_counter > task.tick_limit) {
                 // clear the task
-                creep.memory.task = null;
+                creep.task = null;
             } else {
                 // increment the tick counter
                 task.tick_counter++;
@@ -380,7 +380,7 @@ class NeuroTask {
             // if the power spawn is invalid
             if (power_spawn == null) {
                 // clear the task
-                creep.memory.task = null;
+                creep.task = null;
             } else {
                 // try to renew
                 let result = creep.renew(power_spawn);
@@ -392,7 +392,7 @@ class NeuroTask {
                 // if the result was successful
                 if (result == OK) {
                     // restore the previous task
-                    creep.memory.task = task.previous_task;
+                    creep.task = task.previous_task;
                 }
             }
         } else {
@@ -420,7 +420,7 @@ class NeuroTask {
                     // if the source structure is valid
                     if (source_structure == null) {
                         // clear the task
-                        creep.memory.task = null;
+                        creep.task = null;
                     } else {
                         // if attempting to withdraw from the source structure results in not being in range
                         if (creep.withdraw(source_structure, task.resource, task.amount) == ERR_NOT_IN_RANGE) {
@@ -435,14 +435,14 @@ class NeuroTask {
                 // if the creep is empty
                 if (creep.store.getUsedCapacity() == 0) {
                     // clear the task
-                    creep.memory.task = null;
+                    creep.task = null;
                 } else {
                     // grab the target structure
                     let target_structure = Game.getObjectById(task.target_structure);
                     // if the target structure is valid
                     if (target_structure == null) {
                         // clear the task
-                        creep.memory.task = null;
+                        creep.task = null;
                     } else {
                         // if attempting to transfer to the target structure results in not being in range
                         if (creep.transfer(target_structure, task.resource, task.amount) == ERR_NOT_IN_RANGE) {
@@ -468,7 +468,7 @@ class NeuroTask {
             // if the creep is full
             if (creep.store.getFreeCapacity() == 0) {
                 // clear the task
-                creep.memory.task = null;
+                creep.task = null;
             } else {
                 // grab the target
                 let target = Game.getObjectById(task.target);
@@ -492,87 +492,87 @@ class NeuroTask {
          * grab the task from the creep
          * @type {Task}
          */
-        let task = creep.memory.task;
+        let task = creep.task;
 
         // if the task matches
         if (task.type == TASK_TYPES.GATHER) {
             // run the appropriate function
-            this.runGather(creep, creep.memory.task);
+            this.runGather(creep, creep.task);
         }
         // if the task matches
         if (task.type == TASK_TYPES.DEPOSIT) {
             // run the appropriate function
-            this.runDeposit(creep, creep.memory.task);
+            this.runDeposit(creep, creep.task);
         }
         // if the task matches
         if (task.type == TASK_TYPES.REPAIR) {
             // run the appropriate function
-            this.runRepair(creep, creep.memory.task);
+            this.runRepair(creep, creep.task);
         }
         // if the task matches
         if (task.type == TASK_TYPES.BUILD) {
             // run the appropriate function
-            this.runBuild(creep, creep.memory.task);
+            this.runBuild(creep, creep.task);
         }
         // if the task matches
         if (task.type == TASK_TYPES.UPGRADE) {
             // run the appropriate function
-            this.runUpgrade(creep, creep.memory.task);
+            this.runUpgrade(creep, creep.task);
         }
         // if the task matches
         if (task.type == TASK_TYPES.CLAIM) {
             // run the appropriate function
-            this.runClaim(creep, creep.memory.task);
+            this.runClaim(creep, creep.task);
         }
         // if the task matches
         if (task.type == TASK_TYPES.RESERVE) {
             // run the appropriate function
-            this.runReserve(creep, creep.memory.task);
+            this.runReserve(creep, creep.task);
         }
         // if the task matches
         if (task.type == TASK_TYPES.DRILL) {
             // run the appropriate function
-            this.runDrill(creep, creep.memory.task);
+            this.runDrill(creep, creep.task);
         }
         // if the task matches
         if (task.type == TASK_TYPES.ATTACK) {
             // run the appropriate function
-            this.runAttack(creep, creep.memory.task);
+            this.runAttack(creep, creep.task);
         }
         // if the task matches
         if (task.type == TASK_TYPES.HEAL) {
             // run the appropriate function
-            this.runHeal(creep, creep.memory.task);
+            this.runHeal(creep, creep.task);
         }
         // if the task matches
         if (task.type == TASK_TYPES.MOVE_ROOM) {
             // run the appropriate function
-            this.runMoveRoom(creep, creep.memory.task);
+            this.runMoveRoom(creep, creep.task);
         }
         // if the task matches
         if (task.type == TASK_TYPES.IDLE) {
             // run the appropriate function
-            this.runIdle(creep, creep.memory.task);
+            this.runIdle(creep, creep.task);
         }
         // if the task matches
         if (task.type == TASK_TYPES.RENEW_OPERATOR) {
             // run the appropriate function
-            this.runRenewOperator(creep, creep.memory.task);
+            this.runRenewOperator(creep, creep.task);
         }
         // if the task matches
         if (task.type == TASK_TYPES.MOVE_RESOURCE) {
             // run the appropriate function
-            this.runMoveResource(creep, creep.memory.task);
+            this.runMoveResource(creep, creep.task);
         }
         // if the task matches
         if (task.type == TASK_TYPES.MOVE_RESOURCE) {
             // run the appropriate function
-            this.runMoveResource(creep, creep.memory.task);
+            this.runMoveResource(creep, creep.task);
         }
         // if the task matches
         if (task.type == TASK_TYPES.HARVEST) {
             // run the appropriate function
-            this.runHarvest(creep, creep.memory.task);
+            this.runHarvest(creep, creep.task);
         }
     }
 }

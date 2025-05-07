@@ -52,7 +52,7 @@ global.ScoutMemory = ScoutMemory;
  */
 Creep.prototype.runScout = function () {
     // if we don't have a task currently assigned
-    if (this.memory.task == null) {
+    if (this.task == null) {
 
         // shift the queue
         if (this.memory.room_queue[0] == this.room.name) {
@@ -85,14 +85,10 @@ Creep.prototype.runScout = function () {
         // if there are still rooms in the queue
         if (this.memory.room_queue.length > 0) {
             // assign a new MoveRoomTask
-            this.memory.task = new MoveRoomTask(this.memory.room_queue[0]);
-            // announce the MoveRoomTask
-            this.announceTask();
+            this.task = new MoveRoomTask(this.memory.room_queue[0]);
         } else {
             // assign a new idle task
-            this.memory.task = new IdleTask(this.room.name, 10);
-            // announce the idle task
-            this.announceTask();
+            this.task = new IdleTask(this.room.name, 10);
         }
     }
     // run the task

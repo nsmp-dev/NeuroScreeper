@@ -31,28 +31,22 @@ global.PowerTransporterMemory = PowerTransporterMemory;
  */
 Creep.prototype.runPowerTransporter = function () {
     // if no task is assigned
-    if (this.memory.task == null) {
+    if (this.task == null) {
         // grab the power squad
         let squad = this.getPowerSquad();
         // if the power squad is idle
         if (squad.state == STATES.IDLE) {
             // assign a new idle task
-            this.memory.task = new IdleTask(this.memory.room_name);
-            // announce the idle task
-            this.announceTask();
+            this.task = new IdleTask(this.memory.room_name);
             // if the power squad is searching
         } else if (squad.state == STATES.SEARCHING) {
             // if we are in the room next in the queue
             if (this.room.name == squad.highway_queue[0]) {
                 // assign a new idle task
-                this.memory.task = new IdleTask(this.room.name);
-                // announce the idle task
-                this.announceTask();
+                this.task = new IdleTask(this.room.name);
             } else {
                 // assign a new MoveRoomTask
-                this.memory.task = new MoveRoomTask(squad.highway_queue[0]);
-                // announce the MoveRoomTask
-                this.announceTask();
+                this.task = new MoveRoomTask(squad.highway_queue[0]);
             }
             // if the power squad is collecting
         } else if (squad.state == STATES.COLLECTING) {
@@ -65,14 +59,10 @@ Creep.prototype.runPowerTransporter = function () {
                 /** @type {Resource} */
                 let target = this.pos.findClosestByPath(power_piles);
                 // assign a new gather task
-                this.memory.task = new GatherTask(target, RESOURCE_POWER);
-                // announce the gather task
-                this.announceTask();
+                this.task = new GatherTask(target, RESOURCE_POWER);
             } else {
                 // assign a new idle task
-                this.memory.task = new IdleTask(this.room.name);
-                // announce the idle task
-                this.announceTask();
+                this.task = new IdleTask(this.room.name);
             }
             // if the power squad is returning
         }
@@ -80,14 +70,10 @@ Creep.prototype.runPowerTransporter = function () {
             // if we are in the room we are returning to
             if (this.room.name == squad.return_room_name) {
                 // assign a new deposit task
-                this.memory.task = new DepositTask(this.room.storage, RESOURCE_POWER);
-                // announce the deposit task
-                this.announceTask();
+                this.task = new DepositTask(this.room.storage, RESOURCE_POWER);
             } else {
                 // assign a new MoveRoomTask
-                this.memory.task = new MoveRoomTask(squad.return_room_name);
-                // announce the MoveRoomTask
-                this.announceTask();
+                this.task = new MoveRoomTask(squad.return_room_name);
             }
         }
     }

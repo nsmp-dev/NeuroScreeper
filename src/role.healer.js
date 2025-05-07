@@ -30,7 +30,7 @@ global.HealerMemory = HealerMemory;
  */
 Creep.prototype.runHealer = function () {
     // if we don't have a task currently assigned
-    if (this.memory.task == null) {
+    if (this.task == null) {
         // find my creeps
         /** @type {Creep[]} */
         let creeps = this.room.find(FIND_MY_CREEPS, {
@@ -43,14 +43,10 @@ Creep.prototype.runHealer = function () {
             /** @type {Creep} */
             let target = this.pos.findClosestByPath(creeps);
             // assign a new heal task
-            this.memory.task = new HealTask(target);
-            // announce the heal task
-            this.announceTask();
+            this.task = new HealTask(target);
         } else {
             // assign a new idle task
-            this.memory.task = new IdleTask(this.memory.room_name, 10);
-            // announce the new task
-            this.announceTask();
+            this.task = new IdleTask(this.memory.room_name, 10);
         }
     }
     // run the task

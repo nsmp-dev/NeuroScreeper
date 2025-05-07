@@ -27,8 +27,25 @@ PowerCreep.prototype.idle = function () {
  * Searches through all known rooms in memory to find the nearest colony type room.
  * @memberOf PowerCreep#
  * @member {function} moveToRoom
- * @return {string|null} The name of the nearest colony room, or null if none found
+ * @returns {string|null} The name of the nearest colony room, or null if none found
  */
 PowerCreep.prototype.moveToRoom = function (room_name) {
     this.moveTo(new RoomPosition(ROOM_SIZE/2, ROOM_SIZE/2, room_name));
 };
+
+/**
+ * accessor for the creep task to easily shortcut grabbing it and setting it
+ * @memberOf PowerCreep#
+ * @member {GatherTask|DepositTask|} task
+ */
+Object.defineProperty(PowerCreep.prototype, 'task', {
+    get: function() {
+        return this.memory.task;
+    },
+    set: function(new_task) {
+        this.memory.task = new_task;
+        this.say(TASK_TYPES[new_task.type]);
+    },
+    enumerable: false,
+    configurable: true,
+});

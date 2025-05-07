@@ -31,16 +31,14 @@ global.UpgraderMemory = UpgraderMemory;
  */
 Creep.prototype.runUpgrader = function () {
     // if we don't have a task currently assigned
-    if (this.memory.task == null) {
+    if (this.task == null) {
         // if the creep is out of energy
         if (this.store[RESOURCE_ENERGY] == 0) {
             // gather some energy
             this.gatherEnergy();
         } else {
             // assign a new upgrade task
-            this.memory.task = new UpgradeTask(this.room.name);
-            // announce the upgrade task
-            this.announceTask();
+            this.task = new UpgradeTask(this.room.name);
         }
     }
     // run the task

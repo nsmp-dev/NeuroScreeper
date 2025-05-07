@@ -8,7 +8,7 @@
  * First checks for a container in memory, then looks for dropped resources at the container location.
  * @memberOf Creep#
  * @member {function} getTransporterTarget
- * @return {StructureContainer|Resource|null} The container, dropped resource, or null if none found
+ * @returns {StructureContainer|Resource|null} The container, dropped resource, or null if none found
  */
 Creep.prototype.getTransporterTarget = function () {
     // grab the container from memory
@@ -51,7 +51,7 @@ Creep.prototype.getTransporterTarget = function () {
  * Finds the nearest construction site that needs to be built.
  * @memberOf Creep#
  * @member {function} getBuildTarget
- * @return {ConstructionSite} The closest construction site by path
+ * @returns {ConstructionSite} The closest construction site by path
  */
 Creep.prototype.getBuildTarget = function () {
     // find and return the closest construction site
@@ -62,7 +62,7 @@ Creep.prototype.getBuildTarget = function () {
  * Only returns the terminal if it has available energy capacity.
  * @memberOf Creep#
  * @member {function} getBuildTarget
- * @return {Structure} The closest valid structure that can receive energy
+ * @returns {Structure} The closest valid structure that can receive energy
  */
 Creep.prototype.getDumpTarget = function () {
     // find any extensions that are not full
@@ -93,7 +93,7 @@ Creep.prototype.getDumpTarget = function () {
  * Only returns storage if it contains energy and no other sources are available.
  * @memberOf Creep#
  * @member {function} getFillTarget
- * @return {Structure|Resource} The closest available energy source
+ * @returns {Structure|Resource} The closest available energy source
  */
 Creep.prototype.getFillTarget = function () {
     // find any dropped energy
@@ -123,7 +123,7 @@ Creep.prototype.getFillTarget = function () {
  * Finds the closest structure that needs repairs by comparing current hits to maximum hits.
  * @memberOf Creep#
  * @member {function} getRepairTarget
- * @return {Structure} The closest structure that has less than maximum hit points
+ * @returns {Structure} The closest structure that has less than maximum hit points
  */
 Creep.prototype.getRepairTarget = function () {
     // return the closest structure
@@ -137,7 +137,7 @@ Creep.prototype.getRepairTarget = function () {
  * Checks capacity limits and terminal energy caps before returning a target.
  * @memberOf Creep#
  * @member {function} getQueenDumpTarget
- * @return {StructureTower|StructureExtension|StructureSpawn|StructurePowerSpawn|StructureTerminal} The highest priority structure that needs energy
+ * @returns {StructureTower|StructureExtension|StructureSpawn|StructurePowerSpawn|StructureTerminal} The highest priority structure that needs energy
  */
 Creep.prototype.getQueenDumpTarget = function () {
     // find all the towers that are not full
@@ -203,7 +203,7 @@ Creep.prototype.idle = function () {
  * Returns current room's storage if present, otherwise finds the nearest storage in other rooms.
  * @memberOf Creep#
  * @member {function} getNearestStorage
- * @return {StructureStorage|null} The nearest accessible storage structure or null if none exist
+ * @returns {StructureStorage|null} The nearest accessible storage structure or null if none exist
  */
 Creep.prototype.getNearestStorage = function () {
     // get the MainMemory object
@@ -252,7 +252,7 @@ Creep.prototype.getNearestStorage = function () {
  * Searches through all known rooms in memory to find the nearest colony type room.
  * @memberOf Creep#
  * @member {function} getNearestColony
- * @return {string|null} The name of the nearest colony room, or null if none found
+ * @returns {string|null} The name of the nearest colony room, or null if none found
  */
 Creep.prototype.getNearestColony = function () {
     // get the MainMemory object
@@ -279,7 +279,7 @@ Creep.prototype.getNearestColony = function () {
  * Searches through all known rooms in memory to find the nearest colony type room.
  * @memberOf Creep#
  * @member {function} moveToRoom
- * @return {string|null} The name of the nearest colony room, or null if none found
+ * @returns {string|null} The name of the nearest colony room, or null if none found
  */
 Creep.prototype.moveToRoom = function (room_name) {
     this.moveTo(new RoomPosition(ROOM_SIZE/2, ROOM_SIZE/2, room_name));
@@ -289,7 +289,7 @@ Creep.prototype.moveToRoom = function (room_name) {
  * Uses the creep's assigned room to look up its associated power squad.
  * @memberOf Creep#
  * @member {function} getPowerSquad
- * @return {PowerSquad} The power squad this creep is currently assigned to
+ * @returns {PowerSquad} The power squad this creep is currently assigned to
  */
 Creep.prototype.getPowerSquad = function () {
     // get the MainMemory object
@@ -309,124 +309,10 @@ Creep.prototype.gatherEnergy = function () {
     // if a new target was found
     if (target == null) {
         // assign a new idle task
-        this.memory.task = new IdleTask(this.memory.room_name);
-        // announce the new task
-        this.announceTask();
+        this.task = new IdleTask(this.memory.room_name);
     } else {
         // assign a new gather task
-        this.memory.task = new GatherTask(target, RESOURCE_ENERGY);
-        // announce the new task
-        this.announceTask();
-    }
-};
-/**
- * Displays a visual message indicating the creep's current task type.
- * Uses the creep's say() method to show different messages based on task enumeration.
- * @memberOf Creep#
- * @member {function} announceTask
- */
-Creep.prototype.announceTask = function () {
-    // grab the task
-    let task = this.memory.task;
-
-    // if the task is not set
-    if (task == null) {
-        // exit the function early
-        return;
-    }
-
-    // switch based on the task's type
-    switch (task.type) {
-        // if the task type matches
-        case TASK_TYPES.IDLE:
-            // announce the task
-            this.say("Idling...");
-            // break the switch
-            break;
-        // if the task type matches
-        case TASK_TYPES.GATHER:
-            // announce the task
-            this.say("Gathering...");
-            // break the switch
-            break;
-        // if the task type matches
-        case TASK_TYPES.DEPOSIT:
-            // announce the task
-            this.say("Depositing...");
-            // break the switch
-            break;
-        // if the task type matches
-        case TASK_TYPES.REPAIR:
-            // announce the task
-            this.say("Repairing...");
-            // break the switch
-            break;
-        // if the task type matches
-        case TASK_TYPES.BUILD:
-            // announce the task
-            this.say("Building...");
-            // break the switch
-            break;
-        // if the task type matches
-        case TASK_TYPES.UPGRADE:
-            // announce the task
-            this.say("Upgrading...");
-            // break the switch
-            break;
-        // if the task type matches
-        case TASK_TYPES.CLAIM:
-            // announce the task
-            this.say("Claiming...");
-            // break the switch
-            break;
-        // if the task type matches
-        case TASK_TYPES.RESERVE:
-            // announce the task
-            this.say("Reserving...");
-            // break the switch
-            break;
-        // if the task type matches
-        case TASK_TYPES.DRILL:
-            // announce the task
-            this.say("Drilling...");
-            // break the switch
-            break;
-        // if the task type matches
-        case TASK_TYPES.ATTACK:
-            // announce the task
-            this.say("Attacking...");
-            // break the switch
-            break;
-        // if the task type matches
-        case TASK_TYPES.HEAL:
-            // announce the task
-            this.say("Healing...");
-            // break the switch
-            break;
-        // if the task type matches
-        case TASK_TYPES.MOVE_ROOM:
-            // announce the task
-            this.say("Moving...");
-            // break the switch
-            break;
-        // if the task type matches
-        case TASK_TYPES.RENEW_OPERATOR:
-            // announce the task
-            this.say("Renewing...");
-            // break the switch
-            break;
-        // if the task type matches
-        case TASK_TYPES.MOVE_RESOURCE:
-            // announce the task
-            this.say("Moving Resource...");
-            // break the switch
-            break;
-        // if the task type matches
-        case TASK_TYPES.HARVEST:
-            // announce the task
-            this.say("Harvesting...");
-            // break the switch
-            break;
+        this.task = new GatherTask(target, RESOURCE_ENERGY);
     }
 };
 /**
@@ -491,3 +377,28 @@ Creep.prototype.run = function () {
             break;
     }
 };
+
+/**
+ * accessor for the creep task to easily shortcut grabbing it and setting it
+ * @memberOf Creep#
+ * @member {Task} task
+ */
+Object.defineProperty(Creep.prototype, 'task', {
+    // getter for the task
+    get: function() {
+        // return the task from memory
+        return this.memory.task;
+    },
+    // setter for the task
+    set: function(new_task) {
+        // set the task in memory
+        this.memory.task = new_task;
+        // if a new task was assigned
+        if (new_task != null) {
+            // announce the task
+            this.say(TASK_ANNOUNCEMENTS[new_task.type]);
+        }
+    },
+    enumerable: false,
+    configurable: true,
+});

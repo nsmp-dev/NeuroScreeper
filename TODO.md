@@ -16,6 +16,3 @@ NeuroScreeper
 
 ## Documentation and comments
 - flesh out the documentation Markdown files
-
-## Visualizer overhaul
-- add in estimator for how long until the controller's level increases

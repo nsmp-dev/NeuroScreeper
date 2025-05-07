@@ -32,7 +32,7 @@ global.AttackerMemory = AttackerMemory;
  */
 Creep.prototype.runAttacker = function () {
     // if we don't have a task currently assigned
-    if (this.memory.task == null) {
+    if (this.task == null) {
         // find all hostile creeps in the room
         /** @type {Creep[]} */
         let creeps = this.room.find(FIND_HOSTILE_CREEPS);
@@ -42,14 +42,10 @@ Creep.prototype.runAttacker = function () {
             /** @type {Creep} */
             let target = this.pos.findClosestByPath(creeps);
             // assign a new attack task
-            this.memory.task = new AttackTask(target);
-            // announce the attack task
-            this.announceTask();
+            this.task = new AttackTask(target);
         } else {
             // assign a new idle task
-            this.memory.task = new IdleTask(this.memory.room_name, 10);
-            // announce the idle task
-            this.announceTask();
+            this.task = new IdleTask(this.memory.room_name, 10);
         }
     }
 

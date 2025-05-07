@@ -35,18 +35,14 @@ Creep.prototype.runClaimer = function () {
     // get the MainMemory object
     let main_memory = util.getMainMemory();
     // if we don't have a task currently assigned
-    if (this.memory.task == null) {
+    if (this.task == null) {
         // if this room is a colony
         if (main_memory.room_data[this.memory.room_name].type == COLONY) {
             // assign a new claim task
-            this.memory.task = new ClaimTask(this.memory.room_name);
-            // announce the claim task
-            this.announceTask();
+            this.task = new ClaimTask(this.memory.room_name);
         } else {
             // assign a new reserve task
-            this.memory.task = new ReserveTask(this.memory.room_name);
-            // announce the reserve task
-            this.announceTask();
+            this.task = new ReserveTask(this.memory.room_name);
         }
     }
     // run the task

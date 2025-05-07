@@ -213,6 +213,29 @@ global.TASK_TYPES = {
 };
 
 /**
+ * Announcement strings for tasks
+ * @constant {Object.<string,string>} TASK_ANNOUNCEMENTS
+ * @enum {number}
+ */
+global.TASK_ANNOUNCEMENTS = {
+    [TASK_TYPES.IDLE]: "Idling",
+    [TASK_TYPES.GATHER]: "Gathering",
+    [TASK_TYPES.DEPOSIT]: "Depositing",
+    [TASK_TYPES.REPAIR]: "Repairing",
+    [TASK_TYPES.BUILD]: "Building",
+    [TASK_TYPES.UPGRADE]: "Upgrading",
+    [TASK_TYPES.CLAIM]: "Claiming",
+    [TASK_TYPES.RESERVE]: "Reserving",
+    [TASK_TYPES.DRILL]: "Drilling",
+    [TASK_TYPES.ATTACK]: "Attacking",
+    [TASK_TYPES.HEAL]: "Healing",
+    [TASK_TYPES.MOVE_ROOM]: "Traveling",
+    [TASK_TYPES.RENEW_OPERATOR]: "Renewing",
+    [TASK_TYPES.MOVE_RESOURCE]: "Carrying",
+    [TASK_TYPES.HARVEST]: "Harvesting",
+};
+
+/**
  * Enumerated states used for managing state machines that control behavior transitions and workflow progression
  * in various game systems such as creep tasks, room operations, and process management
  * @constant {Object.<string,number>} STATES

@@ -7,18 +7,18 @@
  */
 PowerCreep.prototype.runOperator = function (plant_data) {
     // if the operator is close to death and not already renewing
-    if (this.ticksToLive < 10 && this.memory.task.type != TASK_TYPES.RENEW_OPERATOR) {
+    if (this.ticksToLive < 10 && this.task.type != TASK_TYPES.RENEW_OPERATOR) {
         // grab the power spawn in the room
         let power_spawn = this.room.getPowerSpawn();
         // if a PowerSpawn was found
         if (power_spawn != null) {
             // assign a new RenewOperatorTask
-            this.memory.task = new RenewOperatorTask(power_spawn, this.memory.task);
+            this.task = new RenewOperatorTask(power_spawn, this.task);
         }
     }
 
     // if we don't have a task currently assigned
-    if (this.memory.task == null) {
+    if (this.task == null) {
         // if the factory is cleaning or finished
         if (plant_data.factory_state == STATES.CLEANING || plant_data.factory_state == STATES.FINISHED) {
             // grab the factory
@@ -30,7 +30,7 @@ PowerCreep.prototype.runOperator = function (plant_data) {
                     // if the factory has any of the resource
                     if (factory.store[resource] > 0) {
                         // assign a new MoveResourceTask
-                        this.memory.task = new MoveResourceTask(this.room.name, factory, this.room.storage, resource, factory.store[resource]);
+                        this.task = new MoveResourceTask(this.room.name, factory, this.room.storage, resource, factory.store[resource]);
                         // break the loop
                         break;
                     }
@@ -51,13 +51,13 @@ PowerCreep.prototype.runOperator = function (plant_data) {
                         // if the lab has any of the resource
                         if (lab.store[resource] > 0) {
                             // assign a MoveResourceTask
-                            this.memory.task = new MoveResourceTask(this.room.name, lab, this.room.storage, resource, lab.store[resource]);
+                            this.task = new MoveResourceTask(this.room.name, lab, this.room.storage, resource, lab.store[resource]);
                             // break the loop
                             break;
                         }
                     }
                     // if a task has been assigned
-                    if (this.memory.task != null) {
+                    if (this.task != null) {
                         // break the loop
                         break;
                     }
@@ -77,7 +77,7 @@ PowerCreep.prototype.runOperator = function (plant_data) {
                     // if the factory does not have enough of the resource
                     if (factory.store[resource] == undefined || factory.store[resource] < production.inputs[resource]) {
                         // assign a MoveResourceTask
-                        this.memory.task = new MoveResourceTask(this.room.name, this.room.storage, factory, resource, (production.inputs[resource] - factory.store[resource]));
+                        this.task = new MoveResourceTask(this.room.name, this.room.storage, factory, resource, (production.inputs[resource] - factory.store[resource]));
                         // break the loop
                         break;
                     }
@@ -96,16 +96,16 @@ PowerCreep.prototype.runOperator = function (plant_data) {
                 // if the first input lab does not have enough of the required resource
                 if (input_lab_1.store[reaction.input_1] == undefined || input_lab_1.store[reaction.input_1] < reaction.amount) {
                     // assign a MoveResourceTask
-                    this.memory.task = new MoveResourceTask(this.room.name, this.room.storage, input_lab_1, reaction.input_1, (reaction.amount - input_lab_1.store[reaction.input_1]));
+                    this.task = new MoveResourceTask(this.room.name, this.room.storage, input_lab_1, reaction.input_1, (reaction.amount - input_lab_1.store[reaction.input_1]));
                     // if the second input lab does not have enough of the required resource
                 } else if (input_lab_2.store[reaction.input_2] == undefined || input_lab_2.store[reaction.input_2] < reaction.amount) {
                     // assign a MoveResourceTask
-                    this.memory.task = new MoveResourceTask(this.room.name, this.room.storage, input_lab_2, reaction.input_2, (reaction.amount - input_lab_2.store[reaction.input_2]));
+                    this.task = new MoveResourceTask(this.room.name, this.room.storage, input_lab_2, reaction.input_2, (reaction.amount - input_lab_2.store[reaction.input_2]));
                 }
             }
         } else {
             // assign a new IdleTask
-            this.memory.task = new IdleTask(this.room.name);
+            this.task = new IdleTask(this.room.name);
         }
     }
     // run the task

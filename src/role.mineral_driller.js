@@ -45,11 +45,9 @@ global.MineralDrillerMemory = MineralDrillerMemory;
  */
 Creep.prototype.runMineralDriller = function () {
     // if we don't have a task currently assigned
-    if (this.memory.task == null) {
+    if (this.task == null) {
         // assign a new drill task
-        this.memory.task = new DrillTask(this.memory.mineral, this.memory.container_location, this.memory.room_name);
-        // announce the drill task
-        this.announceTask();
+        this.task = new DrillTask(this.memory.mineral, this.memory.container_location, this.memory.room_name);
     }
     // run the task
     neuro_task.run(this);

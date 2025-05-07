@@ -29,7 +29,7 @@ global.RepairerMemory = RepairerMemory;
  */
 Creep.prototype.runRepairer = function () {
     // if we don't have a task currently assigned
-    if (this.memory.task == null) {
+    if (this.task == null) {
         // if we are out of energy
         if (this.store[RESOURCE_ENERGY] == 0) {
             // gather some energy
@@ -44,20 +44,14 @@ Creep.prototype.runRepairer = function () {
                 // if a target was found
                 if (build_target == null) {
                     // assign a new upgrade task
-                    this.memory.task = new UpgradeTask(this.memory.room_name);
-                    // announce the upgrade task
-                    this.announceTask();
+                    this.task = new UpgradeTask(this.memory.room_name);
                 } else {
                     // assign a new build task
-                    this.memory.task = new BuildTask(build_target);
-                    // announce the build task
-                    this.announceTask();
+                    this.task = new BuildTask(build_target);
                 }
             } else {
                 // assign a new repair task
-                this.memory.task = new RepairTask(target);
-                // announce the repair task
-                this.announceTask();
+                this.task = new RepairTask(target);
             }
         }
     }

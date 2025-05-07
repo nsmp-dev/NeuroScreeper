@@ -60,27 +60,21 @@ global.MineralTransporterMemory = MineralTransporterMemory;
  */
 Creep.prototype.runMineralTransporter = function () {
     // if we don't have a task currently assigned
-    if (this.memory.task == null) {
+    if (this.task == null) {
         // if the store is empty
         if (this.store.getUsedCapacity() == 0) {
             if (this.room.name == this.memory.room_name) {
                 let target = this.getTransporterTarget();
                 if (target == null) {
                     // assign a new idle task
-                    this.memory.task = new IdleTask(this.memory.room_name, 10);
-                    // announce the idle task
-                    this.announceTask();
+                    this.task = new IdleTask(this.memory.room_name, 10);
                 } else {
                     // assign a new gather task
-                    this.memory.task = new GatherTask(target, this.memory.resource_type);
-                    // announce the gather task
-                    this.announceTask();
+                    this.task = new GatherTask(target, this.memory.resource_type);
                 }
             } else {
                 // assign a new move room task
-                this.memory.task = new MoveRoomTask(this.memory.room_name);
-                // announce the move room task
-                this.announceTask();
+                this.task = new MoveRoomTask(this.memory.room_name);
             }
         } else {
             // grab the storage
@@ -89,14 +83,10 @@ Creep.prototype.runMineralTransporter = function () {
             // if the storage is not built or full
             if (storage == undefined || storage.store.getFreeCapacity() == 0) {
                 // assign a new idle task
-                this.memory.task = new IdleTask(this.memory.room_name, 10);
-                // announce the idle task
-                this.announceTask();
+                this.task = new IdleTask(this.memory.room_name, 10);
             } else {
                 // assign a new deposit task
-                this.memory.task = new DepositTask(storage, this.memory.resource_type);
-                // announce the deposit task
-                this.announceTask();
+                this.task = new DepositTask(storage, this.memory.resource_type);
             }
         }
     }
