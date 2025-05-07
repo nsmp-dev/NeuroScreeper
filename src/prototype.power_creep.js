@@ -36,7 +36,7 @@ PowerCreep.prototype.moveToRoom = function (room_name) {
 /**
  * accessor for the creep task to easily shortcut grabbing it and setting it
  * @memberOf PowerCreep#
- * @member {GatherTask|DepositTask|} task
+ * @member {GatherTask|DepositTask|UpgradeTask|MoveRoomTask|IdleTask|RenewOperatorTask|MoveResourceTask} task
  */
 Object.defineProperty(PowerCreep.prototype, 'task', {
     get: function() {

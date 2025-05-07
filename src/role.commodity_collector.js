@@ -48,7 +48,7 @@ Creep.prototype.runCommodityCollector = function () {
         // if we are full
         if (this.store.getFreeCapacity() == 0) {
             // find the nearest storage
-            let nearest_storage = this.getNearestStorage();
+            let nearest_storage = this.findNearestStorage();
             // if a storage is found
             if (nearest_storage == null) {
                 // assign a new idle task

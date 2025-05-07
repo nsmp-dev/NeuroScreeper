@@ -25,13 +25,13 @@ Object.defineProperty(Room.prototype, 'room_data', {
  * Searches for a rectangular area in the room that is free of both terrain walls and planned structures.
  * The search prioritizes locations closer to the room center.
  * @memberOf Room#
- * @member {function} getClearArea
+ * @member {function} findClearArea
  * @param {number} width - The width of the rectangular area to search for
  * @param {number} height - The height of the rectangular area to search for
  * @param {RoomPlans} plans - Room planning data containing locations of existing and planned structures to avoid
  * @returns {Point|null} The coordinates of the top-left corner of the found area, or null if no suitable area exists
  */
-Room.prototype.getClearArea = function (width, height, plans) {
+Room.prototype.findClearArea = function (width, height, plans) {
     // grab the terrain for the room
     let terrain_grid = this.getTerrain();
     // create a structure grid to reference
@@ -101,74 +101,64 @@ Room.prototype.getClearArea = function (width, height, plans) {
  * Finds an unobstructed position adjacent to the specified coordinates.
  * Checks all 8 surrounding tiles for a valid position that is free of both terrain walls and planned structures.
  * @memberOf Room#
- * @member {function} getClearAdjacentLocation
+ * @member {function} findClearAdjacentLocation
  * @param {number} x - The x coordinate of the center position to check around
  * @param {number} y - The y coordinate of the center position to check around
  * @param {RoomPlans} plans - Room planning data containing existing and planned structure locations to avoid
  * @returns {Point|null} The coordinates of a valid adjacent position if found, null if all surrounding tiles are blocked
  */
-Room.prototype.getClearAdjacentLocation = function (x, y, plans) {
+Room.prototype.findClearAdjacentLocation = function (x, y, plans) {
     // grab the terrain for the room
     let terrain_grid = this.getTerrain();
     // create a structure grid to reference
     let structure_grid = util.getStructureGrid(plans);
-    // create a list of clear spots that pass the check
-    let clear_spots = [];
 
     // if the top left adjacent tile is not a wall or a planned structure
     if (terrain_grid.get(x - 1, y - 1) !== TERRAIN_MASK_WALL && !structure_grid[x - 1][y - 1]) {
-        // add the top left adjacent tile to the list of clear spots
-        clear_spots.push({x: x - 1, y: y - 1});
+        // return the clear spot
+        return new Point(x - 1,y - 1);
     }
     // if the top adjacent tile is not a wall or a planned structure
     if (terrain_grid.get(x, y - 1) !== TERRAIN_MASK_WALL && !structure_grid[x][y - 1]) {
-        // add the top adjacent tile to the list of clear spots
-        clear_spots.push({x: x, y: y - 1});
+        // return the clear spot
+        return new Point(x,y - 1);
     }
     // if the top right adjacent tile is not a wall or a planned structure
     if (terrain_grid.get(x + 1, y - 1) !== TERRAIN_MASK_WALL && !structure_grid[x + 1][y - 1]) {
-        // add the top right adjacent tile to the list of clear spots
-        clear_spots.push({x: x + 1, y: y - 1});
+        // return the clear spot
+        return new Point(x + 1,y - 1);
     }
     // if the left adjacent tile is not a wall or a planned structure
     if (terrain_grid.get(x - 1, y) !== TERRAIN_MASK_WALL && !structure_grid[x - 1][y]) {
-        // add the left adjacent tile to the list of clear spots
-        clear_spots.push({x: x - 1, y: y});
+        // return the clear spot
+        return new Point(x - 1,y);
     }
     // if the right adjacent tile is not a wall or a planned structure
     if (terrain_grid.get(x + 1, y) !== TERRAIN_MASK_WALL && !structure_grid[x + 1][y]) {
-        // add the right adjacent tile to the list of clear spots
-        clear_spots.push({x: x + 1, y: y});
+        // return the clear spot
+        return new Point(x + 1,y);
     }
     // if the bottom left adjacent tile is not a wall or a planned structure
     if (terrain_grid.get(x - 1, y + 1) !== TERRAIN_MASK_WALL && !structure_grid[x - 1][y + 1]) {
-        // add the bottom left adjacent tile to the list of clear spots
-        clear_spots.push({x: x - 1, y: y + 1});
+        // return the clear spot
+        return new Point(x - 1,y + 1);
     }
     // if the bottom adjacent tile is not a wall or a planned structure
     if (terrain_grid.get(x, y + 1) !== TERRAIN_MASK_WALL && !structure_grid[x][y + 1]) {
-        // add the bottom adjacent tile to the list of clear spots
-        clear_spots.push({x: x, y: y + 1});
+        // return the clear spot
+        return new Point(x,y + 1);
     }
     // if the bottom right adjacent tile is not a wall or a planned structure
     if (terrain_grid.get(x + 1, y + 1) !== TERRAIN_MASK_WALL && !structure_grid[x + 1][y + 1]) {
-        // add the bottom right adjacent tile to the list of clear spots
-        clear_spots.push({x: x + 1, y: y + 1});
+        // return the clear spot
+        return new Point(x + 1,y + 1);
     }
-
-    // if no clear spot was found
-    if (clear_spots.length == 0) {
-        // return null to show we couldn't find a spot
-        return null;
-    }
-
-    // return one of the clear spots
-    return new Point(clear_spots[0].x, clear_spots[0].y);
+    return null;
 };
 /**
- * Creates construction sites based on provided room plans, respecting the game limit of 5 active construction sites per room.
+ * Creates construction sites based on provided room plans, with a limit of 5 active construction sites per room.
  * Construction sites are created in priority order: source containers first, followed by mineral structures,
- * then planned structures, roads, and finally ramparts. Stops creating new sites once the limit is reached.
+ * then planned structures, roads, and finally ramparts.
  * @memberOf Room#
  * @member {function} createConstructionSites
  * @param {RoomPlans} plans - Room planning data containing coordinates and types of all structures to be built
@@ -401,10 +391,9 @@ Room.prototype.findFilledContainers = function () {
 };
 /**
  * Gets an array of room names that share a border with the current room.
- * These rooms can be accessed directly via any of the valid exits in the current room.
  * @memberOf Room#
  * @member {function} getAdjacentRooms
- * @returns {string[]} Array containing the names of all adjacent rooms that are accessible through exits
+ * @returns {string[]} Array containing the names of all adjacent rooms
  */
 Room.prototype.getAdjacentRooms = function () {
     // grab all the exits in the room
@@ -438,7 +427,6 @@ Room.prototype.getAdjacentRooms = function () {
 };
 /**
  * Retrieves a specific structure type at the specified coordinates in the room.
- * If multiple structures exist at the location, only returns the first one matching the requested type.
  * @memberOf Room#
  * @member {function} getStructureAt
  * @param {string} structure_type - The STRUCTURE_* constant defining which structure type to find

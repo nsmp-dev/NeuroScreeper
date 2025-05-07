@@ -36,11 +36,11 @@ Creep.prototype.runRepairer = function () {
             this.gatherEnergy();
         } else {
             // find a new repair target
-            let target = this.getRepairTarget();
+            let target = this.findRepairTarget();
             // if a target was found
             if (target == null) {
                 // find a new build target
-                let build_target = this.getBuildTarget();
+                let build_target = this.findBuildTarget();
                 // if a target was found
                 if (build_target == null) {
                     // assign a new upgrade task

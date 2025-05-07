@@ -103,7 +103,7 @@ class NeuroTask {
     }
     /**
      * run the repair task on the creep
-     * @param {Creep|PowerCreep} creep - The Creep doing the task
+     * @param {Creep} creep - The Creep doing the task
      * @param {RepairTask} task - the task being run
      */
     runRepair (creep, task) {
@@ -133,7 +133,7 @@ class NeuroTask {
     }
     /**
      * run the build task on the creep
-     * @param {Creep|PowerCreep} creep - The Creep doing the task
+     * @param {Creep} creep - The Creep doing the task
      * @param {BuildTask} task - the task being run
      */
     runBuild (creep, task) {
@@ -194,7 +194,7 @@ class NeuroTask {
     }
     /**
      * run the claim task on the creep
-     * @param {Creep|PowerCreep} creep - The Creep doing the task
+     * @param {Creep} creep - The Creep doing the task
      * @param {ClaimTask} task - the task being run
      */
     runClaim (creep, task) {
@@ -221,7 +221,7 @@ class NeuroTask {
     }
     /**
      * run the reserve task on the creep
-     * @param {Creep|PowerCreep} creep - The Creep doing the task
+     * @param {Creep} creep - The Creep doing the task
      * @param {ReserveTask} task - the task being run
      */
     runReserve (creep, task) {
@@ -248,7 +248,7 @@ class NeuroTask {
     }
     /**
      * run the drill task on the creep
-     * @param {Creep|PowerCreep} creep - The Creep doing the task
+     * @param {Creep} creep - The Creep doing the task
      * @param {DrillTask} task - the task being run
      */
     runDrill (creep, task) {
@@ -271,7 +271,7 @@ class NeuroTask {
     }
     /**
      * run the attack task on the creep
-     * @param {Creep|PowerCreep} creep - The Creep doing the task
+     * @param {Creep} creep - The Creep doing the task
      * @param {AttackTask} task - the task being run
      */
     runAttack (creep, task) {
@@ -297,7 +297,7 @@ class NeuroTask {
     }
     /**
      * run the heal task on the creep
-     * @param {Creep|PowerCreep} creep - The Creep doing the task
+     * @param {Creep} creep - The Creep doing the task
      * @param {HealTask} task - the task being run
      */
     runHeal (creep, task) {
@@ -459,7 +459,7 @@ class NeuroTask {
     }
     /**
      * run the harvest task on the creep
-     * @param {Creep|PowerCreep} creep - The Creep doing the task
+     * @param {Creep} creep - The Creep doing the task
      * @param {HarvestTask} task - the task being run
      */
     runHarvest (creep, task) {

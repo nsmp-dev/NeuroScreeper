@@ -71,7 +71,7 @@ class RoomPlansFactory{
         // loop through the sources
         for (let source of sources) {
             // find an adjacent space to put the container
-            let container_location = room.getClearAdjacentLocation(source.pos.x, source.pos.y, plans);
+            let container_location = room.findClearAdjacentLocation(source.pos.x, source.pos.y, plans);
 
             // if a place was found
             if (container_location != null) {
@@ -93,7 +93,7 @@ class RoomPlansFactory{
         // loop through the minerals
         for (let mineral of minerals) {
             // find an adjacent space to put the container
-            let container_location = room.getClearAdjacentLocation(mineral.pos.x, mineral.pos.y, plans);
+            let container_location = room.findClearAdjacentLocation(mineral.pos.x, mineral.pos.y, plans);
 
             // add the mineral plan to the mineral plans list
             if (container_location != null) {
@@ -109,7 +109,7 @@ class RoomPlansFactory{
      */
     planBaseLocation (room, plans) {
         // find a clear area of size 14 x 14
-        let base_location = room.getClearArea(14, 14, plans);
+        let base_location = room.findClearArea(14, 14, plans);
         // if we were able to find a location
         if (base_location != null) {
             // save the coordinates of the base
@@ -293,7 +293,7 @@ class RoomPlansFactory{
      */
     planPlantLocation (room, plans) {
         // find a clear area of size 4 x 3
-        let plant_location = room.getClearArea(4, 3, plans);
+        let plant_location = room.findClearArea(4, 3, plans);
         // if we were able to find a location
         if (plant_location != null) {
             // save the coordinates of the plant
@@ -356,7 +356,7 @@ class RoomPlansFactory{
      */
     planIdleLocation (room, plans) {
         // return a clear area of size 5 x 5
-        let idle_location = room.getClearArea(5, 5, plans);
+        let idle_location = room.findClearArea(5, 5, plans);
         // if an area is found
         if (idle_location != null) {
             // save the coordinates of the idle location

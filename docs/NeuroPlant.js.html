@@ -32,18 +32,19 @@
  * Structure IDs are cached and automatically updated if buildings are destroyed.
  * Labs and factory operate as independent state machines to enable parallel processing.
  * The operator can interact with either system independently without disrupting the other.
- * If structures are destroyed or wrong materials are detected, systems automatically reset to cleaning state.
+ * If structures are destroyed or wrong materials are detected, systems automatically reset to a cleaning state.
  * @class NeuroPlant
  */
 class NeuroPlant {
     constructor() {}
     /**
-     * description
+     * validates that the labs are still present and have the correct resources, returning the structure references.
      * @param {PlantData} plant_data
      * @param {Room} room
-     * @returns {PlantLabStructures|null}
+     * @returns {PlantLabStructures|null} the lab structures for easy access
      */
     validateLabs (plant_data, room) {
+        // assume the labs are valid
         let is_valid = true;
         // grab input lab 1
         let input_lab_1 = Game.getObjectById(plant_data.input_lab_1_id);
@@ -58,10 +59,13 @@ class NeuroPlant {
         if (input_lab_1 == null || input_lab_2 == null || output_lab == null || storage == undefined) {
             // clear the current reaction
             plant_data.current_reaction = null;
+            // mark the labs as invalid
             is_valid = false;
 
             // if any of the labs have anything in them,
-            if (input_lab_1?.store.getUsedCapacity() > 0 || input_lab_2?.store.getUsedCapacity() > 0 || output_lab?.store.getUsedCapacity() > 0) {
+            if ((input_lab_1 != null &amp;&amp; input_lab_1.store.getUsedCapacity() > 0) ||
+                (input_lab_2 != null &amp;&amp; input_lab_2.store.getUsedCapacity() > 0) ||
+                (output_lab != null &amp;&amp; output_lab.store.getUsedCapacity() > 0)) {
                 // set the plant to clean up the reaction
                 plant_data.labs_state = STATES.CLEANING;
             } else {
@@ -76,27 +80,33 @@ class NeuroPlant {
             let reaction = plant_data.current_reaction;
 
             // if any of the labs have incorrect resources
-            if (input_lab_1.mineralType != reaction.input_1 || input_lab_2.mineralType != reaction.input_2 || output_lab.mineralType != reaction.output) {
+            if ((input_lab_1 != null &amp;&amp; input_lab_1.store[reaction.input_1] != undefined &amp;&amp; input_lab_1.store[reaction.input_1] > 0) ||
+                (input_lab_2 != null &amp;&amp; input_lab_2.store[reaction.input_2] != undefined &amp;&amp; input_lab_2.store[reaction.input_2] > 0) ||
+                (output_lab != null &amp;&amp; output_lab.store[reaction.output] != undefined &amp;&amp; output_lab.store[reaction.output] > 0)) {
                 // clear the current reaction
                 plant_data.current_reaction = null;
+                // mark the labs as invalid
                 is_valid = false;
                 // set the plant to clean up the reaction
                 plant_data.labs_state = STATES.CLEANING;
             }
         }
 
+        // if the labs are valid
         if (is_valid) {
+            // return the labs
             return new PlantLabStructures(input_lab_1, input_lab_2, output_lab, storage);
         }else{
+            // return null for failure
             return null;
         }
     }
     /**
-     * description
-     * @param {PlantData} plant_data
-     * @param {Room} room
-     * @param {PlantLabStructures} structures
-     * @returns {null|Reaction}
+     * returns a Reaction if the storage has the ingredients for one.
+     * @param {PlantData} plant_data - the plant data for storing in memory.
+     * @param {Room} room - the room the plant is in.
+     * @param {PlantLabStructures} structures - the labs and storage for easy access.
+     * @returns {null|Reaction} the Reaction that was found or null if none was found.
      */
     getLabReaction (plant_data, room, structures) {
         // grab the storage
@@ -122,6 +132,7 @@ class NeuroPlant {
                 }
             }
         }
+        // return null for failure
         return null;
     }
     /**
@@ -130,13 +141,18 @@ class NeuroPlant {
      * @param {Room} room - The Room the plant is in
      */
     runLabs (plant_data, room) {
+        // grab the structures and validate them
         let structures = this.validateLabs(plant_data, room);
 
+        // if the structures are valid
         if (structures != null) {
             // if the labs are idle
             if (plant_data.labs_state == STATES.IDLE) {
+                // get a new reaction
                 let reaction = this.getLabReaction(plant_data, room, structures);
+                // if a reaction is found
                 if (reaction != null) {
+                    // set the reaction
                     plant_data.current_reaction = reaction;
                     visualizer.popup("Requested a reaction for " + plant_data.current_reaction.amount + " " + plant_data.current_reaction.output);
                     // set the state of the labs to loading
@@ -186,12 +202,13 @@ class NeuroPlant {
         }
     }
     /**
-     * description
+     * validates that the factory is still present and has the correct resources, returning the structure references.
      * @param {PlantData} plant_data
      * @param {Room} room
      * @returns {PlantFactoryStructures|null}
      */
     validateFactory (plant_data, room) {
+        // assume the factory is valid
         let is_valid = true;
         // grab the factory
         let factory = Game.getObjectById(plant_data.factory_id);
@@ -202,6 +219,7 @@ class NeuroPlant {
         if (factory == null || storage == undefined) {
             // clear the current production
             plant_data.current_production = null;
+            // set the factory as invalid
             is_valid = false;
             // if the factory is built, and it has resources in it
             if (factory != null &amp;&amp; factory.store.getUsedCapacity() > 0) {
@@ -235,19 +253,23 @@ class NeuroPlant {
             if (!correct_contents) {
                 // clear the current production
                 plant_data.current_production = null;
+                // set the factory as invalid
                 is_valid = false;
                 // set the plant to clean up the production
                 plant_data.factory_state = STATES.CLEANING;
             }
         }
+        // if the factory is valid
         if (is_valid) {
+            // return the structures
             return new PlantFactoryStructures(factory, storage);
         }else{
+            // return null for failure
             return null;
         }
     }
     /**
-     * description
+     * returns a Production if the storage has the ingredients for one.
      * @param {PlantData} plant_data
      * @param {Room} room
      * @param {PlantFactoryStructures} structures
@@ -281,6 +303,7 @@ class NeuroPlant {
                 }
             }
         }
+        // return null for failure
         return null;
     }
     /**
@@ -289,13 +312,19 @@ class NeuroPlant {
      * @param {Room} room - The Room the plant is in
      */
     runFactory (plant_data, room) {
+        // grab the structures and validate them
         let structures = this.validateFactory(plant_data, room);
 
+        // if the structures are valid
         if (structures != null) {
+            // if the factory is idle
             if (plant_data.factory_state == STATES.IDLE) {
+                // find a new production
                 let production = this.getFactoryProduction(plant_data, room, structures);
 
+                // if a production is found
                 if (production != null) {
+                    // store the production on the plant data
                     plant_data.current_production = production;
                     visualizer.popup("Requested a production of " + plant_data.current_production.amount + " " + plant_data.current_reaction.output);
                     // set the factory to loading
@@ -336,6 +365,7 @@ class NeuroPlant {
                     // set the factory to finished
                     plant_data.factory_state = STATES.FINISHED;
                     visualizer.popup("Finished a production of " + plant_data.current_reaction.output);
+                    // clear the current production
                     plant_data.current_production = null;
                 }
             }
@@ -457,13 +487,13 @@ global.neuro_plant = new NeuroPlant();</code></pre>
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="AttackTask.html">AttackTask</a></li><li><a href="AttackerMemory.html">AttackerMemory</a></li><li><a href="BuildTask.html">BuildTask</a></li><li><a href="BuilderMemory.html">BuilderMemory</a></li><li><a href="ClaimTask.html">ClaimTask</a></li><li><a href="ClaimerMemory.html">ClaimerMemory</a></li><li><a href="CommodityCollectorMemory.html">CommodityCollectorMemory</a></li><li><a href="ConstructionPlan.html">ConstructionPlan</a></li><li><a href="Creep.html">Creep</a></li><li><a href="CreepMemory.html">CreepMemory</a></li><li><a href="DepositTask.html">DepositTask</a></li><li><a href="DrillTask.html">DrillTask</a></li><li><a href="DrillerMemory.html">DrillerMemory</a></li><li><a href="GatherTask.html">GatherTask</a></li><li><a href="HarvestTask.html">HarvestTask</a></li><li><a href="HealTask.html">HealTask</a></li><li><a href="HealerMemory.html">HealerMemory</a></li><li><a href="IdleTask.html">IdleTask</a></li><li><a href="MainMemory.html">MainMemory</a></li><li><a href="MineralDrillerMemory.html">MineralDrillerMemory</a></li><li><a href="MineralPlan.html">MineralPlan</a></li><li><a href="MineralPopulation.html">MineralPopulation</a></li><li><a href="MineralTransporterMemory.html">MineralTransporterMemory</a></li><li><a href="MoveResourceTask.html">MoveResourceTask</a></li><li><a href="MoveRoomTask.html">MoveRoomTask</a></li><li><a href="NeuroPlant.html">NeuroPlant</a></li><li><a href="NeuroPower.html">NeuroPower</a></li><li><a href="NeuroPowerSquad.html">NeuroPowerSquad</a></li><li><a href="NeuroRoom.html">NeuroRoom</a></li><li><a href="NeuroScreeper.html">NeuroScreeper</a></li><li><a href="NeuroTask.html">NeuroTask</a></li><li><a href="ObserverLog.html">ObserverLog</a></li><li><a href="PlantData.html">PlantData</a></li><li><a href="PlantFactoryStructures.html">PlantFactoryStructures</a></li><li><a href="PlantLabStructures.html">PlantLabStructures</a></li><li><a href="Point.html">Point</a></li><li><a href="PopupMessage.html">PopupMessage</a></li><li><a href="PowerAttackerMemory.html">PowerAttackerMemory</a></li><li><a href="PowerCreep.html">PowerCreep</a></li><li><a href="PowerHealerMemory.html">PowerHealerMemory</a></li><li><a href="PowerSquad.html">PowerSquad</a></li><li><a href="PowerSquadCreeps.html">PowerSquadCreeps</a></li><li><a href="PowerSquadPopulation.html">PowerSquadPopulation</a></li><li><a href="PowerTransporterMemory.html">PowerTransporterMemory</a></li><li><a href="Production.html">Production</a></li><li><a href="QueenMemory.html">QueenMemory</a></li><li><a href="Reaction.html">Reaction</a></li><li><a href="RenewOperatorTask.html">RenewOperatorTask</a></li><li><a href="RepairTask.html">RepairTask</a></li><li><a href="RepairerMemory.html">RepairerMemory</a></li><li><a href="ReserveTask.html">ReserveTask</a></li><li><a href="Role.html">Role</a></li><li><a href="Room.html">Room</a></li><li><a href="RoomData.html">RoomData</a></li><li><a href="RoomPlans.html">RoomPlans</a></li><li><a href="RoomPlansFactory.html">RoomPlansFactory</a></li><li><a href="RoomPopulation.html">RoomPopulation</a></li><li><a href="ScoutMemory.html">ScoutMemory</a></li><li><a href="SourcePlan.html">SourcePlan</a></li><li><a href="SourcePopulation.html">SourcePopulation</a></li><li><a href="StructureObserver.html">StructureObserver</a></li><li><a href="StructureTerminal.html">StructureTerminal</a></li><li><a href="StructureTower.html">StructureTower</a></li><li><a href="Task.html">Task</a></li><li><a href="Timer.html">Timer</a></li><li><a href="TimerEntry.html">TimerEntry</a></li><li><a href="TimerLog.html">TimerLog</a></li><li><a href="TransporterMemory.html">TransporterMemory</a></li><li><a href="UpgradeTask.html">UpgradeTask</a></li><li><a href="UpgraderMemory.html">UpgraderMemory</a></li><li><a href="Util.html">Util</a></li><li><a href="Visualizer.html">Visualizer</a></li></ul><h3>Global</h3><ul><li><a href="global.html#BUILD">BUILD</a></li><li><a href="global.html#COLONY">COLONY</a></li><li><a href="global.html#CONSTRUCTION_TIMER_LENGTH">CONSTRUCTION_TIMER_LENGTH</a></li><li><a href="global.html#COUNT_POPULATION_TIMER_LENGTH">COUNT_POPULATION_TIMER_LENGTH</a></li><li><a href="global.html#DEBUG_MODE">DEBUG_MODE</a></li><li><a href="global.html#EXPANSION">EXPANSION</a></li><li><a href="global.html#FACTORY_TIMER_LENGTH">FACTORY_TIMER_LENGTH</a></li><li><a href="global.html#FINAL_PRODUCTS">FINAL_PRODUCTS</a></li><li><a href="global.html#HIGHWAY">HIGHWAY</a></li><li><a href="global.html#INGREDIENTS">INGREDIENTS</a></li><li><a href="global.html#KEEPER_LAIR">KEEPER_LAIR</a></li><li><a href="global.html#LABS_TIMER_LENGTH">LABS_TIMER_LENGTH</a></li><li><a href="global.html#LOG_SIZE">LOG_SIZE</a></li><li><a href="global.html#NEW_ROOM_TIMER_LENGTH">NEW_ROOM_TIMER_LENGTH</a></li><li><a href="global.html#PLANT_STRUCTURES_TIMER_LENGTH">PLANT_STRUCTURES_TIMER_LENGTH</a></li><li><a href="global.html#POPUP_TIMER_LIMIT">POPUP_TIMER_LIMIT</a></li><li><a href="global.html#POWER_SQUAD_TIMER">POWER_SQUAD_TIMER</a></li><li><a href="global.html#REQUEST_POPULATION_TIMER_LENGTH">REQUEST_POPULATION_TIMER_LENGTH</a></li><li><a href="global.html#ROLES">ROLES</a></li><li><a href="global.html#ROOM_CONSTRUCTION_SITE_LIMIT">ROOM_CONSTRUCTION_SITE_LIMIT</a></li><li><a href="global.html#ROOM_SIZE">ROOM_SIZE</a></li><li><a href="global.html#SATISFACTION_LOG_SIZE">SATISFACTION_LOG_SIZE</a></li><li><a href="global.html#SATISFACTION_THRESHOLD">SATISFACTION_THRESHOLD</a></li><li><a href="global.html#SIGNATURE">SIGNATURE</a></li><li><a href="global.html#STATES">STATES</a></li><li><a href="global.html#TASK_TYPES">TASK_TYPES</a></li><li><a href="global.html#TERMINAL_ENERGY_CAP">TERMINAL_ENERGY_CAP</a></li><li><a href="global.html#TERMINAL_TIMER_LENGTH">TERMINAL_TIMER_LENGTH</a></li><li><a href="global.html#TOWER_MINIMUM_ENERGY">TOWER_MINIMUM_ENERGY</a></li><li><a href="global.html#hlog">hlog</a></li><li><a href="global.html#loop">loop</a></li><li><a href="global.html#neuro_plant">neuro_plant</a></li><li><a href="global.html#neuro_power">neuro_power</a></li><li><a href="global.html#neuro_power_squad">neuro_power_squad</a></li><li><a href="global.html#neuro_room">neuro_room</a></li><li><a href="global.html#neuro_screeper">neuro_screeper</a></li><li><a href="global.html#neuro_task">neuro_task</a></li><li><a href="global.html#room_plans_factory">room_plans_factory</a></li><li><a href="global.html#timer">timer</a></li><li><a href="global.html#util">util</a></li><li><a href="global.html#visualizer">visualizer</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="AttackTask.html">AttackTask</a></li><li><a href="AttackerMemory.html">AttackerMemory</a></li><li><a href="BuildTask.html">BuildTask</a></li><li><a href="BuilderMemory.html">BuilderMemory</a></li><li><a href="ClaimTask.html">ClaimTask</a></li><li><a href="ClaimerMemory.html">ClaimerMemory</a></li><li><a href="CommodityCollectorMemory.html">CommodityCollectorMemory</a></li><li><a href="ConstructionPlan.html">ConstructionPlan</a></li><li><a href="Creep.html">Creep</a></li><li><a href="CreepMemory.html">CreepMemory</a></li><li><a href="DepositTask.html">DepositTask</a></li><li><a href="DrillTask.html">DrillTask</a></li><li><a href="DrillerMemory.html">DrillerMemory</a></li><li><a href="GatherTask.html">GatherTask</a></li><li><a href="HarvestTask.html">HarvestTask</a></li><li><a href="HealTask.html">HealTask</a></li><li><a href="HealerMemory.html">HealerMemory</a></li><li><a href="IdleTask.html">IdleTask</a></li><li><a href="MainMemory.html">MainMemory</a></li><li><a href="MineralDrillerMemory.html">MineralDrillerMemory</a></li><li><a href="MineralPlan.html">MineralPlan</a></li><li><a href="MineralPopulation.html">MineralPopulation</a></li><li><a href="MineralTransporterMemory.html">MineralTransporterMemory</a></li><li><a href="MoveResourceTask.html">MoveResourceTask</a></li><li><a href="MoveRoomTask.html">MoveRoomTask</a></li><li><a href="NeuroPlant.html">NeuroPlant</a></li><li><a href="NeuroPower.html">NeuroPower</a></li><li><a href="NeuroPowerSquad.html">NeuroPowerSquad</a></li><li><a href="NeuroRoom.html">NeuroRoom</a></li><li><a href="NeuroScreeper.html">NeuroScreeper</a></li><li><a href="NeuroTask.html">NeuroTask</a></li><li><a href="ObserverLog.html">ObserverLog</a></li><li><a href="PlantData.html">PlantData</a></li><li><a href="PlantFactoryStructures.html">PlantFactoryStructures</a></li><li><a href="PlantLabStructures.html">PlantLabStructures</a></li><li><a href="Point.html">Point</a></li><li><a href="PopupMessage.html">PopupMessage</a></li><li><a href="PowerAttackerMemory.html">PowerAttackerMemory</a></li><li><a href="PowerCreep.html">PowerCreep</a></li><li><a href="PowerHealerMemory.html">PowerHealerMemory</a></li><li><a href="PowerSquad.html">PowerSquad</a></li><li><a href="PowerSquadCreeps.html">PowerSquadCreeps</a></li><li><a href="PowerSquadPopulation.html">PowerSquadPopulation</a></li><li><a href="PowerTransporterMemory.html">PowerTransporterMemory</a></li><li><a href="Production.html">Production</a></li><li><a href="QueenMemory.html">QueenMemory</a></li><li><a href="Reaction.html">Reaction</a></li><li><a href="RenewOperatorTask.html">RenewOperatorTask</a></li><li><a href="RepairTask.html">RepairTask</a></li><li><a href="RepairerMemory.html">RepairerMemory</a></li><li><a href="ReserveTask.html">ReserveTask</a></li><li><a href="Role.html">Role</a></li><li><a href="Room.html">Room</a></li><li><a href="RoomData.html">RoomData</a></li><li><a href="RoomPlans.html">RoomPlans</a></li><li><a href="RoomPlansFactory.html">RoomPlansFactory</a></li><li><a href="RoomPopulation.html">RoomPopulation</a></li><li><a href="ScoutMemory.html">ScoutMemory</a></li><li><a href="SourcePlan.html">SourcePlan</a></li><li><a href="SourcePopulation.html">SourcePopulation</a></li><li><a href="StructureObserver.html">StructureObserver</a></li><li><a href="StructureTerminal.html">StructureTerminal</a></li><li><a href="StructureTower.html">StructureTower</a></li><li><a href="Task.html">Task</a></li><li><a href="Timer.html">Timer</a></li><li><a href="TimerEntry.html">TimerEntry</a></li><li><a href="TimerLog.html">TimerLog</a></li><li><a href="TransporterMemory.html">TransporterMemory</a></li><li><a href="UpgradeTask.html">UpgradeTask</a></li><li><a href="UpgraderMemory.html">UpgraderMemory</a></li><li><a href="Util.html">Util</a></li><li><a href="Visualizer.html">Visualizer</a></li></ul><h3>Global</h3><ul><li><a href="global.html#BUILD">BUILD</a></li><li><a href="global.html#COLONY">COLONY</a></li><li><a href="global.html#CONSTRUCTION_TIMER_LENGTH">CONSTRUCTION_TIMER_LENGTH</a></li><li><a href="global.html#COUNT_POPULATION_TIMER_LENGTH">COUNT_POPULATION_TIMER_LENGTH</a></li><li><a href="global.html#DEBUG_MODE">DEBUG_MODE</a></li><li><a href="global.html#EXPANSION">EXPANSION</a></li><li><a href="global.html#FACTORY_TIMER_LENGTH">FACTORY_TIMER_LENGTH</a></li><li><a href="global.html#FINAL_PRODUCTS">FINAL_PRODUCTS</a></li><li><a href="global.html#HIGHWAY">HIGHWAY</a></li><li><a href="global.html#INGREDIENTS">INGREDIENTS</a></li><li><a href="global.html#INITIAL_SPAWN">INITIAL_SPAWN</a></li><li><a href="global.html#KEEPER_LAIR">KEEPER_LAIR</a></li><li><a href="global.html#LABS_TIMER_LENGTH">LABS_TIMER_LENGTH</a></li><li><a href="global.html#LOG_SIZE">LOG_SIZE</a></li><li><a href="global.html#NEW_ROOM_TIMER_LENGTH">NEW_ROOM_TIMER_LENGTH</a></li><li><a href="global.html#PLANT_STRUCTURES_TIMER_LENGTH">PLANT_STRUCTURES_TIMER_LENGTH</a></li><li><a href="global.html#POPUP_TIMER_LIMIT">POPUP_TIMER_LIMIT</a></li><li><a href="global.html#POWER_SQUAD_TIMER">POWER_SQUAD_TIMER</a></li><li><a href="global.html#PROGRESS_LOG_SIZE">PROGRESS_LOG_SIZE</a></li><li><a href="global.html#REQUEST_POPULATION_TIMER_LENGTH">REQUEST_POPULATION_TIMER_LENGTH</a></li><li><a href="global.html#ROLES">ROLES</a></li><li><a href="global.html#ROOM_CONSTRUCTION_SITE_LIMIT">ROOM_CONSTRUCTION_SITE_LIMIT</a></li><li><a href="global.html#ROOM_SIZE">ROOM_SIZE</a></li><li><a href="global.html#SATISFACTION_LOG_SIZE">SATISFACTION_LOG_SIZE</a></li><li><a href="global.html#SATISFACTION_THRESHOLD">SATISFACTION_THRESHOLD</a></li><li><a href="global.html#SIGNATURE">SIGNATURE</a></li><li><a href="global.html#STATES">STATES</a></li><li><a href="global.html#TASK_ANNOUNCEMENTS">TASK_ANNOUNCEMENTS</a></li><li><a href="global.html#TASK_TYPES">TASK_TYPES</a></li><li><a href="global.html#TERMINAL_ENERGY_CAP">TERMINAL_ENERGY_CAP</a></li><li><a href="global.html#TERMINAL_TIMER_LENGTH">TERMINAL_TIMER_LENGTH</a></li><li><a href="global.html#TOWER_MINIMUM_ENERGY">TOWER_MINIMUM_ENERGY</a></li><li><a href="global.html#hlog">hlog</a></li><li><a href="global.html#loop">loop</a></li><li><a href="global.html#neuro_plant">neuro_plant</a></li><li><a href="global.html#neuro_power">neuro_power</a></li><li><a href="global.html#neuro_power_squad">neuro_power_squad</a></li><li><a href="global.html#neuro_room">neuro_room</a></li><li><a href="global.html#neuro_screeper">neuro_screeper</a></li><li><a href="global.html#neuro_task">neuro_task</a></li><li><a href="global.html#room_plans_factory">room_plans_factory</a></li><li><a href="global.html#timer">timer</a></li><li><a href="global.html#util">util</a></li><li><a href="global.html#visualizer">visualizer</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Thu May 01 2025 15:15:48 GMT-0500 (Central Daylight Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Wed May 07 2025 15:25:29 GMT-0500 (Central Daylight Time)
 </footer>
 
 <script> prettyPrint(); </script>

@@ -7,7 +7,7 @@ global.ROLES[AttackerRole.name] = AttackerRole;
 /**
  * AttackerMemory class represents memory storage for offensive combat creeps.
  * This class maintains essential data needed by attacker creeps, including their
- * target tracking, combat state, and patrol area assignments.
+ * target tracking, combat state, and room assignment.
  * @class AttackerMemory
  */
 class AttackerMemory extends CreepMemory {

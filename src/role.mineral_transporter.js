@@ -64,7 +64,7 @@ Creep.prototype.runMineralTransporter = function () {
         // if the store is empty
         if (this.store.getUsedCapacity() == 0) {
             if (this.room.name == this.memory.room_name) {
-                let target = this.getTransporterTarget();
+                let target = this.findTransporterTarget();
                 if (target == null) {
                     // assign a new idle task
                     this.task = new IdleTask(this.memory.room_name, 10);

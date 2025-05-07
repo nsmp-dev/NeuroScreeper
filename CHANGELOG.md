@@ -49,7 +49,7 @@
 - SourcePopulation and MineralPopulation classes that log the population of sources and minerals
 - pixel generating on a full bucket
 - planning for future role additions
-- getTransporterTarget, which grabs a target for a transporter style creep, combining some duplicated code
+- findTransporterTarget, which grabs a target for a transporter style creep, combining some duplicated code
 - MoveResourceTask that handles moving an amount of resource from one structure to another
 
 ## Changed

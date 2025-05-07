@@ -94,7 +94,7 @@ Creep.prototype.runQueen = function () {
                 // if no task is assigned
                 if (this.task != null) {
                     // grab a target for dumping
-                    let target = this.getQueenDumpTarget();
+                    let target = this.findQueenDumpTarget();
                     // if a target was found
                     if (target == null) {
                         // assign a new idle task

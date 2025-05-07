@@ -13,8 +13,6 @@ global.ROLES[BuilderRole.name] = BuilderRole;
 class BuilderMemory extends CreepMemory {
     /**
      * Creates a new BuilderMemory instance to manage construction-focused creeps.
-     * Initializes memory structure for tracking building tasks, construction sites,
-     * and maintaining the creep's room assignment.
      * @param {string} room_name - The identifier of the room where the builder will operate and construct
      */
     constructor(room_name) {
@@ -41,11 +39,11 @@ Creep.prototype.runBuilder = function () {
             this.gatherEnergy();
         } else {
             // find a new build target
-            let target = this.getBuildTarget();
+            let target = this.findBuildTarget();
             // if we found a target
             if (target == null) {
                 // find a new repair target
-                let repair_target = this.getRepairTarget();
+                let repair_target = this.findRepairTarget();
                 // if we found a target
                 if (repair_target == null) {
                     let main_memory = util.getMainMemory();

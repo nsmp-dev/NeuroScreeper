@@ -305,7 +305,7 @@ class RenewOperatorTask extends Task {
     /**
      * creates a new task to renew an operator
      * @param {StructurePowerSpawn} power_spawn - The power spawn to renew at
-     * @param {Task} previous_task - The previous task so we can restore it
+     * @param {GatherTask|DepositTask|UpgradeTask|MoveRoomTask|IdleTask|RenewOperatorTask|MoveResourceTask} previous_task - The previous task so we can restore it
      */
     constructor(power_spawn, previous_task) {
         super(TASK_TYPES.RENEW_OPERATOR, power_spawn.room.name);
@@ -316,7 +316,7 @@ class RenewOperatorTask extends Task {
         this.power_spawn = power_spawn.id;
         /**
          * The previous task so we can restore it
-         * @type {Task}
+         * @type {GatherTask|DepositTask|UpgradeTask|MoveRoomTask|IdleTask|RenewOperatorTask|MoveResourceTask}
          */
         this.previous_task = previous_task;
     }

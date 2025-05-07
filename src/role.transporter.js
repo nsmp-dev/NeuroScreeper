@@ -59,7 +59,7 @@ Creep.prototype.runTransporter = function () {
         // if the creep is out of energy
         if (this.store[RESOURCE_ENERGY] == 0) {
             // find the gather target for the transporter
-            let target = this.getTransporterTarget();
+            let target = this.findTransporterTarget();
 
             // if the target is still null or empty
             if (target == null || (target.store != undefined && target.store[RESOURCE_ENERGY] == 0)) {
@@ -75,7 +75,7 @@ Creep.prototype.runTransporter = function () {
                 // remove the nearest colony name
                 this.memory.nearest_colony_name = null;
                 // find a new dump target
-                let target = this.getDumpTarget();
+                let target = this.findDumpTarget();
                 // if a new target was found
                 if (target == null) {
                     // assign a new idle task
@@ -86,7 +86,7 @@ Creep.prototype.runTransporter = function () {
                 }
             } else {
                 // store the nearest colony name
-                this.memory.nearest_colony_name = this.getNearestColony();
+                this.memory.nearest_colony_name = this.findNearestColony();
                 // assign a new MoveRoomTask
                 this.task = new MoveRoomTask(this.memory.nearest_colony_name);
             }

@@ -5,7 +5,6 @@
 
 /**
  * Transfers available ingredients from this terminal to the terminal in the capitol room.
- * Processing is done one ingredient at a time to avoid exceeding energy limits.
  * @memberOf StructureTerminal#
  * @member {function} moveIngredients
  */
@@ -140,7 +139,6 @@ StructureTerminal.prototype.sellFinalProducts = function () {
  * Attempts to purchase subscription tokens from the market.
  * Finds the lowest priced subscription token order and executes
  * the purchase if there are enough credits available.
- * Only buys one token at a time.
  * @memberOf StructureTerminal#
  * @member {function} buySubToken
  */

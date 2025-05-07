@@ -134,7 +134,7 @@ class NeuroPowerSquad {
                 // if the power transporter is full
                 if (creeps.power_transporter.store.getUsedCapacity() == 0) {
                     // set the power squad's return room to the nearest colony
-                    power_squad.return_room_name = creeps.power_transporter.getNearestColony();
+                    power_squad.return_room_name = creeps.power_transporter.findNearestColony();
                     // set the power squad to returning
                     power_squad.state = STATES.RETURNING;
                 } else {

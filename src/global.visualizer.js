@@ -102,7 +102,7 @@ class Visualizer {
 
         // if the room has plant data
         if (room_data.plant_data != null) {
-            // print the labs timer
+            // print the lab's timer
             room.visual.text("Labs: " + room_data.plant_data.labs_timer, 2, 1 + offset_y, {font: 0.8});
             // increment the offset
             offset_y++;
