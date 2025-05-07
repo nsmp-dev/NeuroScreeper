@@ -2,6 +2,19 @@
 
 ## [Unreleased]
 
+## [0.3.2] - 2025-05-07
+
+## Added
+- room data now tracks the progress of the controller in the room
+- visualizer now prints timers and controller progress in the room
+
+## Changed
+- updated documentation
+- task announcements have been moved into a new task getter and setter
+- renamed creep and room prototype functions to be more descriptive
+- the visualizer is now split up into smaller functions
+- NeuroPlant is now split up into smaller functions
+
 ## [0.3.1] - 2025-04-25
 
 ## Changed

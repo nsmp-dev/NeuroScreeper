@@ -1,6 +1,6 @@
 # General Approach
 The main challenge for Screeps is scoping out things and caching data in clever ways.
-There are 3 levels of scope we work with:
+There are 4 levels of scope we work with:
 - Prototype: Functions wrapped around built-in classes to enhance their functionality
 - Data: Classes for data storage. No logic whatsoever to allow for serialization. We do this to leverage type safety and documentation.
 - Neuro: Holds the actual logic functions. Uses the data classes to store and pass data between each other.

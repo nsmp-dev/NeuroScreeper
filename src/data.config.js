@@ -3,7 +3,7 @@
  * and initiate a controlled termination of all existing creeps to start fresh with new code.
  * @constant {number} BUILD
  */
-global.BUILD = 15;
+global.BUILD = 16;
 /**
  * Signature message used to sign claimed room controllers, identifying ownership and intent to other players
  * @constant {string} SIGNATURE
