@@ -124,6 +124,8 @@ class RoomPlansFactory{
     planBase (room, plans) {
         // if we were unable to find a base location
         if (plans.base_location == null) {
+            // plan the base free-form instead
+            this.planFreeformBase(room, plans);
             // exit the function
             return;
         }
@@ -285,6 +287,48 @@ class RoomPlansFactory{
             new Point(x + 6, y + 12),
             new Point(x + 12, y + 12),
         ];
+    }
+    /**
+     * fill the base with plans for the structures in an outward spiral from the center
+     * @param {Room} room - The Room we are planning
+     * @param {RoomPlans} plans - The Plans for the room.
+     */
+    planFreeformBase (room, plans) {
+        for (let i = 0; i < 3; i++) {
+            let location = room.findConstructionLocation(plans);
+            if (location != null) {
+                plans.structures.push(new ConstructionPlan(location.x, location.y, STRUCTURE_SPAWN));
+            }
+        }
+
+        let location = room.findConstructionLocation(plans);
+        if (location != null) {
+            plans.structures.push(new ConstructionPlan(location.x, location.y, STRUCTURE_STORAGE));
+        }
+
+        location = room.findConstructionLocation(plans);
+        if (location != null) {
+            plans.structures.push(new ConstructionPlan(location.x, location.y, STRUCTURE_TERMINAL));
+        }
+
+        location = room.findConstructionLocation(plans);
+        if (location != null) {
+            plans.structures.push(new ConstructionPlan(location.x, location.y, STRUCTURE_OBSERVER));
+        }
+
+        for (let i = 0; i < 6; i++) {
+            location = room.findConstructionLocation(plans);
+            if (location != null) {
+                plans.structures.push(new ConstructionPlan(location.x, location.y, STRUCTURE_TOWER));
+            }
+        }
+
+        for (let i = 0; i < 60; i++) {
+            location = room.findConstructionLocation(plans);
+            if (location != null) {
+                plans.structures.push(new ConstructionPlan(location.x, location.y, STRUCTURE_EXTENSION));
+            }
+        }
     }
     /**
      * locate a suitable location to place a plant

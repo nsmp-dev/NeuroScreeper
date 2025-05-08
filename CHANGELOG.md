@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+## Added
+- room prototype function for finding a clear spot in an outward spiral
+- accounts for rooms with no room for a base and instead places the structures in an outward spiral
+
 ## [0.3.2] - 2025-05-07
 
 ## Added

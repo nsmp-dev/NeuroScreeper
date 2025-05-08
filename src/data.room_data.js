@@ -67,12 +67,6 @@ class RoomData {
          */
         this.possible_colony = null;
         /**
-         * Determines if the room can be considered for expansion. A room is viable for expansion
-         * when it contains multiple energy sources.
-         * @type {Boolean}
-         */
-        this.possible_expansion = null;
-        /**
          * Data structure that manages chemical reactions and resource production facilities in the plant,
          * including recipes, and lab and factory state
          * @type {PlantData|null}
@@ -122,8 +116,6 @@ class RoomData {
 
         // if this room doesn't have a controller
         if (room.controller == undefined) {
-            // set this room as not a possible expansion
-            this.possible_expansion = false;
             // set this room as not a possible colony
             this.possible_colony = false;
             // find any source keeper lairs
@@ -141,10 +133,8 @@ class RoomData {
                 this.type = HIGHWAY;
             }
         } else {
-            // if there's more than one source, the room can be an expansion
+            // if there's more than one source, the room can be a colony
             this.possible_colony = this.plans.source_plans.length > 1;
-            // if there's more than one source, and it has a base, the room can be a colony
-            this.possible_colony = (this.plans.source_plans.length > 1 && this.plans.base_location != null);
         }
 
         // if the plans include a plant

@@ -54,7 +54,7 @@ class NeuroScreeper {
         // loop through all the room data
         for (let name in main_memory.room_data) {
             // if this room is not used and is a possible expansion
-            if (main_memory.room_data[name].type == null && main_memory.room_data[name].possible_expansion && util.isRoomAvailable(name)) {
+            if (main_memory.room_data[name].type == null && main_memory.room_data[name].possible_colony && util.isRoomAvailable(name)) {
                 // set the room type to a colony
                 main_memory.room_data[name].type = EXPANSION;
                 visualizer.popup("Created a new expansion!");
