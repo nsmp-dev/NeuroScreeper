@@ -51,8 +51,8 @@ Planned features and notes
 
 ## Visualizer
 Each Colony and Expansion will run a visualizer.
-The top left has the population broken down by role and assignment.
-Below that is the estimation of the progress on the controller.
-Below that is a list of the timers for the global population counting and local room timers.
-The bottom has a log of the last 50 tick's CPU usage in the timer log, drawing it as a bar graph.
-The top has a list of popups for status updates, which fade after a few ticks.
+- The top left has the population broken down by role and assignment.
+- Below that is the estimation of the progress on the controller.
+- Below that is a list of the timers for the global population counting and local room timers.
+- The bottom has a log of the last 50 tick's CPU usage in the timer log, drawing it as a bar graph.
+- The top has a list of popups for status updates, which fade after a few ticks.
