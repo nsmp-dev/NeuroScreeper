@@ -120,6 +120,11 @@ class Visualizer {
      * @param {number} offset_y - The offset to start rendering at
      */
     renderProgress(room, offset_y){
+        // if the controller is level 8 (max level)
+        if (room.controller.level == 8) {
+            // exit the function
+            return;
+        }
         // grab the room data
         let room_data = room.room_data;
         // grab the progress log
