@@ -28,7 +28,7 @@ Requirements: Node.js, Screeps account email, and Screeps API access key
 All the code is commented for easy understanding of the inner workings.
 
 ### API
-[Click here for documentation](https://nsmp-dev.github.io/screeps/)
+[Click here for documentation](https://nsmp-dev.github.io/NeuroScreeper/)
 
 ### ARCHITECTURE.md
 - Detailed information on the design of the AI
