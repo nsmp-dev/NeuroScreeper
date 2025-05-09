@@ -2,13 +2,17 @@
 
 ## [Unreleased]
 
+## [0.3.3] - 2025-05-09
+
 ## Added
 - room prototype function for finding a clear spot in an outward spiral
 - room plans factory now accounts for rooms with no room for a base and instead places the structures in an outward spiral
+- grunt file plugins to flatten files before uploading to the server
 
 ## Changed
 - updated documentation
 - updated GitHub repo name and url
+- restructured folder structure
 
 ## [0.3.2] - 2025-05-07
 

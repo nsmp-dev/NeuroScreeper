@@ -23,6 +23,7 @@ from variable/class/function names alone.
 - properties
 - keys
 - arguments
+- file names
 ### CapitalCase
 - class names
 - singletons
@@ -30,9 +31,6 @@ from variable/class/function names alone.
 ### camelCase
 - functions
 - methods
-### filenames
-files get name in the format: `scope.name.js`, where `scope` is one of: data, runner, factory, global, prototype, data, or role.
-`main.js` is an exception to this rule as it is main and it's special
 
 ## example code
 
@@ -94,10 +92,6 @@ class Dot extends Point {
     }
 }
 ```
-### Module example
-```javascript
-/** @module RoomManager */
-```
 
 ### Constants
 ```javascript
@@ -119,16 +113,10 @@ var TRI_STATE = {
 ### Tags
 - @extends—Indicate that a symbol inherits from, and adds to, a parent symbol.
 - @class—This function is intended to be called with the "new" keyword.
-- @classdesc—Use the following text to describe the entire class.
 - @constant—Document an object as a constant.
 - @enum—Document a collection of related properties.
-- @generator—Indicate that a function is a generator function.
-- @global—Document a global object.
-- @module—Document a JavaScript module.
 - @param—Document the parameter to a function.
-- @private—This symbol is meant to be private.
 - @returns—Document the return value of a function.
-- @static—Document a static member.
 
 # CHANGELOG.md formatting
 

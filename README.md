@@ -19,7 +19,7 @@ Requirements: Node.js, Screeps account email, and Screeps API access key
 5. From that folder, run the following commands:
     ```bash
     npm install
-    grunt screeps
+    grunt
     ```
 6. Your first spawn must be placed with a clearance of 5 spaces to its left, 6 to the top and bottom, and 7 to the right. It must also be named the same as the `INITIAL_SPAWN_NAME` constant, default is `Spawn1` to match the game default.
 7. The AI should now be running, fully autonomously!
@@ -29,6 +29,7 @@ All the code is commented for easy understanding of the inner workings.
 
 ### API
 [Click here for documentation](https://nsmp-dev.github.io/NeuroScreeper/)
+This site can be re-generated with `npm run generate-docs`
 
 ### ARCHITECTURE.md
 - Detailed information on the design of the AI

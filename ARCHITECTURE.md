@@ -1,10 +1,11 @@
 # General Approach
 The main challenge for Screeps is scoping out things and caching data in clever ways.
-There are 4 levels of scope we work with:
-- Prototype: Functions wrapped around built-in classes to enhance their functionality
-- Data: Classes for data storage. No logic whatsoever to allow for serialization. We do this to leverage type safety and documentation.
-- Neuro: Holds the actual logic functions. Uses the data classes to store and pass data between each other.
-- Global: Miscellaneous functions for utility, visualization, and timing.
+There are 5 types of files we work with, organized into folders:
+- prototype: Functions wrapped around built-in classes to enhance their functionality.
+- data: Classes for data storage. No logic whatsoever to allow for serialization. We do this to leverage type safety and documentation.
+- neuro: Holds the actual logic functions. Uses the data classes to store and pass data between each other.
+- global: Miscellaneous functions for utility, visualization, and timing.
+- role: Creep roles that control the configuration and behavior of Creeps.
 
 We focus on role-based creep and structure behavior via extensive prototyping.
 We put as much of the bulk of code into prototyped functions as we can to consolidate the code and improve stability.
@@ -30,13 +31,11 @@ Documentation is optional but extensive, containing design notes as well as usag
 An API sit is included that shows the details of all classes, constants, and prototype extensions.
 
 # File Structure
-Files are labeled in a `scope.name.js` format.
-The scope specifies the type of file and is one of the following:
-- data—Class file that is serializable and storable in memory, or a factory that assists in creating a class.
-- Neuro—Module with methods to run a data object, effectively holding its logic
-- global—Module that is globally available and consistent, providing high-level and common operations
-- role—Creep role logic for assigning and running their tasks, added via prototyping the Creep class.
-- prototype—extra functions that get added to game classes, cutting down on bloat
+Code is held in the `src` folder.
+The `src` folder is organized into folders for each type of file.
+Grunt is set up to automatically compile the code into the `dist` folder.
+The `dist` folder is the folder uploaded to the server.
+This allows us to use folders to organize the code but still have a flattened structure for uploading.
 
 # Task system
 Low-level actions such as "get this resource from here" or "idle here" or "build this" are stored as Tasks on the Creep.
