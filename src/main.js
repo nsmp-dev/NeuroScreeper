@@ -1,5 +1,4 @@
-// load all the files using a bootloader script
-// noinspection NpmUsedModulesInstalled
+// load all the files using the bootloader script
 require('global_bootloader');
 
 /**

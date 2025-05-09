@@ -1,5 +1,3 @@
-// noinspection NpmUsedModulesInstalled
-
 /**
  * Bootloader file responsible for requiring and loading all necessary classes and prototypes.
  * This includes data classes, logic objects, global utilities, prototypes, and role definitions
@@ -36,13 +34,13 @@ require('data_timer_log');
 require('global_timer');
 require('global_util');
 require('global_visualizer');
-require('neuro_NeuroOperator');
-require('neuro_NeuroPlant');
-require('neuro_NeuroPower');
-require('neuro_NeuroPowerSquad');
-require('neuro_NeuroRoom');
-require('neuro_NeuroScreeper');
-require('neuro_NeuroTask');
+require('neuro_operator');
+require('neuro_plant');
+require('neuro_power');
+require('neuro_power_squad');
+require('neuro_room');
+require('neuro_screeper');
+require('neuro_task');
 require('prototype_creep');
 require('prototype_observer');
 require('prototype_power_creep');
