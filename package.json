@@ -5,8 +5,7 @@
   "main": "main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "generate": "jsdoc -R ./README.md -d ./docs ./src",
-    "push": "grunt screeps"
+    "generate-docs": "jsdoc -r -R ./README.md -d ./docs ./src"
   },
   "repository": {
     "type": "git",
@@ -26,6 +25,8 @@
   "devDependencies": {
     "globals": "^16.0.0",
     "grunt": "^1.6.1",
+    "grunt-contrib-clean": "^2.0.1",
+    "grunt-contrib-copy": "^1.0.0",
     "grunt-screeps": "^1.5.0",
     "jsdoc": "^4.0.4"
   },

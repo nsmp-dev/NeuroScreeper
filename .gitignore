@@ -1,3 +1,4 @@
 .idea/
 node_modules/
-Gruntfile.js
+dist/
+.screeps.json

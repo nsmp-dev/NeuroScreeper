@@ -1,5 +1,6 @@
 // load all the files using a bootloader script
-require('data.bootloader');
+// noinspection NpmUsedModulesInstalled
+require('global_bootloader');
 
 /**
  * Main loop function for the bot.
